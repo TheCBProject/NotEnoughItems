@@ -1,29 +1,18 @@
 buildscript {
     repositories {
-        mavenCentral()
+        jcenter()
         maven {
             name = "forge"
             url = "http://files.minecraftforge.net/maven"
         }
-        maven {
-            name = "sonatype"
-            url = "https://oss.sonatype.org/content/repositories/snapshots/"
-        }
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.1-SNAPSHOT'
     }
 }
 
-//add dependency repositories
-repositories {
-	maven {
-		name = "chickenbones"
-		url = "http://chickenbones.net/maven"
-	}
-}
-
-apply plugin: 'forge'
+apply plugin: 'net.minecraftforge.gradle.forge'
+apply plugin: 'maven'
 
 group = "codechicken" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "NotEnoughItems"
@@ -38,9 +27,17 @@ configFile.withReader {
     project.ext.config = new ConfigSlurper().parse prop
 }
 
+//add dependency repositories
+repositories {
+	maven {
+		name ="Covers1624 Repo"
+		url = "http://adel.podgeweb.com:1616/maven/"
+	}
+}
+
 dependencies {
-    compile "codechicken:CodeChickenLib:${config.mc_version}-${config.ccl_version}:dev"
-    compile "codechicken:CodeChickenCore:${config.mc_version}-${config.ccc_version}:dev"
+    compile "codechicken:CodeChickenLib:${config.mc_version}-${config.ccl_version}:deobf"
+    compile "codechicken:CodeChickenCore:${config.mc_version}-${config.ccc_version}:deobf"
 }
 
 version =  "${project.config.mod_version}." + System.getenv("BUILD_NUMBER") ?: "1"
@@ -49,19 +46,8 @@ println  config.mc_version + "-" + config.forge_version
 // Setup the forge minecraft plugin data. Specify the preferred forge/minecraft version here
 minecraft {
     version = config.mc_version + "-" + config.forge_version
-    mappings = "snapshot_nodoc_20150404"
-}
-
-def root = project.projectDir.parentFile
-sourceSets {
-    main {
-        java {
-            srcDir new File(root, "src")
-        }
-        resources {
-            srcDir new File(root, "resources")
-        }
-    }
+    mappings = config.mappings
+	runDir = "run"
 }
 
 processResources {
@@ -90,21 +76,20 @@ jar {
     manifest commonManifest
 }
 
-task sourceJar(type: Jar) {
-    from sourceSets.main.java
-    from new File(root, "dev")
-    classifier = 'src'
+task srcJar(type: Jar) {
+    from sourceSets.main.allSource
+    classifier = 'source'
 }
 
-task devJar(type: Jar) {
+task deobfJar(type: Jar) {
     from sourceSets.main.output
-    classifier = 'dev'
+    classifier = 'deobf'
     manifest commonManifest
 }
 
 // Tell the artifact system about our extra jars
 artifacts {
-    archives sourceJar, devJar
+    archives srcJar, deobfJar
 }
 
 // Configure an upload task.

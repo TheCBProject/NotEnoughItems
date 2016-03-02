@@ -61,6 +61,7 @@ public class SpawnerRenderer implements IItemRenderer
                 GlStateManager.scale(scale, scale, scale);
                 entity.setLocationAndAngles(0, 0, 0, 0, 0);
                 mc.getRenderManager().renderEntityWithPosYaw(entity, 0, 0, 0, 0, 0);
+                GlStateManager.disableLighting();
             GlStateManager.popMatrix();
 
             GL11.glEnable(GL12.GL_RESCALE_NORMAL);
@@ -101,7 +102,7 @@ public class SpawnerRenderer implements IItemRenderer
     }
 
     @Override
-    public TextureAtlasSprite getTexture() {
+    public TextureAtlasSprite getParticleTexture() {
         return Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite("minecraft:blocks/mob_spawner");
     }
 

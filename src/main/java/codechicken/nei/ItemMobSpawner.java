@@ -103,17 +103,17 @@ public class ItemMobSpawner extends ItemBlock
     public static void loadSpawners(World world) {
         if (loaded) return;
         loaded = true;
-        HashMap<Class<Entity>, String> classToStringMapping = (HashMap<Class<Entity>, String>) EntityList.classToStringMapping;
-        HashMap<Class<Entity>, Integer> classToIDMapping = (HashMap<Class<Entity>, Integer>) EntityList.classToIDMapping;
-        for (Class<Entity> eclass : classToStringMapping.keySet()) {
-            if (!EntityLiving.class.isAssignableFrom(eclass))
+        HashMap<Class<? extends Entity>, String> classToStringMapping = (HashMap<Class<? extends Entity>, String>) EntityList.classToStringMapping;
+        HashMap<Class<? extends Entity>, Integer> classToIDMapping = (HashMap<Class<? extends Entity>, Integer>) EntityList.classToIDMapping;
+        for (Class<? extends Entity> entityClass : classToStringMapping.keySet()) {
+            if (!EntityLiving.class.isAssignableFrom(entityClass))
                 continue;
             try {
-                EntityLiving entityliving = (EntityLiving) eclass.getConstructor(new Class[]{World.class}).newInstance(world);
+                EntityLiving entityliving = (EntityLiving) entityClass.getConstructor(new Class[]{World.class}).newInstance(world);
                 entityliving.isChild();
 
-                int id = classToIDMapping.get(eclass);
-                String name = classToStringMapping.get(eclass);
+                int id = classToIDMapping.get(entityClass);
+                String name = classToStringMapping.get(entityClass);
 
                 if (name.equals("EnderDragon"))
                     continue;

@@ -14,6 +14,7 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
 import java.util.HashMap;
@@ -727,7 +728,8 @@ public class LayoutManager implements IContainerInputHandler, IContainerTooltipH
     }
 
     public static void drawIcon(int x, int y, Image image) {
-        changeTexture("nei:textures/nei_sprites.png");
+        //changeTexture("nei:textures/nei_sprites.png");
+        Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation("nei", "textures/nei_sprites.png"));
         GlStateManager.color(1, 1, 1, 1);
         GlStateManager.enableBlend();
         GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);

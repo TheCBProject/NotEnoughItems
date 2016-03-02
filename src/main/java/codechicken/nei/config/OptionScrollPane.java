@@ -5,14 +5,13 @@ import codechicken.lib.render.CCRenderState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 
-public abstract class OptionScrollPane extends GuiScrollPane
-{
+public abstract class OptionScrollPane extends GuiScrollPane {
     public OptionScrollPane() {
         super(0, 0, 0, 0);
         setMargins(24, 4, 20, 4);
@@ -61,11 +60,18 @@ public abstract class OptionScrollPane extends GuiScrollPane
     public static void drawOverlayTex(int x, int y, int w, int h, float zLevel) {
         GlStateManager.color(1, 1, 1, 1);
         Minecraft.getMinecraft().renderEngine.bindTexture(Gui.optionsBackground);
-        WorldRenderer r = CCRenderState.startDrawing();
-        r.addVertexWithUV(x, y, zLevel, 0, 0);
-        r.addVertexWithUV(x, y + h, zLevel, 0, h / 16D);
-        r.addVertexWithUV(x + w, y + h, zLevel, w / 16D, h / 16D);
-        r.addVertexWithUV(x + w, y, zLevel, w / 16D, 0);
+        //TODO Add CCRenderState.startDrawing(VertexFormat); defaults to quads.
+        WorldRenderer worldRenderer = CCRenderState.startDrawing(7, DefaultVertexFormats.POSITION_TEX);
+
+        worldRenderer.pos(x, y, zLevel).tex(0, 0).endVertex();
+        worldRenderer.pos(x, y + h, zLevel).tex(0, h / 16D).endVertex();
+        worldRenderer.pos(x + w, y + h, zLevel).tex(w / 16D, h / 16D).endVertex();
+        worldRenderer.pos(x + w, y, zLevel).tex(w / 16D, 0).endVertex();
+
+        //worldRenderer.addVertexWithUV(x, y, zLevel, 0, 0);
+        //worldRenderer.addVertexWithUV(x, y + h, zLevel, 0, h / 16D);
+        //worldRenderer.addVertexWithUV(x + w, y + h, zLevel, w / 16D, h / 16D);
+        //worldRenderer.addVertexWithUV(x + w, y, zLevel, w / 16D, 0);
         CCRenderState.draw();
     }
 
@@ -75,13 +81,20 @@ public abstract class OptionScrollPane extends GuiScrollPane
         GlStateManager.enableBlend();
         GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GlStateManager.shadeModel(GL11.GL_SMOOTH);
-        WorldRenderer r = CCRenderState.startDrawing();
-        r.setColorRGBA_I(0, 255);
-        r.addVertex(x2, y1, zLevel);
-        r.addVertex(x1, y1, zLevel);
-        r.setColorRGBA_I(0, 0);
-        r.addVertex(x1, y2, zLevel);
-        r.addVertex(x2, y2, zLevel);
+        //TODO Add CCRenderState.startDrawing(VertexFormat); defaults to quads.
+        WorldRenderer worldRenderer = CCRenderState.startDrawing(7, DefaultVertexFormats.POSITION_COLOR);
+        worldRenderer.pos(x2, y1, zLevel).color(0, 0, 0, 255).endVertex();
+        worldRenderer.pos(x1, y1, zLevel).color(0, 0, 0, 255).endVertex();
+
+        worldRenderer.pos(x1, y2, zLevel).color(0, 0, 0, 0).endVertex();
+        worldRenderer.pos(x2, y2, zLevel).color(0, 0, 0, 0).endVertex();
+
+        //worldRenderer.setColorRGBA_I(0, 255);
+        //worldRenderer.addVertex(x2, y1, zLevel);
+        //worldRenderer.addVertex(x1, y1, zLevel);
+        //worldRenderer.setColorRGBA_I(0, 0);
+        //worldRenderer.addVertex(x1, y2, zLevel);
+        //worldRenderer.addVertex(x2, y2, zLevel);
         CCRenderState.draw();
         GlStateManager.disableBlend();
         GlStateManager.enableCull();

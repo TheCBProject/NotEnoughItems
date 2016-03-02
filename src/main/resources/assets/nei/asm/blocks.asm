@@ -7,7 +7,7 @@ RETURN
 
 list n_commaFix
 LDC *
-INVOKEVIRTUAL java/lang/StringBuilder.append (Ljava/lang/String;)Ljava/lang/StringBuilder;
+INVOKEVIRTUAL java/lang/StringBuilder.append (C)Ljava/lang/StringBuilder;
 INVOKEVIRTUAL java/lang/StringBuilder.toString ()Ljava/lang/String;
 ARETURN
 
