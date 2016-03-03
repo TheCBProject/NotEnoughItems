@@ -78,7 +78,7 @@ jar {
 
 task srcJar(type: Jar) {
     from sourceSets.main.allSource
-    classifier = 'source'
+    classifier = 'sources'
 }
 
 task deobfJar(type: Jar) {
@@ -94,14 +94,43 @@ artifacts {
 
 // Configure an upload task.
 uploadArchives {
-    dependsOn 'reobf'
-	if (project.hasProperty("local_maven")) {
-		repositories {
-			logger.info('Publishing to local maven repo')
-
-			mavenDeployer {
-				repository(url: "file://${local_maven}")
-			}
-		}
-	}
+    repositories {
+        mavenDeployer {
+            repository(url: "file:///var/www/maven")
+            pom {
+                groupId = project.group
+                version = project.version
+                artifactId = project.archivesBaseName
+                project {
+                    name project.archivesBaseName
+                    packaging 'jar'
+                    description 'NotEnoughItems'
+                    url 'https://github.com/covers1624/NotEnoughItems'
+                    scm {
+                        url 'https://github.com/covers1624/NotEnoughItems'
+                        connection 'scm:git:git@github.com:covers1624/NotEnoughItems.git'
+                        developerConnection 'scm:git:git@github.com:covers1624/NotEnoughItems.git'
+                    }
+                    issueManagement {
+                        system 'github'
+                        url 'https://github.com/covers1624/NotEnoughItems/issues'
+                    }
+                    licenses {
+                        license {
+                            name 'License'
+                            url 'https://raw.githubusercontent.com/covers1624/NotEnoughItems/master/LICENSE.txt'
+                            distribution 'repo'
+                        }
+                    }
+                    developers {
+                        developer {
+                            id 'chicken-bones'
+                            name 'chicken-bones'
+                            roles { role 'developer' }
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
