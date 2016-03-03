@@ -48,6 +48,7 @@ minecraft {
     version = config.mc_version + "-" + config.forge_version
     mappings = config.mappings
 	runDir = "run"
+	makeObfSourceJar = false
 }
 
 processResources {
