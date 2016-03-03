@@ -16,8 +16,7 @@ import java.io.PrintWriter;
 import static codechicken.lib.gui.GuiDraw.drawString;
 import static codechicken.lib.gui.GuiDraw.drawStringC;
 
-public abstract class DataDumper extends Option
-{
+public abstract class DataDumper extends Option {
     public DataDumper(String name) {
         super(name);
     }
@@ -33,10 +32,12 @@ public abstract class DataDumper extends Option
     public void dumpFile() {
         try {
             File file = new File(CommonUtils.getMinecraftDir(), "dumps/" + getFileName(name.replaceFirst(".+\\.", "")));
-            if (!file.getParentFile().exists())
+            if (!file.getParentFile().exists()) {
                 file.getParentFile().mkdirs();
-            if (!file.exists())
+            }
+            if (!file.exists()) {
                 file.createNewFile();
+            }
 
             dumpTo(file);
 
@@ -55,28 +56,31 @@ public abstract class DataDumper extends Option
     }
 
     public IChatComponent dumpMessage(File file) {
-        return new ChatComponentTranslation("nei.options.tools.dump.dumped",
-                translateN(name), "dumps/" + file.getName());
+        return new ChatComponentTranslation("nei.options.tools.dump.dumped", translateN(name), "dumps/" + file.getName());
     }
 
     public void dumpTo(File file) throws IOException {
         int mode = getMode();
         PrintWriter w = new PrintWriter(file);
         w.println(concat(header()));
-        for (String[] line : dump(mode))
+        for (String[] line : dump(mode)) {
             w.println(concat(line));
+        }
         w.close();
     }
 
     public static String concat(String[] header) {
         StringBuilder sb = new StringBuilder();
         for (String s : header) {
-            if (sb.length() > 0)
+            if (sb.length() > 0) {
                 sb.append(',');
-            if (s == null)
+            }
+            if (s == null) {
                 s = "null";
-            if (s.indexOf(',') > 0 || s.indexOf('\"') > 0)
+            }
+            if (s.indexOf(',') > 0 || s.indexOf('\"') > 0) {
                 s = '\"' + s.replace("\"", "\"\"") + '\"';
+            }
             sb.append(s);
         }
         return sb.toString();
@@ -85,8 +89,9 @@ public abstract class DataDumper extends Option
     @Override
     public void draw(int mousex, int mousey, float frame) {
         drawPrefix();
-        if(modeCount() > 1)
+        if (modeCount() > 1) {
             drawButton(mousex, mousey, modeButtonSize(), modeButtonText());
+        }
         drawButton(mousex, mousey, dumpButtonSize(), dumpButtonText());
     }
 

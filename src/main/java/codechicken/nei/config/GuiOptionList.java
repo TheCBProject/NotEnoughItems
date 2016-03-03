@@ -19,10 +19,8 @@ import java.util.List;
 import static codechicken.lib.gui.GuiDraw.*;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
-public class GuiOptionList extends GuiScreenWidget
-{
-    public class OptionScrollSlot extends GuiScrollSlot
-    {
+public class GuiOptionList extends GuiScreenWidget {
+    public class OptionScrollSlot extends GuiScrollSlot {
         public ArrayList<Option> options = new ArrayList<Option>();
 
         public OptionScrollSlot() {
@@ -33,10 +31,12 @@ public class GuiOptionList extends GuiScreenWidget
         @Override
         public void onAdded(GuiScreen s) {
             super.onAdded(s);
-            for (Option o : optionList.optionList)
+            for (Option o : optionList.optionList) {
                 options.add(o);
-            for (Option o : options)
+            }
+            for (Option o : options) {
                 o.onAdded(this);
+            }
         }
 
         @Override
@@ -61,8 +61,9 @@ public class GuiOptionList extends GuiScreenWidget
         protected void drawSlot(int slot, int x, int y, int mx, int my, float frame) {
             Option o = options.get(slot);
             GlStateManager.translate(x, y, 0);
-            if (o.showWorldSelector() && world)
+            if (o.showWorldSelector() && world) {
                 drawWorldSelector(o, mx, my);
+            }
             GlStateManager.translate(24, 2, 0);
             o.draw(mx - 24, my - 2, frame);
             GlStateManager.translate(-x - 24, -y - 2, 0);
@@ -107,8 +108,9 @@ public class GuiOptionList extends GuiScreenWidget
         @Override
         public void update() {
             super.update();
-            for (Option o : options)
+            for (Option o : options) {
                 o.update();
+            }
         }
 
         @Override
@@ -122,14 +124,16 @@ public class GuiOptionList extends GuiScreenWidget
                     o.copyGlobals();
                     Option.playClickSound();
                 }
-            } else if (slotBounds(slot).contains(mx, my))
+            } else if (slotBounds(slot).contains(mx, my)) {
                 options.get(slot).mouseClicked(mx - 24, my - 2, button);
+            }
         }
 
         @Override
         public void mouseClicked(int mx, int my, int button) {
-            for (Option o : options)
+            for (Option o : options) {
                 o.onMouseClicked(mx, my, button);
+            }
 
             super.mouseClicked(mx, my, button);
         }
@@ -137,8 +141,9 @@ public class GuiOptionList extends GuiScreenWidget
         @Override
         public void keyTyped(char c, int keycode) {
             super.keyTyped(c, keycode);
-            for (Option o : options)
+            for (Option o : options) {
                 o.keyTyped(c, keycode);
+            }
         }
 
         public void resize() {
@@ -158,17 +163,20 @@ public class GuiOptionList extends GuiScreenWidget
         public List<String> handleTooltip(int mx, int my, List<String> tooltip) {
             int sy = my - y + scrolledPixels();
             int slot = getSlot(sy);
-            if (slot >= 0)
+            if (slot >= 0) {
                 tooltip = handleTooltip(slot, mx - x, sy - getSlotY(slot), tooltip);
+            }
             return tooltip;
         }
 
         private List<String> handleTooltip(int slot, int mx, int my, List<String> tooltip) {
             Option o = options.get(slot);
-            if (world && o.showWorldSelector() && worldButtonSize().contains(mx, my))
+            if (world && o.showWorldSelector() && worldButtonSize().contains(mx, my)) {
                 tooltip.add(translateToLocal("nei.options.wbutton.tip." + (o.hasWorldOverride() ? "1" : "0")));
-            if (slotBounds(slot).contains(mx, my))
+            }
+            if (slotBounds(slot).contains(mx, my)) {
                 return o.handleTooltip(mx - 24, my - 2, tooltip);
+            }
             return tooltip;
         }
     }
@@ -219,8 +227,9 @@ public class GuiOptionList extends GuiScreenWidget
     @Override
     public void actionPerformed(String ident, Object... params) {
         if (ident.equals("back")) {
-            if (parent instanceof GuiOptionList)
+            if (parent instanceof GuiOptionList) {
                 ((GuiOptionList) parent).world = world;
+            }
             Minecraft.getMinecraft().displayGuiScreen(parent);
         } else if (ident.equals("world")) {
             world = !world;
@@ -242,8 +251,9 @@ public class GuiOptionList extends GuiScreenWidget
     private void drawTooltip() {
         List<String> tooltip = new LinkedList<String>();
         Point mouse = getMousePosition();
-        if (worldButton.pointInside(mouse.x, mouse.y))
+        if (worldButton.pointInside(mouse.x, mouse.y)) {
             tooltip.addAll(Arrays.asList(translateToLocal("nei.options.global.tip." + (world ? "1" : "0")).split(":")));
+        }
 
         tooltip = slot.handleTooltip(mouse.x, mouse.y, tooltip);
         drawMultilineTip(mouse.x + 12, mouse.y - 12, tooltip);
@@ -258,8 +268,9 @@ public class GuiOptionList extends GuiScreenWidget
     public void keyTyped(char c, int keycode) throws IOException {
         if (keycode == 1) {//esc
             GuiScreen p = parent;
-            while (p instanceof GuiOptionList)
+            while (p instanceof GuiOptionList) {
                 p = ((GuiOptionList) p).parent;
+            }
 
             Minecraft.getMinecraft().displayGuiScreen(p);
         } else {

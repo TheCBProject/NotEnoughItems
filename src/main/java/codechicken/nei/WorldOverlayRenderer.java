@@ -20,8 +20,7 @@ import net.minecraft.world.chunk.Chunk;
 
 import static org.lwjgl.opengl.GL11.*;
 
-public class WorldOverlayRenderer implements IKeyStateTracker
-{
+public class WorldOverlayRenderer implements IKeyStateTracker {
     public static int mobOverlay = 0;
     public static int chunkOverlay = 0;
 
@@ -32,13 +31,16 @@ public class WorldOverlayRenderer implements IKeyStateTracker
 
     @Override
     public void tickKeyStates() {
-        if (Minecraft.getMinecraft().currentScreen != null)
+        if (Minecraft.getMinecraft().currentScreen != null) {
             return;
+        }
 
-        if (KeyManager.keyStates.get("world.moboverlay").down)
+        if (KeyManager.keyStates.get("world.moboverlay").down) {
             mobOverlay = (mobOverlay + 1) % 2;
-        if (KeyManager.keyStates.get("world.chunkoverlay").down)
+        }
+        if (KeyManager.keyStates.get("world.chunkoverlay").down) {
             chunkOverlay = (chunkOverlay + 1) % 3;
+        }
     }
 
     public static void render(float frame) {
@@ -52,8 +54,9 @@ public class WorldOverlayRenderer implements IKeyStateTracker
     }
 
     private static void renderMobSpawnOverlay(Entity entity) {
-        if (mobOverlay == 0)
+        if (mobOverlay == 0) {
             return;
+        }
 
         GlStateManager.disableTexture2D();
         GlStateManager.disableLighting();
@@ -67,23 +70,26 @@ public class WorldOverlayRenderer implements IKeyStateTracker
         int z1 = (int) entity.posZ;
         int y1 = (int) MathHelper.clip(entity.posY, 16, world.getHeight() - 16);
 
-        for (int x = x1 - 16; x <= x1 + 16; x++)
+        for (int x = x1 - 16; x <= x1 + 16; x++) {
             for (int z = z1 - 16; z <= z1 + 16; z++) {
                 BlockPos pos = new BlockPos(x, y1, z);
                 Chunk chunk = world.getChunkFromBlockCoords(pos);
                 BiomeGenBase biome = world.getBiomeGenForCoords(pos);
-                if (biome.getSpawnableList(EnumCreatureType.MONSTER).isEmpty() || biome.getSpawningChance() <= 0)
+                if (biome.getSpawnableList(EnumCreatureType.MONSTER).isEmpty() || biome.getSpawningChance() <= 0) {
                     continue;
+                }
 
                 for (int y = y1 - 16; y < y1 + 16; y++) {
                     int spawnMode = getSpawnMode(chunk, x, y, z);
-                    if (spawnMode == 0)
+                    if (spawnMode == 0) {
                         continue;
+                    }
 
-                    if (spawnMode == 1)
+                    if (spawnMode == 1) {
                         GlStateManager.color(1, 1, 0);
-                    else
+                    } else {
                         GlStateManager.color(1, 0, 0);
+                    }
 
                     glVertex3d(x, y + 0.004, z);
                     glVertex3d(x + 1, y + 0.004, z + 1);
@@ -91,6 +97,7 @@ public class WorldOverlayRenderer implements IKeyStateTracker
                     glVertex3d(x, y + 0.004, z + 1);
                 }
             }
+        }
 
         glEnd();
         GlStateManager.enableLighting();
@@ -99,29 +106,32 @@ public class WorldOverlayRenderer implements IKeyStateTracker
 
     private static Entity dummyEntity = new EntityPig(null);
     private static Cuboid6 c = new Cuboid6();
+
     private static int getSpawnMode(Chunk chunk, int x, int y, int z) {
         World world = chunk.getWorld();
         BlockPos pos = new BlockPos(x, y, z);
-        if (!SpawnerAnimals.canCreatureTypeSpawnAtLocation(SpawnPlacementType.ON_GROUND, world, pos) ||
-                chunk.getLightFor(EnumSkyBlock.BLOCK, pos) >= 8)
+        if (!SpawnerAnimals.canCreatureTypeSpawnAtLocation(SpawnPlacementType.ON_GROUND, world, pos) || chunk.getLightFor(EnumSkyBlock.BLOCK, pos) >= 8) {
             return 0;
+        }
 
-        c.set(x+0.2, y+0.01, z+0.2, x+0.8, y+1.8, z+0.8);
+        c.set(x + 0.2, y + 0.01, z + 0.2, x + 0.8, y + 1.8, z + 0.8);
         AxisAlignedBB aabb = c.aabb();
         if (!world.checkNoEntityCollision(aabb) ||
                 !world.getCollidingBoundingBoxes(dummyEntity, aabb).isEmpty() ||
-                world.isAnyLiquid(aabb))
+                world.isAnyLiquid(aabb)) {
             return 0;
+        }
 
-        if (chunk.getLightFor(EnumSkyBlock.SKY, pos) >= 8)
+        if (chunk.getLightFor(EnumSkyBlock.SKY, pos) >= 8) {
             return 1;
+        }
         return 2;
     }
 
     private static void renderChunkBounds(Entity entity) {
-        if (chunkOverlay == 0)
+        if (chunkOverlay == 0) {
             return;
-
+        }
 
         GlStateManager.disableTexture2D();
         GlStateManager.enableBlend();
@@ -130,7 +140,7 @@ public class WorldOverlayRenderer implements IKeyStateTracker
         glLineWidth(1.5F);
         glBegin(GL_LINES);
 
-        for (int cx = -4; cx <= 4; cx++)
+        for (int cx = -4; cx <= 4; cx++) {
             for (int cz = -4; cz <= 4; cz++) {
                 double x1 = (entity.chunkCoordX + cx) << 4;
                 double z1 = (entity.chunkCoordZ + cz) << 4;
@@ -207,6 +217,7 @@ public class WorldOverlayRenderer implements IKeyStateTracker
                     }
                 }
             }
+        }
 
         glEnd();
         GlStateManager.enableLighting();

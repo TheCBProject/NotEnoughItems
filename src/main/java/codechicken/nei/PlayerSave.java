@@ -11,8 +11,7 @@ import net.minecraft.server.MinecraftServer;
 import java.io.File;
 import java.util.HashSet;
 
-public class PlayerSave
-{
+public class PlayerSave {
     public EntityPlayerMP player;
 
     private File saveFile;
@@ -32,20 +31,23 @@ public class PlayerSave
         wasOp = MinecraftServer.getServer().getConfigurationManager().canSendCommands(player.getGameProfile());
 
         saveFile = new File(saveLocation, player.getName() + ".dat");
-        if (!saveFile.getParentFile().exists())
+        if (!saveFile.getParentFile().exists()) {
             saveFile.getParentFile().mkdirs();
+        }
         load();
     }
 
     private void load() {
         nbt = new NBTTagCompound();
         try {
-            if (!saveFile.exists())
+            if (!saveFile.exists()) {
                 saveFile.createNewFile();
-            if (saveFile.length() > 0)
+            }
+            if (saveFile.length() > 0) {
                 nbt = NEIServerUtils.readNBT(saveFile);
+            }
         } catch (Exception e) {
-            NEIClientConfig.logger.error("Error loading player save: "+player, e);
+            NEIClientConfig.logger.error("Error loading player save: " + player, e);
         }
 
         loadCreativeInv();
@@ -54,22 +56,25 @@ public class PlayerSave
     private void loadCreativeInv() {
         creativeInv = new ItemStack[54];
         NBTTagList itemList = nbt.getTagList("creativeitems", 10);
-        if (itemList != null)
+        if (itemList != null) {
             InventoryUtils.readItemStacksFromTag(creativeInv, itemList);
+        }
     }
 
     public void save() {
-        if (!isDirty)
+        if (!isDirty) {
             return;
+        }
 
-        if (creativeInvDirty)
+        if (creativeInvDirty) {
             saveCreativeInv();
+        }
 
         try {
             NEIServerUtils.writeNBT(nbt, saveFile);
             isDirty = false;
         } catch (Exception e) {
-            NEIClientConfig.logger.error("Error saving player: "+player, e);
+            NEIClientConfig.logger.error("Error saving player: " + player, e);
         }
     }
 
@@ -102,8 +107,9 @@ public class PlayerSave
 
     private NBTTagCompound getEnabledActions() {
         NBTTagCompound tag = nbt.getCompoundTag("enabledActions");
-        if (!nbt.hasKey("enabledActions"))
+        if (!nbt.hasKey("enabledActions")) {
             nbt.setTag("enabledActions", tag);
+        }
         return tag;
     }
 

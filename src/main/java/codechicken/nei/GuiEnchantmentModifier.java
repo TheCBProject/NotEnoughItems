@@ -12,8 +12,7 @@ import java.io.IOException;
 
 import static codechicken.nei.NEIClientUtils.translate;
 
-public class GuiEnchantmentModifier extends GuiContainer
-{
+public class GuiEnchantmentModifier extends GuiContainer {
     ContainerEnchantmentModifier container;
 
     public GuiEnchantmentModifier(InventoryPlayer inventoryplayer, World world) {
@@ -85,8 +84,12 @@ public class GuiEnchantmentModifier extends GuiContainer
 
     @Override
     protected void mouseClicked(int i, int j, int k) throws IOException {
-        if (container.clickButton(i, j, k)) return;
-        if (container.clickScrollBar(i, j, k)) return;
+        if (container.clickButton(i, j, k)) {
+            return;
+        }
+        if (container.clickScrollBar(i, j, k)) {
+            return;
+        }
 
         super.mouseClicked(i, j, k);
     }

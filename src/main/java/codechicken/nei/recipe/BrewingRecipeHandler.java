@@ -16,11 +16,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.potion.PotionHelper;
-import net.minecraftforge.common.brewing.AbstractBrewingRecipe;
-import net.minecraftforge.common.brewing.BrewingOreRecipe;
-import net.minecraftforge.common.brewing.BrewingRecipe;
-import net.minecraftforge.common.brewing.BrewingRecipeRegistry;
-import net.minecraftforge.common.brewing.IBrewingRecipe;
+import net.minecraftforge.common.brewing.*;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -98,51 +94,66 @@ public class BrewingRecipeHandler extends TemplateRecipeHandler {
     @Override
     public void loadCraftingRecipes(String outputId, Object... results) {
         if (outputId.equals("brewing") && getClass() == BrewingRecipeHandler.class) {// don't want subclasses getting a hold of this
-            for (NEIBrewingRecipe recipe : apotions)
+            for (NEIBrewingRecipe recipe : apotions) {
                 arecipes.add(new CachedBrewingRecipe(recipe));
-            for (IBrewingRecipe recipe : BrewingRecipeRegistry.getRecipes())
-                if (recipe instanceof BrewingRecipe || recipe instanceof BrewingOreRecipe)
+            }
+            for (IBrewingRecipe recipe : BrewingRecipeRegistry.getRecipes()) {
+                if (recipe instanceof BrewingRecipe || recipe instanceof BrewingOreRecipe) {
                     arecipes.add(new CachedBrewingRecipe((AbstractBrewingRecipe<?>) recipe));
-        } else
+                }
+            }
+        } else {
             super.loadCraftingRecipes(outputId, results);
+        }
     }
 
     @Override
     public void loadCraftingRecipes(ItemStack result) {
         if (result.getItem() == Items.potionitem) {
             int damage = result.getItemDamage();
-            for (NEIBrewingRecipe recipe : apotions)
-                if (recipe.output.item.getItemDamage() == damage)
+            for (NEIBrewingRecipe recipe : apotions) {
+                if (recipe.output.item.getItemDamage() == damage) {
                     arecipes.add(new CachedBrewingRecipe(recipe));
+                }
+            }
         }
 
-        for (IBrewingRecipe recipe : BrewingRecipeRegistry.getRecipes())
-            if (recipe instanceof BrewingRecipe || recipe instanceof BrewingOreRecipe)
-                if (NEIServerUtils.areStacksSameType(((AbstractBrewingRecipe<?>) recipe).output, result))
+        for (IBrewingRecipe recipe : BrewingRecipeRegistry.getRecipes()) {
+            if (recipe instanceof BrewingRecipe || recipe instanceof BrewingOreRecipe) {
+                if (NEIServerUtils.areStacksSameType(((AbstractBrewingRecipe<?>) recipe).output, result)) {
                     arecipes.add(new CachedBrewingRecipe((AbstractBrewingRecipe<?>) recipe));
+                }
+            }
+        }
     }
 
     @Override
     public void loadUsageRecipes(ItemStack ingredient) {
-        if (ingredient.getItem() == Items.potionitem || ingredients.contains(ingredient))
-            for (NEIBrewingRecipe recipe : apotions)
-                if (NEIServerUtils.areStacksSameType(recipe.ingredient.item, ingredient) || NEIServerUtils.areStacksSameType(recipe.input.item, ingredient))
+        if (ingredient.getItem() == Items.potionitem || ingredients.contains(ingredient)) {
+            for (NEIBrewingRecipe recipe : apotions) {
+                if (NEIServerUtils.areStacksSameType(recipe.ingredient.item, ingredient) || NEIServerUtils.areStacksSameType(recipe.input.item, ingredient)) {
                     arecipes.add(new CachedBrewingRecipe(recipe));
+                }
+            }
+        }
 
-        nextRecipe: for (IBrewingRecipe recipe : BrewingRecipeRegistry.getRecipes())
+        nextRecipe:
+        for (IBrewingRecipe recipe : BrewingRecipeRegistry.getRecipes()) {
             if (recipe instanceof BrewingRecipe || recipe instanceof BrewingOreRecipe) {
-            	AbstractBrewingRecipe<?> arecipe = (AbstractBrewingRecipe<?>) recipe;
-                if (NEIServerUtils.areStacksSameType(arecipe.input, ingredient))
+                AbstractBrewingRecipe<?> arecipe = (AbstractBrewingRecipe<?>) recipe;
+                if (NEIServerUtils.areStacksSameType(arecipe.input, ingredient)) {
                     arecipes.add(new CachedBrewingRecipe(arecipe));
-                else {
+                } else {
                     ItemStack[] recipeIngredients = NEIServerUtils.extractRecipeItems(arecipe.ingredient);
-                    for (ItemStack recipeIngredient : recipeIngredients)
+                    for (ItemStack recipeIngredient : recipeIngredients) {
                         if (NEIServerUtils.areStacksSameType(recipeIngredient, ingredient)) {
                             arecipes.add(new CachedBrewingRecipe(arecipe));
                             continue nextRecipe;
                         }
+                    }
                 }
             }
+        }
     }
 
     @Override
@@ -164,8 +175,9 @@ public class BrewingRecipeHandler extends TemplateRecipeHandler {
         do {
             HashSet<Integer> newPotions = new HashSet<Integer>();
             for (Integer basePotion : searchPotions) {
-                if (ItemPotion.isSplash(basePotion))
+                if (ItemPotion.isSplash(basePotion)) {
                     continue;
+                }
 
                 for (ItemStack ingred : ingredients.values()) {
                     int result = PotionHelper.applyIngredient(basePotion, ingred.getItem().getPotionEffect(ingred));
@@ -181,7 +193,9 @@ public class BrewingRecipeHandler extends TemplateRecipeHandler {
                             baseMods != null && (baseMods.equals(newMods) || newMods == null) || //modifiers different and doesn't lose modifiers
                             basePotion == result || //same potion
                             levelModifierChanged(basePotion, result))//redstone/glowstone cycle
+                    {
                         continue;
+                    }
 
                     addPotion(ingred, basePotion, result, allPotions, newPotions);
                 }
@@ -212,12 +226,15 @@ public class BrewingRecipeHandler extends TemplateRecipeHandler {
         for (int potionID : allPotions) {
             List<PotionEffect> effectlist = Items.potionitem.getEffects(potionID);
             int type = 0;
-            if (effectlist != null && !effectlist.isEmpty())
-                for (PotionEffect potioneffect : effectlist)
-                    if (Potion.potionTypes[potioneffect.getPotionID()].isBadEffect())
+            if (effectlist != null && !effectlist.isEmpty()) {
+                for (PotionEffect potioneffect : effectlist) {
+                    if (Potion.potionTypes[potioneffect.getPotionID()].isBadEffect()) {
                         type--;
-                    else
+                    } else {
                         type++;
+                    }
+                }
+            }
 
             (type == 0 ? neutralpots : type > 0 ? positivepots : negativepots).add(new ItemStack(Items.potionitem, 1, potionID));
         }
@@ -237,7 +254,9 @@ public class BrewingRecipeHandler extends TemplateRecipeHandler {
     private static void addPotion(ItemStack ingred, int basePotion, int result, TreeSet<Integer> allPotions, HashSet<Integer> newPotions) {
         apotions.add(new NEIBrewingRecipe(ingred, basePotion, result));
         if (allPotions.add(result))//it's new
+        {
             newPotions.add(result);
+        }
     }
 
     @Override

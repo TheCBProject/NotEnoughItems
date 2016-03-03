@@ -20,10 +20,8 @@ import java.util.ArrayList;
 /**
  * This is crap code, don't ever do this.
  */
-public class ContainerEnchantmentModifier extends ContainerEnchantment
-{
-    public static class EnchantmentHash
-    {
+public class ContainerEnchantmentModifier extends ContainerEnchantment {
+    public static class EnchantmentHash {
         public EnchantmentHash(Enchantment e, int i, int l) {
             enchantment = e;
             state = i;
@@ -144,7 +142,9 @@ public class ContainerEnchantmentModifier extends ContainerEnchantment
                 mousey >= rely && mousey <= rely + height)//in the box
         {
             int slot = getClickedSlot(mousey);
-            if (slot >= getNumSlots()) return false;
+            if (slot >= getNumSlots()) {
+                return false;
+            }
             toggleSlotEnchantment(slot);
             return true;
         }
@@ -181,10 +181,12 @@ public class ContainerEnchantmentModifier extends ContainerEnchantment
                 int ID = nbttaglist.getCompoundTagAt(i).getShort("id");
                 if (ID == e) {
                     nbttaglist.removeTag(i);
-                    if (nbttaglist.tagCount() == 0)
+                    if (nbttaglist.tagCount() == 0) {
                         stack.getTagCompound().removeTag("ench");
-                    if (stack.getTagCompound().hasNoTags())
+                    }
+                    if (stack.getTagCompound().hasNoTags()) {
                         stack.setTagCompound(null);
+                    }
                     return;
                 }
             }
@@ -196,8 +198,9 @@ public class ContainerEnchantmentModifier extends ContainerEnchantment
     }
 
     public void onCraftMatrixChanged(IInventory iinventory) {
-        if (parentscreen != null)
+        if (parentscreen != null) {
             updateEnchantmentOptions(GuiEnchantmentModifier.validateEnchantments());
+        }
     }
 
     public void updateEnchantmentOptions(boolean validate) {
@@ -277,7 +280,9 @@ public class ContainerEnchantmentModifier extends ContainerEnchantment
     }
 
     public void drawScrollBar(GuiEnchantmentModifier gui) {
-        if (!hasScrollBar()) return;
+        if (!hasScrollBar()) {
+            return;
+        }
 
         int sbary = rely + (int) ((height - getScrollBarHeight()) * percentscrolled + 0.5);
         int sbarx = relx + cwidth;
@@ -290,10 +295,13 @@ public class ContainerEnchantmentModifier extends ContainerEnchantment
     }
 
     private int textColourFromState(int shade) {
-        switch(shade) {
-            case 0: return 0x685e4a;
-            case 1: return 0x407f10;
-            default: return 0xffff80;
+        switch (shade) {
+        case 0:
+            return 0x685e4a;
+        case 1:
+            return 0x407f10;
+        default:
+            return 0xffff80;
         }
     }
 

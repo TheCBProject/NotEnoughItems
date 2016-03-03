@@ -11,8 +11,7 @@ import net.minecraft.item.ItemStack;
 import java.util.Arrays;
 import java.util.List;
 
-public class GuiExtendedCreativeInv extends GuiContainer implements INEIGuiHandler
-{
+public class GuiExtendedCreativeInv extends GuiContainer implements INEIGuiHandler {
     public GuiExtendedCreativeInv(Container par1Container) {
         super(par1Container);
         ySize = 198;

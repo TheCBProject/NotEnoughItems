@@ -1,7 +1,6 @@
 package codechicken.nei.config;
 
-public class OptionCycled extends OptionButton
-{
+public class OptionCycled extends OptionButton {
     public final int count;
     public final boolean prefixed;
 
@@ -37,11 +36,11 @@ public class OptionCycled extends OptionButton
     public boolean cycle() {
         int next = value();
         do
-            next = (next + 1) % count;
-        while (!optionValid(next));
+            next = (next + 1) % count; while (!optionValid(next));
 
-        if (next == value())
+        if (next == value()) {
             return false;
+        }
 
         getTag().setIntValue(next);
         return true;

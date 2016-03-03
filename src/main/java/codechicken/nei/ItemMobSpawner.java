@@ -16,9 +16,7 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityMobSpawner;
 import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
-import net.minecraftforge.client.MinecraftForgeClient;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -26,8 +24,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-public class ItemMobSpawner extends ItemBlock
-{
+public class ItemMobSpawner extends ItemBlock {
     private static Map<Integer, EntityLiving> entityHashMap = new HashMap<Integer, EntityLiving>();
     private static Map<Integer, String> IDtoNameMap = new HashMap<Integer, String>();
     public static int idPig;
@@ -51,8 +48,9 @@ public class ItemMobSpawner extends ItemBlock
      * Called from BlockMobSpawner on the client via asm generated onBlockPlacedBy
      */
     public static void onBlockPlaced(World world, BlockPos pos, ItemStack stack) {
-        if(!NEIClientConfig.hasSMPCounterPart())
+        if (!NEIClientConfig.hasSMPCounterPart()) {
             return;
+        }
 
         TileEntityMobSpawner tileentitymobspawner = (TileEntityMobSpawner) world.getTileEntity(pos);
         if (tileentitymobspawner != null) {
@@ -82,12 +80,13 @@ public class ItemMobSpawner extends ItemBlock
             World world = Minecraft.getMinecraft().theWorld;
             Class<?> clazz = (Class<?>) EntityList.idToClassMapping.get(ID);
             try {
-                e = (EntityLiving) clazz.getConstructor(new Class[]{World.class}).newInstance(world);
+                e = (EntityLiving) clazz.getConstructor(new Class[] { World.class }).newInstance(world);
             } catch (Throwable t) {
-                if(clazz == null)
-                    NEIClientConfig.logger.error("Null class for entity ("+ID+", "+IDtoNameMap.get(ID));
-                else
+                if (clazz == null) {
+                    NEIClientConfig.logger.error("Null class for entity (" + ID + ", " + IDtoNameMap.get(ID));
+                } else {
                     NEIClientConfig.logger.error("Error creating instance of entity: " + clazz.getName(), t);
+                }
                 e = getEntity(idPig);
             }
             entityHashMap.put(ID, e);
@@ -96,49 +95,58 @@ public class ItemMobSpawner extends ItemBlock
     }
 
     private static void setDefaultTag(ItemStack itemstack) {
-        if (!IDtoNameMap.containsKey(itemstack.getItemDamage()))
+        if (!IDtoNameMap.containsKey(itemstack.getItemDamage())) {
             itemstack.setItemDamage(idPig);
+        }
     }
 
     public static void loadSpawners(World world) {
-        if (loaded) return;
+        if (loaded) {
+            return;
+        }
         loaded = true;
         HashMap<Class<? extends Entity>, String> classToStringMapping = (HashMap<Class<? extends Entity>, String>) EntityList.classToStringMapping;
         HashMap<Class<? extends Entity>, Integer> classToIDMapping = (HashMap<Class<? extends Entity>, Integer>) EntityList.classToIDMapping;
         for (Class<? extends Entity> entityClass : classToStringMapping.keySet()) {
-            if (!EntityLiving.class.isAssignableFrom(entityClass))
+            if (!EntityLiving.class.isAssignableFrom(entityClass)) {
                 continue;
+            }
             try {
-                EntityLiving entityliving = (EntityLiving) entityClass.getConstructor(new Class[]{World.class}).newInstance(world);
+                EntityLiving entityliving = (EntityLiving) entityClass.getConstructor(new Class[] { World.class }).newInstance(world);
                 entityliving.isChild();
 
                 int id = classToIDMapping.get(entityClass);
                 String name = classToStringMapping.get(entityClass);
 
-                if (name.equals("EnderDragon"))
+                if (name.equals("EnderDragon")) {
                     continue;
+                }
 
                 IDtoNameMap.put(id, name);
 
-                if (name.equals("Pig"))
+                if (name.equals("Pig")) {
                     idPig = id;
+                }
             } catch (Throwable ignored) {
             }
         }
 
-        for(Iterator<Entry<Integer, String>> it = IDtoNameMap.entrySet().iterator(); it.hasNext();) {
+        for (Iterator<Entry<Integer, String>> it = IDtoNameMap.entrySet().iterator(); it.hasNext(); ) {
             Entry<Integer, String> e = it.next();
-            if(getEntity(e.getKey()).getClass() == EntityPig.class && !e.getValue().equals("Pig"))
+            if (getEntity(e.getKey()).getClass() == EntityPig.class && !e.getValue().equals("Pig")) {
                 it.remove();
+            }
         }
     }
 
     @Override
     public void getSubItems(Item item, CreativeTabs tab, List list) {
-        if(!NEIClientConfig.hasSMPCounterPart())
+        if (!NEIClientConfig.hasSMPCounterPart()) {
             list.add(new ItemStack(item));
-        else
-            for(int i : IDtoNameMap.keySet())
+        } else {
+            for (int i : IDtoNameMap.keySet()) {
                 list.add(new ItemStack(item, 1, i));
+            }
+        }
     }
 }

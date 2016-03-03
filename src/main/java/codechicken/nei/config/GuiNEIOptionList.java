@@ -9,8 +9,7 @@ import net.minecraft.client.gui.GuiYesNoCallback;
 import java.awt.*;
 import java.net.URI;
 
-public class GuiNEIOptionList extends GuiOptionList implements GuiYesNoCallback
-{
+public class GuiNEIOptionList extends GuiOptionList implements GuiYesNoCallback {
     private GuiCCButton patreonButton;
 
     public GuiNEIOptionList(GuiScreen parent, OptionList optionList, boolean world) {
@@ -20,8 +19,8 @@ public class GuiNEIOptionList extends GuiOptionList implements GuiYesNoCallback
     @Override
     public void resize() {
         super.resize();
-        patreonButton.x = width-73;
-        patreonButton.y = height-23;
+        patreonButton.x = width - 73;
+        patreonButton.y = height - 23;
     }
 
     @Override
@@ -36,13 +35,14 @@ public class GuiNEIOptionList extends GuiOptionList implements GuiYesNoCallback
             GuiConfirmOpenLink gui = new GuiConfirmOpenLink(this, "patreon.com/cb", 0, true);
             gui.disableSecurityWarning();
             mc.displayGuiScreen(gui);
-        } else
+        } else {
             super.actionPerformed(ident, params);
+        }
     }
 
     @Override
     public void confirmClicked(boolean yes, int id) {
-        if(yes && id == 0) {
+        if (yes && id == 0) {
             try {
                 Desktop.getDesktop().browse(new URI("http://patreon.com/cb"));
             } catch (Exception e) {

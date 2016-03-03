@@ -9,11 +9,9 @@ import java.util.List;
 import static codechicken.lib.gui.GuiDraw.drawString;
 import static codechicken.lib.gui.GuiDraw.getStringWidth;
 
-public class OptionTextField extends Option
-{
+public class OptionTextField extends Option {
     private boolean focused = false;
-    private TextField textField = new TextField("")
-    {
+    private TextField textField = new TextField("") {
         @Override
         public boolean isValid(String string) {
             return super.isValid(string) && isValidInput(string);
@@ -21,9 +19,12 @@ public class OptionTextField extends Option
 
         @Override
         public void onTextChange(String oldText) {
-            if(focused() && isValidValue(text()))
-                if(!defaulting() || !text().equals(getTag().getValue()))//don't override global if text hasn't changed
+            if (focused() && isValidValue(text())) {
+                if (!defaulting() || !text().equals(getTag().getValue()))//don't override global if text hasn't changed
+                {
                     getTag().setValue(text());
+                }
+            }
         }
 
         @Override
@@ -33,8 +34,9 @@ public class OptionTextField extends Option
 
         @Override
         public void setFocus(boolean focus) {
-            if (!focus && !isValidValue(text()))
+            if (!focus && !isValidValue(text())) {
                 setText(renderTag().getValue());
+            }
 
             focused = focus;
         }
@@ -53,8 +55,9 @@ public class OptionTextField extends Option
     @Override
     public void update() {
         textField.update();
-        if(!textField.focused())
+        if (!textField.focused()) {
             textField.setText(renderTag().getValue());
+        }
     }
 
     public String getPrefix() {
@@ -77,8 +80,9 @@ public class OptionTextField extends Option
 
     @Override
     public void mouseClicked(int mousex, int mousey, int button) {
-        if (textField.contains(mousex, mousey))
+        if (textField.contains(mousex, mousey)) {
             textField.handleClick(mousex, mousey, button);
+        }
     }
 
     @Override
@@ -90,8 +94,9 @@ public class OptionTextField extends Option
     public List<String> handleTooltip(int mousex, int mousey, List<String> currenttip) {
         if (new Rectangle4i(10, 0, textField.x - 10, 20).contains(mousex, mousey)) {
             String tip = translateN(name + ".tip");
-            if (!tip.equals(name + ".tip"))
+            if (!tip.equals(name + ".tip")) {
                 currenttip.add(tip);
+            }
         }
         return currenttip;
     }

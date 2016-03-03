@@ -2,7 +2,6 @@ package codechicken.nei;
 
 import codechicken.core.ClientUtils;
 import codechicken.lib.render.BlockRenderer;
-import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.IItemRenderer;
 import codechicken.lib.render.ModelRegistryHelper;
 import net.minecraft.client.Minecraft;
@@ -24,8 +23,7 @@ import org.lwjgl.opengl.GL12;
 
 import java.util.List;
 
-public class SpawnerRenderer implements IItemRenderer
-{
+public class SpawnerRenderer implements IItemRenderer {
     public static void load(ItemMobSpawner item) {
         ModelRegistryHelper.registerItemRenderer(item, new SpawnerRenderer(), new ResourceLocation("mob_spawner"));
     }
@@ -33,8 +31,9 @@ public class SpawnerRenderer implements IItemRenderer
     public void renderItem(ItemStack stack) {
         int meta = stack.getItemDamage();
 
-        if (meta == 0)
+        if (meta == 0) {
             meta = ItemMobSpawner.idPig;
+        }
 
         String bossName = BossStatus.bossName;
         int bossTimeout = BossStatus.statusBarTime;
@@ -54,14 +53,14 @@ public class SpawnerRenderer implements IItemRenderer
             float scale = 0.6F / Math.max(entity.height, entity.width);
 
             GlStateManager.pushMatrix();
-                GlStateManager.translate(0.5, 0.4, 0.5);
-                GlStateManager.rotate((float) (ClientUtils.getRenderTime() * 10), 0, 1, 0);
-                GlStateManager.rotate(-20, 1, 0, 0);
-                GlStateManager.translate(0, -0.4, 0);
-                GlStateManager.scale(scale, scale, scale);
-                entity.setLocationAndAngles(0, 0, 0, 0, 0);
-                mc.getRenderManager().renderEntityWithPosYaw(entity, 0, 0, 0, 0, 0);
-                GlStateManager.disableLighting();
+            GlStateManager.translate(0.5, 0.4, 0.5);
+            GlStateManager.rotate((float) (ClientUtils.getRenderTime() * 10), 0, 1, 0);
+            GlStateManager.rotate(-20, 1, 0, 0);
+            GlStateManager.translate(0, -0.4, 0);
+            GlStateManager.scale(scale, scale, scale);
+            entity.setLocationAndAngles(0, 0, 0, 0, 0);
+            mc.getRenderManager().renderEntityWithPosYaw(entity, 0, 0, 0, 0, 0);
+            GlStateManager.disableLighting();
             GlStateManager.popMatrix();
 
             GL11.glEnable(GL12.GL_RESCALE_NORMAL);
@@ -69,8 +68,9 @@ public class SpawnerRenderer implements IItemRenderer
             GL11.glDisable(GL11.GL_TEXTURE_2D);
             OpenGlHelper.setActiveTexture(OpenGlHelper.defaultTexUnit);
         } catch (Exception e) {
-            if (Tessellator.getInstance().getWorldRenderer().isDrawing)
+            if (Tessellator.getInstance().getWorldRenderer().isDrawing) {
                 Tessellator.getInstance().draw();
+            }
         }
         BossStatus.bossName = bossName;
         BossStatus.statusBarTime = bossTimeout;

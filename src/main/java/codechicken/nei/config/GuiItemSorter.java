@@ -1,7 +1,7 @@
 package codechicken.nei.config;
 
 import codechicken.lib.math.MathHelper;
-import codechicken.nei.*;
+import codechicken.nei.ItemSorter;
 import codechicken.nei.ItemSorter.SortEntry;
 import codechicken.nei.LayoutManager;
 import net.minecraft.client.gui.GuiScreen;
@@ -15,10 +15,8 @@ import java.util.List;
 import static codechicken.lib.gui.GuiDraw.drawStringC;
 import static codechicken.lib.gui.GuiDraw.getMousePosition;
 
-public class GuiItemSorter extends GuiOptionPane
-{
-    public class SortItem
-    {
+public class GuiItemSorter extends GuiOptionPane {
+    public class SortItem {
         public double ya;
         public double y;
         public SortEntry e;
@@ -34,15 +32,16 @@ public class GuiItemSorter extends GuiOptionPane
 
         public void update(int my) {
             ya = y;
-            if(dragging && this == dragged)
-                y = dragstarty+my-mouseclickedy;
-            else
+            if (dragging && this == dragged) {
+                y = dragstarty + my - mouseclickedy;
+            } else {
                 y = MathHelper.approachExp(y, slotY(), 0.4, 20);
+            }
         }
 
         public boolean contains(int my) {
             my -= drawBounds().y;
-            return my >= y && my < y+20;
+            return my >= y && my < y + 20;
         }
     }
 
@@ -58,36 +57,40 @@ public class GuiItemSorter extends GuiOptionPane
     public GuiItemSorter(Option opt) {
         this.opt = opt;
         list = ItemSorter.fromSaveString(opt.renderTag().getValue());
-        for(SortEntry e : list)
+        for (SortEntry e : list) {
             slots.add(new SortItem(e));
+        }
     }
 
     public int slotY(int slot) {
-        return 2+slot*24;
+        return 2 + slot * 24;
     }
 
     @Override
     public int contentHeight() {
-        return slots.size()*24;
+        return slots.size() * 24;
     }
 
     @Override
     public void drawContent(int mx, int my, float frame) {
         Rectangle w = drawBounds();
 
-        for(SortItem item : slots)
-            if(item != dragged)
+        for (SortItem item : slots) {
+            if (item != dragged) {
                 drawItem(w, item, mx, my, frame);
+            }
+        }
 
-        if(dragged != null)
+        if (dragged != null) {
             drawItem(w, dragged, mx, my, frame);
+        }
     }
 
     public void drawItem(Rectangle w, SortItem item, int mx, int my, float frame) {
         double y = MathHelper.interpolate(item.ya, item.y, frame);
         GlStateManager.translate(0, y, 0);
         Rectangle b = new Rectangle(w.x, w.y, w.width, 20);
-        boolean mouseOver = itemAt(w.x+mx, w.y+my) == item;
+        boolean mouseOver = itemAt(w.x + mx, w.y + my) == item;
 
         GlStateManager.color(1, 1, 1, 1);
         LayoutManager.drawButtonBackground(b.x, b.y, b.width, b.height, true, mouseOver ? 2 : 1);
@@ -111,31 +114,37 @@ public class GuiItemSorter extends GuiOptionPane
         super.updateScreen();
 
         int my = getMousePosition().y;
-        for(SortItem item : slots)
+        for (SortItem item : slots) {
             item.update(my);
+        }
 
-        if(dragging) {
-            int nslot = (int)MathHelper.clip((dragged.y-(2-12))/24, 0, slots.size()-1);
-            if(nslot != list.indexOf(dragged.e)) {
+        if (dragging) {
+            int nslot = (int) MathHelper.clip((dragged.y - (2 - 12)) / 24, 0, slots.size() - 1);
+            if (nslot != list.indexOf(dragged.e)) {
                 list.remove(dragged.e);
                 list.add(nslot, dragged.e);
                 opt.getTag().setValue(ItemSorter.getSaveString(list));
-                if(opt.activeTag() == opt.getTag())
+                if (opt.activeTag() == opt.getTag()) {
                     ItemSorter.list = new ArrayList<SortEntry>(list);
+                }
             }
         }
     }
 
     public SortItem itemAt(int mx, int my) {
-        if(!pane.windowBounds().contains(mx, my))
+        if (!pane.windowBounds().contains(mx, my)) {
             return null;
+        }
 
-        if(dragged != null && dragged.contains(my))
+        if (dragged != null && dragged.contains(my)) {
             return dragged;
+        }
 
-        for(SortItem item : slots)
-            if(item.contains(my))
+        for (SortItem item : slots) {
+            if (item.contains(my)) {
                 return item;
+            }
+        }
 
         return null;
     }
@@ -144,9 +153,9 @@ public class GuiItemSorter extends GuiOptionPane
     protected void mouseClicked(int x, int y, int button) throws IOException {
         super.mouseClicked(x, y, button);
 
-        if(!dragging && button == 0) {
+        if (!dragging && button == 0) {
             SortItem item = itemAt(x, y);
-            if(item != null) {
+            if (item != null) {
                 dragging = true;
                 dragged = item;
                 mouseclickedy = y;
@@ -157,16 +166,18 @@ public class GuiItemSorter extends GuiOptionPane
 
     @Override
     protected void mouseReleased(int x, int y, int button) {
-        if(button == 0)
+        if (button == 0) {
             dragging = false;
+        }
     }
 
     @Override
     public List<String> handleTooltip(int mx, int my, List<String> tooltip) {
-        if(!dragging) {
+        if (!dragging) {
             SortItem item = itemAt(mx, my);
-            if(item != null && item.e.getTooltip() != null)
+            if (item != null && item.e.getTooltip() != null) {
                 tooltip.add(item.e.getTooltip());
+            }
         }
         return tooltip;
     }

@@ -17,8 +17,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.regex.Pattern;
 
-public class ItemList
-{
+public class ItemList {
     /**
      * Fields are replaced atomically and contents never modified.
      */
@@ -36,24 +35,21 @@ public class ItemList
     private static HashSet<Item> erroredItems = new HashSet<Item>();
     private static HashSet<String> stackTraces = new HashSet<String>();
 
-    public static class EverythingItemFilter implements ItemFilter
-    {
+    public static class EverythingItemFilter implements ItemFilter {
         @Override
         public boolean matches(ItemStack item) {
             return true;
         }
     }
 
-    public static class NothingItemFilter implements ItemFilter
-    {
+    public static class NothingItemFilter implements ItemFilter {
         @Override
         public boolean matches(ItemStack item) {
             return false;
         }
     }
 
-    public static class PatternItemFilter implements ItemFilter
-    {
+    public static class PatternItemFilter implements ItemFilter {
         public Pattern pattern;
 
         public PatternItemFilter(Pattern pattern) {
@@ -66,8 +62,7 @@ public class ItemList
         }
     }
 
-    public static class AllMultiItemFilter implements ItemFilter
-    {
+    public static class AllMultiItemFilter implements ItemFilter {
         public List<ItemFilter> filters = new LinkedList<ItemFilter>();
 
         public AllMultiItemFilter(List<ItemFilter> filters) {
@@ -80,19 +75,21 @@ public class ItemList
 
         @Override
         public boolean matches(ItemStack item) {
-            for(ItemFilter filter : filters)
+            for (ItemFilter filter : filters) {
                 try {
-                    if (!filter.matches(item)) return false;
+                    if (!filter.matches(item)) {
+                        return false;
+                    }
                 } catch (Exception e) {
-                    NEIClientConfig.logger.error("Exception filtering "+item+" with "+filter, e);
+                    NEIClientConfig.logger.error("Exception filtering " + item + " with " + filter, e);
                 }
+            }
 
             return true;
         }
     }
 
-    public static class AnyMultiItemFilter implements ItemFilter
-    {
+    public static class AnyMultiItemFilter implements ItemFilter {
         public List<ItemFilter> filters = new LinkedList<ItemFilter>();
 
         public AnyMultiItemFilter(List<ItemFilter> filters) {
@@ -105,29 +102,32 @@ public class ItemList
 
         @Override
         public boolean matches(ItemStack item) {
-            for(ItemFilter filter : filters)
+            for (ItemFilter filter : filters) {
                 try {
-                    if (filter.matches(item)) return true;
+                    if (filter.matches(item)) {
+                        return true;
+                    }
                 } catch (Exception e) {
-                    NEIClientConfig.logger.error("Exception filtering "+item+" with "+filter, e);
+                    NEIClientConfig.logger.error("Exception filtering " + item + " with " + filter, e);
                 }
+            }
 
             return false;
         }
     }
 
-    public static interface ItemsLoadedCallback
-    {
+    public static interface ItemsLoadedCallback {
         public void itemsLoaded();
     }
 
     public static boolean itemMatchesAll(ItemStack item, List<ItemFilter> filters) {
-        for(ItemFilter filter : filters) {
+        for (ItemFilter filter : filters) {
             try {
-                if (!filter.matches(item))
+                if (!filter.matches(item)) {
                     return false;
+                }
             } catch (Exception e) {
-                NEIClientConfig.logger.error("Exception filtering "+item+" with "+filter, e);
+                NEIClientConfig.logger.error("Exception filtering " + item + " with " + filter, e);
             }
         }
 
@@ -135,7 +135,7 @@ public class ItemList
     }
 
     /**
-     * @deprecated  use getItemListFilter().matches(item)
+     * @deprecated use getItemListFilter().matches(item)
      */
     @Deprecated
     public static boolean itemMatches(ItemStack item) {
@@ -149,17 +149,17 @@ public class ItemList
     public static List<ItemFilter> getItemFilters() {
         LinkedList<ItemFilter> filters = new LinkedList<ItemFilter>();
         synchronized (itemFilterers) {
-            for(ItemFilterProvider p : itemFilterers)
+            for (ItemFilterProvider p : itemFilterers) {
                 filters.add(p.getFilter());
+            }
         }
         return filters;
     }
 
-    public static final RestartableTask loadItems = new RestartableTask("NEI Item Loading")
-    {
+    public static final RestartableTask loadItems = new RestartableTask("NEI Item Loading") {
         private void damageSearch(Item item, List<ItemStack> permutations) {
             HashSet<String> damageIconSet = new HashSet<String>();
-            for (int damage = 0; damage < 16; damage++)
+            for (int damage = 0; damage < 16; damage++) {
                 try {
                     ItemStack stack = new ItemStack(item, 1, damage);
                     IBakedModel model = GuiContainerManager.drawItems.getItemModelMesher().getItemModel(stack);
@@ -169,13 +169,12 @@ public class ItemList
                         damageIconSet.add(s);
                         permutations.add(stack);
                     }
-                }
-                catch(TimeoutException t) {
+                } catch (TimeoutException t) {
                     throw t;
+                } catch (Throwable t) {
+                    NEIServerUtils.logOnce(t, stackTraces, "Ommiting " + item + ":" + damage + " " + item.getClass().getSimpleName(), item.toString());
                 }
-                catch(Throwable t) {
-                    NEIServerUtils.logOnce(t, stackTraces, "Ommiting "+item+":"+damage+" "+item.getClass().getSimpleName(), item.toString());
-                }
+            }
         }
 
         @Override
@@ -188,10 +187,13 @@ public class ItemList
 
             timer.setLimit(500);
             for (Item item : (Iterable<Item>) Item.itemRegistry) {
-                if (interrupted()) return;
+                if (interrupted()) {
+                    return;
+                }
 
-                if (item == null || erroredItems.contains(item))
+                if (item == null || erroredItems.contains(item)) {
                     continue;
+                }
 
                 try {
                     timer.reset(item);
@@ -199,11 +201,13 @@ public class ItemList
                     permutations.clear();
                     permutations.addAll(ItemInfo.itemOverrides.get(item));
 
-                    if (permutations.isEmpty())
+                    if (permutations.isEmpty()) {
                         item.getSubItems(item, null, permutations);
+                    }
 
-                    if (permutations.isEmpty())
+                    if (permutations.isEmpty()) {
                         damageSearch(item, permutations);
+                    }
 
                     permutations.addAll(ItemInfo.itemVariants.get(item));
 
@@ -217,32 +221,41 @@ public class ItemList
                 }
             }
 
-            if(interrupted()) return;
+            if (interrupted()) {
+                return;
+            }
             ItemList.items = items;
             ItemList.itemMap = itemMap;
-            for(ItemsLoadedCallback callback : loadCallbacks)
+            for (ItemsLoadedCallback callback : loadCallbacks) {
                 callback.itemsLoaded();
+            }
 
             updateFilter.restart();
         }
     };
 
-    public static final RestartableTask updateFilter = new RestartableTask("NEI Item Filtering")
-    {
+    public static final RestartableTask updateFilter = new RestartableTask("NEI Item Filtering") {
         @Override
         public void execute() {
             ArrayList<ItemStack> filtered = new ArrayList<ItemStack>();
             ItemFilter filter = getItemListFilter();
-            for(ItemStack item : items) {
-                if (interrupted()) return;
+            for (ItemStack item : items) {
+                if (interrupted()) {
+                    return;
+                }
 
-                if(filter.matches(item))
+                if (filter.matches(item)) {
                     filtered.add(item);
+                }
             }
 
-            if(interrupted()) return;
+            if (interrupted()) {
+                return;
+            }
             ItemSorter.sort(filtered);
-            if(interrupted()) return;
+            if (interrupted()) {
+                return;
+            }
             ItemPanel.updateItemList(filtered);
         }
     };

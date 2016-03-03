@@ -17,13 +17,11 @@ import static codechicken.lib.gui.GuiDraw.drawGradientRect;
 import static codechicken.lib.gui.GuiDraw.drawRect;
 import static codechicken.nei.NEIClientConfig.world;
 
-public class SearchField extends TextField implements ItemFilterProvider
-{
+public class SearchField extends TextField implements ItemFilterProvider {
     /**
      * Interface for returning a custom filter based on search field text
      */
-    public static interface ISearchProvider
-    {
+    public static interface ISearchProvider {
         /**
          * @return false if this filter should only be used if no other non-default filters match the search string
          */
@@ -35,8 +33,7 @@ public class SearchField extends TextField implements ItemFilterProvider
         public ItemFilter getFilter(String searchText);
     }
 
-    private static class DefaultSearchProvider implements ISearchProvider
-    {
+    private static class DefaultSearchProvider implements ISearchProvider {
         @Override
         public boolean isPrimary() {
             return false;
@@ -65,10 +62,11 @@ public class SearchField extends TextField implements ItemFilterProvider
 
     @Override
     public void drawBox() {
-        if (searchInventories())
+        if (searchInventories()) {
             drawGradientRect(x, y, w, h, 0xFFFFFF00, 0xFFC0B000);
-        else
+        } else {
             drawRect(x, y, w, h, 0xffA0A0A0);
+        }
         drawRect(x + 1, y + 1, w - 2, h - 2, 0xFF000000);
     }
 
@@ -92,8 +90,9 @@ public class SearchField extends TextField implements ItemFilterProvider
 
     @Override
     public void lastKeyTyped(int keyID, char keyChar) {
-        if (keyID == NEIClientConfig.getKeyBinding("gui.search"))
+        if (keyID == NEIClientConfig.getKeyBinding("gui.search")) {
             setFocus(true);
+        }
     }
 
     @Override
@@ -103,21 +102,19 @@ public class SearchField extends TextField implements ItemFilterProvider
 
     public static Pattern getPattern(String search) {
         switch (NEIClientConfig.getIntSetting("inventory.searchmode")) {
-            case 0://plain
-                search = "\\Q" + search + "\\E";
-                break;
-            case 1:
-                search = search
-                        .replace(".", "")
-                        .replace("?", ".")
-                        .replace("*", ".+?");
-                break;
+        case 0://plain
+            search = "\\Q" + search + "\\E";
+            break;
+        case 1:
+            search = search.replace(".", "").replace("?", ".").replace("*", ".+?");
+            break;
         }
 
         Pattern pattern = null;
         try {
             pattern = Pattern.compile(search);
-        } catch (PatternSyntaxException ignored) {}
+        } catch (PatternSyntaxException ignored) {
+        }
         return pattern == null || pattern.toString().length() == 0 ? null : pattern;
     }
 
@@ -129,12 +126,17 @@ public class SearchField extends TextField implements ItemFilterProvider
         List<ItemFilter> secondary = new LinkedList<ItemFilter>();
         for (ISearchProvider p : searchProviders) {
             ItemFilter filter = p.getFilter(s_filter);
-            if (filter != null)
+            if (filter != null) {
                 (p.isPrimary() ? primary : secondary).add(filter);
+            }
         }
 
-        if (!primary.isEmpty()) return new AnyMultiItemFilter(primary);
-        if (!secondary.isEmpty()) return new AnyMultiItemFilter(secondary);
+        if (!primary.isEmpty()) {
+            return new AnyMultiItemFilter(primary);
+        }
+        if (!secondary.isEmpty()) {
+            return new AnyMultiItemFilter(secondary);
+        }
         return new EverythingItemFilter();
     }
 }

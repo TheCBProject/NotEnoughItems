@@ -8,18 +8,14 @@ import org.lwjgl.input.Keyboard;
 
 import java.awt.*;
 import java.io.IOException;
-import java.util.*;
+import java.util.LinkedList;
 import java.util.List;
 
-import static codechicken.lib.gui.GuiDraw.drawMultilineTip;
-import static codechicken.lib.gui.GuiDraw.fontRenderer;
-import static codechicken.lib.gui.GuiDraw.getMousePosition;
+import static codechicken.lib.gui.GuiDraw.*;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
-public abstract class GuiOptionPane extends GuiScreenWidget
-{
-    public class ScrollPane extends OptionScrollPane
-    {
+public abstract class GuiOptionPane extends GuiScreenWidget {
+    public class ScrollPane extends OptionScrollPane {
         @Override
         public int contentHeight() {
             return GuiOptionPane.this.contentHeight();
@@ -32,6 +28,7 @@ public abstract class GuiOptionPane extends GuiScreenWidget
     }
 
     public abstract int contentHeight();
+
     public abstract void drawContent(int mx, int my, float frame);
 
     public ScrollPane pane;
@@ -66,8 +63,9 @@ public abstract class GuiOptionPane extends GuiScreenWidget
 
     @Override
     public void actionPerformed(String ident, Object... params) {
-        if (ident.equals("back"))
+        if (ident.equals("back")) {
             Minecraft.getMinecraft().displayGuiScreen(getParentScreen());
+        }
     }
 
     @Override

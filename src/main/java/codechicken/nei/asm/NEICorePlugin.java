@@ -8,15 +8,14 @@ import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin.TransformerExclusions
 import java.io.File;
 import java.util.Map;
 
-@TransformerExclusions({"codechicken.nei.asm"})
-public class NEICorePlugin implements IFMLLoadingPlugin, IFMLCallHook
-{
+@TransformerExclusions({ "codechicken.nei.asm" })
+public class NEICorePlugin implements IFMLLoadingPlugin, IFMLCallHook {
     public static File location;
 
     @Override
     public String[] getASMTransformerClass() {
         CodeChickenCorePlugin.versionCheck(CodeChickenCorePlugin.mcVersion, "NotEnoughItems");
-        return new String[]{"codechicken.nei.asm.NEITransformer"};
+        return new String[] { "codechicken.nei.asm.NEITransformer" };
     }
 
     @Override
@@ -32,8 +31,9 @@ public class NEICorePlugin implements IFMLLoadingPlugin, IFMLCallHook
     @Override
     public void injectData(Map<String, Object> data) {
         location = (File) data.get("coremodLocation");
-        if (location == null)
+        if (location == null) {
             location = new File(getClass().getProtectionDomain().getCodeSource().getLocation().getPath());
+        }
     }
 
     @Override

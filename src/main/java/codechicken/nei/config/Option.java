@@ -9,8 +9,7 @@ import net.minecraft.util.StatCollector;
 
 import java.util.List;
 
-public abstract class Option
-{
+public abstract class Option {
     public static void playClickSound() {
         Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.create(new ResourceLocation("gui.button.press"), 1.0F));
     }
@@ -46,7 +45,9 @@ public abstract class Option
     }
 
     private <T> T assertParentOverride(T elem) {
-        if(elem == null) throw new IllegalStateException("Option "+fullName()+" does not have a defined parent list. Use OptionList.setOptionList to insert a parent");
+        if (elem == null) {
+            throw new IllegalStateException("Option " + fullName() + " does not have a defined parent list. Use OptionList.setOptionList to insert a parent");
+        }
         return elem;
     }
 
@@ -158,8 +159,9 @@ public abstract class Option
      * Deletes a specific named tag from the worldConfig
      */
     public void useGlobal(String s) {
-        if (worldConfig())
+        if (worldConfig()) {
             worldConfigSet().config.removeTag(s);
+        }
     }
 
     /**
@@ -177,14 +179,17 @@ public abstract class Option
     }
 
     public void copyGlobal(String s, boolean recursive) {
-        if (!worldConfig())
+        if (!worldConfig()) {
             return;
+        }
 
         ConfigTag tag = globalConfigSet().config.getTag(s);
         worldConfigSet().config.getTag(s).setValue(tag.getValue());
-        if(recursive)
-            for(String s2 : tag.childTagMap().keySet())
-                copyGlobal(s+"."+s2);
+        if (recursive) {
+            for (String s2 : tag.childTagMap().keySet()) {
+                copyGlobal(s + "." + s2);
+            }
+        }
     }
 
     public void onAdded(OptionScrollSlot slot) {

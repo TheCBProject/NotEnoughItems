@@ -9,16 +9,16 @@ import org.lwjgl.opengl.GL11;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DefaultOverlayRenderer implements IRecipeOverlayRenderer
-{
+public class DefaultOverlayRenderer implements IRecipeOverlayRenderer {
     IStackPositioner positioner;
     ArrayList<PositionedStack> ingreds;
 
     public DefaultOverlayRenderer(List<PositionedStack> ai, IStackPositioner positioner) {
         positioner = this.positioner = positioner;
         ingreds = new ArrayList<PositionedStack>();
-        for (PositionedStack stack : ai)
+        for (PositionedStack stack : ai) {
             ingreds.add(stack.copy());
+        }
         ingreds = positioner.positionStacks(ingreds);
     }
 
@@ -29,8 +29,9 @@ public class DefaultOverlayRenderer implements IRecipeOverlayRenderer
 
         GuiContainerManager.setItemRenderColour(0xA0A0A0B0);
         for (PositionedStack stack : ingreds) {
-            if (stack.relx == slot.xDisplayPosition && stack.rely == slot.yDisplayPosition)
+            if (stack.relx == slot.xDisplayPosition && stack.rely == slot.yDisplayPosition) {
                 GuiContainerManager.drawItem(stack.relx, stack.rely, stack.item);
+            }
         }
         GuiContainerManager.setItemRenderColour(-1);
 

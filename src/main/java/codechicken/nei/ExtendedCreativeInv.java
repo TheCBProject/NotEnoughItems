@@ -1,13 +1,12 @@
 package codechicken.nei;
 
-import net.minecraft.util.IChatComponent;
-import net.minecraftforge.fml.relauncher.Side;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.IChatComponent;
+import net.minecraftforge.fml.relauncher.Side;
 
-public class ExtendedCreativeInv implements IInventory
-{
+public class ExtendedCreativeInv implements IInventory {
     PlayerSave playerSave;
     Side side;
 
@@ -23,8 +22,9 @@ public class ExtendedCreativeInv implements IInventory
 
     @Override
     public ItemStack getStackInSlot(int slot) {
-        if (side.isClient())
+        if (side.isClient()) {
             return NEIClientConfig.creativeInv[slot];
+        }
         return playerSave.creativeInv[slot];
     }
 
@@ -39,8 +39,9 @@ public class ExtendedCreativeInv implements IInventory
                 return item;
             }
             ItemStack itemstack1 = item.splitStack(size);
-            if (item.stackSize == 0)
+            if (item.stackSize == 0) {
                 setInventorySlotContents(slot, null);
+            }
 
             markDirty();
             return itemstack1;
@@ -59,10 +60,11 @@ public class ExtendedCreativeInv implements IInventory
 
     @Override
     public void setInventorySlotContents(int slot, ItemStack stack) {
-        if (side.isClient())
+        if (side.isClient()) {
             NEIClientConfig.creativeInv[slot] = stack;
-        else
+        } else {
             playerSave.creativeInv[slot] = stack;
+        }
 
         markDirty();
     }
@@ -74,8 +76,9 @@ public class ExtendedCreativeInv implements IInventory
 
     @Override
     public void markDirty() {
-        if (side.isServer())
+        if (side.isServer()) {
             playerSave.setCreativeDirty();
+        }
     }
 
     @Override
@@ -102,7 +105,8 @@ public class ExtendedCreativeInv implements IInventory
     }
 
     @Override
-    public void setField(int id, int value) {}
+    public void setField(int id, int value) {
+    }
 
     @Override
     public int getFieldCount() {
@@ -110,7 +114,8 @@ public class ExtendedCreativeInv implements IInventory
     }
 
     @Override
-    public void clear() {}
+    public void clear() {
+    }
 
     @Override
     public String getName() {

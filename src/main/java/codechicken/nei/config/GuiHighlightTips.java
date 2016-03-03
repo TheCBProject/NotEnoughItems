@@ -19,8 +19,7 @@ import java.util.Arrays;
 import static codechicken.lib.gui.GuiDraw.displaySize;
 import static codechicken.lib.gui.GuiDraw.getMousePosition;
 
-public class GuiHighlightTips extends GuiScreenWidget
-{
+public class GuiHighlightTips extends GuiScreenWidget {
     private String name;
     private GuiCCButton toggleButton;
     private Option opt;
@@ -70,8 +69,9 @@ public class GuiHighlightTips extends GuiScreenWidget
     @Override
     public void drawScreen(int mousex, int mousey, float f) {
         super.drawScreen(mousex, mousey, f);
-        if (show())
-            HUDRenderer.renderOverlay(new ItemStack(Blocks.redstone_block), Arrays.asList("RedstoneBlock", EnumChatFormatting.RED+"Sample"), renderPos());
+        if (show()) {
+            HUDRenderer.renderOverlay(new ItemStack(Blocks.redstone_block), Arrays.asList("RedstoneBlock", EnumChatFormatting.RED + "Sample"), renderPos());
+        }
     }
 
     public Point getPos() {
@@ -108,10 +108,12 @@ public class GuiHighlightTips extends GuiScreenWidget
 
         for (int i = 25; i < 100; i += 25)//snapping
         {
-            if (pos.x / 100 == i)
+            if (pos.x / 100 == i) {
                 pos.x = i * 100;
-            if (pos.y / 100 == i)
+            }
+            if (pos.y / 100 == i) {
                 pos.y = i * 100;
+            }
         }
 
         return pos;
@@ -129,18 +131,16 @@ public class GuiHighlightTips extends GuiScreenWidget
         Point pos = renderPos();
         Dimension size = displaySize();
         Dimension rect = sampleSize();
-        return new Rectangle4i(
-                (size.width - rect.width) * pos.x / 10000,
-                (size.height - rect.height) * pos.y / 10000,
-                rect.width, rect.height);
+        return new Rectangle4i((size.width - rect.width) * pos.x / 10000, (size.height - rect.height) * pos.y / 10000, rect.width, rect.height);
     }
 
     @Override
     protected void mouseClicked(int x, int y, int button) throws IOException {
-        if (button == 0 && selectionBox().contains(x, y))
+        if (button == 0 && selectionBox().contains(x, y)) {
             dragDown = getMousePosition();
-        else
+        } else {
             super.mouseClicked(x, y, button);
+        }
     }
 
     private void setPos(Point p) {
