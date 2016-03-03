@@ -228,6 +228,7 @@ public class ItemInfo {
             }
         });
         API.addOption(new ItemPanelDumper("tools.dump.itempanel"));
+        //TODO Fluid registry Dumper.
     }
 
     private static void parseModItems() {

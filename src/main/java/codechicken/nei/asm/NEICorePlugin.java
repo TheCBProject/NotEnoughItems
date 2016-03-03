@@ -1,7 +1,6 @@
 package codechicken.nei.asm;
 
 import codechicken.core.launch.CodeChickenCorePlugin;
-import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.relauncher.IFMLCallHook;
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin.TransformerExclusions;
