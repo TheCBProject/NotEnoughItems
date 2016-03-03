@@ -9,10 +9,7 @@ import com.google.common.eventbus.Subscribe;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fml.client.FMLFileResourcePack;
 import net.minecraftforge.fml.client.FMLFolderResourcePack;
-import net.minecraftforge.fml.common.DummyModContainer;
-import net.minecraftforge.fml.common.LoadController;
-import net.minecraftforge.fml.common.MetadataCollection;
-import net.minecraftforge.fml.common.ModMetadata;
+import net.minecraftforge.fml.common.*;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.versioning.ArtifactVersion;
@@ -25,6 +22,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+@Mod(modid = "nei")// Fixes no resource domain being registered.
 public class NEIModContainer extends DummyModContainer {
     public static LinkedList<IConfigureNEI> plugins = new LinkedList<IConfigureNEI>();
 
@@ -107,6 +105,6 @@ public class NEIModContainer extends DummyModContainer {
 
     @Override
     public Class<?> getCustomResourcePackClass() {
-        return getSource().isDirectory() ? FMLFolderResourcePack.class : FMLFileResourcePack.class;
+        return getSource().isFile() ? FMLFileResourcePack.class : FMLFolderResourcePack.class;
     }
 }

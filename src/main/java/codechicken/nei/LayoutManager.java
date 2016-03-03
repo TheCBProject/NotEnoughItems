@@ -4,12 +4,14 @@ import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.KeyManager.IKeyStateTracker;
 import codechicken.nei.api.*;
 import codechicken.nei.guihook.*;
+import covers1624.neitests.NEITests;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.gui.inventory.GuiContainerCreative;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.InventoryEffectRenderer;
+import net.minecraft.client.resources.SimpleReloadableResourceManager;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -775,7 +777,6 @@ public class LayoutManager implements IContainerInputHandler, IContainerTooltipH
 
     public static void drawIcon(int x, int y, Image image) {
         changeTexture("nei:textures/nei_sprites.png");
-        //Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation("nei", "textures/nei_sprites.png"));
         GlStateManager.color(1, 1, 1, 1);
         GlStateManager.enableBlend();
         GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
