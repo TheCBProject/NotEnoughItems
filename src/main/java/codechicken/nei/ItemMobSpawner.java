@@ -64,7 +64,7 @@ public class ItemMobSpawner extends ItemBlock {
     }
 
     @Override
-    public void addInformation(ItemStack itemstack, EntityPlayer par2EntityPlayer, List list, boolean par4) {
+    public void addInformation(ItemStack itemstack, EntityPlayer par2EntityPlayer, List<String> list, boolean par4) {
         setDefaultTag(itemstack);
         int meta = itemstack.getItemDamage();
         if (meta == 0) {
@@ -78,9 +78,9 @@ public class ItemMobSpawner extends ItemBlock {
         EntityLiving e = entityHashMap.get(ID);
         if (e == null) {
             World world = Minecraft.getMinecraft().theWorld;
-            Class<?> clazz = (Class<?>) EntityList.idToClassMapping.get(ID);
+            Class<? extends Entity> clazz = EntityList.idToClassMapping.get(ID);
             try {
-                e = (EntityLiving) clazz.getConstructor(new Class[] { World.class }).newInstance(world);
+                e = (EntityLiving) clazz.getConstructor(World.class).newInstance(world);
             } catch (Throwable t) {
                 if (clazz == null) {
                     NEIClientConfig.logger.error("Null class for entity (" + ID + ", " + IDtoNameMap.get(ID));
@@ -140,7 +140,7 @@ public class ItemMobSpawner extends ItemBlock {
     }
 
     @Override
-    public void getSubItems(Item item, CreativeTabs tab, List list) {
+    public void getSubItems(Item item, CreativeTabs tab, List<ItemStack> list) {
         if (!NEIClientConfig.hasSMPCounterPart()) {
             list.add(new ItemStack(item));
         } else {

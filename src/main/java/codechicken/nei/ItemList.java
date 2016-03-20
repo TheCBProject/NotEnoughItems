@@ -116,8 +116,8 @@ public class ItemList {
         }
     }
 
-    public static interface ItemsLoadedCallback {
-        public void itemsLoaded();
+    public interface ItemsLoadedCallback {
+        void itemsLoaded();
     }
 
     public static boolean itemMatchesAll(ItemStack item, List<ItemFilter> filters) {
@@ -186,7 +186,7 @@ public class ItemList {
             ListMultimap<Item, ItemStack> itemMap = ArrayListMultimap.create();
 
             timer.setLimit(500);
-            for (Item item : (Iterable<Item>) Item.itemRegistry) {
+            for (Item item : Item.itemRegistry) {
                 if (interrupted()) {
                     return;
                 }
@@ -212,7 +212,6 @@ public class ItemList {
                     permutations.addAll(ItemInfo.itemVariants.get(item));
 
                     timer.reset();
-
                     items.addAll(permutations);
                     itemMap.putAll(item, permutations);
                 } catch (Throwable t) {
