@@ -5,6 +5,8 @@ import codechicken.core.ServerUtils;
 import codechicken.lib.config.ConfigFile;
 import codechicken.lib.inventory.InventoryUtils;
 import codechicken.lib.packet.PacketCustom;
+import codechicken.nei.network.NEIServerPacketHandler;
+import codechicken.nei.util.LogHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
@@ -15,8 +17,6 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 import org.apache.commons.io.IOUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.FileReader;
@@ -25,8 +25,7 @@ import java.util.*;
 
 public class NEIServerConfig {
     private static MinecraftServer server;
-
-    public static Logger logger = LogManager.getLogger("NotEnoughItems");
+    
     public static File saveDir;
     public static ConfigFile serverConfig;
     public static Map<Integer, NBTTagCompound> dimTags = new HashMap<Integer, NBTTagCompound>();
@@ -35,7 +34,7 @@ public class NEIServerConfig {
 
     public static void load(World world) {
         if (PacketCustom.getServerInstance() != server) {
-            logger.debug("Loading NEI Server");
+            LogHelper.debug("Loading NEI Server");
             server = PacketCustom.getServerInstance();
             saveDir = new File(DimensionManager.getCurrentSaveRootDirectory(), "NEI");
 
@@ -139,7 +138,7 @@ public class NEIServerConfig {
 
     public static void disableAction(int dim, String name, boolean disable) {
         dimTags.get(dim).setBoolean("disabled" + name, disable);
-        NEISPH.sendActionDisabled(dim, name, disable);
+        NEIServerPacketHandler.sendActionDisabled(dim, name, disable);
         saveWorld(dim);
     }
 
@@ -201,7 +200,7 @@ public class NEIServerConfig {
                 }
                 int delim = s.lastIndexOf('=');
                 if (delim < 0) {
-                    logger.error("line " + line + ": Missing =");
+                    LogHelper.error("line %s: Missing =", line);
                     continue;
                 }
                 try {
@@ -212,7 +211,7 @@ public class NEIServerConfig {
                     }
                     bannedItems.put(InventoryUtils.loadPersistant(key), values);
                 } catch (Exception e) {
-                    logger.error("line " + line + ": " + e.getMessage());
+                    LogHelper.error("line %s: %s", line, e.getMessage());
                 }
             }
             r.close();
@@ -260,12 +259,12 @@ public class NEIServerConfig {
     }
 
     public static void loadPlayer(EntityPlayer player) {
-        logger.debug("Loading Player: " + player.getGameProfile().getName());
+        LogHelper.debug("Loading Player: " + player.getGameProfile().getName());
         playerSaves.put(player.getName(), new PlayerSave((EntityPlayerMP) player, new File(saveDir, "players")));
     }
 
     public static void unloadPlayer(EntityPlayer player) {
-        logger.debug("Unloading Player: " + player.getName());
+        LogHelper.debug("Unloading Player: " + player.getName());
         PlayerSave playerSave = playerSaves.remove(player.getName());
         if (playerSave != null) {
             playerSave.save();

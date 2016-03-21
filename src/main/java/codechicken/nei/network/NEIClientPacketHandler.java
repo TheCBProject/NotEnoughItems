@@ -1,9 +1,10 @@
-package codechicken.nei;
+package codechicken.nei.network;
 
 import codechicken.core.ClientUtils;
 import codechicken.lib.inventory.InventoryUtils;
 import codechicken.lib.packet.PacketCustom;
 import codechicken.lib.packet.PacketCustom.IClientPacketHandler;
+import codechicken.nei.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.item.ItemStack;
@@ -12,7 +13,7 @@ import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 
-public class NEICPH implements IClientPacketHandler {
+public class NEIClientPacketHandler implements IClientPacketHandler {
     public static final String channel = "NEI";
 
     @Override

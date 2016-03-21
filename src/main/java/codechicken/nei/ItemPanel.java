@@ -4,6 +4,7 @@ import codechicken.lib.vec.Rectangle4i;
 import codechicken.nei.api.GuiInfo;
 import codechicken.nei.api.INEIGuiHandler;
 import codechicken.nei.guihook.GuiContainerManager;
+import codechicken.nei.network.NEIClientPacketHandler;
 import codechicken.nei.recipe.GuiCraftingRecipe;
 import codechicken.nei.recipe.GuiRecipe;
 import codechicken.nei.recipe.GuiUsageRecipe;
@@ -249,7 +250,7 @@ public class ItemPanel extends Widget {
 
                 if (total > contents) {
                     NEIClientUtils.setSlotContents(overSlot.slotNumber, NEIServerUtils.copyStack(draggedStack, total), true);
-                    NEICPH.sendGiveItem(NEIServerUtils.copyStack(draggedStack, total), false, false);
+                    NEIClientPacketHandler.sendGiveItem(NEIServerUtils.copyStack(draggedStack, total), false, false);
                     draggedStack.stackSize -= total - contents;
                 }
                 if (draggedStack.stackSize == 0) {

@@ -1,4 +1,4 @@
-package codechicken.nei;
+package codechicken.nei.network;
 
 import codechicken.core.IGuiPacketSender;
 import codechicken.core.ServerUtils;
@@ -7,6 +7,8 @@ import codechicken.core.inventory.SlotDummy;
 import codechicken.lib.packet.PacketCustom;
 import codechicken.lib.packet.PacketCustom.IServerPacketHandler;
 import codechicken.lib.vec.BlockCoord;
+import codechicken.nei.*;
+import codechicken.nei.util.LogHelper;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -22,7 +24,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import java.util.LinkedList;
 import java.util.Set;
 
-public class NEISPH implements IServerPacketHandler {
+public class NEIServerPacketHandler implements IServerPacketHandler {
     @Override
     public void handlePacket(PacketCustom packet, EntityPlayerMP sender, INetHandlerPlayServer netHandler) {
         if (!NEIServerConfig.authenticatePacket(sender, packet)) {
@@ -155,6 +157,7 @@ public class NEISPH implements IServerPacketHandler {
         }
     }
 
+    @Deprecated
     private void modifyEnchantment(EntityPlayerMP player, int e, int lvl, boolean add) {
         ContainerEnchantmentModifier containerem = (ContainerEnchantmentModifier) player.openContainer;
         if (add) {
@@ -248,7 +251,7 @@ public class NEISPH implements IServerPacketHandler {
     }
 
     public static void sendHasServerSideTo(EntityPlayerMP player) {
-        NEIServerConfig.logger.debug("Sending serverside check to: " + player.getName());
+        LogHelper.debug("Sending serverside check to: " + player.getName());
         PacketCustom packet = new PacketCustom(channel, 1);
         packet.writeByte(NEIActions.protocol);
         packet.writeString(player.worldObj.getWorldInfo().getWorldName());

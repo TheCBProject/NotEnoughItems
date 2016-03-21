@@ -5,6 +5,7 @@ import codechicken.core.inventory.SlotHandleClicks;
 import codechicken.lib.inventory.InventoryNBT;
 import codechicken.lib.inventory.InventoryUtils;
 import codechicken.lib.packet.PacketCustom;
+import codechicken.nei.network.NEIClientPacketHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ClickType;
@@ -152,7 +153,7 @@ public class ContainerPotionCreator extends ContainerExtended {
     }
 
     public void setPotionEffect(Potion potion, int duration, int amplifier) {
-        PacketCustom packet = NEICPH.createContainerPacket();
+        PacketCustom packet = NEIClientPacketHandler.createContainerPacket();
         packet.writeBoolean(true);
         packet.writeByte(Potion.getIdFromPotion(potion));
         packet.writeInt(duration);
@@ -161,7 +162,7 @@ public class ContainerPotionCreator extends ContainerExtended {
     }
 
     public void removePotionEffect(Potion potion) {
-        PacketCustom packet = NEICPH.createContainerPacket();
+        PacketCustom packet = NEIClientPacketHandler.createContainerPacket();
         packet.writeBoolean(false);
         packet.writeByte(Potion.getIdFromPotion(potion));
         packet.sendToServer();

@@ -2,12 +2,12 @@ package codechicken.nei;
 
 import codechicken.lib.inventory.InventoryUtils;
 import codechicken.lib.packet.PacketCustom;
+import codechicken.nei.network.NEIServerPacketHandler;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.server.MinecraftServer;
 
 import java.io.File;
 import java.util.HashSet;
@@ -97,7 +97,7 @@ public class PlayerSave {
     public void updateOpChange() {
         boolean isOp = PacketCustom.getServerInstance().getPlayerList().canSendCommands(player.getGameProfile());
         if (isOp != wasOp) {
-            NEISPH.sendHasServerSideTo(player);
+            NEIServerPacketHandler.sendHasServerSideTo(player);
             wasOp = isOp;
         }
     }
@@ -116,12 +116,12 @@ public class PlayerSave {
 
     public void enableAction(String name, boolean enabled) {
         getEnabledActions().setBoolean(name, enabled);
-        NEISPH.sendActionEnabled(player, name, enabled);
+        NEIServerPacketHandler.sendActionEnabled(player, name, enabled);
         setDirty();
     }
 
     public void onWorldReload() {
-        NEISPH.sendHasServerSideTo(player);
+        NEIServerPacketHandler.sendHasServerSideTo(player);
         magneticItems.clear();
     }
 }

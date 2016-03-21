@@ -1,6 +1,7 @@
 package codechicken.nei;
 
 import codechicken.nei.guihook.IContainerInputHandler;
+import codechicken.nei.network.NEIClientPacketHandler;
 import net.minecraft.client.gui.inventory.GuiContainer;
 
 import static codechicken.nei.NEIClientConfig.canPerformAction;
@@ -24,11 +25,11 @@ public class PopupInputHandler implements IContainerInputHandler {
     @Override
     public boolean lastKeyTyped(GuiContainer gui, char keyChar, int keyID) {
         if (keyID == getKeyBinding("gui.enchant") && canPerformAction("enchant")) {
-            NEICPH.sendOpenEnchantmentWindow();
+            NEIClientPacketHandler.sendOpenEnchantmentWindow();
             return true;
         }
         if (keyID == getKeyBinding("gui.potion") && canPerformAction("potion")) {
-            NEICPH.sendOpenPotionWindow();
+            NEIClientPacketHandler.sendOpenPotionWindow();
             return true;
         }
         return false;

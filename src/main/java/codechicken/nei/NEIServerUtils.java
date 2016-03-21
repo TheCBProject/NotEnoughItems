@@ -5,6 +5,8 @@ import codechicken.core.ServerUtils;
 import codechicken.lib.inventory.InventoryRange;
 import codechicken.lib.inventory.InventoryUtils;
 import codechicken.lib.packet.PacketCustom;
+import codechicken.nei.network.NEIServerPacketHandler;
+import codechicken.nei.util.LogHelper;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.player.EntityPlayer;
@@ -16,7 +18,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
@@ -270,14 +271,14 @@ public class NEIServerUtils {
         NEIServerConfig.forPlayer(player.getName()).enableAction("creative+", mode == 2);
         if (mode == 2 && !(player.openContainer instanceof ContainerCreativeInv))//open the container immediately for the client
         {
-            NEISPH.processCreativeInv(player, true);
+            NEIServerPacketHandler.processCreativeInv(player, true);
         }
 
         //change it on the server
         player.interactionManager.setGameType(getGameType(mode));
 
         //tell the client to change it
-        new PacketCustom(NEISPH.channel, 14).writeByte(mode).sendToPlayer(player);
+        new PacketCustom(NEIServerPacketHandler.channel, 14).writeByte(mode).sendToPlayer(player);
         player.addChatMessage(new TextComponentTranslation("nei.chat.gamemode." + mode));
     }
 
@@ -418,7 +419,7 @@ public class NEIServerUtils {
         t.printStackTrace(new PrintWriter(sw));
         String stackTrace = identifier + sw.toString();
         if (!stackTraces.contains(stackTrace)) {
-            NEIServerConfig.logger.error(message, t);
+            LogHelper.errorError(message, t);
             stackTraces.add(stackTrace);
         }
     }

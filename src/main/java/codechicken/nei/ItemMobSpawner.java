@@ -1,7 +1,6 @@
 package codechicken.nei;
 
-import codechicken.core.featurehack.GameDataManipulator;
-import net.minecraft.block.Block;
+import codechicken.nei.network.NEIClientPacketHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -57,7 +56,7 @@ public class ItemMobSpawner extends ItemBlock {
             setDefaultTag(stack);
             String mobtype = IDtoNameMap.get(stack.getItemDamage());
             if (mobtype != null) {
-                NEICPH.sendMobSpawnerID(pos.getX(), pos.getY(), pos.getZ(), mobtype);
+                NEIClientPacketHandler.sendMobSpawnerID(pos.getX(), pos.getY(), pos.getZ(), mobtype);
                 tileentitymobspawner.getSpawnerBaseLogic().setEntityName(mobtype);
             }
         }

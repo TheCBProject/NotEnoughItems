@@ -1,6 +1,7 @@
 package codechicken.nei;
 
 import codechicken.lib.render.CCRenderState;
+import codechicken.nei.network.NEIClientPacketHandler;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.enchantment.Enchantment;
@@ -8,16 +9,13 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ContainerEnchantment;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import java.util.ArrayList;
-import java.util.Set;
 
 /**
  * This is crap code, don't ever do this.
@@ -156,12 +154,12 @@ public class ContainerEnchantmentModifier extends ContainerEnchantment {
     private void toggleSlotEnchantment(int slot) {
         EnchantmentHash e = slotEnchantment.get(slot);
         if (e.state == 2) {
-            NEICPH.sendModifyEnchantment(Enchantment.getEnchantmentID(e.enchantment), 0, false);
+            NEIClientPacketHandler.sendModifyEnchantment(Enchantment.getEnchantmentID(e.enchantment), 0, false);
             e.state = 0;
         } else if (e.state == 1) {
             return;
         } else {
-            NEICPH.sendModifyEnchantment(Enchantment.getEnchantmentID(e.enchantment), level, true);
+            NEIClientPacketHandler.sendModifyEnchantment(Enchantment.getEnchantmentID(e.enchantment), level, true);
             e.state = 2;
         }
         updateEnchantmentOptions(GuiEnchantmentModifier.validateEnchantments());

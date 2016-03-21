@@ -4,6 +4,7 @@ import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.KeyManager.IKeyStateTracker;
 import codechicken.nei.api.*;
 import codechicken.nei.guihook.*;
+import codechicken.nei.network.NEIClientPacketHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -582,7 +583,7 @@ public class LayoutManager implements IContainerInputHandler, IContainerTooltipH
             }
         }
         if (hasSMPCounterPart()) {
-            NEICPH.sendSetPropertyDisabled(ident, disable);
+            NEIClientPacketHandler.sendSetPropertyDisabled(ident, disable);
         }
 
         return true;
@@ -614,10 +615,10 @@ public class LayoutManager implements IContainerInputHandler, IContainerTooltipH
 
     public boolean checkCreativeInv(GuiContainer gui) {
         if (gui instanceof GuiContainerCreative && invCreativeMode()) {
-            NEICPH.sendCreativeInv(true);
+            NEIClientPacketHandler.sendCreativeInv(true);
             return true;
         } else if (gui instanceof GuiExtendedCreativeInv && !invCreativeMode()) {
-            NEICPH.sendCreativeInv(false);
+            NEIClientPacketHandler.sendCreativeInv(false);
             return true;
         }
         return false;

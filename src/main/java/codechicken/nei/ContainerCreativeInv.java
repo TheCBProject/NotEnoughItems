@@ -16,7 +16,7 @@ public class ContainerCreativeInv extends Container {
         EntityEquipmentSlot equipmentSlot;
 
         @Deprecated //TODO remove this.
-        public SlotArmor(IInventory inv, int slot, int x, int y, int armorType){
+        public SlotArmor(IInventory inv, int slot, int x, int y, int armorType) {
             this(inv, slot, x, y, getArmorEquipmentSlotFromSlotID(armorType));
         }
 
@@ -122,12 +122,12 @@ public class ContainerCreativeInv extends Container {
 
     private static EntityEquipmentSlot getArmorEquipmentSlotFromSlotID(int armorType) {
         EntityEquipmentSlot entityEquipmentSlot = null;
-        for (EntityEquipmentSlot equipmentSlot : EntityEquipmentSlot.values()){
-            if (equipmentSlot.func_188452_c() == armorType){
+        for (EntityEquipmentSlot equipmentSlot : EntityEquipmentSlot.values()) {
+            if (equipmentSlot.func_188452_c() == armorType) {
                 entityEquipmentSlot = equipmentSlot;
             }
         }
-        if (entityEquipmentSlot == null){
+        if (entityEquipmentSlot == null) {
             throw new RuntimeException(String.format("Invalid slot number for armor slot! Given [%s], Expected [1 -> 4]", armorType));
         }
         return entityEquipmentSlot;

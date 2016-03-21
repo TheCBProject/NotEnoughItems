@@ -7,6 +7,7 @@ import codechicken.nei.api.GuiInfo;
 import codechicken.nei.api.IInfiniteItemHandler;
 import codechicken.nei.api.INEIGuiHandler;
 import codechicken.nei.api.ItemInfo;
+import codechicken.nei.network.NEIClientPacketHandler;
 import com.google.common.collect.Iterables;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
@@ -72,7 +73,7 @@ public class NEIClientUtils extends NEIServerUtils {
     }
 
     public static void deleteEverything() {
-        NEICPH.sendDeleteAllItems();
+        NEIClientPacketHandler.sendDeleteAllItems();
     }
 
     public static void deleteItemsOfType(ItemStack type) {
@@ -96,7 +97,7 @@ public class NEIClientUtils extends NEIServerUtils {
     }
 
     public static void setSlotContents(int slot, ItemStack item, boolean containerInv) {
-        NEICPH.sendSetSlot(slot, item, containerInv);
+        NEIClientPacketHandler.sendSetSlot(slot, item, containerInv);
 
         if (slot == -999) {
             mc().thePlayer.inventory.setItemStack(item);
@@ -179,10 +180,10 @@ public class NEIClientUtils extends NEIServerUtils {
                     }
                 }
                 if (given > 0) {
-                    NEICPH.sendGiveItem(copyStack(typestack, given), false, false);
+                    NEIClientPacketHandler.sendGiveItem(copyStack(typestack, given), false, false);
                 }
             } else {
-                NEICPH.sendGiveItem(stack, infinite, true);
+                NEIClientPacketHandler.sendGiveItem(stack, infinite, true);
             }
         } else {
             for (int given = 0; given < stack.stackSize; ) {
@@ -241,7 +242,7 @@ public class NEIClientUtils extends NEIServerUtils {
         }
 
         if (hasSMPCounterPart()) {
-            NEICPH.sendGamemode(nmode);
+            NEIClientPacketHandler.sendGamemode(nmode);
         } else {
             sendCommand(getStringSetting("command.creative"), getGameType(nmode), mc().thePlayer.getName());
         }
@@ -260,7 +261,7 @@ public class NEIClientUtils extends NEIServerUtils {
         long newTime = day + 24000L + hour * 1000;
 
         if (hasSMPCounterPart()) {
-            NEICPH.sendSetTime(hour);
+            NEIClientPacketHandler.sendSetTime(hour);
         } else {
             sendCommand(getStringSetting("command.time"), newTime);
         }
@@ -289,7 +290,7 @@ public class NEIClientUtils extends NEIServerUtils {
 
     public static void toggleRaining() {
         if (hasSMPCounterPart()) {
-            NEICPH.sendToggleRain();
+            NEIClientPacketHandler.sendToggleRain();
         } else {
             sendCommand(getStringSetting("command.rain"), isRaining() ? 0 : 1);
         }
@@ -297,7 +298,7 @@ public class NEIClientUtils extends NEIServerUtils {
 
     public static void healPlayer() {
         if (hasSMPCounterPart()) {
-            NEICPH.sendHeal();
+            NEIClientPacketHandler.sendHeal();
         } else {
             sendCommand(getStringSetting("command.heal"), mc().thePlayer.getName());
         }
@@ -305,7 +306,7 @@ public class NEIClientUtils extends NEIServerUtils {
 
     public static void toggleMagnetMode() {
         if (hasSMPCounterPart()) {
-            NEICPH.sendToggleMagnetMode();
+            NEIClientPacketHandler.sendToggleMagnetMode();
         }
     }
 

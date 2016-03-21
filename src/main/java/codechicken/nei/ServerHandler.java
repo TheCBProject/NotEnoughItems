@@ -1,6 +1,8 @@
 package codechicken.nei;
 
 import codechicken.lib.packet.PacketCustom;
+import codechicken.nei.network.NEIClientPacketHandler;
+import codechicken.nei.network.NEIServerPacketHandler;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
@@ -25,7 +27,7 @@ public class ServerHandler {
     public static void init() {
         instance = new ServerHandler();
 
-        PacketCustom.assignHandler(NEICPH.channel, new NEISPH());
+        PacketCustom.assignHandler(NEIClientPacketHandler.channel, new NEIServerPacketHandler());
         FMLCommonHandler.instance().bus().register(instance);
         MinecraftForge.EVENT_BUS.register(instance);
 
@@ -90,7 +92,7 @@ public class ServerHandler {
                 continue;
             }
             if (save.magneticItems.add(item)) {
-                NEISPH.sendAddMagneticItemTo(player, item);
+                NEIServerPacketHandler.sendAddMagneticItemTo(player, item);
             }
 
             double dx = player.posX - item.posX;
@@ -142,7 +144,7 @@ public class ServerHandler {
     @SubscribeEvent
     public void loginEvent(PlayerLoggedInEvent event) {
         NEIServerConfig.loadPlayer(event.player);
-        NEISPH.sendHasServerSideTo((EntityPlayerMP) event.player);
+        NEIServerPacketHandler.sendHasServerSideTo((EntityPlayerMP) event.player);
     }
 
     @SubscribeEvent

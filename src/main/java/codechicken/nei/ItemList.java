@@ -5,6 +5,7 @@ import codechicken.nei.api.ItemFilter;
 import codechicken.nei.api.ItemFilter.ItemFilterProvider;
 import codechicken.nei.api.ItemInfo;
 import codechicken.nei.guihook.GuiContainerManager;
+import codechicken.nei.util.LogHelper;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
 import net.minecraft.client.renderer.block.model.IBakedModel;
@@ -215,7 +216,7 @@ public class ItemList {
                     items.addAll(permutations);
                     itemMap.putAll(item, permutations);
                 } catch (Throwable t) {
-                    NEIServerConfig.logger.error("Removing item: " + item + " from list.", t);
+                    LogHelper.errorError("Removing item: %s from list.", t, item);
                     erroredItems.add(item);
                 }
             }

@@ -4,6 +4,7 @@ import codechicken.nei.api.*;
 import codechicken.nei.guihook.GuiContainerManager;
 import codechicken.nei.guihook.IContainerInputHandler;
 import codechicken.nei.guihook.IContainerSlotClickHandler;
+import codechicken.nei.network.NEIClientPacketHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.gui.inventory.GuiContainerCreative;
@@ -93,10 +94,10 @@ public class NEIController implements IContainerSlotClickHandler, IContainerInpu
             if (selectedItem != inventory.currentItem) {
                 if (inventory.currentItem == selectedItem + 1 || (inventory.currentItem == 0 && selectedItem == 8))//foward
                 {
-                    NEICPH.sendCreativeScroll(1);
+                    NEIClientPacketHandler.sendCreativeScroll(1);
                     inventory.currentItem = selectedItem;
                 } else if (inventory.currentItem == selectedItem - 1 || (inventory.currentItem == 8 && selectedItem == 0)) {
-                    NEICPH.sendCreativeScroll(-1);
+                    NEIClientPacketHandler.sendCreativeScroll(-1);
                     inventory.currentItem = selectedItem;
                 }
             }
