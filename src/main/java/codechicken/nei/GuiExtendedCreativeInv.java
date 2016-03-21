@@ -3,6 +3,7 @@ package codechicken.nei;
 import codechicken.lib.render.CCRenderState;
 import codechicken.nei.api.INEIGuiHandler;
 import codechicken.nei.api.TaggedInventoryArea;
+import codechicken.nei.util.NEIServerUtils;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.inventory.Container;
@@ -29,7 +30,7 @@ public class GuiExtendedCreativeInv extends GuiContainer implements INEIGuiHandl
     }
 
     @Override
-    public VisiblityData modifyVisiblity(GuiContainer gui, VisiblityData currentVisibility) {
+    public VisibilityData modifyVisiblity(GuiContainer gui, VisibilityData currentVisibility) {
         return currentVisibility;
     }
 

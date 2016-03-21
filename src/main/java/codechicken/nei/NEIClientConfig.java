@@ -5,8 +5,10 @@ import codechicken.lib.config.ConfigFile;
 import codechicken.lib.config.ConfigTag;
 import codechicken.lib.config.ConfigTagParent;
 import codechicken.nei.api.*;
+import codechicken.nei.api.layout.LayoutStyle;
 import codechicken.nei.config.*;
 import codechicken.nei.recipe.RecipeInfo;
+import codechicken.nei.util.NEIClientUtils;
 import codechicken.obfuscator.ObfuscationRun;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
@@ -513,11 +515,8 @@ public class NEIClientConfig {
         }
 
         String cmd = getStringSetting("command." + base);
-        if (cmd == null || !cmd.startsWith("/")) {
-            return false;
-        }
+        return !(cmd == null || !cmd.startsWith("/"));
 
-        return true;
     }
 
     private static boolean modePermitsAction(String name) {

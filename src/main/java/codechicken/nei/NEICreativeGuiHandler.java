@@ -7,7 +7,7 @@ import net.minecraft.creativetab.CreativeTabs;
 
 public class NEICreativeGuiHandler extends INEIGuiAdapter {
     @Override
-    public VisiblityData modifyVisiblity(GuiContainer gui, VisiblityData currentVisibility) {
+    public VisibilityData modifyVisiblity(GuiContainer gui, VisibilityData currentVisibility) {
         if (!(gui instanceof GuiContainerCreative)) {
             return currentVisibility;
         }

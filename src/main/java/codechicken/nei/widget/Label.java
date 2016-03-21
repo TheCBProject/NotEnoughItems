@@ -1,4 +1,4 @@
-package codechicken.nei;
+package codechicken.nei.widget;
 
 import static codechicken.lib.gui.GuiDraw.drawString;
 import static codechicken.lib.gui.GuiDraw.drawStringC;
@@ -6,7 +6,7 @@ import static codechicken.lib.gui.GuiDraw.drawStringC;
 public class Label extends Widget {
     boolean centered;
     int colour;
-    String text;
+    public String text;
 
     public Label(String s, boolean center, int color) {
         text = s;

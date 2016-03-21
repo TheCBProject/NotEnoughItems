@@ -4,6 +4,7 @@ import codechicken.core.inventory.ContainerExtended;
 import codechicken.core.inventory.SlotDummy;
 import codechicken.nei.api.INEIGuiAdapter;
 import codechicken.nei.network.NEIClientPacketHandler;
+import codechicken.nei.util.NEIClientUtils;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;

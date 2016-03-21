@@ -3,6 +3,7 @@ package codechicken.nei;
 import codechicken.lib.inventory.InventoryUtils;
 import codechicken.lib.packet.PacketCustom;
 import codechicken.nei.network.NEIServerPacketHandler;
+import codechicken.nei.util.NEIServerUtils;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;

@@ -1,4 +1,4 @@
-package codechicken.nei;
+package codechicken.nei.widget;
 
 import codechicken.lib.vec.Rectangle4i;
 import net.minecraft.item.ItemStack;

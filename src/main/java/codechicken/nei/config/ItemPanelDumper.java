@@ -2,8 +2,8 @@ package codechicken.nei.config;
 
 import codechicken.lib.inventory.InventoryUtils;
 import codechicken.lib.vec.Rectangle4i;
-import codechicken.nei.ItemPanel;
-import codechicken.nei.NEIClientUtils;
+import codechicken.nei.widget.ItemPanel;
+import codechicken.nei.util.NEIClientUtils;
 import codechicken.nei.guihook.GuiContainerManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.Item;

@@ -1,4 +1,8 @@
-package codechicken.nei;
+package codechicken.nei.widget;
+
+import codechicken.nei.Image;
+import codechicken.nei.LayoutManager;
+import codechicken.nei.util.NEIClientUtils;
 
 import java.util.List;
 

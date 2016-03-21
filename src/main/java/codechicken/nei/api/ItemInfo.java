@@ -46,7 +46,7 @@ import java.util.Map.Entry;
  * This is an internal class for storing information about items, to be accessed by the API
  */
 public class ItemInfo {
-    public static enum Layout {
+    public enum Layout {
         HEADER, BODY, FOOTER
     }
 
@@ -237,7 +237,7 @@ public class ItemInfo {
 
     private static void parseModItems() {
         HashMap<String, ItemStackSet> modSubsets = new HashMap<String, ItemStackSet>();
-        for (Item item : (Iterable<Item>) Item.itemRegistry) {
+        for (Item item : Item.itemRegistry) {
             UniqueIdentifier ident = GameRegistry.findUniqueIdentifierFor(item);
             if (ident == null) {
                 NEIClientConfig.logger.error("Failed to find identifier for: " + item);

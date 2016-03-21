@@ -1,7 +1,7 @@
 package codechicken.nei.recipe;
 
 import codechicken.nei.NEIClientConfig;
-import codechicken.nei.NEIClientUtils;
+import codechicken.nei.util.NEIClientUtils;
 import codechicken.nei.guihook.GuiContainerManager;
 import codechicken.nei.guihook.IContainerInputHandler;
 import net.minecraft.client.gui.inventory.GuiContainer;

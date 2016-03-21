@@ -5,6 +5,7 @@ import codechicken.nei.KeyManager.KeyState;
 import codechicken.nei.SearchField.ISearchProvider;
 import codechicken.nei.SubsetWidget.SubsetTag;
 import codechicken.nei.api.ItemFilter.ItemFilterProvider;
+import codechicken.nei.api.layout.LayoutStyle;
 import codechicken.nei.config.Option;
 import codechicken.nei.config.OptionKeyBind;
 import codechicken.nei.recipe.*;

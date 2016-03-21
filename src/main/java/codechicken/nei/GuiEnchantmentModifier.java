@@ -10,7 +10,7 @@ import net.minecraft.world.World;
 
 import java.io.IOException;
 
-import static codechicken.nei.NEIClientUtils.translate;
+import static codechicken.nei.util.NEIClientUtils.translate;
 
 public class GuiEnchantmentModifier extends GuiContainer {
     ContainerEnchantmentModifier container;
@@ -78,8 +78,8 @@ public class GuiEnchantmentModifier extends GuiContainer {
 
     private void changeLevel(int i) {
         container.level += i;
-        ((GuiButton) buttonList.get(0)).enabled = container.level != 1;
-        ((GuiButton) buttonList.get(1)).enabled = container.level != 10;
+        buttonList.get(0).enabled = container.level != 1;
+        buttonList.get(1).enabled = container.level != 10;
     }
 
     @Override

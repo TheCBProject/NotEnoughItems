@@ -1,8 +1,11 @@
-package codechicken.nei;
+package codechicken.nei.util;
 
 import codechicken.lib.inventory.InventoryRange;
 import codechicken.lib.inventory.InventoryUtils;
 import codechicken.lib.util.LangProxy;
+import codechicken.nei.LayoutManager;
+import codechicken.nei.NEIActions;
+import codechicken.nei.NEIClientConfig;
 import codechicken.nei.api.GuiInfo;
 import codechicken.nei.api.IInfiniteItemHandler;
 import codechicken.nei.api.INEIGuiHandler;

@@ -1,6 +1,9 @@
-package codechicken.nei;
+package codechicken.nei.layout;
 
-import codechicken.nei.api.LayoutStyle;
+import codechicken.nei.*;
+import codechicken.nei.api.layout.LayoutStyle;
+import codechicken.nei.util.NEIClientUtils;
+import codechicken.nei.widget.Button;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -10,7 +13,7 @@ import static codechicken.nei.NEIClientConfig.*;
 
 public abstract class LayoutStyleDefault extends LayoutStyle {
     @Override
-    public void layout(GuiContainer gui, VisiblityData visiblity) {
+    public void layout(GuiContainer gui, VisibilityData visiblity) {
         int windowWidth = gui.width;
         int windowHeight = gui.height;
         int containerWidth = gui.xSize;

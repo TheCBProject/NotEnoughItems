@@ -1,6 +1,10 @@
-package codechicken.nei;
+package codechicken.nei.widget;
 
 import codechicken.lib.vec.Rectangle4i;
+import codechicken.nei.NEIClientConfig;
+import codechicken.nei.util.NEIClientUtils;
+import codechicken.nei.NEIController;
+import codechicken.nei.util.NEIServerUtils;
 import codechicken.nei.api.GuiInfo;
 import codechicken.nei.api.INEIGuiHandler;
 import codechicken.nei.guihook.GuiContainerManager;

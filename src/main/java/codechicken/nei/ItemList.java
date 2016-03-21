@@ -6,6 +6,8 @@ import codechicken.nei.api.ItemFilter.ItemFilterProvider;
 import codechicken.nei.api.ItemInfo;
 import codechicken.nei.guihook.GuiContainerManager;
 import codechicken.nei.util.LogHelper;
+import codechicken.nei.util.NEIServerUtils;
+import codechicken.nei.widget.ItemPanel;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
 import net.minecraft.client.renderer.block.model.IBakedModel;

@@ -1,9 +1,9 @@
 package codechicken.nei.recipe;
 
 import codechicken.lib.gui.GuiDraw;
-import codechicken.nei.InventoryCraftingDummy;
-import codechicken.nei.NEIClientUtils;
-import codechicken.nei.PositionedStack;
+import codechicken.nei.container.InventoryCraftingDummy;
+import codechicken.nei.util.NEIClientUtils;
+import codechicken.nei.api.stack.PositionedStack;
 import codechicken.nei.guihook.GuiContainerManager;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.InventoryCrafting;

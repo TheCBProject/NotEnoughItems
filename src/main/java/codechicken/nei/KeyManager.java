@@ -10,8 +10,8 @@ import java.util.Map.Entry;
  * Good old down/held/up keystate tracker
  */
 public class KeyManager {
-    public static interface IKeyStateTracker {
-        public void tickKeyStates();
+    public interface IKeyStateTracker {
+        void tickKeyStates();
     }
 
     public static class KeyState {

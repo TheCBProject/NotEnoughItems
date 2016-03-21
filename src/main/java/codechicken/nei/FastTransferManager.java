@@ -1,6 +1,7 @@
 package codechicken.nei;
 
 import codechicken.nei.guihook.GuiContainerManager;
+import codechicken.nei.util.NEIClientUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.inventory.ClickType;
@@ -10,7 +11,7 @@ import net.minecraft.item.ItemStack;
 
 import java.util.*;
 
-import static codechicken.nei.NEIServerUtils.*;
+import static codechicken.nei.util.NEIServerUtils.*;
 
 public class FastTransferManager {
     /**
@@ -89,7 +90,7 @@ public class FastTransferManager {
 
     public static void clearSlots(Container container) {
         for (int slotNo = 0; slotNo < container.inventorySlots.size(); slotNo++) {
-            ((Slot) container.inventorySlots.get(slotNo)).putStack(null);
+            container.inventorySlots.get(slotNo).putStack(null);
         }
     }
 

@@ -1,5 +1,6 @@
 package codechicken.nei;
 
+import codechicken.nei.widget.Widget;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.util.ChatAllowedCharacters;
 import org.lwjgl.input.Keyboard;

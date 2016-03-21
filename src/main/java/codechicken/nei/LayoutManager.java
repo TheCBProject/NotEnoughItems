@@ -3,7 +3,14 @@ package codechicken.nei;
 import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.KeyManager.IKeyStateTracker;
 import codechicken.nei.api.*;
+import codechicken.nei.api.layout.LayoutStyle;
+import codechicken.nei.widget.Button;
+import codechicken.nei.widget.ItemPanel;
+import codechicken.nei.widget.Label;
+import codechicken.nei.widget.Widget;
 import codechicken.nei.guihook.*;
+import codechicken.nei.layout.LayoutStyleMinecraft;
+import codechicken.nei.layout.LayoutStyleTMIOld;
 import codechicken.nei.network.NEIClientPacketHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
@@ -23,7 +30,7 @@ import java.util.TreeSet;
 
 import static codechicken.lib.gui.GuiDraw.*;
 import static codechicken.nei.NEIClientConfig.*;
-import static codechicken.nei.NEIClientUtils.*;
+import static codechicken.nei.util.NEIClientUtils.*;
 
 public class LayoutManager implements IContainerInputHandler, IContainerTooltipHandler, IContainerDrawHandler, IContainerObjectHandler, IKeyStateTracker {
     private static LayoutManager instance;
@@ -86,8 +93,8 @@ public class LayoutManager implements IContainerInputHandler, IContainerTooltipH
             gui.guiTop = (gui.height - gui.ySize) / 2;
 
             if (gui instanceof GuiContainerCreative && gui.buttonList.size() >= 2) {
-                GuiButton button1 = (GuiButton) gui.buttonList.get(0);
-                GuiButton button2 = (GuiButton) gui.buttonList.get(1);
+                GuiButton button1 = gui.buttonList.get(0);
+                GuiButton button2 = gui.buttonList.get(1);
                 button1.xPosition = gui.guiLeft;
                 button2.xPosition = gui.guiLeft + gui.xSize - 20;
             }
@@ -266,7 +273,7 @@ public class LayoutManager implements IContainerInputHandler, IContainerTooltipH
     }
 
     public static void layout(GuiContainer gui) {
-        VisiblityData visiblity = new VisiblityData();
+        VisibilityData visiblity = new VisibilityData();
         if (isHidden()) {
             visiblity.showNEI = false;
         }
@@ -624,7 +631,7 @@ public class LayoutManager implements IContainerInputHandler, IContainerTooltipH
         return false;
     }
 
-    public static void updateWidgetVisiblities(GuiContainer gui, VisiblityData visiblity) {
+    public static void updateWidgetVisiblities(GuiContainer gui, VisibilityData visiblity) {
         drawWidgets = new TreeSet<Widget>(new WidgetZOrder(false));
         controlWidgets = new TreeSet<Widget>(new WidgetZOrder(true));
 

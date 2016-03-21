@@ -5,7 +5,7 @@ import codechicken.core.gui.GuiScreenWidget;
 import codechicken.lib.math.MathHelper;
 import codechicken.lib.vec.Rectangle4i;
 import codechicken.nei.HUDRenderer;
-import codechicken.nei.NEIClientUtils;
+import codechicken.nei.util.NEIClientUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;

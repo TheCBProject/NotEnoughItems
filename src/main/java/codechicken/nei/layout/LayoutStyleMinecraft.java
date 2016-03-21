@@ -1,5 +1,8 @@
-package codechicken.nei;
+package codechicken.nei.layout;
 
+import codechicken.nei.widget.Button;
+import codechicken.nei.Image;
+import codechicken.nei.LayoutManager;
 import net.minecraft.client.renderer.GlStateManager;
 
 import static codechicken.lib.gui.GuiDraw.drawStringC;

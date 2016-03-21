@@ -1,6 +1,6 @@
 package codechicken.nei.recipe;
 
-import codechicken.nei.PositionedStack;
+import codechicken.nei.api.stack.PositionedStack;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
@@ -25,7 +25,7 @@ public class ContainerRecipe extends Container {
             if (i < 0 || i > inventoryItemStacks.size()) {
                 return null;
             }
-            return (ItemStack) inventoryItemStacks.get(i);
+            return inventoryItemStacks.get(i);
         }
 
         @Override
@@ -139,7 +139,7 @@ public class ContainerRecipe extends Container {
 
     public Slot getSlotWithStack(PositionedStack stack, int recipex, int recipey) {
         for (int i = 0; i < inventorySlots.size(); i++) {
-            Slot slot = (Slot) inventorySlots.get(i);
+            Slot slot = inventorySlots.get(i);
             if (slot.xDisplayPosition == (stack.relx + recipex) && slot.yDisplayPosition == (stack.rely + recipey)) {
                 return slot;
             }

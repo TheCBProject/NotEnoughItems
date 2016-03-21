@@ -1,5 +1,7 @@
-package codechicken.nei;
+package codechicken.nei.api.stack;
 
+import codechicken.nei.ItemList;
+import codechicken.nei.util.NEIServerUtils;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;

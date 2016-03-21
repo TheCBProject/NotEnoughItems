@@ -21,16 +21,16 @@ public class SearchField extends TextField implements ItemFilterProvider {
     /**
      * Interface for returning a custom filter based on search field text
      */
-    public static interface ISearchProvider {
+    public interface ISearchProvider {
         /**
          * @return false if this filter should only be used if no other non-default filters match the search string
          */
-        public boolean isPrimary();
+        boolean isPrimary();
 
         /**
          * @return An item filter for items matching SearchTex null to ignore this provider
          */
-        public ItemFilter getFilter(String searchText);
+        ItemFilter getFilter(String searchText);
     }
 
     private static class DefaultSearchProvider implements ISearchProvider {

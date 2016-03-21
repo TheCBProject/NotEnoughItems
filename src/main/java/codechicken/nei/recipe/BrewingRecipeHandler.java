@@ -1,9 +1,9 @@
 package codechicken.nei.recipe;
 
 import codechicken.nei.ItemStackSet;
-import codechicken.nei.NEIClientUtils;
-import codechicken.nei.NEIServerUtils;
-import codechicken.nei.PositionedStack;
+import codechicken.nei.util.NEIClientUtils;
+import codechicken.nei.util.NEIServerUtils;
+import codechicken.nei.api.stack.PositionedStack;
 import codechicken.nei.api.API;
 import codechicken.nei.api.ItemFilter;
 import com.google.common.base.Function;

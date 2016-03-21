@@ -1,10 +1,11 @@
-package codechicken.nei;
+package codechicken.nei.util;
 
 import codechicken.core.CommonUtils;
 import codechicken.core.ServerUtils;
 import codechicken.lib.inventory.InventoryRange;
 import codechicken.lib.inventory.InventoryUtils;
 import codechicken.lib.packet.PacketCustom;
+import codechicken.nei.*;
 import codechicken.nei.network.NEIServerPacketHandler;
 import codechicken.nei.util.LogHelper;
 import net.minecraft.command.ICommandSender;
@@ -88,7 +89,7 @@ public class NEIServerUtils {
 
     @SuppressWarnings("unchecked")
     public static void deleteAllItems(EntityPlayerMP player) {
-        for (Slot slot : (List<Slot>) player.openContainer.inventorySlots) {
+        for (Slot slot : player.openContainer.inventorySlots) {
             slot.putStack(null);
         }
 

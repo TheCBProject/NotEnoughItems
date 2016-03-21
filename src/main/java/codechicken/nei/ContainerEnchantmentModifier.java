@@ -2,6 +2,7 @@ package codechicken.nei;
 
 import codechicken.lib.render.CCRenderState;
 import codechicken.nei.network.NEIClientPacketHandler;
+import codechicken.nei.util.NEIServerUtils;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.enchantment.Enchantment;

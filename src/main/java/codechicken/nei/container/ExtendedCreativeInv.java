@@ -1,5 +1,7 @@
-package codechicken.nei;
+package codechicken.nei.container;
 
+import codechicken.nei.NEIClientConfig;
+import codechicken.nei.PlayerSave;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;

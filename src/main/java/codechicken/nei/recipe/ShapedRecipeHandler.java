@@ -2,9 +2,9 @@ package codechicken.nei.recipe;
 
 import codechicken.core.ReflectionManager;
 import codechicken.nei.NEIClientConfig;
-import codechicken.nei.NEIClientUtils;
-import codechicken.nei.NEIServerUtils;
-import codechicken.nei.PositionedStack;
+import codechicken.nei.util.NEIClientUtils;
+import codechicken.nei.util.NEIServerUtils;
+import codechicken.nei.api.stack.PositionedStack;
 import codechicken.nei.api.DefaultOverlayRenderer;
 import codechicken.nei.api.IOverlayHandler;
 import codechicken.nei.api.IRecipeOverlayRenderer;
@@ -90,7 +90,7 @@ public class ShapedRecipeHandler extends TemplateRecipeHandler {
     @Override
     public void loadCraftingRecipes(String outputId, Object... results) {
         if (outputId.equals("crafting") && getClass() == ShapedRecipeHandler.class) {
-            for (IRecipe irecipe : (List<IRecipe>) CraftingManager.getInstance().getRecipeList()) {
+            for (IRecipe irecipe : CraftingManager.getInstance().getRecipeList()) {
                 CachedShapedRecipe recipe = null;
                 if (irecipe instanceof ShapedRecipes) {
                     recipe = new CachedShapedRecipe((ShapedRecipes) irecipe);
@@ -112,7 +112,7 @@ public class ShapedRecipeHandler extends TemplateRecipeHandler {
 
     @Override
     public void loadCraftingRecipes(ItemStack result) {
-        for (IRecipe irecipe : (List<IRecipe>) CraftingManager.getInstance().getRecipeList()) {
+        for (IRecipe irecipe : CraftingManager.getInstance().getRecipeList()) {
             if (NEIServerUtils.areStacksSameTypeCrafting(irecipe.getRecipeOutput(), result)) {
                 CachedShapedRecipe recipe = null;
                 if (irecipe instanceof ShapedRecipes) {
@@ -133,7 +133,7 @@ public class ShapedRecipeHandler extends TemplateRecipeHandler {
 
     @Override
     public void loadUsageRecipes(ItemStack ingredient) {
-        for (IRecipe irecipe : (List<IRecipe>) CraftingManager.getInstance().getRecipeList()) {
+        for (IRecipe irecipe : CraftingManager.getInstance().getRecipeList()) {
             CachedShapedRecipe recipe = null;
             if (irecipe instanceof ShapedRecipes) {
                 recipe = new CachedShapedRecipe((ShapedRecipes) irecipe);

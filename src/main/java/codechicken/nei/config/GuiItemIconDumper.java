@@ -2,9 +2,9 @@ package codechicken.nei.config;
 
 import codechicken.core.CommonUtils;
 import codechicken.lib.gui.GuiDraw;
-import codechicken.nei.ItemPanel;
+import codechicken.nei.widget.ItemPanel;
 import codechicken.nei.NEIClientConfig;
-import codechicken.nei.NEIClientUtils;
+import codechicken.nei.util.NEIClientUtils;
 import codechicken.nei.guihook.GuiContainerManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;

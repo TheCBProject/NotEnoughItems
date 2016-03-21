@@ -4,7 +4,7 @@ import codechicken.core.CommonUtils;
 import codechicken.lib.vec.Rectangle4i;
 import codechicken.nei.LayoutManager;
 import codechicken.nei.NEIClientConfig;
-import codechicken.nei.NEIClientUtils;
+import codechicken.nei.util.NEIClientUtils;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;

@@ -7,6 +7,7 @@ import codechicken.lib.inventory.InventoryUtils;
 import codechicken.lib.packet.PacketCustom;
 import codechicken.nei.network.NEIServerPacketHandler;
 import codechicken.nei.util.LogHelper;
+import codechicken.nei.util.NEIServerUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
@@ -25,7 +26,7 @@ import java.util.*;
 
 public class NEIServerConfig {
     private static MinecraftServer server;
-    
+
     public static File saveDir;
     public static ConfigFile serverConfig;
     public static Map<Integer, NBTTagCompound> dimTags = new HashMap<Integer, NBTTagCompound>();
