@@ -159,7 +159,7 @@ public class ClientHandler {
         if (gui != lastGui) {
             if (gui instanceof GuiMainMenu) {
                 lastworld = null;
-            } else if (gui instanceof GuiSelectWorld) {
+            } else if (gui instanceof GuiWorldSelection) {
                 NEIClientConfig.reloadSaves();
             }
         }

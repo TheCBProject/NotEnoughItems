@@ -63,7 +63,7 @@ public class NEITransformer implements IClassTransformer {
 
         addProtectedForwarder(new ObfMapping(GuiContainer, "func_73869_a", "(CI)V"), new ObfMapping("codechicken/nei/guihook/GuiContainerManager", "callKeyTyped", "(Lnet/minecraft/client/gui/inventory/GuiContainer;CI)V"));
 
-        addProtectedForwarder(new ObfMapping(GuiContainer, "func_146984_a", "(Lnet/minecraft/inventory/Slot;III)V"), new ObfMapping("codechicken/nei/guihook/DefaultSlotClickHandler", "callHandleMouseClick", "(Lnet/minecraft/client/gui/inventory/GuiContainer;Lnet/minecraft/inventory/Slot;III)V"));
+        addProtectedForwarder(new ObfMapping(GuiContainer, "func_184098_a", "(Lnet/minecraft/inventory/Slot;IILnet/minecraft/inventory/ClickType;)V"), new ObfMapping("codechicken/nei/guihook/DefaultSlotClickHandler", "callHandleMouseClick", "(Lnet/minecraft/client/gui/inventory/GuiContainer;Lnet/minecraft/inventory/Slot;IILnet/minecraft/inventory/ClickType;)V"));
 
         //Inject preDraw at the start of drawScreen
         transformer.add(new MethodInjector(new ObfMapping(GuiContainer, "func_73863_a", "(IIF)V"), asmblocks.get("preDraw"), true));
@@ -94,7 +94,7 @@ public class NEITransformer implements IClassTransformer {
         transformer.add(new MethodReplacer(new ObfMapping(GuiContainer, "func_146983_a", "(I)Z"), asmblocks.get("d_handleMouseClick"), asmblocks.get("handleMouseClick")));//checkHotbarKeys
 
         //Write delegate for handleMouseClicked
-        transformer.add(new MethodWriter(ACC_PUBLIC, new ObfMapping(GuiContainer, "managerHandleMouseClick", "(Lnet/minecraft/inventory/Slot;III)V"), asmblocks.get("m_managerHandleMouseClick")));
+        transformer.add(new MethodWriter(ACC_PUBLIC, new ObfMapping(GuiContainer, "managerHandleMouseClick", "(Lnet/minecraft/inventory/Slot;IILnet/minecraft/inventory/ClickType;)V"), asmblocks.get("m_managerHandleMouseClick")));
 
         //Inject mouseDragged hook after super call in mouseDragged
         transformer.add(new MethodInjector(new ObfMapping(GuiContainer, "func_146273_a", "(IIIJ)V"), asmblocks.get("n_mouseDragged"), asmblocks.get("mouseDragged"), false));
@@ -120,8 +120,8 @@ public class NEITransformer implements IClassTransformer {
             }
         });
 
-        //Replace general handleSlotClick call with delegate
-        transformer.add(new MethodReplacer(new ObfMapping(GuiContainer, "func_146984_a", "(Lnet/minecraft/inventory/Slot;III)V"), asmblocks.get("d_handleSlotClick"), asmblocks.get("handleSlotClick")));
+        //Replace general handleSlotClick call with delegate TODO
+        //transformer.add(new MethodReplacer(new ObfMapping(GuiContainer, "func_184098_a", "(Lnet/minecraft/inventory/Slot;IILnet/minecraft/inventory/ClickType;)V"), asmblocks.get("d_handleSlotClick"), asmblocks.get("handleSlotClick")));
 
         //Inject lastKeyTyped at the start of keyTyped
         transformer.add(new MethodInjector(new ObfMapping(GuiContainer, "func_73869_a", "(CI)V"), asmblocks.get("lastKeyTyped"), true));

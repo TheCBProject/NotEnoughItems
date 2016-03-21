@@ -3,7 +3,6 @@ package codechicken.nei.api;
 import codechicken.nei.*;
 import codechicken.nei.ItemList.ItemsLoadedCallback;
 import codechicken.nei.api.ItemFilter.ItemFilterProvider;
-import codechicken.nei.config.ArrayDumper;
 import codechicken.nei.config.ItemPanelDumper;
 import codechicken.nei.config.RegistryDumper;
 import codechicken.nei.guihook.GuiContainerManager;
@@ -15,6 +14,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.Enchantment;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityList.EntityEggInfo;
 import net.minecraft.entity.monster.EntityIronGolem;
@@ -25,10 +25,11 @@ import net.minecraft.init.Items;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.*;
 import net.minecraft.potion.Potion;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.RegistryNamespaced;
+import net.minecraft.potion.PotionHelper;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.registry.RegistryNamespaced;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.BiomeDictionary;
@@ -172,44 +173,47 @@ public class ItemInfo {
                 return Block.blockRegistry;
             }
         });
-        API.addOption(new ArrayDumper<Potion>("tools.dump.potion") {
+        //TODO Test.
+        API.addOption(new RegistryDumper<Potion>("tools.dump.potion") {
             public String[] header() {
                 return new String[] { "ID", "Unlocalised name", "Class" };
             }
 
             @Override
-            public String[] dump(Potion potion, int id) {
+            public String[] dump(Potion potion, int id, String name) {
                 return new String[] { Integer.toString(id), potion.getName(), potion.getClass().getCanonicalName() };
             }
 
             @Override
-            public Potion[] array() {
-                return Potion.potionTypes;
+            public RegistryNamespaced registry() {
+                return Potion.potionRegistry;
             }
         });
-        API.addOption(new ArrayDumper<Enchantment>("tools.dump.enchantment") {
+        //TODO Test.
+        API.addOption(new RegistryDumper<Enchantment>("tools.dump.enchantment") {
             public String[] header() {
                 return new String[] { "ID", "Unlocalised name", "Type", "Min Level", "Max Level", "Class" };
             }
 
             @Override
-            public String[] dump(Enchantment ench, int id) {
+            public String[] dump(Enchantment ench, int id, String name) {
                 return new String[] { Integer.toString(id), ench.getName(), ench.type.toString(), Integer.toString(ench.getMinLevel()), Integer.toString(ench.getMaxLevel()), ench.getClass().getCanonicalName() };
             }
 
             @Override
-            public Enchantment[] array() {
-                return Enchantment.enchantmentsList;
+            public RegistryNamespaced registry() {
+                return Enchantment.enchantmentRegistry;
             }
         });
-        API.addOption(new ArrayDumper<BiomeGenBase>("tools.dump.biome") {
+        //TODO Test.
+        API.addOption(new RegistryDumper<BiomeGenBase>("tools.dump.biome") {
             @Override
             public String[] header() {
                 return new String[] { "ID", "Name", "Temperature", "Rainfall", "Spawn Chance", "Root Height", "Height Variation", "Types", "Class" };
             }
 
             @Override
-            public String[] dump(BiomeGenBase biome, int id) {
+            public String[] dump(BiomeGenBase biome, int id, String name) {
                 BiomeDictionary.Type[] types = BiomeDictionary.getTypesForBiome(biome);
                 StringBuilder s_types = new StringBuilder();
                 for (BiomeDictionary.Type t : types) {
@@ -219,12 +223,12 @@ public class ItemInfo {
                     s_types.append(t.name());
                 }
 
-                return new String[] { Integer.toString(id), biome.biomeName, Float.toString(biome.getFloatTemperature(BlockPos.ORIGIN)), Float.toString(biome.getFloatRainfall()), Float.toString(biome.getSpawningChance()), Float.toString(biome.minHeight), Float.toString(biome.maxHeight), s_types.toString(), biome.getClass().getCanonicalName() };
+                return new String[] { Integer.toString(id), biome.getBiomeName(), Float.toString(biome.getFloatTemperature(BlockPos.ORIGIN)), Float.toString(biome.getRainfall()), Float.toString(biome.getSpawningChance()), Float.toString(biome.getBaseHeight()), Float.toString(biome.getHeightVariation()), s_types.toString(), biome.getClass().getCanonicalName() };
             }
 
             @Override
-            public BiomeGenBase[] array() {
-                return BiomeGenBase.getBiomeGenArray();
+            public RegistryNamespaced registry() {
+                return BiomeGenBase.biomeRegistry;
             }
         });
         API.addOption(new ItemPanelDumper("tools.dump.itempanel"));
@@ -304,7 +308,7 @@ public class ItemInfo {
         ArrayList<ItemStackSet> creativeTabRanges = new ArrayList<ItemStackSet>(CreativeTabs.creativeTabArray.length);
         List<ItemStack> stackList = new LinkedList<ItemStack>();
 
-        for (Item item : (Iterable<Item>) Item.itemRegistry) {
+        for (Item item : Item.itemRegistry) {
             if (item == null) {
                 continue;
             }
@@ -326,6 +330,7 @@ public class ItemInfo {
                 }
             }
 
+            //TODO EntityEquipmentSlot
             if (item.isDamageable()) {
                 tools.with(item);
                 if (item instanceof ItemPickaxe) {
@@ -340,16 +345,16 @@ public class ItemInfo {
                     swords.with(item);
                 } else if (item instanceof ItemArmor) {
                     switch (((ItemArmor) item).armorType) {
-                    case 0:
+                    case HEAD:
                         helmets.with(item);
                         break;
-                    case 1:
+                    case CHEST:
                         chest.with(item);
                         break;
-                    case 2:
+                    case LEGS:
                         legs.with(item);
                         break;
-                    case 3:
+                    case FEET:
                         boots.with(item);
                         break;
                     }
@@ -368,7 +373,7 @@ public class ItemInfo {
                 LinkedList<ItemStack> subItems = new LinkedList<ItemStack>();
                 item.getSubItems(item, null, subItems);
                 for (ItemStack stack : subItems) {
-                    if (item.isPotionIngredient(stack)) {
+                    if (PotionHelper.isReagent(stack)) {
                         BrewingRecipeHandler.ingredients.add(stack);
                         potioningredients.add(stack);
                     }
@@ -410,12 +415,12 @@ public class ItemInfo {
         addEntityEgg(EntityIronGolem.class, 0xC5C2C1, 0xffe1cc);
     }
 
-    private static void addEntityEgg(Class<?> entity, int i, int j) {
-        int id = (Integer) EntityList.classToIDMapping.get(entity);
+    private static void addEntityEgg(Class<? extends Entity> entity, int i, int j) {
+        String id = EntityList.getEntityStringFromClass(entity);
         EntityList.entityEggs.put(id, new EntityEggInfo(id, i, j));
     }
 
-    public static ArrayList<ItemStack> getIdentifierItems(World world, EntityPlayer player, MovingObjectPosition hit) {
+    public static ArrayList<ItemStack> getIdentifierItems(World world, EntityPlayer player, RayTraceResult hit) {
         BlockPos pos = hit.getBlockPos();
         IBlockState state = world.getBlockState(pos);
         Block block = state.getBlock();
@@ -440,7 +445,7 @@ public class ItemInfo {
             return items;
         }
 
-        ItemStack pick = block.getPickBlock(hit, world, pos);
+        ItemStack pick = block.getPickBlock(state, hit, world, pos, player);
         if (pick != null) {
             items.add(pick);
         }
@@ -469,12 +474,12 @@ public class ItemInfo {
         }
     }
 
-    public static List<String> getText(ItemStack itemStack, World world, EntityPlayer player, MovingObjectPosition mop) {
+    public static List<String> getText(ItemStack itemStack, World world, EntityPlayer player, RayTraceResult rayTraceResult) {
         List<String> retString = new ArrayList<String>();
 
         for (ItemInfo.Layout layout : ItemInfo.Layout.values()) {
             for (IHighlightHandler handler : ItemInfo.highlightHandlers.get(layout)) {
-                retString = handler.handleTextData(itemStack, world, player, mop, retString, layout);
+                retString = handler.handleTextData(itemStack, world, player, rayTraceResult, retString, layout);
             }
         }
 
@@ -484,7 +489,7 @@ public class ItemInfo {
     public static String getSearchName(ItemStack stack) {
         String s = itemSearchNames.get(stack);
         if (s == null) {
-            s = EnumChatFormatting.getTextWithoutFormattingCodes(GuiContainerManager.concatenatedDisplayName(stack, true).toLowerCase());
+            s = TextFormatting.getTextWithoutFormattingCodes(GuiContainerManager.concatenatedDisplayName(stack, true).toLowerCase());
             itemSearchNames.put(stack, s);
         }
         return s;

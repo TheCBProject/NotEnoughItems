@@ -8,7 +8,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.MovingObjectPosition.MovingObjectType;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 
 import java.awt.*;
@@ -33,7 +33,7 @@ public class HUDRenderer implements IKeyStateTracker {
                 !mc.gameSettings.keyBindPlayerList.isKeyDown() &&
                 NEIClientConfig.getBooleanSetting("world.highlight_tips") &&
                 mc.objectMouseOver != null &&
-                mc.objectMouseOver.typeOfHit == MovingObjectType.BLOCK) {
+                mc.objectMouseOver.typeOfHit == RayTraceResult.Type.BLOCK) {
             World world = mc.theWorld;
             ArrayList<ItemStack> items = ItemInfo.getIdentifierItems(world, mc.thePlayer, mc.objectMouseOver);
             if (items.isEmpty()) {

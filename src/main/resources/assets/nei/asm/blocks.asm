@@ -151,20 +151,23 @@ LDC 500F
 
 list d_drawSlot
 ALOAD 0
-GETFIELD net/minecraft/client/gui/inventory/GuiContainer.field_146296_j : Lnet/minecraft/client/renderer/entity/RenderItem;
+GETFIELD net/minecraft/client/gui/inventory/GuiContainer.field_146296_j : Lnet/minecraft/client/renderer/RenderItem;
+ALOAD 0
+GETFIELD net/minecraft/client/gui/inventory/GuiContainer.field_146297_k : Lnet/minecraft/client/Minecraft;
+GETFIELD net/minecraft/client/Minecraft.field_71439_g : Lnet/minecraft/client/entity/EntityPlayerSP;
 ALOAD 4
 ILOAD 2
 ILOAD 3
-INVOKEVIRTUAL net/minecraft/client/renderer/entity/RenderItem.func_180450_b (Lnet/minecraft/item/ItemStack;II)V
+INVOKEVIRTUAL net/minecraft/client/renderer/RenderItem.func_180450_b (Lnet/minecraft/entity/EntityLivingBase;Lnet/minecraft/item/ItemStack;II)V
 ALOAD 0
-GETFIELD net/minecraft/client/gui/inventory/GuiContainer.field_146296_j : Lnet/minecraft/client/renderer/entity/RenderItem;
+GETFIELD net/minecraft/client/gui/inventory/GuiContainer.field_146296_j : Lnet/minecraft/client/renderer/RenderItem;
 ALOAD 0
 GETFIELD net/minecraft/client/gui/inventory/GuiContainer.field_146289_q : Lnet/minecraft/client/gui/FontRenderer;
 ALOAD 4
 ILOAD 2
 ILOAD 3
 ALOAD 8
-INVOKEVIRTUAL net/minecraft/client/renderer/entity/RenderItem.func_180453_a (Lnet/minecraft/client/gui/FontRenderer;Lnet/minecraft/item/ItemStack;IILjava/lang/String;)V
+INVOKEVIRTUAL net/minecraft/client/renderer/RenderItem.func_180453_a (Lnet/minecraft/client/gui/FontRenderer;Lnet/minecraft/item/ItemStack;IILjava/lang/String;)V
 
 list drawSlot
 ALOAD 0
@@ -196,10 +199,10 @@ RETURN
 LCONT
 
 list d_handleMouseClick
-INVOKEVIRTUAL net/minecraft/client/gui/inventory/GuiContainer.func_146984_a (Lnet/minecraft/inventory/Slot;III)V
+INVOKEVIRTUAL net/minecraft/client/gui/inventory/GuiContainer.func_184098_a (Lnet/minecraft/inventory/Slot;IILnet/minecraft/inventory/ClickType;)V
 
 list handleMouseClick
-INVOKEVIRTUAL net/minecraft/client/gui/inventory/GuiContainer.managerHandleMouseClick (Lnet/minecraft/inventory/Slot;III)V
+INVOKEVIRTUAL net/minecraft/client/gui/inventory/GuiContainer.managerHandleMouseClick (Lnet/minecraft/inventory/Slot;IILnet/minecraft/inventory/ClickType;)V
 
 list m_managerHandleMouseClick
 ALOAD 0
@@ -207,8 +210,8 @@ GETFIELD net/minecraft/client/gui/inventory/GuiContainer.manager : Lcodechicken/
 ALOAD 1
 ILOAD 2
 ILOAD 3
-ILOAD 4
-INVOKEVIRTUAL codechicken/nei/guihook/GuiContainerManager.handleMouseClick (Lnet/minecraft/inventory/Slot;III)V
+ALOAD 4
+INVOKEVIRTUAL codechicken/nei/guihook/GuiContainerManager.handleMouseClick (Lnet/minecraft/inventory/Slot;IILnet/minecraft/inventory/ClickType;)V
 RETURN
 
 list n_mouseDragged
@@ -276,7 +279,7 @@ ILOAD 4
 ALOAD 0
 GETFIELD net/minecraft/client/gui/inventory/GuiContainer.field_146297_k : Lnet/minecraft/client/Minecraft;
 GETFIELD net/minecraft/client/Minecraft.field_71439_g : Lnet/minecraft/client/entity/EntityPlayerSP;
-INVOKEVIRTUAL net/minecraft/client/multiplayer/PlayerControllerMP.func_78753_a (IIIILnet/minecraft/entity/player/EntityPlayer;)Lnet/minecraft/item/ItemStack;
+INVOKEVIRTUAL net/minecraft/client/multiplayer/PlayerControllerMP.func_187098_a (IIILnet/minecraft/inventory/ClickType;Lnet/minecraft/entity/player/EntityPlayer;)Lnet/minecraft/item/ItemStack;
 POP
 
 list handleSlotClick
@@ -285,7 +288,7 @@ GETFIELD net/minecraft/client/gui/inventory/GuiContainer.manager : Lcodechicken/
 ILOAD 2
 ILOAD 3
 ILOAD 4
-INVOKEVIRTUAL codechicken/nei/guihook/GuiContainerManager.handleSlotClick (III)V
+INVOKEVIRTUAL codechicken/nei/guihook/GuiContainerManager.handleSlotClick (IILnet/minecraft/inventory/ClickType;)V
 
 list lastKeyTyped
 ALOAD 0

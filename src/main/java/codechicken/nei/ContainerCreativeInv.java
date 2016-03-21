@@ -3,6 +3,7 @@ package codechicken.nei;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemArmor;
@@ -12,11 +13,16 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ContainerCreativeInv extends Container {
     private class SlotArmor extends Slot {
-        int armorType;
+        EntityEquipmentSlot equipmentSlot;
 
-        public SlotArmor(IInventory inv, int slot, int x, int y, int armor) {
+        @Deprecated //TODO remove this.
+        public SlotArmor(IInventory inv, int slot, int x, int y, int armorType){
+            this(inv, slot, x, y, getArmorEquipmentSlotFromSlotID(armorType));
+        }
+
+        public SlotArmor(IInventory inv, int slot, int x, int y, EntityEquipmentSlot armor) {
             super(inv, slot, x, y);
-            armorType = armor;
+            equipmentSlot = armor;
         }
 
         @Override
@@ -26,13 +32,13 @@ public class ContainerCreativeInv extends Container {
 
         @Override
         public boolean isItemValid(ItemStack stack) {
-            return stack != null && stack.getItem().isValidArmor(stack, armorType, player);
+            return stack != null && stack.getItem().isValidArmor(stack, equipmentSlot, player);
         }
 
         @Override
         @SideOnly(Side.CLIENT)
         public String getSlotTexture() {
-            return ItemArmor.EMPTY_SLOT_NAMES[armorType];
+            return ItemArmor.EMPTY_SLOT_NAMES[equipmentSlot.getIndex()];
         }
     }
 
@@ -85,8 +91,8 @@ public class ContainerCreativeInv extends Container {
 
             if (stack.getItem() instanceof ItemArmor) {
                 ItemArmor armor = (ItemArmor) stack.getItem();
-                if (!getSlot(90 + armor.armorType).getHasStack()) {
-                    getSlot(90 + armor.armorType).putStack(transferredStack);
+                if (!getSlot(90 + armor.armorType.getIndex()).getHasStack()) {
+                    getSlot(90 + armor.armorType.getIndex()).putStack(transferredStack);
                     slot.putStack(null);
                     return transferredStack;
                 }
@@ -112,5 +118,18 @@ public class ContainerCreativeInv extends Container {
 
     public boolean canInteractWith(EntityPlayer var1) {
         return true;
+    }
+
+    private static EntityEquipmentSlot getArmorEquipmentSlotFromSlotID(int armorType) {
+        EntityEquipmentSlot entityEquipmentSlot = null;
+        for (EntityEquipmentSlot equipmentSlot : EntityEquipmentSlot.values()){
+            if (equipmentSlot.func_188452_c() == armorType){
+                entityEquipmentSlot = equipmentSlot;
+            }
+        }
+        if (entityEquipmentSlot == null){
+            throw new RuntimeException(String.format("Invalid slot number for armor slot! Given [%s], Expected [1 -> 4]", armorType));
+        }
+        return entityEquipmentSlot;
     }
 }

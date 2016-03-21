@@ -6,8 +6,8 @@ import codechicken.nei.LayoutManager;
 import codechicken.nei.NEIClientConfig;
 import codechicken.nei.NEIClientUtils;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.IChatComponent;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentTranslation;
 
 import java.io.File;
 import java.io.IOException;
@@ -55,8 +55,8 @@ public abstract class DataDumper extends Option {
         return ".csv";
     }
 
-    public IChatComponent dumpMessage(File file) {
-        return new ChatComponentTranslation("nei.options.tools.dump.dumped", translateN(name), "dumps/" + file.getName());
+    public ITextComponent dumpMessage(File file) {
+        return new TextComponentTranslation("nei.options.tools.dump.dumped", translateN(name), "dumps/" + file.getName());
     }
 
     public void dumpTo(File file) throws IOException {

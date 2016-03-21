@@ -17,9 +17,9 @@ import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.IChatComponent;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.WorldSettings.GameType;
@@ -47,7 +47,7 @@ public class NEIServerUtils {
         }
 
         if (notify) {
-            ServerUtils.sendChatToAll(new ChatComponentTranslation("nei.chat.rain." + (raining ? "on" : "off")));
+            ServerUtils.sendChatToAll(new TextComponentTranslation("nei.chat.rain." + (raining ? "on" : "off")));
         }
     }
 
@@ -99,12 +99,12 @@ public class NEIServerUtils {
         long newTime = day + 24000L + hour * 1000;
         setTime(newTime, world);
         if (notify) {
-            ServerUtils.sendChatToAll(new ChatComponentTranslation("nei.chat.time", getTime(world) / 24000L, hour));
+            ServerUtils.sendChatToAll(new TextComponentTranslation("nei.chat.time", getTime(world) / 24000L, hour));
         }
     }
 
     public static void advanceDisabledTimes(World world) {
-        int dim = world.provider.getDimensionId();
+        int dim = world.provider.getDimension();
         int hour = (int) (getTime(world) % 24000) / 1000;
         int newhour = hour;
         while (NEIServerConfig.isActionDisabled(dim, NEIActions.timeZones[newhour / 6])) {
@@ -120,12 +120,12 @@ public class NEIServerUtils {
         return InventoryUtils.insertItem(new InventoryRange(player.inventory, 0, 36), itemstack, true) == 0;
     }
 
-    public static void sendNotice(ICommandSender sender, IChatComponent msg, String permission) {
-        ChatComponentTranslation notice = new ChatComponentTranslation("chat.type.admin", sender.getName(), msg.createCopy());
-        notice.getChatStyle().setColor(EnumChatFormatting.GRAY).setItalic(true);
+    public static void sendNotice(ICommandSender sender, ITextComponent msg, String permission) {
+        TextComponentTranslation notice = new TextComponentTranslation("chat.type.admin", sender.getName(), msg.createCopy());
+        notice.getChatStyle().setColor(TextFormatting.GRAY).setItalic(true);
 
         if (NEIServerConfig.canPlayerPerformAction("CONSOLE", permission)) {
-            MinecraftServer.getServer().addChatMessage(notice);
+            PacketCustom.getServerInstance().addChatMessage(notice);
         }
 
         for (EntityPlayer p : ServerUtils.getPlayers()) {
@@ -189,14 +189,14 @@ public class NEIServerUtils {
         return compareStacks(stack1, stack2) == 0;
     }
 
-    public static IChatComponent setColour(IChatComponent msg, EnumChatFormatting colour) {
+    public static ITextComponent setColour(ITextComponent msg, TextFormatting colour) {
         msg.getChatStyle().setColor(colour);
         return msg;
     }
 
     public static void givePlayerItem(EntityPlayerMP player, ItemStack stack, boolean infinite, boolean doGive) {
         if (stack.getItem() == null) {
-            player.addChatComponentMessage(setColour(new ChatComponentTranslation("nei.chat.give.noitem"), EnumChatFormatting.WHITE));
+            player.addChatComponentMessage(setColour(new TextComponentTranslation("nei.chat.give.noitem"), TextFormatting.WHITE));
             return;
         }
 
@@ -209,7 +209,7 @@ public class NEIServerUtils {
             }
         }
 
-        sendNotice(player, new ChatComponentTranslation("commands.give.success", stack.getChatComponent(), infinite ? "\u221E" : Integer.toString(given), player.getName()), "notify-item");
+        sendNotice(player, new TextComponentTranslation("commands.give.success", stack.getChatComponent(), infinite ? "\u221E" : Integer.toString(given), player.getName()), "notify-item");
         player.openContainer.detectAndSendChanges();
     }
 
@@ -238,9 +238,9 @@ public class NEIServerUtils {
     public static int getCreativeMode(EntityPlayerMP player) {
         if (NEIServerConfig.forPlayer(player.getName()).isActionEnabled("creative+")) {
             return 2;
-        } else if (player.theItemInWorldManager.isCreative()) {
+        } else if (player.interactionManager.isCreative()) {
             return 1;
-        } else if (player.theItemInWorldManager.getGameType().isAdventure()) {
+        } else if (player.interactionManager.getGameType().isAdventure()) {
             return 3;
         } else {
             return 0;
@@ -274,11 +274,11 @@ public class NEIServerUtils {
         }
 
         //change it on the server
-        player.theItemInWorldManager.setGameType(getGameType(mode));
+        player.interactionManager.setGameType(getGameType(mode));
 
         //tell the client to change it
         new PacketCustom(NEISPH.channel, 14).writeByte(mode).sendToPlayer(player);
-        player.addChatMessage(new ChatComponentTranslation("nei.chat.gamemode." + mode));
+        player.addChatMessage(new TextComponentTranslation("nei.chat.gamemode." + mode));
     }
 
     public static void cycleCreativeInv(EntityPlayerMP player, int steps) {
@@ -355,9 +355,9 @@ public class NEIServerUtils {
         return -1;
     }
 
-    public static boolean doesEnchantmentConflict(List<int[]> enchantments, Enchantment e) {
+    public static boolean doesEnchantmentConflict(List<int[]> enchantments, Enchantment enchantment) {
         for (int[] ai : enchantments) {
-            if (!e.canApplyTogether(Enchantment.enchantmentsList[ai[0]])) {
+            if (!enchantment.canApplyTogether(Enchantment.getEnchantmentByID(ai[0]))) {
                 return true;
             }
         }

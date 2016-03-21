@@ -15,7 +15,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityMobSpawner;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import java.util.HashMap;
@@ -32,7 +32,7 @@ public class ItemMobSpawner extends ItemBlock {
     private static ItemMobSpawner instance;
 
     public static void register() {
-        GameDataManipulator.replaceItem(Block.getIdFromBlock(Blocks.mob_spawner), instance = new ItemMobSpawner());
+        //GameDataManipulator.replaceItem(Block.getIdFromBlock(Blocks.mob_spawner), instance = new ItemMobSpawner());
     }
 
     public static void initRender() {

@@ -8,6 +8,7 @@ import codechicken.nei.LayoutManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.util.text.translation.I18n;
 
 import java.awt.*;
 import java.io.IOException;
@@ -17,7 +18,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import static codechicken.lib.gui.GuiDraw.*;
-import static net.minecraft.util.StatCollector.translateToLocal;
+import static net.minecraft.util.text.translation.I18n.translateToLocal;
 
 public class GuiOptionList extends GuiScreenWidget {
     public class OptionScrollSlot extends GuiScrollSlot {

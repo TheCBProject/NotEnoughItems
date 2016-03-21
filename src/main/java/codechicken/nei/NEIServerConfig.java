@@ -34,9 +34,9 @@ public class NEIServerConfig {
     public static ItemStackMap<Set<String>> bannedItems = new ItemStackMap<Set<String>>();
 
     public static void load(World world) {
-        if (MinecraftServer.getServer() != server) {
+        if (PacketCustom.getServerInstance() != server) {
             logger.debug("Loading NEI Server");
-            server = MinecraftServer.getServer();
+            server = PacketCustom.getServerInstance();
             saveDir = new File(DimensionManager.getCurrentSaveRootDirectory(), "NEI");
 
             dimTags.clear();
@@ -57,7 +57,7 @@ public class NEIServerConfig {
             if (tag == null) {
                 tag = new NBTTagCompound();
             }
-            dimTags.put(world.provider.getDimensionId(), tag);
+            dimTags.put(world.provider.getDimension(), tag);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

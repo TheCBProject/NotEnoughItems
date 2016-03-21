@@ -14,9 +14,9 @@ import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.texture.TextureUtil;
 import net.minecraft.client.shader.Framebuffer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.IChatComponent;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TextFormatting;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
@@ -63,7 +63,7 @@ public class GuiItemIconDumper extends GuiScreen {
 
     }
 
-    private void returnScreen(IChatComponent msg) {
+    private void returnScreen(ITextComponent msg) {
         Minecraft.getMinecraft().displayGuiScreen(opt.slot.getGui());
         NEIClientUtils.printChatMessage(msg);
     }
@@ -71,7 +71,7 @@ public class GuiItemIconDumper extends GuiScreen {
     @Override
     protected void keyTyped(char c, int keycode) throws IOException {
         if (keycode == Keyboard.KEY_ESCAPE || keycode == Keyboard.KEY_BACK) {
-            returnScreen(new ChatComponentTranslation(opt.fullName() + ".icon.cancelled"));
+            returnScreen(new TextComponentTranslation(opt.fullName() + ".icon.cancelled"));
             return;
         }
         super.keyTyped(c, keycode);
@@ -126,7 +126,7 @@ public class GuiItemIconDumper extends GuiScreen {
         }
 
         if (parseIndex >= ItemPanel.items.size()) {
-            returnScreen(new ChatComponentTranslation(opt.fullName() + ".icon.dumped", "dumps/itempanel_icons"));
+            returnScreen(new TextComponentTranslation(opt.fullName() + ".icon.dumped", "dumps/itempanel_icons"));
         }
     }
 
@@ -144,7 +144,7 @@ public class GuiItemIconDumper extends GuiScreen {
     }
 
     private void exportImage(File dir, BufferedImage img, ItemStack stack) throws IOException {
-        String name = EnumChatFormatting.getTextWithoutFormattingCodes(GuiContainerManager.itemDisplayNameShort(stack));
+        String name = TextFormatting.getTextWithoutFormattingCodes(GuiContainerManager.itemDisplayNameShort(stack));
         name = cleanFileName(name);
         File file = new File(dir, name + ".png");
         for (int i = 2; file.exists(); i++) {

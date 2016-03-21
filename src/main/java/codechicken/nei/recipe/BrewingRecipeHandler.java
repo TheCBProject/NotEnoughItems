@@ -11,19 +11,15 @@ import com.google.common.collect.Iterables;
 import net.minecraft.client.gui.inventory.GuiBrewingStand;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.init.Items;
-import net.minecraft.item.ItemPotion;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionEffect;
-import net.minecraft.potion.PotionHelper;
 import net.minecraftforge.common.brewing.*;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.TreeSet;
 
+//FIXME Need rewrite
 public class BrewingRecipeHandler extends TemplateRecipeHandler {
 
     public static class NEIBrewingRecipe {
@@ -172,12 +168,12 @@ public class BrewingRecipeHandler extends TemplateRecipeHandler {
         HashSet<Integer> searchPotions = new HashSet<Integer>();
         searchPotions.add(0);
         allPotions.add(0);
-        do {
+        /*do {
             HashSet<Integer> newPotions = new HashSet<Integer>();
             for (Integer basePotion : searchPotions) {
-                if (ItemPotion.isSplash(basePotion)) {
-                    continue;
-                }
+                //if (ItemPotion.isSplash(basePotion)) {
+                //    continue;
+                //}
 
                 for (ItemStack ingred : ingredients.values()) {
                     int result = PotionHelper.applyIngredient(basePotion, ingred.getItem().getPotionEffect(ingred));
@@ -202,7 +198,7 @@ public class BrewingRecipeHandler extends TemplateRecipeHandler {
             }
 
             searchPotions = newPotions;
-        } while (!searchPotions.isEmpty());
+        } while (!searchPotions.isEmpty());*/
 
         API.setItemListEntries(Items.potionitem, Iterables.transform(allPotions, new Function<Integer, ItemStack>()//override with only potions that can be crafted
         {
@@ -222,8 +218,7 @@ public class BrewingRecipeHandler extends TemplateRecipeHandler {
         ItemStackSet positivepots = new ItemStackSet();
         ItemStackSet negativepots = new ItemStackSet();
         ItemStackSet neutralpots = new ItemStackSet();
-
-        for (int potionID : allPotions) {
+        /*for (int potionID : allPotions) {
             List<PotionEffect> effectlist = Items.potionitem.getEffects(potionID);
             int type = 0;
             if (effectlist != null && !effectlist.isEmpty()) {
@@ -237,7 +232,7 @@ public class BrewingRecipeHandler extends TemplateRecipeHandler {
             }
 
             (type == 0 ? neutralpots : type > 0 ? positivepots : negativepots).add(new ItemStack(Items.potionitem, 1, potionID));
-        }
+        }*/
 
         API.addSubset("Items.Potions.Positive", positivepots);
         API.addSubset("Items.Potions.Negative", negativepots);

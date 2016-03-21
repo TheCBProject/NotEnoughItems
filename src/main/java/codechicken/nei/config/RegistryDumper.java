@@ -1,6 +1,7 @@
 package codechicken.nei.config;
 
-import net.minecraft.util.RegistryNamespaced;
+
+import net.minecraft.util.registry.RegistryNamespaced;
 
 import java.util.LinkedList;
 

@@ -1,6 +1,7 @@
 package codechicken.nei;
 
 import codechicken.lib.inventory.InventoryUtils;
+import codechicken.lib.packet.PacketCustom;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -28,7 +29,7 @@ public class PlayerSave {
 
     public PlayerSave(EntityPlayerMP player, File saveLocation) {
         this.player = player;
-        wasOp = MinecraftServer.getServer().getConfigurationManager().canSendCommands(player.getGameProfile());
+        wasOp = PacketCustom.getServerInstance().getPlayerList().canSendCommands(player.getGameProfile());
 
         saveFile = new File(saveLocation, player.getName() + ".dat");
         if (!saveFile.getParentFile().exists()) {
@@ -94,7 +95,7 @@ public class PlayerSave {
     }
 
     public void updateOpChange() {
-        boolean isOp = MinecraftServer.getServer().getConfigurationManager().canSendCommands(player.getGameProfile());
+        boolean isOp = PacketCustom.getServerInstance().getPlayerList().canSendCommands(player.getGameProfile());
         if (isOp != wasOp) {
             NEISPH.sendHasServerSideTo(player);
             wasOp = isOp;

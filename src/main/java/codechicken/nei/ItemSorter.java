@@ -8,7 +8,7 @@ import codechicken.nei.config.GuiItemSorter;
 import codechicken.nei.config.OptionOpenGui;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.text.translation.I18n;
 
 import java.util.*;
 
@@ -23,12 +23,12 @@ public class ItemSorter implements Comparator<ItemStack>, ItemsLoadedCallback {
         }
 
         public String getLocalisedName() {
-            return StatCollector.translateToLocal(name);
+            return I18n.translateToLocal(name);
         }
 
         public String getTooltip() {
             String tipname = name + ".tip";
-            String tip = StatCollector.translateToLocal(tipname);
+            String tip = I18n.translateToLocal(tipname);
             return !tip.equals(tipname) ? tip : null;
         }
     }

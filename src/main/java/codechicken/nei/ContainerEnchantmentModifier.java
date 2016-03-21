@@ -12,10 +12,12 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 /**
  * This is crap code, don't ever do this.
@@ -154,27 +156,35 @@ public class ContainerEnchantmentModifier extends ContainerEnchantment {
     private void toggleSlotEnchantment(int slot) {
         EnchantmentHash e = slotEnchantment.get(slot);
         if (e.state == 2) {
-            NEICPH.sendModifyEnchantment(e.enchantment.effectId, 0, false);
+            NEICPH.sendModifyEnchantment(Enchantment.getEnchantmentID(e.enchantment), 0, false);
             e.state = 0;
         } else if (e.state == 1) {
             return;
         } else {
-            NEICPH.sendModifyEnchantment(e.enchantment.effectId, level, true);
+            NEICPH.sendModifyEnchantment(Enchantment.getEnchantmentID(e.enchantment), level, true);
             e.state = 2;
         }
         updateEnchantmentOptions(GuiEnchantmentModifier.validateEnchantments());
     }
 
+    @Deprecated
     public boolean addEnchantment(int e, int level) {
-        if (e < Enchantment.enchantmentsList.length && Enchantment.enchantmentsList[e] != null) {
-            ((Slot) inventorySlots.get(0)).getStack().addEnchantment(Enchantment.enchantmentsList[e], level);
+        return addEnchantment(Enchantment.enchantmentRegistry.getNameForObject(Enchantment.getEnchantmentByID(e)).toString(), level);
+    }
+
+    public boolean addEnchantment(String enchantmentLocation, int level){
+        Enchantment enchantment = Enchantment.getEnchantmentByLocation(enchantmentLocation);
+        if (enchantment != null){
+            inventorySlots.get(0).getStack().addEnchantment(enchantment, level);
             return true;
         }
         return false;
     }
 
+    @Deprecated
+    //TODO String variant.
     public void removeEnchantment(int e) {
-        ItemStack stack = ((Slot) inventorySlots.get(0)).getStack();
+        ItemStack stack = inventorySlots.get(0).getStack();
         NBTTagList nbttaglist = stack.getEnchantmentTagList();
         if (nbttaglist != null) {
             for (int i = 0; i < nbttaglist.tagCount(); i++) {
@@ -220,19 +230,20 @@ public class ContainerEnchantmentModifier extends ContainerEnchantment {
             return;
         }
 
-        for (Enchantment e : Enchantment.enchantmentsList) {
-            if (e == null || e.type == null || (!e.type.canEnchantItem(item) && validate)) {
+
+        for (Enchantment enchantment : Enchantment.enchantmentRegistry) {
+            if (enchantment == null || enchantment.type == null || (!enchantment.type.canEnchantItem(item) && validate)) {
                 continue;
             }
             int state = 0;
             int level = -1;
-            if (NEIServerUtils.stackHasEnchantment(toolstack, e.effectId)) {
+            if (NEIServerUtils.stackHasEnchantment(toolstack, Enchantment.getEnchantmentID(enchantment))) {
                 state = 2;
-                level = NEIServerUtils.getEnchantmentLevel(toolstack, e.effectId);
-            } else if (NEIServerUtils.doesEnchantmentConflict(NEIServerUtils.getEnchantments(toolstack), e) && validate) {
+                level = NEIServerUtils.getEnchantmentLevel(toolstack, Enchantment.getEnchantmentID(enchantment));
+            } else if (NEIServerUtils.doesEnchantmentConflict(NEIServerUtils.getEnchantments(toolstack), enchantment) && validate) {
                 state = 1;
             }
-            slotEnchantment.add(new EnchantmentHash(e, state, level));
+            slotEnchantment.add(new EnchantmentHash(enchantment, state, level));
         }
         if (numoptions != slotEnchantment.size()) {
             percentscrolled = 0;

@@ -12,12 +12,13 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
+import net.minecraft.inventory.ClickType;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IChatComponent;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
 import org.lwjgl.input.Keyboard;
 
 import java.text.MessageFormat;
@@ -37,7 +38,7 @@ public class NEIClientUtils extends NEIServerUtils {
         return lang.format(key, params);
     }
 
-    public static void printChatMessage(IChatComponent msg) {
+    public static void printChatMessage(ITextComponent msg) {
         if (mc().ingameGUI != null) {
             mc().ingameGUI.getChatGUI().printChatMessage(msg);
         }
@@ -48,7 +49,7 @@ public class NEIClientUtils extends NEIServerUtils {
     }
 
     public static void dropHeldItem() {
-        mc().playerController.windowClick(((GuiContainer) mc().currentScreen).inventorySlots.windowId, -999, 0, 0, mc().thePlayer);
+        mc().playerController.windowClick(((GuiContainer) mc().currentScreen).inventorySlots.windowId, -999, 0, ClickType.PICKUP, mc().thePlayer);
     }
 
     public static void deleteSlotStack(int slotNumber) {
@@ -370,6 +371,6 @@ public class NEIClientUtils extends NEIServerUtils {
     }
 
     public static void playClickSound() {
-        mc().getSoundHandler().playSound(PositionedSoundRecord.create(new ResourceLocation("gui.button.press"), 1.0F));
+        mc().getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.ui_button_click, 1.0F));
     }
 }

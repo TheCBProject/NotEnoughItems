@@ -7,7 +7,7 @@ import codechicken.nei.api.ItemInfo;
 import codechicken.nei.guihook.GuiContainerManager;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
-import net.minecraft.client.resources.model.IBakedModel;
+import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 

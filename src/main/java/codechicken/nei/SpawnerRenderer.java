@@ -4,16 +4,15 @@ import codechicken.core.ClientUtils;
 import codechicken.lib.render.BlockRenderer;
 import codechicken.lib.render.IItemRenderer;
 import codechicken.lib.render.ModelRegistryHelper;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
+import net.minecraft.client.renderer.block.model.*;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.resources.model.IBakedModel;
-import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.boss.BossStatus;
+//import net.minecraft.entity.boss.BossStatus;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
@@ -35,8 +34,8 @@ public class SpawnerRenderer implements IItemRenderer {
             meta = ItemMobSpawner.idPig;
         }
 
-        String bossName = BossStatus.bossName;
-        int bossTimeout = BossStatus.statusBarTime;
+        //String bossName = BossStatus.bossName;
+        //int bossTimeout = BossStatus.statusBarTime;
         Minecraft mc = Minecraft.getMinecraft();
         World world = mc.theWorld;
 
@@ -59,7 +58,7 @@ public class SpawnerRenderer implements IItemRenderer {
             GlStateManager.translate(0, -0.4, 0);
             GlStateManager.scale(scale, scale, scale);
             entity.setLocationAndAngles(0, 0, 0, 0, 0);
-            mc.getRenderManager().renderEntityWithPosYaw(entity, 0, 0, 0, 0, 0);
+            mc.getRenderManager().doRenderEntity(entity, 0, 0, 0, 0, 0, false);
             GlStateManager.disableLighting();
             GlStateManager.popMatrix();
 
@@ -68,21 +67,16 @@ public class SpawnerRenderer implements IItemRenderer {
             GL11.glDisable(GL11.GL_TEXTURE_2D);
             OpenGlHelper.setActiveTexture(OpenGlHelper.defaultTexUnit);
         } catch (Exception e) {
-            if (Tessellator.getInstance().getWorldRenderer().isDrawing) {
+            if (Tessellator.getInstance().getBuffer().isDrawing) {
                 Tessellator.getInstance().draw();
             }
         }
-        BossStatus.bossName = bossName;
-        BossStatus.statusBarTime = bossTimeout;
+        //BossStatus.bossName = bossName;
+        //BossStatus.statusBarTime = bossTimeout;
     }
 
     @Override
-    public List getFaceQuads(EnumFacing p_177551_1_) {
-        return null;
-    }
-
-    @Override
-    public List getGeneralQuads() {
+    public List<BakedQuad> getQuads(IBlockState state, EnumFacing side, long rand) {
         return null;
     }
 
@@ -109,5 +103,10 @@ public class SpawnerRenderer implements IItemRenderer {
     @Override
     public ItemCameraTransforms getItemCameraTransforms() {
         return BlockRenderer.blockCameraTransform;
+    }
+
+    @Override
+    public ItemOverrideList getOverrides() {
+        return ItemOverrideList.NONE;
     }
 }

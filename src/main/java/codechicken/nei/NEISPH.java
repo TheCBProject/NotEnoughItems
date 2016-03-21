@@ -7,6 +7,7 @@ import codechicken.core.inventory.SlotDummy;
 import codechicken.lib.packet.PacketCustom;
 import codechicken.lib.packet.PacketCustom.IServerPacketHandler;
 import codechicken.lib.vec.BlockCoord;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.InventoryBasic;
@@ -107,7 +108,8 @@ public class NEISPH implements IServerPacketHandler {
         if (tile instanceof TileEntityMobSpawner) {
             ((TileEntityMobSpawner) tile).getSpawnerBaseLogic().setEntityName(mobtype);
             tile.markDirty();
-            world.markBlockForUpdate(coord.pos());
+            IBlockState state = world.getBlockState(coord.pos());
+            world.notifyBlockUpdate(coord.pos(), state, state, 4);
         }
     }
 

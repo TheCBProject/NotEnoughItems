@@ -8,7 +8,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.INetHandlerPlayClient;
-import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 
@@ -106,9 +106,9 @@ public class NEICPH implements IClientPacketHandler {
 
     private void handleSMPCheck(int serverprotocol, String worldName, World world) {
         if (serverprotocol > NEIActions.protocol) {
-            NEIClientUtils.printChatMessage(new ChatComponentTranslation("nei.chat.mismatch.client"));
+            NEIClientUtils.printChatMessage(new TextComponentTranslation("nei.chat.mismatch.client"));
         } else if (serverprotocol < NEIActions.protocol) {
-            NEIClientUtils.printChatMessage(new ChatComponentTranslation("nei.chat.mismatch.server"));
+            NEIClientUtils.printChatMessage(new TextComponentTranslation("nei.chat.mismatch.server"));
         } else {
             try {
                 ClientHandler.instance().loadWorld(world);
@@ -195,6 +195,7 @@ public class NEICPH implements IClientPacketHandler {
         packet.sendToServer();
     }
 
+    @Deprecated
     public static void sendModifyEnchantment(int enchID, int level, boolean add) {
         PacketCustom packet = new PacketCustom(channel, 22);
         packet.writeByte(enchID);
