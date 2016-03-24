@@ -2,7 +2,6 @@ package codechicken.nei.recipe;
 
 import codechicken.nei.ItemStackSet;
 import codechicken.nei.api.API;
-import codechicken.nei.api.ItemFilter;
 import codechicken.nei.api.stack.PositionedStack;
 import codechicken.nei.recipe.potion.IPotionRecipe;
 import codechicken.nei.recipe.potion.PotionRecipeHelper;
@@ -12,12 +11,15 @@ import net.minecraft.client.gui.inventory.GuiBrewingStand;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.potion.PotionEffect;
+import net.minecraft.potion.PotionType;
 import net.minecraftforge.common.brewing.*;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.TreeSet;
+import java.util.List;
 
 //FIXME Need rewrite
 public class BrewingRecipeHandler extends TemplateRecipeHandler {
@@ -39,13 +41,6 @@ public class BrewingRecipeHandler extends TemplateRecipeHandler {
             output = new PositionedStack(recipe.getRecipeOutput(), 97, 40);
             ingredient = new PositionedStack(recipe.getRecipeIngredient(), 74, 6);
         }
-
-        //@Deprecated
-        // public NEIBrewingRecipe(ItemStack ingred, int basePotionID, int resultDamage) {
-        //    input = new PositionedStack(new ItemStack(Items.potionitem, 1, basePotionID), 51, 40);
-        //     output = new PositionedStack(new ItemStack(Items.potionitem, 1, resultDamage), 97, 40);
-        //    ingredient = new PositionedStack(ingred, 74, 6);
-        //}
     }
 
     public class CachedBrewingRecipe extends CachedRecipe {
@@ -86,7 +81,6 @@ public class BrewingRecipeHandler extends TemplateRecipeHandler {
         transferRects.add(new RecipeTransferRect(new Rectangle(58, 3, 14, 30), "brewing"));
         transferRects.add(new RecipeTransferRect(new Rectangle(92, 3, 14, 30), "brewing"));
         transferRects.add(new RecipeTransferRect(new Rectangle(68, 23, 28, 18), "brewing"));
-        //TODO Fuel
     }
 
     @Override
@@ -109,6 +103,9 @@ public class BrewingRecipeHandler extends TemplateRecipeHandler {
                 if (recipe instanceof BrewingRecipe || recipe instanceof BrewingOreRecipe) {
                     arecipes.add(new CachedBrewingRecipe((AbstractBrewingRecipe<?>) recipe));
                 }
+            }
+            for (IPotionRecipe recipe : PotionRecipeHelper.getRecipes()) {
+                arecipes.add(new CachedBrewingRecipe(recipe));
             }
         } else {
             super.loadCraftingRecipes(outputId, results);
@@ -191,98 +188,63 @@ public class BrewingRecipeHandler extends TemplateRecipeHandler {
     }
 
     public static void searchPotions() {
-        TreeSet<Integer> allPotions = new TreeSet<Integer>();
-        HashSet<Integer> searchPotions = new HashSet<Integer>();
-        searchPotions.add(0);
-        allPotions.add(0);
-        /*do {
-            HashSet<Integer> newPotions = new HashSet<Integer>();
-            for (Integer basePotion : searchPotions) {
-                //if (ItemPotion.isSplash(basePotion)) {
-                //    continue;
-                //}
+        ArrayList<ItemStack> allPotions = new ArrayList<ItemStack>();
+        for (IPotionRecipe recipe : PotionRecipeHelper.getRecipes()) {
+            allPotions.add(recipe.getRecipeOutput());
+        }
 
-                for (ItemStack ingred : ingredients.values()) {
-                    int result = PotionHelper.applyIngredient(basePotion, ingred.getItem().getPotionEffect(ingred));
-
-                    if (ItemPotion.isSplash(result)) {//splash potions qualify
-                        addPotion(ingred, basePotion, result, allPotions, newPotions);
-                        continue;
-                    }
-
-                    List<?> baseMods = Items.potionitem.getEffects(basePotion);
-                    List<?> newMods = Items.potionitem.getEffects(result);//compare ID's
-                    if (basePotion > 0 && baseMods == newMods || //same modifers and not water->empty
-                            baseMods != null && (baseMods.equals(newMods) || newMods == null) || //modifiers different and doesn't lose modifiers
-                            basePotion == result || //same potion
-                            levelModifierChanged(basePotion, result))//redstone/glowstone cycle
-                    {
-                        continue;
-                    }
-
-                    addPotion(ingred, basePotion, result, allPotions, newPotions);
-                }
+        ItemStackSet positiveEffects = new ItemStackSet();
+        ItemStackSet negativeEffects = new ItemStackSet();
+        ItemStackSet neutralEffects = new ItemStackSet();
+        for (ItemStack potionStack : allPotions) {
+            PotionType potionType = getPotionTypeFromStack(potionStack);
+            if (potionType == null) {
+                continue;
             }
-
-            searchPotions = newPotions;
-        } while (!searchPotions.isEmpty());*/
-
-        //API.setItemListEntries(Items.potionitem, Iterables.transform(allPotions, new Function<Integer, ItemStack>()//override with only potions that can be crafted
-        //{
-        //    @Override
-        //    public ItemStack apply(Integer potionID) {
-        //        return new ItemStack(Items.potionitem, 1, potionID);
-        //    }
-        // }));
-        API.addSubset("Items.Potions", new ItemStackSet().with(Items.potionitem));
-        API.addSubset("Items.Potions.Splash", new ItemFilter() {
-            @Override
-            public boolean matches(ItemStack item) {
-                return item.getItem() == Items.potionitem && (item.getItemDamage() & 0x4000) != 0;
+            List<PotionEffect> stackEffects = potionType.getEffects();
+            if (stackEffects.isEmpty()) {
+                neutralEffects.add(potionStack);
+                continue;
             }
-        });
-
-        ItemStackSet positivepots = new ItemStackSet();
-        ItemStackSet negativepots = new ItemStackSet();
-        ItemStackSet neutralpots = new ItemStackSet();
-        /*for (int potionID : allPotions) {
-            List<PotionEffect> effectlist = Items.potionitem.getEffects(potionID);
-            int type = 0;
-            if (effectlist != null && !effectlist.isEmpty()) {
-                for (PotionEffect potioneffect : effectlist) {
-                    if (Potion.potionTypes[potioneffect.getPotionID()].isBadEffect()) {
-                        type--;
-                    } else {
-                        type++;
+            for (PotionEffect effect : stackEffects) {
+                //If for some reason a vanilla potion has positive and negative effects, make sure we don't add it to the list more than once.
+                if (effect.getPotion().isBadEffect()) {
+                    if (!negativeEffects.contains(potionStack)) {
+                        negativeEffects.add(potionStack);
+                    }
+                } else {
+                    if (!positiveEffects.contains(potionStack)) {
+                        positiveEffects.add(potionStack);
                     }
                 }
             }
+        }
 
-            (type == 0 ? neutralpots : type > 0 ? positivepots : negativepots).add(new ItemStack(Items.potionitem, 1, potionID));
-        }*/
-
-        API.addSubset("Items.Potions.Positive", positivepots);
-        API.addSubset("Items.Potions.Negative", negativepots);
-        API.addSubset("Items.Potions.Neutral", neutralpots);
+        API.addSubset("Items.Potions", new ItemStackSet().with(Items.potionitem).with(Items.splash_potion).with(Items.lingering_potion));
+        API.addSubset("Items.Potions.Splash", new ItemStackSet().with(Items.splash_potion));
+        API.addSubset("Items.Potions.Lingering", new ItemStackSet().with(Items.lingering_potion));
+        API.addSubset("Items.Potions.Positive", positiveEffects);
+        API.addSubset("Items.Potions.Negative", negativeEffects);
+        API.addSubset("Items.Potions.Neutral", neutralEffects);
     }
-
-    // private static boolean levelModifierChanged(int basePotionID, int result) {
-    //     int basemod = basePotionID & 0xE0;
-    //      int resultmod = result & 0xE0;
-    //
-    //    return basemod != 0 && basemod != resultmod;
-    //}
-
-    //private static void addPotion(ItemStack ingred, int basePotion, int result, TreeSet<Integer> allPotions, HashSet<Integer> newPotions) {
-    //    apotions.add(new NEIBrewingRecipe(ingred, basePotion, result));
-    //    if (allPotions.add(result))//it's new
-    //    {
-    //        newPotions.add(result);
-    //    }
-    //}
 
     @Override
     public String getOverlayIdentifier() {
         return "brewing";
     }
+
+    private static PotionType getPotionTypeFromStack(ItemStack itemStack) {
+        if (itemStack.hasTagCompound()) {
+            NBTTagCompound tagCompound = itemStack.getTagCompound();
+            if (tagCompound.hasKey("Potion")) {
+                String potion = tagCompound.getString("Potion");
+                PotionType type = PotionType.getPotionTypeForName(potion);
+                if (type != null) {
+                    return type;
+                }
+            }
+        }
+        return null;
+    }
+
 }
