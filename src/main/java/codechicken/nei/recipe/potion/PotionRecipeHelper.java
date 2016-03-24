@@ -1,6 +1,5 @@
 package codechicken.nei.recipe.potion;
 
-import codechicken.nei.util.LogHelper;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -72,9 +71,9 @@ public class PotionRecipeHelper {
             allRecipes.add(upgradeRecipe);
         }
 
-        for (IPotionRecipe recipe : allRecipes) {
-            LogHelper.info("Input: [%s], Ingredient: [%s], Output: [%s].", recipe.getRecipeInput().toString() + " " + recipe.getRecipeInput().getTagCompound().toString(), recipe.getRecipeIngredient().toString(), recipe.getRecipeOutput().toString() + " " + recipe.getRecipeOutput().getTagCompound().toString());
-        }
+        //for (IPotionRecipe recipe : allRecipes) {
+        //    LogHelper.info("Input: [%s], Ingredient: [%s], Output: [%s].", recipe.getRecipeInput().toString() + " " + recipe.getRecipeInput().getTagCompound().toString(), recipe.getRecipeIngredient().toString(), recipe.getRecipeOutput().toString() + " " + recipe.getRecipeOutput().getTagCompound().toString());
+        //}
 
     }
 
