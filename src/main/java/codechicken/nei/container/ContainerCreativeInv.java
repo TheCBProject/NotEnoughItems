@@ -1,6 +1,6 @@
-package codechicken.nei;
+package codechicken.nei.container;
 
-import codechicken.nei.container.ExtendedCreativeInv;
+import codechicken.nei.util.LogHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -15,11 +15,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class ContainerCreativeInv extends Container {
     private class SlotArmor extends Slot {
         EntityEquipmentSlot equipmentSlot;
-
-        @Deprecated //TODO remove this.
-        public SlotArmor(IInventory inv, int slot, int x, int y, int armorType) {
-            this(inv, slot, x, y, getArmorEquipmentSlotFromSlotID(armorType));
-        }
 
         public SlotArmor(IInventory inv, int slot, int x, int y, EntityEquipmentSlot armor) {
             super(inv, slot, x, y);
@@ -44,8 +39,8 @@ public class ContainerCreativeInv extends Container {
     }
 
     private class SlotBlockArmor extends SlotArmor {
-        public SlotBlockArmor(IInventory inv, int slot, int x, int y, int armor) {
-            super(inv, slot, x, y, armor);
+        public SlotBlockArmor(IInventory inv, int slot, int x, int y, EntityEquipmentSlot equipmentSlot) {
+            super(inv, slot, x, y, equipmentSlot);
         }
 
         @Override
@@ -75,10 +70,13 @@ public class ContainerCreativeInv extends Container {
             addSlotToContainer(new Slot(invPlayer, col, 8 + col * 18, 176));
         }
 
-        addSlotToContainer(new SlotBlockArmor(invPlayer, invPlayer.getSizeInventory() - 1, -15, 23, 0));
-        for (int armorType = 1; armorType < 4; armorType++) {
-            addSlotToContainer(new SlotArmor(invPlayer, invPlayer.getSizeInventory() - 1 - armorType, -15, 23 + armorType * 18, armorType));
-        }
+        addSlotToContainer(new SlotBlockArmor(invPlayer, invPlayer.getSizeInventory() - 4, -15, 23, EntityEquipmentSlot.HEAD));
+        addSlotToContainer(new SlotArmor(invPlayer, invPlayer.getSizeInventory() - 3, -15, 41, EntityEquipmentSlot.CHEST));
+        addSlotToContainer(new SlotArmor(invPlayer, invPlayer.getSizeInventory() - 2, -15, 59, EntityEquipmentSlot.LEGS));
+        addSlotToContainer(new SlotArmor(invPlayer, invPlayer.getSizeInventory() - 1, -15, 77, EntityEquipmentSlot.FEET));
+        //for (int armorType = 1; armorType < 4; armorType++) {
+        //    addSlotToContainer(new SlotArmor(invPlayer, invPlayer.getSizeInventory() - 1 - armorType, -15, 23 + armorType * 18, armorType));
+        //}
     }
 
     @Override
@@ -117,20 +115,7 @@ public class ContainerCreativeInv extends Container {
         return transferredStack;
     }
 
-    public boolean canInteractWith(EntityPlayer var1) {
+    public boolean canInteractWith(EntityPlayer player) {
         return true;
-    }
-
-    private static EntityEquipmentSlot getArmorEquipmentSlotFromSlotID(int armorType) {
-        EntityEquipmentSlot entityEquipmentSlot = null;
-        for (EntityEquipmentSlot equipmentSlot : EntityEquipmentSlot.values()) {
-            if (equipmentSlot.func_188452_c() == armorType) {
-                entityEquipmentSlot = equipmentSlot;
-            }
-        }
-        if (entityEquipmentSlot == null) {
-            throw new RuntimeException(String.format("Invalid slot number for armor slot! Given [%s], Expected [1 -> 4]", armorType));
-        }
-        return entityEquipmentSlot;
     }
 }

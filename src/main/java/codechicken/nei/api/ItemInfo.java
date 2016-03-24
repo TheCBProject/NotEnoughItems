@@ -8,6 +8,7 @@ import codechicken.nei.config.RegistryDumper;
 import codechicken.nei.guihook.GuiContainerManager;
 import codechicken.nei.recipe.BrewingRecipeHandler;
 import codechicken.nei.recipe.RecipeItemInputHandler;
+import codechicken.nei.recipe.potion.PotionRecipeHelper;
 import com.google.common.collect.ArrayListMultimap;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -99,6 +100,7 @@ public class ItemInfo {
     }
 
     public static void load(World world) {
+        PotionRecipeHelper.init();
         addVanillaBlockProperties();
         addDefaultDropDowns();
         searchItems();

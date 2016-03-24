@@ -8,6 +8,7 @@ import codechicken.lib.packet.PacketCustom;
 import codechicken.lib.packet.PacketCustom.IServerPacketHandler;
 import codechicken.lib.vec.BlockCoord;
 import codechicken.nei.*;
+import codechicken.nei.container.ContainerCreativeInv;
 import codechicken.nei.container.ExtendedCreativeInv;
 import codechicken.nei.util.LogHelper;
 import codechicken.nei.util.NEIServerUtils;

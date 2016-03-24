@@ -772,7 +772,7 @@ public class LayoutManager implements IContainerInputHandler, IContainerTooltipH
     @Override
     public void renderSlotOverlay(GuiContainer window, Slot slot) {
         ItemStack item = slot.getStack();
-        if (world.nbt.getBoolean("searchinventories") && (item == null ? !getSearchExpression().equals("") : !ItemList.itemMatches(item))) {
+        if (world.nbt.getBoolean("searchinventories") && (item == null ? !getSearchExpression().equals("") : !ItemList.getItemListFilter().matches(item))) {
             GlStateManager.disableLighting();
             GlStateManager.translate(0, 0, 150);
             drawRect(slot.xDisplayPosition, slot.yDisplayPosition, 16, 16, 0x80000000);

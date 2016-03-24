@@ -116,7 +116,7 @@ public class ClientHandler {
 
         GuiModListScroll.register("NotEnoughItems");
         PacketCustom.assignHandler(NEIClientPacketHandler.channel, new NEIClientPacketHandler());
-        FMLCommonHandler.instance().bus().register(instance);
+        //FMLCommonHandler.instance().bus().register(instance);
         MinecraftForge.EVENT_BUS.register(instance);
 
         ItemInfo.init();

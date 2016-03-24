@@ -5,6 +5,7 @@ import codechicken.lib.inventory.InventoryUtils;
 import codechicken.lib.packet.PacketCustom;
 import codechicken.lib.packet.PacketCustom.IClientPacketHandler;
 import codechicken.nei.*;
+import codechicken.nei.container.ContainerCreativeInv;
 import codechicken.nei.container.ExtendedCreativeInv;
 import codechicken.nei.util.NEIClientUtils;
 import codechicken.nei.util.NEIServerUtils;

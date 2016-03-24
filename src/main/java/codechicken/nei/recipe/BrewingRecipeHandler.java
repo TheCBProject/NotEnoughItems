@@ -1,13 +1,13 @@
 package codechicken.nei.recipe;
 
 import codechicken.nei.ItemStackSet;
-import codechicken.nei.util.NEIClientUtils;
-import codechicken.nei.util.NEIServerUtils;
-import codechicken.nei.api.stack.PositionedStack;
 import codechicken.nei.api.API;
 import codechicken.nei.api.ItemFilter;
-import com.google.common.base.Function;
-import com.google.common.collect.Iterables;
+import codechicken.nei.api.stack.PositionedStack;
+import codechicken.nei.recipe.potion.IPotionRecipe;
+import codechicken.nei.recipe.potion.PotionRecipeHelper;
+import codechicken.nei.util.NEIClientUtils;
+import codechicken.nei.util.NEIServerUtils;
 import net.minecraft.client.gui.inventory.GuiBrewingStand;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.init.Items;
@@ -29,16 +29,23 @@ public class BrewingRecipeHandler extends TemplateRecipeHandler {
         final PositionedStack ingredient;
 
         public NEIBrewingRecipe(AbstractBrewingRecipe<?> recipe) {
-            input = new PositionedStack(recipe.input, 51, 35);
-            output = new PositionedStack(recipe.output, 97, 35);
+            input = new PositionedStack(recipe.input, 51, 40);
+            output = new PositionedStack(recipe.output, 97, 40);
             ingredient = new PositionedStack(recipe.ingredient, 74, 6);
         }
 
-        public NEIBrewingRecipe(ItemStack ingred, int basePotionID, int resultDamage) {
-            input = new PositionedStack(new ItemStack(Items.potionitem, 1, basePotionID), 51, 35);
-            output = new PositionedStack(new ItemStack(Items.potionitem, 1, resultDamage), 97, 35);
-            ingredient = new PositionedStack(ingred, 74, 6);
+        public NEIBrewingRecipe(IPotionRecipe recipe) {
+            input = new PositionedStack(recipe.getRecipeInput(), 51, 40);
+            output = new PositionedStack(recipe.getRecipeOutput(), 97, 40);
+            ingredient = new PositionedStack(recipe.getRecipeIngredient(), 74, 6);
         }
+
+        //@Deprecated
+        // public NEIBrewingRecipe(ItemStack ingred, int basePotionID, int resultDamage) {
+        //    input = new PositionedStack(new ItemStack(Items.potionitem, 1, basePotionID), 51, 40);
+        //     output = new PositionedStack(new ItemStack(Items.potionitem, 1, resultDamage), 97, 40);
+        //    ingredient = new PositionedStack(ingred, 74, 6);
+        //}
     }
 
     public class CachedBrewingRecipe extends CachedRecipe {
@@ -50,6 +57,10 @@ public class BrewingRecipeHandler extends TemplateRecipeHandler {
         }
 
         public CachedBrewingRecipe(AbstractBrewingRecipe<?> recipe) {
+            this(new NEIBrewingRecipe(recipe));
+        }
+
+        public CachedBrewingRecipe(IPotionRecipe recipe) {
             this(new NEIBrewingRecipe(recipe));
         }
 
@@ -75,6 +86,7 @@ public class BrewingRecipeHandler extends TemplateRecipeHandler {
         transferRects.add(new RecipeTransferRect(new Rectangle(58, 3, 14, 30), "brewing"));
         transferRects.add(new RecipeTransferRect(new Rectangle(92, 3, 14, 30), "brewing"));
         transferRects.add(new RecipeTransferRect(new Rectangle(68, 23, 28, 18), "brewing"));
+        //TODO Fuel
     }
 
     @Override
@@ -121,6 +133,11 @@ public class BrewingRecipeHandler extends TemplateRecipeHandler {
                 }
             }
         }
+        for (IPotionRecipe recipe : PotionRecipeHelper.getRecipes()) {
+            if (NEIServerUtils.areStacksSameType(recipe.getRecipeOutput(), result)) {
+                arecipes.add(new CachedBrewingRecipe(recipe));
+            }
+        }
     }
 
     @Override
@@ -150,6 +167,16 @@ public class BrewingRecipeHandler extends TemplateRecipeHandler {
                 }
             }
         }
+        for (IPotionRecipe recipe : PotionRecipeHelper.getRecipes()) {
+            if (NEIServerUtils.areStacksSameType(recipe.getRecipeInput(), ingredient)) {
+                arecipes.add(new CachedBrewingRecipe(recipe));
+            } else {
+                if (NEIServerUtils.areStacksSameType(recipe.getRecipeIngredient(), ingredient)) {
+                    arecipes.add(new CachedBrewingRecipe(recipe));
+                }
+            }
+        }
+
     }
 
     @Override
@@ -160,7 +187,7 @@ public class BrewingRecipeHandler extends TemplateRecipeHandler {
     @Override
     public void drawExtras(int recipe) {
         drawProgressBar(92, 5, 176, 0, 8, 30, 120, 1);
-        drawProgressBar(60, 1, 185, -2, 12, 30, 35, 3);
+        drawProgressBar(58, 1, 185, -2, 12, 30, 35, 3);
     }
 
     public static void searchPotions() {
@@ -200,13 +227,13 @@ public class BrewingRecipeHandler extends TemplateRecipeHandler {
             searchPotions = newPotions;
         } while (!searchPotions.isEmpty());*/
 
-        API.setItemListEntries(Items.potionitem, Iterables.transform(allPotions, new Function<Integer, ItemStack>()//override with only potions that can be crafted
-        {
-            @Override
-            public ItemStack apply(Integer potionID) {
-                return new ItemStack(Items.potionitem, 1, potionID);
-            }
-        }));
+        //API.setItemListEntries(Items.potionitem, Iterables.transform(allPotions, new Function<Integer, ItemStack>()//override with only potions that can be crafted
+        //{
+        //    @Override
+        //    public ItemStack apply(Integer potionID) {
+        //        return new ItemStack(Items.potionitem, 1, potionID);
+        //    }
+        // }));
         API.addSubset("Items.Potions", new ItemStackSet().with(Items.potionitem));
         API.addSubset("Items.Potions.Splash", new ItemFilter() {
             @Override
@@ -239,20 +266,20 @@ public class BrewingRecipeHandler extends TemplateRecipeHandler {
         API.addSubset("Items.Potions.Neutral", neutralpots);
     }
 
-    private static boolean levelModifierChanged(int basePotionID, int result) {
-        int basemod = basePotionID & 0xE0;
-        int resultmod = result & 0xE0;
+    // private static boolean levelModifierChanged(int basePotionID, int result) {
+    //     int basemod = basePotionID & 0xE0;
+    //      int resultmod = result & 0xE0;
+    //
+    //    return basemod != 0 && basemod != resultmod;
+    //}
 
-        return basemod != 0 && basemod != resultmod;
-    }
-
-    private static void addPotion(ItemStack ingred, int basePotion, int result, TreeSet<Integer> allPotions, HashSet<Integer> newPotions) {
-        apotions.add(new NEIBrewingRecipe(ingred, basePotion, result));
-        if (allPotions.add(result))//it's new
-        {
-            newPotions.add(result);
-        }
-    }
+    //private static void addPotion(ItemStack ingred, int basePotion, int result, TreeSet<Integer> allPotions, HashSet<Integer> newPotions) {
+    //    apotions.add(new NEIBrewingRecipe(ingred, basePotion, result));
+    //    if (allPotions.add(result))//it's new
+    //    {
+    //        newPotions.add(result);
+    //    }
+    //}
 
     @Override
     public String getOverlayIdentifier() {
