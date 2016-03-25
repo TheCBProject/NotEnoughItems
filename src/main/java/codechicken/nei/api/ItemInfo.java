@@ -412,9 +412,10 @@ public class ItemInfo {
         BrewingRecipeHandler.searchPotions();
     }
 
+    //TODO
     private static void addSpawnEggs() {
-        addEntityEgg(EntitySnowman.class, 0xEEFFFF, 0xffa221);
-        addEntityEgg(EntityIronGolem.class, 0xC5C2C1, 0xffe1cc);
+        //addEntityEgg(EntitySnowman.class, 0xEEFFFF, 0xffa221);
+        //addEntityEgg(EntityIronGolem.class, 0xC5C2C1, 0xffe1cc);
     }
 
     private static void addEntityEgg(Class<? extends Entity> entity, int i, int j) {
