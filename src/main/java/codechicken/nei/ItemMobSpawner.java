@@ -1,6 +1,8 @@
 package codechicken.nei;
 
+import codechicken.core.featurehack.GameDataManipulator;
 import codechicken.nei.network.NEIClientPacketHandler;
+import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -35,7 +37,7 @@ public class ItemMobSpawner extends ItemBlock {
     }
 
     public static void initRender() {
-        SpawnerRenderer.load(instance);
+        //SpawnerRenderer.load(instance);
     }
 
     public ItemMobSpawner() {
