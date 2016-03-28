@@ -5,7 +5,10 @@ import codechicken.core.ServerUtils;
 import codechicken.lib.inventory.InventoryRange;
 import codechicken.lib.inventory.InventoryUtils;
 import codechicken.lib.packet.PacketCustom;
-import codechicken.nei.*;
+import codechicken.nei.ClientHandler;
+import codechicken.nei.NEIActions;
+import codechicken.nei.NEIServerConfig;
+import codechicken.nei.PlayerSave;
 import codechicken.nei.container.ContainerCreativeInv;
 import codechicken.nei.network.NEIServerPacketHandler;
 import net.minecraft.command.ICommandSender;
@@ -124,7 +127,7 @@ public class NEIServerUtils {
 
     public static void sendNotice(ICommandSender sender, ITextComponent msg, String permission) {
         TextComponentTranslation notice = new TextComponentTranslation("chat.type.admin", sender.getName(), msg.createCopy());
-        notice.getChatStyle().setColor(TextFormatting.GRAY).setItalic(true);
+        notice.getStyle().setColor(TextFormatting.GRAY).setItalic(true);
 
         if (NEIServerConfig.canPlayerPerformAction("CONSOLE", permission)) {
             PacketCustom.getServerInstance().addChatMessage(notice);
@@ -192,7 +195,7 @@ public class NEIServerUtils {
     }
 
     public static ITextComponent setColour(ITextComponent msg, TextFormatting colour) {
-        msg.getChatStyle().setColor(colour);
+        msg.getStyle().setColor(colour);
         return msg;
     }
 

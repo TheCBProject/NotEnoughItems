@@ -84,7 +84,7 @@ public class ItemList {
                         return false;
                     }
                 } catch (Exception e) {
-                    NEIClientConfig.logger.error("Exception filtering " + item + " with " + filter, e);
+                    LogHelper.errorError("Exception filtering " + item + " with " + filter, e);
                 }
             }
 
@@ -111,7 +111,7 @@ public class ItemList {
                         return true;
                     }
                 } catch (Exception e) {
-                    NEIClientConfig.logger.error("Exception filtering " + item + " with " + filter, e);
+                    LogHelper.errorError("Exception filtering " + item + " with " + filter, e);
                 }
             }
 
@@ -130,7 +130,7 @@ public class ItemList {
                     return false;
                 }
             } catch (Exception e) {
-                NEIClientConfig.logger.error("Exception filtering " + item + " with " + filter, e);
+                LogHelper.errorError("Exception filtering " + item + " with " + filter, e);
             }
         }
 

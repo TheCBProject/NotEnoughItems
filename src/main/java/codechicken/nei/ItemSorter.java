@@ -6,6 +6,7 @@ import codechicken.nei.api.API;
 import codechicken.nei.api.ItemInfo;
 import codechicken.nei.config.GuiItemSorter;
 import codechicken.nei.config.OptionOpenGui;
+import codechicken.nei.util.LogHelper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.translation.I18n;
@@ -44,7 +45,7 @@ public class ItemSorter implements Comparator<ItemStack>, ItemsLoadedCallback {
         try {
             Collections.sort(items, instance);
         } catch (Exception e) {
-            NEIClientConfig.logger.error("Exception sorting item list", e);
+            LogHelper.errorError("Exception sorting item list", e);
         }
     }
 

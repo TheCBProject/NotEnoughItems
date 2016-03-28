@@ -3,6 +3,7 @@ package codechicken.nei;
 import codechicken.lib.inventory.InventoryUtils;
 import codechicken.lib.packet.PacketCustom;
 import codechicken.nei.network.NEIServerPacketHandler;
+import codechicken.nei.util.LogHelper;
 import codechicken.nei.util.NEIServerUtils;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -49,7 +50,7 @@ public class PlayerSave {
                 nbt = NEIServerUtils.readNBT(saveFile);
             }
         } catch (Exception e) {
-            NEIClientConfig.logger.error("Error loading player save: " + player, e);
+            LogHelper.errorError("Error loading player save: " + player, e);
         }
 
         loadCreativeInv();
@@ -76,7 +77,7 @@ public class PlayerSave {
             NEIServerUtils.writeNBT(nbt, saveFile);
             isDirty = false;
         } catch (Exception e) {
-            NEIClientConfig.logger.error("Error saving player: " + player, e);
+            LogHelper.errorError("Error saving player: " + player, e);
         }
     }
 

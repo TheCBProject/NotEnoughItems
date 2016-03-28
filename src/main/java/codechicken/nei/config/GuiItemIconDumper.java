@@ -2,6 +2,7 @@ package codechicken.nei.config;
 
 import codechicken.core.CommonUtils;
 import codechicken.lib.gui.GuiDraw;
+import codechicken.nei.util.LogHelper;
 import codechicken.nei.widget.ItemPanel;
 import codechicken.nei.NEIClientConfig;
 import codechicken.nei.util.NEIClientUtils;
@@ -83,7 +84,7 @@ public class GuiItemIconDumper extends GuiScreen {
             drawItems();
             exportItems();
         } catch (Exception e) {
-            NEIClientConfig.logger.error("Error dumping item icons", e);
+            LogHelper.errorError("Error dumping item icons", e);
         }
     }
 

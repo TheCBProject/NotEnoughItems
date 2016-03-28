@@ -2,6 +2,7 @@ package codechicken.nei.recipe;
 
 import codechicken.core.ReflectionManager;
 import codechicken.nei.NEIClientConfig;
+import codechicken.nei.util.LogHelper;
 import codechicken.nei.util.NEIClientUtils;
 import codechicken.nei.util.NEIServerUtils;
 import codechicken.nei.api.stack.PositionedStack;
@@ -160,7 +161,7 @@ public class ShapedRecipeHandler extends TemplateRecipeHandler {
             width = ReflectionManager.getField(ShapedOreRecipe.class, Integer.class, recipe, 4);
             height = ReflectionManager.getField(ShapedOreRecipe.class, Integer.class, recipe, 5);
         } catch (Exception e) {
-            NEIClientConfig.logger.error("Error loading recipe", e);
+            LogHelper.errorError("Error loading recipe", e);
             return null;
         }
 

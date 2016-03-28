@@ -2,6 +2,7 @@ package codechicken.nei.config;
 
 import codechicken.core.gui.GuiCCButton;
 import codechicken.nei.NEIClientConfig;
+import codechicken.nei.util.LogHelper;
 import net.minecraft.client.gui.GuiConfirmOpenLink;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiYesNoCallback;
@@ -46,7 +47,7 @@ public class GuiNEIOptionList extends GuiOptionList implements GuiYesNoCallback 
             try {
                 Desktop.getDesktop().browse(new URI("http://patreon.com/cb"));
             } catch (Exception e) {
-                NEIClientConfig.logger.error("Failed to open patreon page", e);
+                LogHelper.errorError("Failed to open patreon page", e);
             }
         }
         mc.displayGuiScreen(this);

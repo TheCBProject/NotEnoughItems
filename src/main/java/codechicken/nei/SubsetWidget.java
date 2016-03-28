@@ -12,6 +12,7 @@ import codechicken.nei.api.ItemFilter;
 import codechicken.nei.api.ItemFilter.ItemFilterProvider;
 import codechicken.nei.api.ItemInfo;
 import codechicken.nei.guihook.GuiContainerManager;
+import codechicken.nei.util.LogHelper;
 import codechicken.nei.util.NEIClientUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
@@ -477,7 +478,7 @@ public class SubsetWidget extends codechicken.nei.widget.Button implements ItemF
                 itemList.add(ItemStack.loadItemStackFromNBT(list.getCompoundTagAt(i)));
             }
         } catch (Exception e) {
-            NEIClientConfig.logger.error("Error loading hiddenItems", e);
+            LogHelper.errorError("Error loading hiddenItems", e);
             return;
         }
 

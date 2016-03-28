@@ -7,6 +7,7 @@ import codechicken.lib.packet.PacketCustom.IClientPacketHandler;
 import codechicken.nei.*;
 import codechicken.nei.container.ContainerCreativeInv;
 import codechicken.nei.container.ExtendedCreativeInv;
+import codechicken.nei.util.LogHelper;
 import codechicken.nei.util.NEIClientUtils;
 import codechicken.nei.util.NEIServerUtils;
 import net.minecraft.client.Minecraft;
@@ -121,7 +122,7 @@ public class NEIClientPacketHandler implements IClientPacketHandler {
                 NEIClientConfig.loadWorld(getSaveName(worldName));
                 sendRequestLoginInfo();
             } catch (Exception e) {
-                NEIClientConfig.logger.error("Error handling SMP Check", e);
+                LogHelper.errorError("Error handling SMP Check", e);
             }
         }
     }

@@ -2,6 +2,7 @@ package codechicken.nei;
 
 import codechicken.core.featurehack.GameDataManipulator;
 import codechicken.nei.network.NEIClientPacketHandler;
+import codechicken.nei.util.LogHelper;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.creativetab.CreativeTabs;
@@ -84,9 +85,9 @@ public class ItemMobSpawner extends ItemBlock {
                 e = (EntityLiving) clazz.getConstructor(World.class).newInstance(world);
             } catch (Throwable t) {
                 if (clazz == null) {
-                    NEIClientConfig.logger.error("Null class for entity (" + ID + ", " + IDtoNameMap.get(ID));
+                    LogHelper.error("Null class for entity (" + ID + ", " + IDtoNameMap.get(ID));
                 } else {
-                    NEIClientConfig.logger.error("Error creating instance of entity: " + clazz.getName(), t);
+                    LogHelper.errorError("Error creating instance of entity: " + clazz.getName(), t);
                 }
                 e = getEntity(idPig);
             }

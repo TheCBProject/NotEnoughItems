@@ -31,9 +31,9 @@ public class BrewingRecipeHandler extends TemplateRecipeHandler {
         final PositionedStack ingredient;
 
         public NEIBrewingRecipe(AbstractBrewingRecipe<?> recipe) {
-            input = new PositionedStack(recipe.input, 51, 40);
-            output = new PositionedStack(recipe.output, 97, 40);
-            ingredient = new PositionedStack(recipe.ingredient, 74, 6);
+            input = new PositionedStack(recipe.getInput(), 51, 40);
+            output = new PositionedStack(recipe.getOutput(), 97, 40);
+            ingredient = new PositionedStack(recipe.getIngredient(), 74, 6);
         }
 
         public NEIBrewingRecipe(IPotionRecipe recipe) {
@@ -125,7 +125,7 @@ public class BrewingRecipeHandler extends TemplateRecipeHandler {
 
         for (IBrewingRecipe recipe : BrewingRecipeRegistry.getRecipes()) {
             if (recipe instanceof BrewingRecipe || recipe instanceof BrewingOreRecipe) {
-                if (NEIServerUtils.areStacksSameType(((AbstractBrewingRecipe<?>) recipe).output, result)) {
+                if (NEIServerUtils.areStacksSameType(((AbstractBrewingRecipe<?>) recipe).getOutput(), result)) {
                     arecipes.add(new CachedBrewingRecipe((AbstractBrewingRecipe<?>) recipe));
                 }
             }
@@ -151,10 +151,10 @@ public class BrewingRecipeHandler extends TemplateRecipeHandler {
         for (IBrewingRecipe recipe : BrewingRecipeRegistry.getRecipes()) {
             if (recipe instanceof BrewingRecipe || recipe instanceof BrewingOreRecipe) {
                 AbstractBrewingRecipe<?> arecipe = (AbstractBrewingRecipe<?>) recipe;
-                if (NEIServerUtils.areStacksSameType(arecipe.input, ingredient)) {
+                if (NEIServerUtils.areStacksSameType(arecipe.getInput(), ingredient)) {
                     arecipes.add(new CachedBrewingRecipe(arecipe));
                 } else {
-                    ItemStack[] recipeIngredients = NEIServerUtils.extractRecipeItems(arecipe.ingredient);
+                    ItemStack[] recipeIngredients = NEIServerUtils.extractRecipeItems(arecipe.getIngredient());
                     for (ItemStack recipeIngredient : recipeIngredients) {
                         if (NEIServerUtils.areStacksSameType(recipeIngredient, ingredient)) {
                             arecipes.add(new CachedBrewingRecipe(arecipe));

@@ -16,7 +16,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.CustomModLoadingErrorDisplayException;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
@@ -178,7 +177,7 @@ public class ClientHandler {
     @SubscribeEvent
     public void renderLastEvent(RenderWorldLastEvent event) {
         if (NEIClientConfig.isEnabled()) {
-            WorldOverlayRenderer.render(event.partialTicks);
+            WorldOverlayRenderer.render(event.getPartialTicks());
         }
     }
 

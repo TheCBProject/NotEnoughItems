@@ -9,6 +9,7 @@ import codechicken.nei.guihook.GuiContainerManager;
 import codechicken.nei.recipe.BrewingRecipeHandler;
 import codechicken.nei.recipe.RecipeItemInputHandler;
 import codechicken.nei.recipe.potion.PotionRecipeHelper;
+import codechicken.nei.util.LogHelper;
 import com.google.common.collect.ArrayListMultimap;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -18,8 +19,6 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityList.EntityEggInfo;
-import net.minecraft.entity.monster.EntityIronGolem;
-import net.minecraft.entity.monster.EntitySnowman;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -27,6 +26,7 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.*;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionHelper;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.registry.RegistryNamespaced;
@@ -37,8 +37,6 @@ import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.IShearable;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.ModContainer;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.common.registry.GameRegistry.UniqueIdentifier;
 
 import java.util.*;
 import java.util.Map.Entry;
@@ -240,12 +238,12 @@ public class ItemInfo {
     private static void parseModItems() {
         HashMap<String, ItemStackSet> modSubsets = new HashMap<String, ItemStackSet>();
         for (Item item : Item.itemRegistry) {
-            UniqueIdentifier ident = GameRegistry.findUniqueIdentifierFor(item);
+            ResourceLocation ident = Item.itemRegistry.getNameForObject(item);
             if (ident == null) {
-                NEIClientConfig.logger.error("Failed to find identifier for: " + item);
+                LogHelper.error("Failed to find identifier for: " + item);
                 continue;
             }
-            String modId = GameRegistry.findUniqueIdentifierFor(item).modId;
+            String modId = ident.getResourceDomain();
             itemOwners.put(item, modId);
             ItemStackSet itemset = modSubsets.get(modId);
             if (itemset == null) {
@@ -258,7 +256,7 @@ public class ItemInfo {
         for (Entry<String, ItemStackSet> entry : modSubsets.entrySet()) {
             ModContainer mc = FMLCommonHandler.instance().findContainerFor(entry.getKey());
             if (mc == null) {
-                NEIClientConfig.logger.error("Missing container for " + entry.getKey());
+                LogHelper.error("Missing container for " + entry.getKey());
             } else {
                 API.addSubset("Mod." + mc.getName(), entry.getValue());
             }
@@ -382,7 +380,7 @@ public class ItemInfo {
                 }
 
             } catch (Exception e) {
-                NEIClientConfig.logger.error("Error loading brewing ingredients for: " + item, e);
+                LogHelper.errorError("Error loading brewing ingredients for: " + item, e);
             }
         }
         API.addSubset("Items.Tools.Pickaxes", picks);

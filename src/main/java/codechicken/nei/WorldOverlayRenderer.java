@@ -116,7 +116,7 @@ public class WorldOverlayRenderer implements IKeyStateTracker {
 
         c.set(x + 0.2, y + 0.01, z + 0.2, x + 0.8, y + 1.8, z + 0.8);
         AxisAlignedBB aabb = c.aabb();
-        if (!world.checkNoEntityCollision(aabb) || !world.getCubes(null, aabb).isEmpty() || world.isAnyLiquid(aabb)) {
+        if (!world.checkNoEntityCollision(aabb) || !world.getEntitiesWithinAABBExcludingEntity(null, aabb).isEmpty() || world.isAnyLiquid(aabb)) {
             return 0;
         }
 

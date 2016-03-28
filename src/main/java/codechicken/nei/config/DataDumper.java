@@ -3,7 +3,7 @@ package codechicken.nei.config;
 import codechicken.core.CommonUtils;
 import codechicken.lib.vec.Rectangle4i;
 import codechicken.nei.LayoutManager;
-import codechicken.nei.NEIClientConfig;
+import codechicken.nei.util.LogHelper;
 import codechicken.nei.util.NEIClientUtils;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.text.ITextComponent;
@@ -43,7 +43,7 @@ public abstract class DataDumper extends Option {
 
             NEIClientUtils.printChatMessage(dumpMessage(file));
         } catch (Exception e) {
-            NEIClientConfig.logger.error("Error dumping " + renderName() + " mode: " + getMode(), e);
+            LogHelper.errorError("Error dumping " + renderName() + " mode: " + getMode(), e);
         }
     }
 

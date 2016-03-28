@@ -8,6 +8,7 @@ import codechicken.nei.api.*;
 import codechicken.nei.api.layout.LayoutStyle;
 import codechicken.nei.config.*;
 import codechicken.nei.recipe.RecipeInfo;
+import codechicken.nei.util.LogHelper;
 import codechicken.nei.util.NEIClientUtils;
 import codechicken.obfuscator.ObfuscationRun;
 import net.minecraft.client.Minecraft;
@@ -33,7 +34,7 @@ public class NEIClientConfig {
     private static boolean configLoaded;
     private static boolean enabledOverride;
 
-    public static Logger logger = LogManager.getLogger("NotEnoughItems");
+    //public static Logger logger = LogManager.getLogger("NotEnoughItems");
     public static File configDir = new File(CommonUtils.getMinecraftDir(), "config/NEI/");
     public static ConfigSet global = new ConfigSet(new File("saves/NEI/client.dat"), new ConfigFile(new File(configDir, "client.cfg")));
     public static ConfigSet world;
@@ -203,7 +204,7 @@ public class NEIClientConfig {
 
     public static void loadWorld(String saveName) {
         setInternalEnabled(true);
-        logger.debug("Loading " + (Minecraft.getMinecraft().isSingleplayer() ? "Local" : "Remote") + " World");
+        LogHelper.debug("Loading " + (Minecraft.getMinecraft().isSingleplayer() ? "Local" : "Remote") + " World");
         bootNEI(ClientUtils.getWorld());
 
         File saveDir = new File(CommonUtils.getMinecraftDir(), "saves/NEI/" + saveName);
@@ -284,9 +285,9 @@ public class NEIClientConfig {
                 IConfigureNEI config = (IConfigureNEI) clazz.newInstance();
                 config.loadConfig();
                 NEIModContainer.plugins.add(config);
-                logger.debug("Loaded " + clazz.getName());
+                LogHelper.debug("Loaded " + clazz.getName());
             } catch (Exception e) {
-                logger.error("Failed to Load " + clazz.getName(), e);
+                LogHelper.errorError("Failed to Load " + clazz.getName(), e);
             }
         }
 
@@ -555,7 +556,7 @@ public class NEIClientConfig {
         try {
             saves = Minecraft.getMinecraft().getSaveLoader().getSaveList();
         } catch (Exception e) {
-            logger.error("Error loading saves", e);
+            LogHelper.errorError("Error loading saves", e);
             return;
         }
         HashSet<String> saveFileNames = new HashSet<String>();

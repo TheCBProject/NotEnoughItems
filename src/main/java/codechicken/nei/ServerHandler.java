@@ -47,8 +47,8 @@ public class ServerHandler {
 
     @SubscribeEvent
     public void loadEvent(WorldEvent.Load event) {
-        if (!event.world.isRemote) {
-            NEIServerConfig.load(event.world);
+        if (!event.getWorld().isRemote) {
+            NEIServerConfig.load(event.getWorld());
         }
     }
 
