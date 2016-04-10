@@ -1,6 +1,5 @@
 package codechicken.nei.container;
 
-import codechicken.nei.util.LogHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -13,6 +12,10 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ContainerCreativeInv extends Container {
+
+    public static final EntityEquipmentSlot[] VALID_EQUIPMENT_SLOTS = new EntityEquipmentSlot[] { EntityEquipmentSlot.HEAD, EntityEquipmentSlot.CHEST, EntityEquipmentSlot.LEGS, EntityEquipmentSlot.FEET, EntityEquipmentSlot.OFFHAND };
+    public static final String[] SLOT_TEXTURES = new String[] { "", "minecraft:items/empty_armor_slot_boots", "minecraft:items/empty_armor_slot_leggings", "minecraft:items/empty_armor_slot_chestplate", "minecraft:items/empty_armor_slot_helmet", "minecraft:items/empty_armor_slot_shield" };
+
     private class SlotArmor extends Slot {
         EntityEquipmentSlot equipmentSlot;
 
@@ -28,24 +31,13 @@ public class ContainerCreativeInv extends Container {
 
         @Override
         public boolean isItemValid(ItemStack stack) {
-            return stack != null && stack.getItem().isValidArmor(stack, equipmentSlot, player);
+            return equipmentSlot.equals(EntityEquipmentSlot.OFFHAND) || stack != null && stack.getItem().isValidArmor(stack, equipmentSlot, player);
         }
 
         @Override
         @SideOnly(Side.CLIENT)
         public String getSlotTexture() {
-            return ItemArmor.EMPTY_SLOT_NAMES[equipmentSlot.getIndex()];
-        }
-    }
-
-    private class SlotBlockArmor extends SlotArmor {
-        public SlotBlockArmor(IInventory inv, int slot, int x, int y, EntityEquipmentSlot equipmentSlot) {
-            super(inv, slot, x, y, equipmentSlot);
-        }
-
-        @Override
-        public boolean isItemValid(ItemStack stack) {
-            return super.isItemValid(stack) || stack != null;// && Block.getBlockFromItem(stack.getItem()) != Blocks.air;
+            return SLOT_TEXTURES[equipmentSlot.getSlotIndex()];
         }
     }
 
@@ -69,14 +61,11 @@ public class ContainerCreativeInv extends Container {
         for (int col = 0; col < 9; ++col) {
             addSlotToContainer(new Slot(invPlayer, col, 8 + col * 18, 176));
         }
-
-        addSlotToContainer(new SlotBlockArmor(invPlayer, invPlayer.getSizeInventory() - 4, -15, 23, EntityEquipmentSlot.HEAD));
-        addSlotToContainer(new SlotArmor(invPlayer, invPlayer.getSizeInventory() - 3, -15, 41, EntityEquipmentSlot.CHEST));
-        addSlotToContainer(new SlotArmor(invPlayer, invPlayer.getSizeInventory() - 2, -15, 59, EntityEquipmentSlot.LEGS));
-        addSlotToContainer(new SlotArmor(invPlayer, invPlayer.getSizeInventory() - 1, -15, 77, EntityEquipmentSlot.FEET));
-        //for (int armorType = 1; armorType < 4; armorType++) {
-        //    addSlotToContainer(new SlotArmor(invPlayer, invPlayer.getSizeInventory() - 1 - armorType, -15, 23 + armorType * 18, armorType));
-        //}
+        for (int i = 0; i < 4; i++) {
+            EntityEquipmentSlot entityEquipmentSlot = VALID_EQUIPMENT_SLOTS[i];
+            addSlotToContainer(new SlotArmor(invPlayer, 36 + (3 - i), -15, 23 + i * 18, entityEquipmentSlot));
+        }
+        addSlotToContainer(new SlotArmor(invPlayer, 40, -15, 23 + 4 * 18, VALID_EQUIPMENT_SLOTS[4]));
     }
 
     @Override
