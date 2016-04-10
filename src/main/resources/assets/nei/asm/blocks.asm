@@ -239,8 +239,10 @@ LCONT
 
 list n_mouseUpGoto
 IFNULL LSTART
-ILOAD 3
 ALOAD 0
+GETFIELD net/minecraft/client/gui/inventory/GuiContainer.field_146297_k : Lnet/minecraft/client/Minecraft;
+GETFIELD net/minecraft/client/Minecraft.field_71474_y : Lnet/minecraft/client/settings/GameSettings;
+GETFIELD net/minecraft/client/settings/GameSettings.field_74322_I : Lnet/minecraft/client/settings/KeyBinding;
 
 list n_mouseUp
 LSKIP

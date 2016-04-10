@@ -29,7 +29,7 @@ public class ServerHandler {
         instance = new ServerHandler();
 
         PacketCustom.assignHandler(NEIClientPacketHandler.channel, new NEIServerPacketHandler());
-        FMLCommonHandler.instance().bus().register(instance);
+        //FMLCommonHandler.instance().bus().register(instance);
         MinecraftForge.EVENT_BUS.register(instance);
 
         Item.getItemFromBlock(Blocks.mob_spawner).setHasSubtypes(true);

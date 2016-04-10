@@ -214,7 +214,7 @@ public class NEIServerUtils {
             }
         }
 
-        sendNotice(player, new TextComponentTranslation("commands.give.success", stack.getChatComponent(), infinite ? "\u221E" : Integer.toString(given), player.getName()), "notify-item");
+        sendNotice(player, new TextComponentTranslation("commands.give.success", stack.getTextComponent(), infinite ? "\u221E" : Integer.toString(given), player.getName()), "notify-item");
         player.openContainer.detectAndSendChanges();
     }
 
