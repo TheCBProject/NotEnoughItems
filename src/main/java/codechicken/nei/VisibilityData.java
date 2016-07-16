@@ -1,5 +1,7 @@
 package codechicken.nei;
 
+import codechicken.nei.jei.JEIIntegrationManager;
+
 public class VisibilityData {
     public boolean showUtilityButtons = true;
     public boolean showStateButtons = true;
@@ -35,5 +37,6 @@ public class VisibilityData {
         if (!showItemSection) {
             showSearchSection = showItemPanel = false;
         }
+        JEIIntegrationManager.pushChanges(this);
     }
 }

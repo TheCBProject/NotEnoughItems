@@ -18,15 +18,23 @@ public class ContainerCreativeInv extends Container {
 
     private class SlotArmor extends Slot {
         EntityEquipmentSlot equipmentSlot;
+        int stackLimit;
+
+        public SlotArmor(IInventory inv, int slot, int x, int y, EntityEquipmentSlot armor, int stackLimit) {
+            super(inv, slot, x, y);
+            equipmentSlot = armor;
+            this.stackLimit = stackLimit;
+        }
 
         public SlotArmor(IInventory inv, int slot, int x, int y, EntityEquipmentSlot armor) {
             super(inv, slot, x, y);
             equipmentSlot = armor;
+            stackLimit = 1;
         }
 
         @Override
         public int getSlotStackLimit() {
-            return 1;
+            return stackLimit;
         }
 
         @Override
@@ -65,7 +73,7 @@ public class ContainerCreativeInv extends Container {
             EntityEquipmentSlot entityEquipmentSlot = VALID_EQUIPMENT_SLOTS[i];
             addSlotToContainer(new SlotArmor(invPlayer, 36 + (3 - i), -15, 23 + i * 18, entityEquipmentSlot));
         }
-        addSlotToContainer(new SlotArmor(invPlayer, 40, -15, 23 + 4 * 18, VALID_EQUIPMENT_SLOTS[4]));
+        addSlotToContainer(new SlotArmor(invPlayer, 40, -15, 23 + 4 * 18, VALID_EQUIPMENT_SLOTS[4], 64));
     }
 
     @Override

@@ -32,7 +32,7 @@ public class ServerHandler {
         //FMLCommonHandler.instance().bus().register(instance);
         MinecraftForge.EVENT_BUS.register(instance);
 
-        Item.getItemFromBlock(Blocks.mob_spawner).setHasSubtypes(true);
+        Item.getItemFromBlock(Blocks.MOB_SPAWNER).setHasSubtypes(true);
         NEIActions.init();
     }
 

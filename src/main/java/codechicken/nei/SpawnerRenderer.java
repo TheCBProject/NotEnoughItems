@@ -24,7 +24,7 @@ import java.util.List;
 
 public class SpawnerRenderer implements IItemRenderer {
     public static void load(ItemMobSpawner item) {
-        ModelRegistryHelper.registerItemRenderer(item, new SpawnerRenderer(), new ResourceLocation("mob_spawner"));
+        ModelRegistryHelper.registerItemRenderer(item, new SpawnerRenderer());
     }
 
     public void renderItem(ItemStack stack) {

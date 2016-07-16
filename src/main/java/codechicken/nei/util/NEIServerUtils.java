@@ -130,7 +130,7 @@ public class NEIServerUtils {
         notice.getStyle().setColor(TextFormatting.GRAY).setItalic(true);
 
         if (NEIServerConfig.canPlayerPerformAction("CONSOLE", permission)) {
-            PacketCustom.getServerInstance().addChatMessage(notice);
+            ServerUtils.mc().addChatMessage(notice);
         }
 
         for (EntityPlayer p : ServerUtils.getPlayers()) {

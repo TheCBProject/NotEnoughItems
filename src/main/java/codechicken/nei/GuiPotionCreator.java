@@ -4,8 +4,8 @@ import codechicken.core.gui.GuiCCButton;
 import codechicken.core.gui.GuiCCTextField;
 import codechicken.core.gui.GuiScrollSlot;
 import codechicken.core.inventory.GuiContainerWidget;
-import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.FontUtils;
+import codechicken.lib.render.TextureUtils;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -25,7 +25,7 @@ public class GuiPotionCreator extends GuiContainerWidget {
 
         public GuiSlotPotionEffects(int x, int y) {
             super(x, y, 108, 76);
-            for (Potion p : Potion.potionRegistry) {
+            for (Potion p : Potion.REGISTRY) {
                 if (p != null) {
                     validPotions.add(p);
                 }
@@ -72,12 +72,12 @@ public class GuiPotionCreator extends GuiContainerWidget {
             }
             int shade = selectedslot == slot ? 2 : blank ? 1 : 0;
 
-            CCRenderState.changeTexture("textures/gui/container/enchanting_table.png");
+            TextureUtils.changeTexture("textures/gui/container/enchanting_table.png");
             drawTexturedModalRect(x, y, 0, 166 + getSlotHeight(slot) * shade, width - 30, getSlotHeight(slot));
             drawTexturedModalRect(x + width - 30, y, width - 23, 166 + getSlotHeight(slot) * shade, 30, getSlotHeight(slot));
 
             if (potion.hasStatusIcon()) {
-                CCRenderState.changeTexture("textures/gui/container/inventory.png");
+                TextureUtils.changeTexture("textures/gui/container/inventory.png");
                 int icon = potion.getStatusIconIndex();
                 drawTexturedModalRect(x + 1, y + 1, icon % 8 * 18, 198 + icon / 8 * 18, 18, 18);
             }
@@ -303,7 +303,7 @@ public class GuiPotionCreator extends GuiContainerWidget {
 
     @Override
     public void drawBackground() {
-        CCRenderState.changeTexture("nei:textures/gui/potion.png");
+        TextureUtils.changeTexture("nei:textures/gui/potion.png");
         drawTexturedModalRect(0, 0, 0, 0, xSize, ySize);
 
         FontUtils.drawCenteredString("Favourite Potions", xSize / 2, 4, 0x404040);

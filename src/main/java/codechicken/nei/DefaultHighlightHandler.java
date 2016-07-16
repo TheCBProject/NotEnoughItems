@@ -30,7 +30,7 @@ public class DefaultHighlightHandler implements IHighlightHandler {
         }
 
         IBlockState b = world.getBlockState(rayTraceResult.getBlockPos());
-        if (name != null && b.getBlock() == Blocks.redstone_wire) {
+        if (name != null && b.getBlock() == Blocks.REDSTONE_WIRE) {
             String s = "" + b.getValue(BlockRedstoneWire.POWER);
             if (s.length() < 2) {
                 s = " " + s;

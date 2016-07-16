@@ -1,6 +1,6 @@
 package codechicken.nei;
 
-import codechicken.lib.render.CCRenderState;
+import codechicken.lib.render.TextureUtils;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -29,7 +29,7 @@ public class GuiEnchantmentModifier extends GuiContainer {
 
     protected void drawGuiContainerBackgroundLayer(float f, int i, int j) {
         GlStateManager.color(1, 1, 1, 1);
-        CCRenderState.changeTexture("textures/gui/container/enchanting_table.png");
+        TextureUtils.changeTexture("textures/gui/container/enchanting_table.png");
         GlStateManager.translate(guiLeft, guiTop, 0);
         drawTexturedModalRect(0, 0, 0, 0, xSize, ySize);
 

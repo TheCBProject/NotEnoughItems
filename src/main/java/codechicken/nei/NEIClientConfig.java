@@ -7,6 +7,8 @@ import codechicken.lib.config.ConfigTagParent;
 import codechicken.nei.api.*;
 import codechicken.nei.api.layout.LayoutStyle;
 import codechicken.nei.config.*;
+import codechicken.nei.jei.ItemPanelButton;
+import codechicken.nei.jei.JEIIntegrationManager;
 import codechicken.nei.recipe.RecipeInfo;
 import codechicken.nei.util.LogHelper;
 import codechicken.nei.util.NEIClientUtils;
@@ -18,9 +20,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.World;
-import net.minecraft.world.storage.SaveFormatComparator;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import net.minecraft.world.storage.WorldSummary;
 import org.lwjgl.input.Keyboard;
 
 import java.io.File;
@@ -148,6 +148,10 @@ public class NEIClientConfig {
         API.addOption(new OptionTextField("command.rain"));
         tag.getTag("command.heal").setDefaultValue("");
         API.addOption(new OptionTextField("command.heal"));
+
+        JEIIntegrationManager.initConfig(tag);
+
+        API.addOption(new ItemPanelButton("jei.panelOwner"));
 
         setDefaultKeyBindings();
     }
@@ -552,7 +556,7 @@ public class NEIClientConfig {
             return;
         }
 
-        List<SaveFormatComparator> saves;
+        List<WorldSummary> saves;
         try {
             saves = Minecraft.getMinecraft().getSaveLoader().getSaveList();
         } catch (Exception e) {
@@ -560,7 +564,7 @@ public class NEIClientConfig {
             return;
         }
         HashSet<String> saveFileNames = new HashSet<String>();
-        for (SaveFormatComparator save : saves) {
+        for (WorldSummary save : saves) {
             saveFileNames.add(save.getFileName());
         }
 

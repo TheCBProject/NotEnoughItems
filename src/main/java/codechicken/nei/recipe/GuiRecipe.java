@@ -1,9 +1,10 @@
 package codechicken.nei.recipe;
 
 import codechicken.lib.gui.GuiDraw;
-import codechicken.lib.render.CCRenderState;
-import codechicken.nei.*;
+import codechicken.lib.render.TextureUtils;
+import codechicken.nei.GuiNEIButton;
 import codechicken.nei.LayoutManager;
+import codechicken.nei.NEIClientConfig;
 import codechicken.nei.api.IGuiContainerOverlay;
 import codechicken.nei.api.IOverlayHandler;
 import codechicken.nei.api.IRecipeOverlayRenderer;
@@ -275,7 +276,7 @@ public abstract class GuiRecipe extends GuiContainer implements IGuiContainerOve
     @Override
     protected void drawGuiContainerBackgroundLayer(float f, int mx, int my) {
         GlStateManager.color(1, 1, 1, 1);
-        CCRenderState.changeTexture("nei:textures/gui/recipebg.png");
+        TextureUtils.changeTexture("nei:textures/gui/recipebg.png");
         int j = (width - xSize) / 2;
         int k = (height - ySize) / 2;
         drawTexturedModalRect(j, k, 0, 0, xSize, ySize);

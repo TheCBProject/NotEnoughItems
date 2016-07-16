@@ -59,8 +59,8 @@ public abstract class OptionScrollPane extends GuiScrollPane {
 
     public static void drawOverlayTex(int x, int y, int w, int h, float zLevel) {
         GlStateManager.color(1, 1, 1, 1);
-        Minecraft.getMinecraft().renderEngine.bindTexture(Gui.optionsBackground);
-        VertexBuffer worldRenderer = CCRenderState.startDrawing(DefaultVertexFormats.POSITION_TEX);
+        Minecraft.getMinecraft().renderEngine.bindTexture(Gui.OPTIONS_BACKGROUND);
+        VertexBuffer worldRenderer = CCRenderState.startDrawing(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
 
         worldRenderer.pos(x, y, zLevel).tex(0, 0).endVertex();
         worldRenderer.pos(x, y + h, zLevel).tex(0, h / 16D).endVertex();
@@ -75,7 +75,7 @@ public abstract class OptionScrollPane extends GuiScrollPane {
         GlStateManager.enableBlend();
         GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GlStateManager.shadeModel(GL11.GL_SMOOTH);
-        VertexBuffer worldRenderer = CCRenderState.startDrawing(DefaultVertexFormats.POSITION_COLOR);
+        VertexBuffer worldRenderer = CCRenderState.startDrawing(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
         worldRenderer.pos(x2, y1, zLevel).color(0, 0, 0, 255).endVertex();
         worldRenderer.pos(x1, y1, zLevel).color(0, 0, 0, 255).endVertex();
 

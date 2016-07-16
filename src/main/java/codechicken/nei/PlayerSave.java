@@ -1,7 +1,7 @@
 package codechicken.nei;
 
+import codechicken.core.ServerUtils;
 import codechicken.lib.inventory.InventoryUtils;
-import codechicken.lib.packet.PacketCustom;
 import codechicken.nei.network.NEIServerPacketHandler;
 import codechicken.nei.util.LogHelper;
 import codechicken.nei.util.NEIServerUtils;
@@ -31,7 +31,7 @@ public class PlayerSave {
 
     public PlayerSave(EntityPlayerMP player, File saveLocation) {
         this.player = player;
-        wasOp = PacketCustom.getServerInstance().getPlayerList().canSendCommands(player.getGameProfile());
+        wasOp = ServerUtils.mc().getPlayerList().canSendCommands(player.getGameProfile());
 
         saveFile = new File(saveLocation, player.getName() + ".dat");
         if (!saveFile.getParentFile().exists()) {
@@ -97,7 +97,7 @@ public class PlayerSave {
     }
 
     public void updateOpChange() {
-        boolean isOp = PacketCustom.getServerInstance().getPlayerList().canSendCommands(player.getGameProfile());
+        boolean isOp = ServerUtils.mc().getPlayerList().canSendCommands(player.getGameProfile());
         if (isOp != wasOp) {
             NEIServerPacketHandler.sendHasServerSideTo(player);
             wasOp = isOp;

@@ -189,7 +189,7 @@ public class ItemList {
             ListMultimap<Item, ItemStack> itemMap = ArrayListMultimap.create();
 
             timer.setLimit(500);
-            for (Item item : Item.itemRegistry) {
+            for (Item item : Item.REGISTRY) {
                 if (interrupted()) {
                     return;
                 }

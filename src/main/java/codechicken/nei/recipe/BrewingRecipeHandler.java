@@ -114,7 +114,7 @@ public class BrewingRecipeHandler extends TemplateRecipeHandler {
 
     @Override
     public void loadCraftingRecipes(ItemStack result) {
-        if (result.getItem() == Items.potionitem) {
+        if (result.getItem() == Items.POTIONITEM) {
             int damage = result.getItemDamage();
             for (NEIBrewingRecipe recipe : apotions) {
                 if (recipe.output.item.getItemDamage() == damage) {
@@ -139,7 +139,7 @@ public class BrewingRecipeHandler extends TemplateRecipeHandler {
 
     @Override
     public void loadUsageRecipes(ItemStack ingredient) {
-        if (ingredient.getItem() == Items.potionitem || ingredients.contains(ingredient)) {
+        if (ingredient.getItem() == Items.POTIONITEM || ingredients.contains(ingredient)) {
             for (NEIBrewingRecipe recipe : apotions) {
                 if (NEIServerUtils.areStacksSameType(recipe.ingredient.item, ingredient) || NEIServerUtils.areStacksSameType(recipe.input.item, ingredient)) {
                     arecipes.add(new CachedBrewingRecipe(recipe));
@@ -220,9 +220,9 @@ public class BrewingRecipeHandler extends TemplateRecipeHandler {
             }
         }
 
-        API.addSubset("Items.Potions", new ItemStackSet().with(Items.potionitem).with(Items.splash_potion).with(Items.lingering_potion));
-        API.addSubset("Items.Potions.Splash", new ItemStackSet().with(Items.splash_potion));
-        API.addSubset("Items.Potions.Lingering", new ItemStackSet().with(Items.lingering_potion));
+        API.addSubset("Items.Potions", new ItemStackSet().with(Items.POTIONITEM).with(Items.SPLASH_POTION).with(Items.LINGERING_POTION));
+        API.addSubset("Items.Potions.Splash", new ItemStackSet().with(Items.SPLASH_POTION));
+        API.addSubset("Items.Potions.Lingering", new ItemStackSet().with(Items.LINGERING_POTION));
         API.addSubset("Items.Potions.Positive", positiveEffects);
         API.addSubset("Items.Potions.Negative", negativeEffects);
         API.addSubset("Items.Potions.Neutral", neutralEffects);

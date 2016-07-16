@@ -9,13 +9,12 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving.SpawnPlacementType;
 import net.minecraft.entity.EnumCreatureType;
-import net.minecraft.entity.passive.EntityPig;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldEntitySpawner;
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
 
 import static org.lwjgl.opengl.GL11.*;
@@ -74,7 +73,7 @@ public class WorldOverlayRenderer implements IKeyStateTracker {
             for (int z = z1 - 16; z <= z1 + 16; z++) {
                 BlockPos pos = new BlockPos(x, y1, z);
                 Chunk chunk = world.getChunkFromBlockCoords(pos);
-                BiomeGenBase biome = world.getBiomeGenForCoords(pos);
+                Biome biome = world.getBiomeGenForCoords(pos);
                 if (biome.getSpawnableList(EnumCreatureType.MONSTER).isEmpty() || biome.getSpawningChance() <= 0) {
                     continue;
                 }
@@ -116,7 +115,7 @@ public class WorldOverlayRenderer implements IKeyStateTracker {
 
         c.set(x + 0.2, y + 0.01, z + 0.2, x + 0.8, y + 1.8, z + 0.8);
         AxisAlignedBB aabb = c.aabb();
-        if (!world.checkNoEntityCollision(aabb) || !world.getEntitiesWithinAABBExcludingEntity(null, aabb).isEmpty() || world.isAnyLiquid(aabb)) {
+        if (!world.checkNoEntityCollision(aabb) || !world.getEntitiesWithinAABBExcludingEntity(null, aabb).isEmpty() || world.containsAnyLiquid(aabb)) {
             return 0;
         }
 

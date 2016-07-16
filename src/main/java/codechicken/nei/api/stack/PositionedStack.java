@@ -69,7 +69,7 @@ public class PositionedStack {
         items = stacks.toArray(new ItemStack[0]);
 
         if (items.length == 0) {
-            items = new ItemStack[] { new ItemStack(Blocks.fire) };
+            items = new ItemStack[] { new ItemStack(Blocks.FIRE) };
         }
 
         permutated = true;
@@ -91,7 +91,7 @@ public class PositionedStack {
     public void setPermutationToRender(int index) {
         item = items[index].copy();
         if (item.getItem() == null) {
-            item = new ItemStack(Blocks.fire);
+            item = new ItemStack(Blocks.FIRE);
         } else if (item.getItemDamage() == OreDictionary.WILDCARD_VALUE) {
             item.setItemDamage(0);
         }

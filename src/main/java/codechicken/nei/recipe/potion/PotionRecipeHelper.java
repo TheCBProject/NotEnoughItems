@@ -51,23 +51,23 @@ public class PotionRecipeHelper {
         lingeringRecipes.add(recipe);
     }
 
-    public static void init() {
+    public static void init() {//TODO Don't make assumptions as to what the ingredient is to achieve next tear, as Minetweaker may change it.
         for (PotionHelper.MixPredicate<PotionType> entry : PotionHelper.POTION_TYPE_CONVERSIONS) {
             PotionType input = entry.input;
             PotionHelper.ItemPredicateInstance ingredient = (PotionHelper.ItemPredicateInstance) entry.reagent;
             PotionType output = entry.output;
-            addNormalRecipe(Items.potionitem, input, ingredient.item, output);
-            addSplashRecipe(Items.splash_potion, input, ingredient.item, output);
-            addLingeringRecipe(Items.lingering_potion, input, ingredient.item, output);
+            addNormalRecipe(Items.POTIONITEM, input, ingredient.item, output);
+            addSplashRecipe(Items.SPLASH_POTION, input, ingredient.item, output);
+            addLingeringRecipe(Items.LINGERING_POTION, input, ingredient.item, output);
         }
 
         for (IPotionRecipe recipe : normalRecipes) {
-            IPotionRecipe upgradeRecipe = new PotionUpgradeRecipe(recipe.getRecipeOutput(), new ItemStack(Items.gunpowder), Items.splash_potion);
+            IPotionRecipe upgradeRecipe = new PotionUpgradeRecipe(recipe.getRecipeOutput(), new ItemStack(Items.GUNPOWDER), Items.SPLASH_POTION);
             allRecipes.add(upgradeRecipe);
         }
 
         for (IPotionRecipe recipe : splashRecipes) {
-            IPotionRecipe upgradeRecipe = new PotionUpgradeRecipe(recipe.getRecipeOutput(), new ItemStack(Items.dragon_breath), Items.lingering_potion);
+            IPotionRecipe upgradeRecipe = new PotionUpgradeRecipe(recipe.getRecipeOutput(), new ItemStack(Items.DRAGON_BREATH), Items.LINGERING_POTION);
             allRecipes.add(upgradeRecipe);
         }
 

@@ -29,26 +29,32 @@ configFile.withReader {
 
 //add dependency repositories
 repositories {
-	maven {
-		name ="Covers1624 Repo"
-		url = "http://adel.podgeweb.com:1616/maven/"
-	}
+    maven {
+        name = "CB Repo."
+        url = "http://chickenbones.net/maven/"
+    }
+    maven {
+        name = "JEI Maven."
+        url = "http://dvs1.progwml6.com/files/maven"
+    }
 }
 
 dependencies {
     compile "codechicken:CodeChickenLib:${config.mc_version}-${config.ccl_version}:deobf"
     compile "codechicken:CodeChickenCore:${config.mc_version}-${config.ccc_version}:deobf"
+    compile "mezz.jei:jei_${config.mc_version}:${config.jei_version}"
 }
 
-version =  "${project.config.mod_version}." + System.getenv("BUILD_NUMBER") ?: "1"
+version = "${project.config.mod_version}." + System.getenv("BUILD_NUMBER") ?: "1"
 
-println  config.mc_version + "-" + config.forge_version
+println config.mc_version + "-" + config.forge_version
 // Setup the forge minecraft plugin data. Specify the preferred forge/minecraft version here
 minecraft {
     version = config.mc_version + "-" + config.forge_version
     mappings = config.mappings
-	runDir = "run"
-	makeObfSourceJar = false
+    runDir = "run"
+    makeObfSourceJar = false
+    useDepAts = true
 }
 
 processResources {
@@ -59,7 +65,7 @@ processResources {
     // Replace properties in info files
     from(sourceSets.main.resources.srcDirs) {
         include '*.info'
-        expand 'version':project.version,'mc_version':config.mc_version
+        expand 'version': project.version, 'mc_version': config.mc_version
     }
 
     // Move access transformer to META-INF
@@ -97,37 +103,39 @@ artifacts {
 uploadArchives {
     repositories {
         mavenDeployer {
-            repository(url: "file:///var/www/maven")
-            pom {
-                groupId = project.group
-                version = project.version
-                artifactId = project.archivesBaseName
-                project {
-                    name project.archivesBaseName
-                    packaging 'jar'
-                    description 'NotEnoughItems'
-                    url 'https://github.com/covers1624/NotEnoughItems'
-                    scm {
+            if (project.hasProperty("local_maven")) {
+                repository(url: "file://${local_maven}")
+                pom {
+                    groupId = project.group
+                    version = project.version
+                    artifactId = project.archivesBaseName
+                    project {
+                        name project.archivesBaseName
+                        packaging 'jar'
+                        description 'NotEnoughItems'
                         url 'https://github.com/covers1624/NotEnoughItems'
-                        connection 'scm:git:git@github.com:covers1624/NotEnoughItems.git'
-                        developerConnection 'scm:git:git@github.com:covers1624/NotEnoughItems.git'
-                    }
-                    issueManagement {
-                        system 'github'
-                        url 'https://github.com/covers1624/NotEnoughItems/issues'
-                    }
-                    licenses {
-                        license {
-                            name 'License'
-                            url 'https://raw.githubusercontent.com/covers1624/NotEnoughItems/master/LICENSE.txt'
-                            distribution 'repo'
+                        scm {
+                            url 'https://github.com/covers1624/NotEnoughItems'
+                            connection 'scm:git:git@github.com:covers1624/NotEnoughItems.git'
+                            developerConnection 'scm:git:git@github.com:covers1624/NotEnoughItems.git'
                         }
-                    }
-                    developers {
-                        developer {
-                            id 'chicken-bones'
-                            name 'chicken-bones'
-                            roles { role 'developer' }
+                        issueManagement {
+                            system 'github'
+                            url 'https://github.com/covers1624/NotEnoughItems/issues'
+                        }
+                        licenses {
+                            license {
+                                name 'License'
+                                url 'https://raw.githubusercontent.com/covers1624/NotEnoughItems/master/LICENSE.txt'
+                                distribution 'repo'
+                            }
+                        }
+                        developers {
+                            developer {
+                                id 'chicken-bones'
+                                name 'chicken-bones'
+                                roles { role 'developer' }
+                            }
                         }
                     }
                 }

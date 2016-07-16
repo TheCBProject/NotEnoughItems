@@ -158,7 +158,7 @@ GETFIELD net/minecraft/client/Minecraft.field_71439_g : Lnet/minecraft/client/en
 ALOAD 4
 ILOAD 2
 ILOAD 3
-INVOKEVIRTUAL net/minecraft/client/renderer/RenderItem.func_180450_b (Lnet/minecraft/entity/EntityLivingBase;Lnet/minecraft/item/ItemStack;II)V
+INVOKEVIRTUAL net/minecraft/client/renderer/RenderItem.func_184391_a (Lnet/minecraft/entity/EntityLivingBase;Lnet/minecraft/item/ItemStack;II)V
 ALOAD 0
 GETFIELD net/minecraft/client/gui/inventory/GuiContainer.field_146296_j : Lnet/minecraft/client/renderer/RenderItem;
 ALOAD 0

@@ -32,7 +32,7 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.registry.RegistryNamespaced;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.IShearable;
 import net.minecraftforge.fml.common.FMLCommonHandler;
@@ -113,8 +113,8 @@ public class ItemInfo {
     }
 
     private static void addVanillaBlockProperties() {
-        API.hideItem(new ItemStack(Blocks.farmland));
-        API.hideItem(new ItemStack(Blocks.lit_furnace));
+        API.hideItem(new ItemStack(Blocks.FARMLAND));
+        API.hideItem(new ItemStack(Blocks.LIT_FURNACE));
     }
 
     private static void addSearchOptimisation() {
@@ -149,12 +149,12 @@ public class ItemInfo {
 
             @Override
             public String[] dump(Item item, int id, String name) {
-                return new String[] { name, Integer.toString(id), Boolean.toString(Block.getBlockFromItem(item) != Blocks.air), ItemInfo.itemOwners.get(item), item.getClass().getCanonicalName() };
+                return new String[] { name, Integer.toString(id), Boolean.toString(Block.getBlockFromItem(item) != Blocks.AIR), ItemInfo.itemOwners.get(item), item.getClass().getCanonicalName() };
             }
 
             @Override
             public RegistryNamespaced registry() {
-                return Item.itemRegistry;
+                return Item.REGISTRY;
             }
         });
         API.addOption(new RegistryDumper<Block>("tools.dump.block") {
@@ -170,7 +170,7 @@ public class ItemInfo {
 
             @Override
             public RegistryNamespaced registry() {
-                return Block.blockRegistry;
+                return Block.REGISTRY;
             }
         });
         //TODO Test.
@@ -186,7 +186,7 @@ public class ItemInfo {
 
             @Override
             public RegistryNamespaced registry() {
-                return Potion.potionRegistry;
+                return Potion.REGISTRY;
             }
         });
         //TODO Test.
@@ -202,18 +202,18 @@ public class ItemInfo {
 
             @Override
             public RegistryNamespaced registry() {
-                return Enchantment.enchantmentRegistry;
+                return Enchantment.REGISTRY;
             }
         });
         //TODO Test.
-        API.addOption(new RegistryDumper<BiomeGenBase>("tools.dump.biome") {
+        API.addOption(new RegistryDumper<Biome>("tools.dump.biome") {
             @Override
             public String[] header() {
                 return new String[] { "ID", "Name", "Temperature", "Rainfall", "Spawn Chance", "Root Height", "Height Variation", "Types", "Class" };
             }
 
             @Override
-            public String[] dump(BiomeGenBase biome, int id, String name) {
+            public String[] dump(Biome biome, int id, String name) {
                 BiomeDictionary.Type[] types = BiomeDictionary.getTypesForBiome(biome);
                 StringBuilder s_types = new StringBuilder();
                 for (BiomeDictionary.Type t : types) {
@@ -228,7 +228,7 @@ public class ItemInfo {
 
             @Override
             public RegistryNamespaced registry() {
-                return BiomeGenBase.biomeRegistry;
+                return Biome.REGISTRY;
             }
         });
         API.addOption(new ItemPanelDumper("tools.dump.itempanel"));
@@ -237,8 +237,8 @@ public class ItemInfo {
 
     private static void parseModItems() {
         HashMap<String, ItemStackSet> modSubsets = new HashMap<String, ItemStackSet>();
-        for (Item item : Item.itemRegistry) {
-            ResourceLocation ident = Item.itemRegistry.getNameForObject(item);
+        for (Item item : Item.REGISTRY) {
+            ResourceLocation ident = Item.REGISTRY.getNameForObject(item);
             if (ident == null) {
                 LogHelper.error("Failed to find identifier for: " + item);
                 continue;
@@ -277,16 +277,16 @@ public class ItemInfo {
         API.addSubset("Items", new ItemFilter() {
             @Override
             public boolean matches(ItemStack item) {
-                return Block.getBlockFromItem(item.getItem()) == Blocks.air;
+                return Block.getBlockFromItem(item.getItem()) == Blocks.AIR;
             }
         });
         API.addSubset("Blocks", new ItemFilter() {
             @Override
             public boolean matches(ItemStack item) {
-                return Block.getBlockFromItem(item.getItem()) != Blocks.air;
+                return Block.getBlockFromItem(item.getItem()) != Blocks.AIR;
             }
         });
-        API.addSubset("Blocks.MobSpawners", ItemStackSet.of(Blocks.mob_spawner));
+        API.addSubset("Blocks.MobSpawners", ItemStackSet.of(Blocks.MOB_SPAWNER));
     }
 
     private static void searchItems() {
@@ -305,10 +305,10 @@ public class ItemInfo {
         ItemStackSet food = new ItemStackSet();
         ItemStackSet potioningredients = new ItemStackSet();
 
-        ArrayList<ItemStackSet> creativeTabRanges = new ArrayList<ItemStackSet>(CreativeTabs.creativeTabArray.length);
+        ArrayList<ItemStackSet> creativeTabRanges = new ArrayList<ItemStackSet>(CreativeTabs.CREATIVE_TAB_ARRAY.length);
         List<ItemStack> stackList = new LinkedList<ItemStack>();
 
-        for (Item item : Item.itemRegistry) {
+        for (Item item : Item.REGISTRY) {
             if (item == null) {
                 continue;
             }
@@ -358,9 +358,9 @@ public class ItemInfo {
                         boots.with(item);
                         break;
                     }
-                } else if (item == Items.arrow || item == Items.bow) {
+                } else if (item == Items.ARROW || item == Items.BOW) {
                     ranged.with(item);
-                } else if (item == Items.fishing_rod || item == Items.flint_and_steel || item == Items.shears) {
+                } else if (item == Items.FISHING_ROD || item == Items.FLINT_AND_STEEL || item == Items.SHEARS) {
                     other.with(item);
                 }
             }
@@ -397,7 +397,7 @@ public class ItemInfo {
         API.addSubset("Items.Food", food);
         API.addSubset("Items.Potions.Ingredients", potioningredients);
 
-        for (CreativeTabs tab : CreativeTabs.creativeTabArray) {
+        for (CreativeTabs tab : CreativeTabs.CREATIVE_TAB_ARRAY) {
             if (tab.getTabIndex() >= creativeTabRanges.size()) {
                 continue;
             }
@@ -418,7 +418,7 @@ public class ItemInfo {
 
     private static void addEntityEgg(Class<? extends Entity> entity, int i, int j) {
         String id = EntityList.getEntityStringFromClass(entity);
-        EntityList.entityEggs.put(id, new EntityEggInfo(id, i, j));
+        EntityList.ENTITY_EGGS.put(id, new EntityEggInfo(id, i, j));
     }
 
     public static ArrayList<ItemStack> getIdentifierItems(World world, EntityPlayer player, RayTraceResult hit) {
@@ -457,8 +457,8 @@ public class ItemInfo {
         }
         if (block instanceof IShearable) {
             IShearable shearable = (IShearable) block;
-            if (shearable.isShearable(new ItemStack(Items.shears), world, pos)) {
-                items.addAll(shearable.onSheared(new ItemStack(Items.shears), world, pos, 0));
+            if (shearable.isShearable(new ItemStack(Items.SHEARS), world, pos)) {
+                items.addAll(shearable.onSheared(new ItemStack(Items.SHEARS), world, pos, 0));
             }
         }
 

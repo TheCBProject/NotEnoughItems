@@ -1,6 +1,6 @@
 package codechicken.nei;
 
-import codechicken.lib.render.CCRenderState;
+import codechicken.lib.render.TextureUtils;
 import codechicken.nei.network.NEIClientPacketHandler;
 import codechicken.nei.util.NEIServerUtils;
 import net.minecraft.client.gui.Gui;
@@ -168,12 +168,12 @@ public class ContainerEnchantmentModifier extends ContainerEnchantment {
 
     @Deprecated
     public boolean addEnchantment(int e, int level) {
-        return addEnchantment(Enchantment.enchantmentRegistry.getNameForObject(Enchantment.getEnchantmentByID(e)).toString(), level);
+        return addEnchantment(Enchantment.REGISTRY.getNameForObject(Enchantment.getEnchantmentByID(e)).toString(), level);
     }
 
-    public boolean addEnchantment(String enchantmentLocation, int level){
+    public boolean addEnchantment(String enchantmentLocation, int level) {
         Enchantment enchantment = Enchantment.getEnchantmentByLocation(enchantmentLocation);
-        if (enchantment != null){
+        if (enchantment != null) {
             inventorySlots.get(0).getStack().addEnchantment(enchantment, level);
             return true;
         }
@@ -229,8 +229,7 @@ public class ContainerEnchantmentModifier extends ContainerEnchantment {
             return;
         }
 
-
-        for (Enchantment enchantment : Enchantment.enchantmentRegistry) {
+        for (Enchantment enchantment : Enchantment.REGISTRY) {
             if (enchantment == null || enchantment.type == null || (!enchantment.type.canEnchantItem(item) && validate)) {
                 continue;
             }
@@ -272,7 +271,7 @@ public class ContainerEnchantmentModifier extends ContainerEnchantment {
                 }
             }
 
-            CCRenderState.changeTexture("textures/gui/container/enchanting_table.png");
+            TextureUtils.changeTexture("textures/gui/container/enchanting_table.png");
             GlStateManager.color(1, 1, 1);
             if (hasScrollBar()) {
                 gui.drawTexturedModalRect(relx, rely + slot * slotheight, 0, gui.ySize + slotheight * shade, cwidth - 30, slotheight);

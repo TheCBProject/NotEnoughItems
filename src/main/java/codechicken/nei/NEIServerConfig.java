@@ -34,9 +34,9 @@ public class NEIServerConfig {
     public static ItemStackMap<Set<String>> bannedItems = new ItemStackMap<Set<String>>();
 
     public static void load(World world) {
-        if (PacketCustom.getServerInstance() != server) {
+        if (ServerUtils.mc() != server) {
             LogHelper.debug("Loading NEI Server");
-            server = PacketCustom.getServerInstance();
+            server = ServerUtils.mc();
             saveDir = new File(DimensionManager.getCurrentSaveRootDirectory(), "NEI");
 
             dimTags.clear();
@@ -188,7 +188,7 @@ public class NEIServerConfig {
         bannedItems.clear();
         File file = new File(saveDir, "banneditems.cfg");
         if (!file.exists()) {
-            bannedItems.put(new ItemStack(Blocks.command_block), new HashSet<String>(Arrays.asList("NONE")));
+            bannedItems.put(new ItemStack(Blocks.COMMAND_BLOCK), new HashSet<String>(Arrays.asList("NONE")));
             saveBannedItems();
             return;
         }

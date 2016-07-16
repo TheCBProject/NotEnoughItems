@@ -1,7 +1,6 @@
 package codechicken.nei;
 
 import codechicken.core.ClientUtils;
-import codechicken.core.GuiModListScroll;
 import codechicken.lib.packet.PacketCustom;
 import codechicken.nei.api.API;
 import codechicken.nei.api.ItemInfo;
@@ -113,7 +112,7 @@ public class ClientHandler {
     public static void init() {
         instance = new ClientHandler();
 
-        GuiModListScroll.register("NotEnoughItems");
+        //GuiModListScroll.register("NotEnoughItems");
         PacketCustom.assignHandler(NEIClientPacketHandler.channel, new NEIClientPacketHandler());
         //FMLCommonHandler.instance().bus().register(instance);
         MinecraftForge.EVENT_BUS.register(instance);

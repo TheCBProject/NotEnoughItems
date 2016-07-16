@@ -191,7 +191,7 @@ public class NEIClientUtils extends NEIServerUtils {
         } else {
             for (int given = 0; given < stack.stackSize; ) {
                 int qty = Math.min(stack.stackSize - given, stack.getMaxStackSize());
-                sendCommand(getStringSetting("command.item"), mc().thePlayer.getName(), Item.itemRegistry.getNameForObject(stack.getItem()), qty, stack.getItemDamage(), stack.hasTagCompound() ? stack.getTagCompound().toString() : "", Item.getIdFromItem(stack.getItem()));
+                sendCommand(getStringSetting("command.item"), mc().thePlayer.getName(), Item.REGISTRY.getNameForObject(stack.getItem()), qty, stack.getItemDamage(), stack.hasTagCompound() ? stack.getTagCompound().toString() : "", Item.getIdFromItem(stack.getItem()));
                 given += qty;
             }
         }
@@ -375,6 +375,6 @@ public class NEIClientUtils extends NEIServerUtils {
     }
 
     public static void playClickSound() {
-        mc().getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.ui_button_click, 1.0F));
+        mc().getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1.0F));
     }
 }

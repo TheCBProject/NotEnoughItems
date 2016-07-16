@@ -70,7 +70,7 @@ public class GuiHighlightTips extends GuiScreenWidget {
     public void drawScreen(int mousex, int mousey, float f) {
         super.drawScreen(mousex, mousey, f);
         if (show()) {
-            HUDRenderer.renderOverlay(new ItemStack(Blocks.redstone_block), Arrays.asList("RedstoneBlock", TextFormatting.RED + "Sample"), renderPos());
+            HUDRenderer.renderOverlay(new ItemStack(Blocks.REDSTONE_BLOCK), Arrays.asList("RedstoneBlock", TextFormatting.RED + "Sample"), renderPos());
         }
     }
 

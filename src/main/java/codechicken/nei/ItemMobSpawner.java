@@ -42,7 +42,7 @@ public class ItemMobSpawner extends ItemBlock {
     }
 
     public ItemMobSpawner() {
-        super(Blocks.mob_spawner);
+        super(Blocks.MOB_SPAWNER);
         setHasSubtypes(true);
     }
 
@@ -80,7 +80,7 @@ public class ItemMobSpawner extends ItemBlock {
         EntityLiving e = entityHashMap.get(ID);
         if (e == null) {
             World world = Minecraft.getMinecraft().theWorld;
-            Class<? extends Entity> clazz = EntityList.idToClassMapping.get(ID);
+            Class<? extends Entity> clazz = EntityList.ID_TO_CLASS.get(ID);
             try {
                 e = (EntityLiving) clazz.getConstructor(World.class).newInstance(world);
             } catch (Throwable t) {
@@ -107,8 +107,8 @@ public class ItemMobSpawner extends ItemBlock {
             return;
         }
         loaded = true;
-        HashMap<Class<? extends Entity>, String> classToStringMapping = (HashMap<Class<? extends Entity>, String>) EntityList.classToStringMapping;
-        HashMap<Class<? extends Entity>, Integer> classToIDMapping = (HashMap<Class<? extends Entity>, Integer>) EntityList.classToIDMapping;
+        HashMap<Class<? extends Entity>, String> classToStringMapping = (HashMap<Class<? extends Entity>, String>) EntityList.CLASS_TO_NAME;
+        HashMap<Class<? extends Entity>, Integer> classToIDMapping = (HashMap<Class<? extends Entity>, Integer>) EntityList.CLASS_TO_ID;
         for (Class<? extends Entity> entityClass : classToStringMapping.keySet()) {
             if (!EntityLiving.class.isAssignableFrom(entityClass)) {
                 continue;
