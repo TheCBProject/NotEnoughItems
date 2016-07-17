@@ -862,4 +862,8 @@ public class LayoutManager implements IContainerInputHandler, IContainerTooltipH
             gamemode.onButtonPress(false);
         }
     }
+
+    public static boolean isItemPanelActive(){
+        return controlWidgets.contains(itemPanel);
+    }
 }
