@@ -228,6 +228,8 @@ public class LayoutManager implements IContainerInputHandler, IContainerTooltipH
 
             GlStateManager.enableLighting();
             GlStateManager.disableDepth();
+        } else {
+            showItemPanel = false;
         }
     }
 
@@ -278,6 +280,7 @@ public class LayoutManager implements IContainerInputHandler, IContainerTooltipH
     public static void layout(GuiContainer gui) {
         VisibilityData visiblity = new VisibilityData();
         if (isHidden()) {
+            showItemPanel = false;
             visiblity.showNEI = false;
         }
         if (gui.height - gui.ySize <= 40) {
