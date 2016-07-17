@@ -639,6 +639,7 @@ public class LayoutManager implements IContainerInputHandler, IContainerTooltipH
         controlWidgets = new TreeSet<Widget>(new WidgetZOrder(true));
 
         if (!visiblity.showNEI) {
+            showItemPanel = false;
             return;
         }
 
