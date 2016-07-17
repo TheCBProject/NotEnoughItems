@@ -4,6 +4,7 @@ import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.KeyManager.IKeyStateTracker;
 import codechicken.nei.api.*;
 import codechicken.nei.api.layout.LayoutStyle;
+import codechicken.nei.util.LogHelper;
 import codechicken.nei.widget.Button;
 import codechicken.nei.widget.ItemPanel;
 import codechicken.nei.widget.Label;
@@ -44,6 +45,8 @@ public class LayoutManager implements IContainerInputHandler, IContainerTooltipH
      * Sorted top first
      */
     private static TreeSet<Widget> controlWidgets;
+
+    private static boolean showItemPanel;
 
     public static ItemPanel itemPanel;
     public static SubsetWidget dropDown;
@@ -640,6 +643,7 @@ public class LayoutManager implements IContainerInputHandler, IContainerTooltipH
         }
 
         addWidget(options);
+        showItemPanel = visiblity.showItemPanel;
         if (visiblity.showItemPanel) {
             addWidget(itemPanel);
             addWidget(prev);
@@ -864,6 +868,6 @@ public class LayoutManager implements IContainerInputHandler, IContainerTooltipH
     }
 
     public static boolean isItemPanelActive(){
-        return controlWidgets.contains(itemPanel);
+        return showItemPanel;
     }
 }
