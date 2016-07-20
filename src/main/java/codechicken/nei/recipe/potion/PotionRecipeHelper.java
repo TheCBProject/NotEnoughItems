@@ -1,5 +1,6 @@
 package codechicken.nei.recipe.potion;
 
+import codechicken.nei.util.LogHelper;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -52,29 +53,33 @@ public class PotionRecipeHelper {
     }
 
     public static void init() {//TODO Don't make assumptions as to what the ingredient is to achieve next tear, as Minetweaker may change it.
-        for (PotionHelper.MixPredicate<PotionType> entry : PotionHelper.POTION_TYPE_CONVERSIONS) {
-            PotionType input = entry.input;
-            PotionHelper.ItemPredicateInstance ingredient = (PotionHelper.ItemPredicateInstance) entry.reagent;
-            PotionType output = entry.output;
-            addNormalRecipe(Items.POTIONITEM, input, ingredient.item, output);
-            addSplashRecipe(Items.SPLASH_POTION, input, ingredient.item, output);
-            addLingeringRecipe(Items.LINGERING_POTION, input, ingredient.item, output);
+        try {
+            for (PotionHelper.MixPredicate<PotionType> entry : PotionHelper.POTION_TYPE_CONVERSIONS) {
+                PotionType input = entry.input;
+                PotionHelper.ItemPredicateInstance ingredient = (PotionHelper.ItemPredicateInstance) entry.reagent;
+                PotionType output = entry.output;
+                addNormalRecipe(Items.POTIONITEM, input, ingredient.item, output);
+                addSplashRecipe(Items.SPLASH_POTION, input, ingredient.item, output);
+                addLingeringRecipe(Items.LINGERING_POTION, input, ingredient.item, output);
+            }
+
+            for (IPotionRecipe recipe : normalRecipes) {
+                IPotionRecipe upgradeRecipe = new PotionUpgradeRecipe(recipe.getRecipeOutput(), new ItemStack(Items.GUNPOWDER), Items.SPLASH_POTION);
+                allRecipes.add(upgradeRecipe);
+            }
+
+            for (IPotionRecipe recipe : splashRecipes) {
+                IPotionRecipe upgradeRecipe = new PotionUpgradeRecipe(recipe.getRecipeOutput(), new ItemStack(Items.DRAGON_BREATH), Items.LINGERING_POTION);
+                allRecipes.add(upgradeRecipe);
+            }
+
+            //for (IPotionRecipe recipe : allRecipes) {
+            //    LogHelper.info("Input: [%s], Ingredient: [%s], Output: [%s].", recipe.getRecipeInput().toString() + " " + recipe.getRecipeInput().getTagCompound().toString(), recipe.getRecipeIngredient().toString(), recipe.getRecipeOutput().toString() + " " + recipe.getRecipeOutput().getTagCompound().toString());
+            //}
+        } catch (Exception e){
+            LogHelper.error("Unable to load potion recipes!");
+            e.printStackTrace();
         }
-
-        for (IPotionRecipe recipe : normalRecipes) {
-            IPotionRecipe upgradeRecipe = new PotionUpgradeRecipe(recipe.getRecipeOutput(), new ItemStack(Items.GUNPOWDER), Items.SPLASH_POTION);
-            allRecipes.add(upgradeRecipe);
-        }
-
-        for (IPotionRecipe recipe : splashRecipes) {
-            IPotionRecipe upgradeRecipe = new PotionUpgradeRecipe(recipe.getRecipeOutput(), new ItemStack(Items.DRAGON_BREATH), Items.LINGERING_POTION);
-            allRecipes.add(upgradeRecipe);
-        }
-
-        //for (IPotionRecipe recipe : allRecipes) {
-        //    LogHelper.info("Input: [%s], Ingredient: [%s], Output: [%s].", recipe.getRecipeInput().toString() + " " + recipe.getRecipeInput().getTagCompound().toString(), recipe.getRecipeIngredient().toString(), recipe.getRecipeOutput().toString() + " " + recipe.getRecipeOutput().getTagCompound().toString());
-        //}
-
     }
 
     public static List<IPotionRecipe> getRecipes() {
