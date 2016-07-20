@@ -362,3 +362,7 @@ IFEQ LCONT
 RETURN
 LCONT
 
+list i_creativeTabSearch
+ALOAD 0
+INVOKESTATIC codechicken/nei/featurehack/VanillaCreativeTabSearchHooks.updateSearchListThreaded (Lnet/minecraft/client/gui/inventory/GuiContainerCreative;)V
+RETURN
