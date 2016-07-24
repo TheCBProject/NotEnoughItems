@@ -17,7 +17,7 @@ public class NEICorePlugin implements IFMLLoadingPlugin, IFMLCallHook {
         CodeChickenCorePlugin.versionCheck(CodeChickenCorePlugin.mcVersion, "NotEnoughItems");
         return new String[] { "codechicken.nei.asm.NEITransformer" };
     }
-
+ 
     @Override
     public String getModContainerClass() {
         return "codechicken.nei.NEIModContainer";
