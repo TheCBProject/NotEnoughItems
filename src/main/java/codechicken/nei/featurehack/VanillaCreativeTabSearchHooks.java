@@ -2,8 +2,8 @@ package codechicken.nei.featurehack;
 
 import codechicken.nei.ItemList;
 import codechicken.nei.ItemSorter;
-import codechicken.nei.RestartableTask;
-import codechicken.nei.api.ItemFilter;
+import codechicken.lib.thread.RestartableTask;
+import codechicken.lib.item.filtering.IItemFilter;
 import com.google.common.base.Strings;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiTextField;
@@ -13,7 +13,6 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.TextFormatting;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -70,7 +69,7 @@ public class VanillaCreativeTabSearchHooks {
             if (containerCreative == null) {
                 stop();
             }
-            ItemFilter filter = VanillaFilter.INSTANCE;
+            IItemFilter filter = VanillaFilter.INSTANCE;
             for (ItemStack item : getStacksForTab(getCreativeTab())) {
                 if (interrupted()) {
                     return;
@@ -95,7 +94,7 @@ public class VanillaCreativeTabSearchHooks {
 
     }
 
-    public static class VanillaFilter implements ItemFilter {
+    public static class VanillaFilter implements IItemFilter {
 
         public static VanillaFilter INSTANCE = new VanillaFilter();
 

@@ -1,11 +1,11 @@
 package codechicken.nei;
 
+import codechicken.lib.item.filtering.IItemFilter;
+import codechicken.lib.item.filtering.IItemFilterProvider;
 import codechicken.nei.ItemList.AnyMultiItemFilter;
 import codechicken.nei.ItemList.EverythingItemFilter;
 import codechicken.nei.ItemList.PatternItemFilter;
 import codechicken.nei.api.API;
-import codechicken.nei.api.ItemFilter;
-import codechicken.nei.api.ItemFilter.ItemFilterProvider;
 import net.minecraft.util.text.TextFormatting;
 
 import java.util.LinkedList;
@@ -17,7 +17,7 @@ import static codechicken.lib.gui.GuiDraw.drawGradientRect;
 import static codechicken.lib.gui.GuiDraw.drawRect;
 import static codechicken.nei.NEIClientConfig.world;
 
-public class SearchField extends TextField implements ItemFilterProvider {
+public class SearchField extends TextField implements IItemFilterProvider {
     /**
      * Interface for returning a custom filter based on search field text
      */
@@ -30,7 +30,7 @@ public class SearchField extends TextField implements ItemFilterProvider {
         /**
          * @return An item filter for items matching SearchTex null to ignore this provider
          */
-        ItemFilter getFilter(String searchText);
+        IItemFilter getFilter(String searchText);
     }
 
     private static class DefaultSearchProvider implements ISearchProvider {
@@ -40,7 +40,7 @@ public class SearchField extends TextField implements ItemFilterProvider {
         }
 
         @Override
-        public ItemFilter getFilter(String searchText) {
+        public IItemFilter getFilter(String searchText) {
             Pattern pattern = getPattern(searchText);
             return pattern == null ? null : new PatternItemFilter(pattern);
         }
@@ -119,13 +119,13 @@ public class SearchField extends TextField implements ItemFilterProvider {
     }
 
     @Override
-    public ItemFilter getFilter() {
+    public IItemFilter getFilter() {
         String s_filter = text().toLowerCase();
 
-        List<ItemFilter> primary = new LinkedList<ItemFilter>();
-        List<ItemFilter> secondary = new LinkedList<ItemFilter>();
+        List<IItemFilter> primary = new LinkedList<IItemFilter>();
+        List<IItemFilter> secondary = new LinkedList<IItemFilter>();
         for (ISearchProvider p : searchProviders) {
-            ItemFilter filter = p.getFilter(s_filter);
+            IItemFilter filter = p.getFilter(s_filter);
             if (filter != null) {
                 (p.isPrimary() ? primary : secondary).add(filter);
             }

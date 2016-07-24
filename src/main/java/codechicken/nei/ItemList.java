@@ -1,8 +1,10 @@
 package codechicken.nei;
 
-import codechicken.nei.ThreadOperationTimer.TimeoutException;
-import codechicken.nei.api.ItemFilter;
-import codechicken.nei.api.ItemFilter.ItemFilterProvider;
+import codechicken.lib.item.filtering.IItemFilterProvider;
+import codechicken.lib.thread.RestartableTask;
+import codechicken.lib.thread.ThreadOperationTimer;
+import codechicken.lib.thread.ThreadOperationTimer.TimeoutException;
+import codechicken.lib.item.filtering.IItemFilter;
 import codechicken.nei.api.ItemInfo;
 import codechicken.nei.guihook.GuiContainerManager;
 import codechicken.nei.util.LogHelper;
@@ -32,27 +34,27 @@ public class ItemList {
     /**
      * Updates to this should be synchronised on this
      */
-    public static final List<ItemFilterProvider> itemFilterers = new LinkedList<ItemFilterProvider>();
+    public static final List<IItemFilterProvider> itemFilterers = new LinkedList<IItemFilterProvider>();
     public static final List<ItemsLoadedCallback> loadCallbacks = new LinkedList<ItemsLoadedCallback>();
 
     private static HashSet<Item> erroredItems = new HashSet<Item>();
     private static HashSet<String> stackTraces = new HashSet<String>();
 
-    public static class EverythingItemFilter implements ItemFilter {
+    public static class EverythingItemFilter implements IItemFilter {
         @Override
         public boolean matches(ItemStack item) {
             return true;
         }
     }
 
-    public static class NothingItemFilter implements ItemFilter {
+    public static class NothingItemFilter implements IItemFilter {
         @Override
         public boolean matches(ItemStack item) {
             return false;
         }
     }
 
-    public static class PatternItemFilter implements ItemFilter {
+    public static class PatternItemFilter implements IItemFilter {
         public Pattern pattern;
 
         public PatternItemFilter(Pattern pattern) {
@@ -65,20 +67,20 @@ public class ItemList {
         }
     }
 
-    public static class AllMultiItemFilter implements ItemFilter {
-        public List<ItemFilter> filters = new LinkedList<ItemFilter>();
+    public static class AllMultiItemFilter implements IItemFilter {
+        public List<IItemFilter> filters = new LinkedList<IItemFilter>();
 
-        public AllMultiItemFilter(List<ItemFilter> filters) {
+        public AllMultiItemFilter(List<IItemFilter> filters) {
             this.filters = filters;
         }
 
         public AllMultiItemFilter() {
-            this(new LinkedList<ItemFilter>());
+            this(new LinkedList<IItemFilter>());
         }
 
         @Override
         public boolean matches(ItemStack item) {
-            for (ItemFilter filter : filters) {
+            for (IItemFilter filter : filters) {
                 try {
                     if (!filter.matches(item)) {
                         return false;
@@ -92,20 +94,20 @@ public class ItemList {
         }
     }
 
-    public static class AnyMultiItemFilter implements ItemFilter {
-        public List<ItemFilter> filters = new LinkedList<ItemFilter>();
+    public static class AnyMultiItemFilter implements IItemFilter {
+        public List<IItemFilter> filters = new LinkedList<IItemFilter>();
 
-        public AnyMultiItemFilter(List<ItemFilter> filters) {
+        public AnyMultiItemFilter(List<IItemFilter> filters) {
             this.filters = filters;
         }
 
         public AnyMultiItemFilter() {
-            this(new LinkedList<ItemFilter>());
+            this(new LinkedList<IItemFilter>());
         }
 
         @Override
         public boolean matches(ItemStack item) {
-            for (ItemFilter filter : filters) {
+            for (IItemFilter filter : filters) {
                 try {
                     if (filter.matches(item)) {
                         return true;
@@ -123,8 +125,8 @@ public class ItemList {
         void itemsLoaded();
     }
 
-    public static boolean itemMatchesAll(ItemStack item, List<ItemFilter> filters) {
-        for (ItemFilter filter : filters) {
+    public static boolean itemMatchesAll(ItemStack item, List<IItemFilter> filters) {
+        for (IItemFilter filter : filters) {
             try {
                 if (!filter.matches(item)) {
                     return false;
@@ -145,14 +147,14 @@ public class ItemList {
         return getItemListFilter().matches(item);
     }
 
-    public static ItemFilter getItemListFilter() {
+    public static IItemFilter getItemListFilter() {
         return new AllMultiItemFilter(getItemFilters());
     }
 
-    public static List<ItemFilter> getItemFilters() {
-        LinkedList<ItemFilter> filters = new LinkedList<ItemFilter>();
+    public static List<IItemFilter> getItemFilters() {
+        LinkedList<IItemFilter> filters = new LinkedList<IItemFilter>();
         synchronized (itemFilterers) {
-            for (ItemFilterProvider p : itemFilterers) {
+            for (IItemFilterProvider p : itemFilterers) {
                 filters.add(p.getFilter());
             }
         }
@@ -240,7 +242,7 @@ public class ItemList {
         @Override
         public void execute() {
             ArrayList<ItemStack> filtered = new ArrayList<ItemStack>();
-            ItemFilter filter = getItemListFilter();
+            IItemFilter filter = getItemListFilter();
             for (ItemStack item : items) {
                 if (interrupted()) {
                     return;

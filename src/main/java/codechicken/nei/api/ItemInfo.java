@@ -1,8 +1,9 @@
 package codechicken.nei.api;
 
+import codechicken.lib.item.filtering.IItemFilter;
+import codechicken.lib.item.filtering.IItemFilterProvider;
 import codechicken.nei.*;
 import codechicken.nei.ItemList.ItemsLoadedCallback;
-import codechicken.nei.api.ItemFilter.ItemFilterProvider;
 import codechicken.nei.config.ItemPanelDumper;
 import codechicken.nei.config.RegistryDumper;
 import codechicken.nei.guihook.GuiContainerManager;
@@ -127,10 +128,10 @@ public class ItemInfo {
     }
 
     private static void addHiddenItemFilter() {
-        API.addItemFilter(new ItemFilterProvider() {
+        API.addItemFilter(new IItemFilterProvider() {
             @Override
-            public ItemFilter getFilter() {
-                return new ItemFilter() {
+            public IItemFilter getFilter() {
+                return new IItemFilter() {
                     @Override
                     public boolean matches(ItemStack item) {
                         return !hiddenItems.contains(item);
@@ -274,13 +275,13 @@ public class ItemInfo {
     }
 
     private static void addDefaultDropDowns() {
-        API.addSubset("Items", new ItemFilter() {
+        API.addSubset("Items", new IItemFilter() {
             @Override
             public boolean matches(ItemStack item) {
                 return Block.getBlockFromItem(item.getItem()) == Blocks.AIR;
             }
         });
-        API.addSubset("Blocks", new ItemFilter() {
+        API.addSubset("Blocks", new IItemFilter() {
             @Override
             public boolean matches(ItemStack item) {
                 return Block.getBlockFromItem(item.getItem()) != Blocks.AIR;

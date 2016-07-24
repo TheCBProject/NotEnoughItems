@@ -1,10 +1,11 @@
 package codechicken.nei.api;
 
+import codechicken.lib.item.filtering.IItemFilter;
+import codechicken.lib.item.filtering.IItemFilterProvider;
 import codechicken.nei.*;
 import codechicken.nei.KeyManager.KeyState;
 import codechicken.nei.SearchField.ISearchProvider;
 import codechicken.nei.SubsetWidget.SubsetTag;
-import codechicken.nei.api.ItemFilter.ItemFilterProvider;
 import codechicken.nei.api.layout.LayoutStyle;
 import codechicken.nei.config.Option;
 import codechicken.nei.config.OptionKeyBind;
@@ -215,7 +216,7 @@ public class API {
      *
      * @param filterProvider The filter provider to be registered.
      */
-    public static void addItemFilter(ItemFilterProvider filterProvider) {
+    public static void addItemFilter(IItemFilterProvider filterProvider) {
         synchronized (ItemList.itemFilterers) {
             ItemList.itemFilterers.add(filterProvider);
         }
@@ -227,7 +228,7 @@ public class API {
      * @param name   The fully qualified name, Eg Blocks.MobSpawners. NOT case sensitive
      * @param filter A filter for matching items that fit in this subset
      */
-    public static void addSubset(String name, ItemFilter filter) {
+    public static void addSubset(String name, IItemFilter filter) {
         addSubset(new SubsetTag(name, filter));
     }
 
