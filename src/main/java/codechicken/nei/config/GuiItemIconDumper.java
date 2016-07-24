@@ -2,11 +2,10 @@ package codechicken.nei.config;
 
 import codechicken.core.CommonUtils;
 import codechicken.lib.gui.GuiDraw;
-import codechicken.nei.util.LogHelper;
-import codechicken.nei.widget.ItemPanel;
-import codechicken.nei.NEIClientConfig;
-import codechicken.nei.util.NEIClientUtils;
 import codechicken.nei.guihook.GuiContainerManager;
+import codechicken.nei.util.LogHelper;
+import codechicken.nei.util.NEIClientUtils;
+import codechicken.nei.widget.ItemPanel;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;

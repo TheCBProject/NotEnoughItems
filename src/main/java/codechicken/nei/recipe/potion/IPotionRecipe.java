@@ -7,6 +7,8 @@ import net.minecraft.item.ItemStack;
  */
 public interface IPotionRecipe {
     ItemStack getRecipeOutput();
+
     ItemStack getRecipeInput();
+
     ItemStack getRecipeIngredient();
 }

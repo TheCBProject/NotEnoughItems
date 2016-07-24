@@ -1,9 +1,9 @@
 package codechicken.nei.featurehack;
 
+import codechicken.lib.item.filtering.IItemFilter;
+import codechicken.lib.thread.RestartableTask;
 import codechicken.nei.ItemList;
 import codechicken.nei.ItemSorter;
-import codechicken.lib.thread.RestartableTask;
-import codechicken.lib.item.filtering.IItemFilter;
 import com.google.common.base.Strings;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiTextField;
@@ -62,7 +62,6 @@ public class VanillaCreativeTabSearchHooks {
             return creativeTab;
         }
 
-
         @Override
         public void execute() {
             ArrayList<ItemStack> filtered = new ArrayList<ItemStack>();
@@ -91,7 +90,6 @@ public class VanillaCreativeTabSearchHooks {
             containerCreative.scrollTo(0.0F);
         }
 
-
     }
 
     public static class VanillaFilter implements IItemFilter {
@@ -101,12 +99,12 @@ public class VanillaCreativeTabSearchHooks {
         @Override
         public boolean matches(ItemStack item) {
             GuiTextField textField = filterTask.getSearchBox();
-            if (Strings.isNullOrEmpty(textField.getText())){
+            if (Strings.isNullOrEmpty(textField.getText())) {
                 return true;
             }
             if (textField.getText().toLowerCase().startsWith("@")) {
                 String expectedMod = textField.getText().toLowerCase().replace("@", "");
-                if (expectedMod.isEmpty()){
+                if (expectedMod.isEmpty()) {
                     return true;
                 }
                 if (item.getItem().getRegistryName().getResourceDomain().startsWith(expectedMod)) {
@@ -122,18 +120,16 @@ public class VanillaCreativeTabSearchHooks {
         }
     }
 
-
-
-    private static List<ItemStack> getStacksForTab(CreativeTabs creativeTab){
-        if (creativeTab == CreativeTabs.SEARCH){
+    private static List<ItemStack> getStacksForTab(CreativeTabs creativeTab) {
+        if (creativeTab == CreativeTabs.SEARCH) {
             return ItemList.items;
         }
         ArrayList<ItemStack> tabStacks = new ArrayList<ItemStack>();
-        if (tabCache.containsKey(creativeTab)){
+        if (tabCache.containsKey(creativeTab)) {
             tabCache.get(creativeTab);
         } else {
-            for (ItemStack stack : ItemList.items){
-                if (stack.getItem().getCreativeTab() == creativeTab){
+            for (ItemStack stack : ItemList.items) {
+                if (stack.getItem().getCreativeTab() == creativeTab) {
                     tabStacks.add(stack);
                 }
             }

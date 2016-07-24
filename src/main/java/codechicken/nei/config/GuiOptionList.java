@@ -8,7 +8,6 @@ import codechicken.nei.LayoutManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.util.text.translation.I18n;
 
 import java.awt.*;
 import java.io.IOException;

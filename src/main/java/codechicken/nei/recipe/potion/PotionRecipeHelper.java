@@ -76,7 +76,7 @@ public class PotionRecipeHelper {
             //for (IPotionRecipe recipe : allRecipes) {
             //    LogHelper.info("Input: [%s], Ingredient: [%s], Output: [%s].", recipe.getRecipeInput().toString() + " " + recipe.getRecipeInput().getTagCompound().toString(), recipe.getRecipeIngredient().toString(), recipe.getRecipeOutput().toString() + " " + recipe.getRecipeOutput().getTagCompound().toString());
             //}
-        } catch (Exception e){
+        } catch (Exception e) {
             LogHelper.error("Unable to load potion recipes!");
             e.printStackTrace();
         }

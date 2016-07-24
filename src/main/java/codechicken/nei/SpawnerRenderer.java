@@ -12,15 +12,15 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.block.model.*;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.Entity;
-//import net.minecraft.entity.boss.BossStatus;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
 import java.util.List;
+
+//import net.minecraft.entity.boss.BossStatus;
 
 public class SpawnerRenderer implements IItemRenderer {
     public static void load(ItemMobSpawner item) {

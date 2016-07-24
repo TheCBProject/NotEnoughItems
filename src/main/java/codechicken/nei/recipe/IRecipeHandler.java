@@ -1,8 +1,8 @@
 package codechicken.nei.recipe;
 
-import codechicken.nei.api.stack.PositionedStack;
 import codechicken.nei.api.IOverlayHandler;
 import codechicken.nei.api.IRecipeOverlayRenderer;
+import codechicken.nei.api.stack.PositionedStack;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;

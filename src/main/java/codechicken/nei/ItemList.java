@@ -1,10 +1,10 @@
 package codechicken.nei;
 
+import codechicken.lib.item.filtering.IItemFilter;
 import codechicken.lib.item.filtering.IItemFilterProvider;
 import codechicken.lib.thread.RestartableTask;
 import codechicken.lib.thread.ThreadOperationTimer;
 import codechicken.lib.thread.ThreadOperationTimer.TimeoutException;
-import codechicken.lib.item.filtering.IItemFilter;
 import codechicken.nei.api.ItemInfo;
 import codechicken.nei.guihook.GuiContainerManager;
 import codechicken.nei.util.LogHelper;

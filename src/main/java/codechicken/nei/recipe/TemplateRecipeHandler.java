@@ -1,16 +1,16 @@
 package codechicken.nei.recipe;
 
 import codechicken.nei.NEIClientConfig;
-import codechicken.nei.util.NEIClientUtils;
-import codechicken.nei.util.NEIServerUtils;
-import codechicken.nei.api.stack.PositionedStack;
 import codechicken.nei.api.DefaultOverlayRenderer;
 import codechicken.nei.api.IOverlayHandler;
 import codechicken.nei.api.IRecipeOverlayRenderer;
 import codechicken.nei.api.IStackPositioner;
+import codechicken.nei.api.stack.PositionedStack;
 import codechicken.nei.guihook.GuiContainerManager;
 import codechicken.nei.guihook.IContainerInputHandler;
 import codechicken.nei.guihook.IContainerTooltipHandler;
+import codechicken.nei.util.NEIClientUtils;
+import codechicken.nei.util.NEIServerUtils;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.inventory.Container;

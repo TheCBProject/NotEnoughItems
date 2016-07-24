@@ -2,8 +2,8 @@ package codechicken.nei.recipe;
 
 import codechicken.lib.inventory.InventoryUtils;
 import codechicken.nei.FastTransferManager;
-import codechicken.nei.api.stack.PositionedStack;
 import codechicken.nei.api.IOverlayHandler;
+import codechicken.nei.api.stack.PositionedStack;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ClickType;

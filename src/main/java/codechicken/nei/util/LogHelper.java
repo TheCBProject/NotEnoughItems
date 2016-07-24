@@ -18,7 +18,7 @@ public class LogHelper {
         logger.log(logLevel, String.valueOf(object));
     }
 
-    public static void log(Level logLevel, Object object, Throwable throwable){
+    public static void log(Level logLevel, Object object, Throwable throwable) {
         logger.log(logLevel, String.valueOf(object), throwable);
     }
 

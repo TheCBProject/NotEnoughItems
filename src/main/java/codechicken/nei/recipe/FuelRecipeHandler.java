@@ -1,7 +1,7 @@
 package codechicken.nei.recipe;
 
-import codechicken.nei.util.NEIClientUtils;
 import codechicken.nei.api.stack.PositionedStack;
+import codechicken.nei.util.NEIClientUtils;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 

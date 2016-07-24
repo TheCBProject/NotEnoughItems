@@ -2,9 +2,7 @@ package codechicken.nei.widget;
 
 import codechicken.lib.vec.Rectangle4i;
 import codechicken.nei.NEIClientConfig;
-import codechicken.nei.util.NEIClientUtils;
 import codechicken.nei.NEIController;
-import codechicken.nei.util.NEIServerUtils;
 import codechicken.nei.api.GuiInfo;
 import codechicken.nei.api.INEIGuiHandler;
 import codechicken.nei.guihook.GuiContainerManager;
@@ -12,6 +10,8 @@ import codechicken.nei.network.NEIClientPacketHandler;
 import codechicken.nei.recipe.GuiCraftingRecipe;
 import codechicken.nei.recipe.GuiRecipe;
 import codechicken.nei.recipe.GuiUsageRecipe;
+import codechicken.nei.util.NEIClientUtils;
+import codechicken.nei.util.NEIServerUtils;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;

@@ -1,6 +1,5 @@
 package codechicken.nei.config;
 
-import codechicken.nei.NEIClientConfig;
 import codechicken.nei.util.LogHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
