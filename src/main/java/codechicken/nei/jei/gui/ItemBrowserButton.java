@@ -1,13 +1,14 @@
-package codechicken.nei.jei;
+package codechicken.nei.jei.gui;
 
 import codechicken.nei.config.OptionCycled;
+import codechicken.nei.jei.EnumItemBrowser;
 
 /**
  * Created by covers1624 on 7/15/2016.
  */
-public class ItemPanelButton extends OptionCycled {
+public abstract class ItemBrowserButton extends OptionCycled {
 
-    public ItemPanelButton(String name) {
+    public ItemBrowserButton(String name) {
         super(name, EnumItemBrowser.values().length);
     }
 
@@ -21,9 +22,11 @@ public class ItemPanelButton extends OptionCycled {
         }
 
         getTag().setIntValue(next);
-        JEIIntegrationManager.panelOwner = EnumItemBrowser.values()[next];
+        setValue(EnumItemBrowser.values()[next]);
         return true;
     }
+
+    protected abstract void setValue(EnumItemBrowser itemBrowser);
 
     @Override
     public boolean optionValid(int index) {

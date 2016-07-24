@@ -3,7 +3,6 @@ package codechicken.nei.util;
 import codechicken.lib.inventory.InventoryRange;
 import codechicken.lib.inventory.InventoryUtils;
 import codechicken.lib.util.LangProxy;
-import codechicken.nei.LayoutManager;
 import codechicken.nei.NEIActions;
 import codechicken.nei.NEIClientConfig;
 import codechicken.nei.api.GuiInfo;
@@ -356,11 +355,11 @@ public class NEIClientUtils extends NEIServerUtils {
         }
     }
 
-    public static void setItemQuantity(int i) {
-        world.nbt.setInteger("quantity", i);
-        world.saveNBT();
-        LayoutManager.quantity.setText(Integer.toString(i));
-    }
+    //public static void setItemQuantity(int i) {
+    //    world.nbt.setInteger("quantity", i);
+    //    world.saveNBT();
+    //    LayoutManager.quantity.setText(Integer.toString(i));
+    //}
 
     public static GuiContainer getGuiContainer() {
         if (mc().currentScreen instanceof GuiContainer) {

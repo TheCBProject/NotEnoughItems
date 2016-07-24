@@ -8,11 +8,11 @@ public class VisibilityData {
     /**
      * Item panel and associated buttons
      */
-    public boolean showItemPanel = true;
+    //public boolean showItemPanel = true;
     /**
      * Item and search section
      */
-    public boolean showItemSection = true;
+    //public boolean showItemSection = true;
     /**
      * Dropdown and Item search field
      */
@@ -32,10 +32,7 @@ public class VisibilityData {
             showWidgets = false;
         }
         if (!showWidgets) {
-            showItemSection = showUtilityButtons = showStateButtons = false;
-        }
-        if (!showItemSection) {
-            showSearchSection = showItemPanel = false;
+            showSearchSection = showUtilityButtons = showStateButtons = false;
         }
         JEIIntegrationManager.pushChanges(this);
     }

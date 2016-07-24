@@ -13,7 +13,7 @@ public class NEICreativeGuiHandler extends INEIGuiAdapter {
         }
 
         if (((GuiContainerCreative) gui).getSelectedTabIndex() != CreativeTabs.INVENTORY.getTabIndex()) {
-            currentVisibility.showItemSection = currentVisibility.enableDeleteMode = false;
+            currentVisibility.enableDeleteMode = false;
         }
 
         return currentVisibility;

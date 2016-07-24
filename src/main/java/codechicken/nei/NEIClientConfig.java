@@ -7,8 +7,8 @@ import codechicken.lib.config.ConfigTagParent;
 import codechicken.nei.api.*;
 import codechicken.nei.api.layout.LayoutStyle;
 import codechicken.nei.config.*;
-import codechicken.nei.jei.ItemPanelButton;
 import codechicken.nei.jei.JEIIntegrationManager;
+import codechicken.nei.jei.gui.SearchBoxButton;
 import codechicken.nei.recipe.RecipeInfo;
 import codechicken.nei.util.LogHelper;
 import codechicken.nei.util.NEIClientUtils;
@@ -151,7 +151,7 @@ public class NEIClientConfig {
 
         JEIIntegrationManager.initConfig(tag);
 
-        API.addOption(new ItemPanelButton("jei.panelOwner"));
+        API.addOption(new SearchBoxButton("jei.searchBoxOwner"));
 
         setDefaultKeyBindings();
     }
@@ -227,7 +227,7 @@ public class NEIClientConfig {
         setWorldDefaults();
         creativeInv = new ItemStack[54];
         LayoutManager.searchField.setText(getSearchExpression());
-        LayoutManager.quantity.setText(Integer.toString(getItemQuantity()));
+        //LayoutManager.quantity.setText(Integer.toString(getItemQuantity()));
         SubsetWidget.loadHidden();
 
         if (newWorld && Minecraft.getMinecraft().isSingleplayer()) {
@@ -390,8 +390,23 @@ public class NEIClientConfig {
     }
 
     public static void setSearchExpression(String expression) {
+        JEIIntegrationManager.setFilterText(expression);
         world.nbt.setString("search", expression);
         world.saveNBT();
+    }
+
+    /**
+     * A split off of setSearchExpression that avoids a JEI update.
+     *
+     * @param expression Search term.
+     */
+    public static void setSearchExpression(String expression, boolean updateJEI) {
+        if (updateJEI) {
+            setSearchExpression(expression);
+        } else {
+            world.nbt.setString("search", expression);
+            world.saveNBT();
+        }
     }
 
     public static boolean getMagnetMode() {
