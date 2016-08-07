@@ -213,7 +213,7 @@ public class NEIClientUtils extends NEIServerUtils {
             return 2;
         } else if (mc().playerController.isInCreativeMode()) {
             return 1;
-        } else if (mc().playerController.currentGameType.isAdventure()) {
+        } else if (mc().playerController.getCurrentGameType().isAdventure()) {
             return 3;
         } else {
             return 0;

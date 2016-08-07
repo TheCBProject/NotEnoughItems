@@ -115,7 +115,7 @@ ILOAD 2
 INVOKEVIRTUAL codechicken/nei/guihook/GuiContainerManager.renderObjects (II)V
 
 list d_renderToolTip
-ALOAD 8
+ALOAD 6
 INVOKEVIRTUAL net/minecraft/entity/player/InventoryPlayer.func_70445_o ()Lnet/minecraft/item/ItemStack;
 IFNONNULL LSKIP
 ALOAD 0
@@ -128,9 +128,9 @@ IFEQ LSKIP
 ALOAD 0
 GETFIELD net/minecraft/client/gui/inventory/GuiContainer.field_147006_u : Lnet/minecraft/inventory/Slot;
 INVOKEVIRTUAL net/minecraft/inventory/Slot.func_75211_c ()Lnet/minecraft/item/ItemStack;
-ASTORE 10
+ASTORE 8
 ALOAD 0
-ALOAD 10
+ALOAD 8
 ILOAD 1
 ILOAD 2
 INVOKEVIRTUAL net/minecraft/client/gui/inventory/GuiContainer.func_146285_a (Lnet/minecraft/item/ItemStack;II)V
