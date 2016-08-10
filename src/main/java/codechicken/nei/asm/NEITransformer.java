@@ -76,7 +76,7 @@ public class NEITransformer implements IClassTransformer {
         transformer.add(new MethodInjector(new ObfMapping(guiContainer, "func_73863_a", "(IIF)V"), asmblocks.get("n_renderObjects"), asmblocks.get("renderObjects"), false));
 
         //Replace default renderToolTip with delegate
-        ASMBlock d_renderToolTip = !Boolean.parseBoolean(System.getProperty("nei.altRenderToolTipNeedle", "false")) ? asmblocks.get("d_renderToolTipIntellijEclipseCompilerFix") : asmblocks.get("d_renderToolTip");
+        ASMBlock d_renderToolTip = Boolean.parseBoolean(System.getProperty("nei.altRenderToolTipNeedle", "false")) ? asmblocks.get("d_renderToolTipIntellijEclipseCompilerFix") : asmblocks.get("d_renderToolTip");
         transformer.add(new MethodReplacer(new ObfMapping(guiContainer, "func_73863_a", "(IIF)V"), d_renderToolTip, asmblocks.get("renderTooltips")));
 
         //Replace zLevel = 200 with zLevel = 500 in drawItemStack
