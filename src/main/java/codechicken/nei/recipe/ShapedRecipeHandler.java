@@ -1,6 +1,6 @@
 package codechicken.nei.recipe;
 
-import codechicken.core.ReflectionManager;
+import codechicken.lib.util.ReflectionManager;
 import codechicken.nei.api.DefaultOverlayRenderer;
 import codechicken.nei.api.IOverlayHandler;
 import codechicken.nei.api.IRecipeOverlayRenderer;

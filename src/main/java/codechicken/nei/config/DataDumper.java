@@ -1,6 +1,6 @@
 package codechicken.nei.config;
 
-import codechicken.core.CommonUtils;
+import codechicken.lib.util.CommonUtils;
 import codechicken.lib.vec.Rectangle4i;
 import codechicken.nei.LayoutManager;
 import codechicken.nei.util.LogHelper;

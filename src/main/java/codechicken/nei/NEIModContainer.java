@@ -1,6 +1,6 @@
 package codechicken.nei;
 
-import codechicken.core.CommonUtils;
+import codechicken.lib.util.CommonUtils;
 import codechicken.core.launch.CodeChickenCorePlugin;
 import codechicken.lib.asm.ObfMapping;
 import codechicken.nei.api.IConfigureNEI;
@@ -37,7 +37,7 @@ public class NEIModContainer extends DummyModContainer {
         Set<ArtifactVersion> deps = new HashSet<ArtifactVersion>();
         if (ObfMapping.obfuscated) {
             deps.add(VersionParser.parseVersionReference("CodeChickenCore@[" + CodeChickenCorePlugin.version + ",)"));
-            deps.add(VersionParser.parseVersionReference("JustEnoughItems@[3.7.10.237,)"));
+            deps.add(VersionParser.parseVersionReference("JEI@[3.7.11.238,)"));
         }
         return deps;
     }

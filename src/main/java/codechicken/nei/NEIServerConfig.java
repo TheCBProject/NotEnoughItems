@@ -1,6 +1,6 @@
 package codechicken.nei;
 
-import codechicken.core.CommonUtils;
+import codechicken.lib.util.CommonUtils;
 import codechicken.core.ServerUtils;
 import codechicken.lib.config.ConfigFile;
 import codechicken.lib.inventory.InventoryUtils;

@@ -1,6 +1,6 @@
 package codechicken.nei.config;
 
-import codechicken.core.CommonUtils;
+import codechicken.lib.util.CommonUtils;
 import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.guihook.GuiContainerManager;
 import codechicken.nei.util.LogHelper;

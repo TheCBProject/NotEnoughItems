@@ -1,9 +1,13 @@
 package codechicken.nei;
 
 import codechicken.core.*;
+import codechicken.lib.asm.discovery.ClassDiscoverer;
+import codechicken.lib.asm.discovery.IStringMatcher;
 import codechicken.lib.config.ConfigFile;
 import codechicken.lib.config.ConfigTag;
 import codechicken.lib.config.ConfigTagParent;
+import codechicken.lib.util.ClientUtils;
+import codechicken.lib.util.CommonUtils;
 import codechicken.nei.api.*;
 import codechicken.nei.api.layout.LayoutStyle;
 import codechicken.nei.config.*;

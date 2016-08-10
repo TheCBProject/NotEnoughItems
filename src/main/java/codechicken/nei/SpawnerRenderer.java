@@ -1,6 +1,6 @@
 package codechicken.nei;
 
-import codechicken.core.ClientUtils;
+import codechicken.lib.util.ClientUtils;
 import codechicken.lib.render.BlockRenderer;
 import codechicken.lib.render.IItemRenderer;
 import codechicken.lib.render.ModelRegistryHelper;

@@ -1,6 +1,6 @@
 package codechicken.nei.network;
 
-import codechicken.core.ClientUtils;
+import codechicken.lib.util.ClientUtils;
 import codechicken.lib.inventory.InventoryUtils;
 import codechicken.lib.packet.PacketCustom;
 import codechicken.lib.packet.PacketCustom.IClientPacketHandler;

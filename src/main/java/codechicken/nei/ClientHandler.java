@@ -1,6 +1,6 @@
 package codechicken.nei;
 
-import codechicken.core.ClientUtils;
+import codechicken.lib.util.ClientUtils;
 import codechicken.lib.packet.PacketCustom;
 import codechicken.nei.api.API;
 import codechicken.nei.api.ItemInfo;
