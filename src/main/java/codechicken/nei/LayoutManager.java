@@ -747,7 +747,7 @@ public class LayoutManager implements IContainerInputHandler, IContainerTooltipH
 
     @Override
     public boolean shouldShowTooltip(GuiContainer gui) {
-        return false;
+        return true;
     }
 
     public static Widget getInputFocused() {
