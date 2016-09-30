@@ -6,7 +6,6 @@ import codechicken.core.inventory.ContainerExtended;
 import codechicken.core.inventory.SlotDummy;
 import codechicken.lib.packet.PacketCustom;
 import codechicken.lib.packet.PacketCustom.IServerPacketHandler;
-import codechicken.lib.vec.BlockCoord;
 import codechicken.nei.*;
 import codechicken.nei.container.ContainerCreativeInv;
 import codechicken.nei.container.ExtendedCreativeInv;
@@ -21,6 +20,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.INetHandlerPlayServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityMobSpawner;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 
@@ -72,7 +72,7 @@ public class NEIServerPacketHandler implements IServerPacketHandler {
             NEIServerUtils.cycleCreativeInv(sender, packet.readInt());
             break;
         case 15:
-            handleMobSpawnerID(sender.worldObj, packet.readCoord(), packet.readString());
+            handleMobSpawnerID(sender.worldObj, packet.readPos(), packet.readString());
             break;
         case 20:
             handleContainerPacket(sender, packet);
@@ -108,13 +108,13 @@ public class NEIServerPacketHandler implements IServerPacketHandler {
         }
     }
 
-    private void handleMobSpawnerID(World world, BlockCoord coord, String mobtype) {
-        TileEntity tile = world.getTileEntity(coord.pos());
+    private void handleMobSpawnerID(World world, BlockPos coord, String mobtype) {
+        TileEntity tile = world.getTileEntity(coord);
         if (tile instanceof TileEntityMobSpawner) {
             ((TileEntityMobSpawner) tile).getSpawnerBaseLogic().setEntityName(mobtype);
             tile.markDirty();
-            IBlockState state = world.getBlockState(coord.pos());
-            world.notifyBlockUpdate(coord.pos(), state, state, 4);
+            IBlockState state = world.getBlockState(coord);
+            world.notifyBlockUpdate(coord, state, state, 4);
         }
     }
 

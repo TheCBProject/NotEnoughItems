@@ -25,7 +25,6 @@ import java.util.Comparator;
  * WARNING: DO NOT access this class until the world has been loaded
  * These methods should be called from INEIConfig implementors
  */
-@Deprecated//USE JEI
 public class API {
     /**
      * Register a new Crafting Recipe handler;

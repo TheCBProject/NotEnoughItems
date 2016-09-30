@@ -37,7 +37,7 @@ public class NEIModContainer extends DummyModContainer {
         Set<ArtifactVersion> deps = new HashSet<ArtifactVersion>();
         if (ObfMapping.obfuscated) {
             deps.add(VersionParser.parseVersionReference("CodeChickenCore@[" + CodeChickenCorePlugin.version + ",)"));
-            deps.add(VersionParser.parseVersionReference("JEI@[3.7.11.238,)"));
+            deps.add(VersionParser.parseVersionReference("JEI@[3.12.1.287,)"));
         }
         return deps;
     }

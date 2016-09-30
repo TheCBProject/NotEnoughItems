@@ -23,37 +23,37 @@ public abstract class LayoutStyleDefault extends LayoutStyle {
 
         reset();
 
-        //prev.y = 2;
-        //prev.h = 16;
-        //prev.w = containerLeft / 3;
-        //prev.x = (containerWidth + windowWidth) / 2 + 2;
-        //next.x = windowWidth - prev.w - 2;
+        prev.y = 2;
+        prev.h = 16;
+        prev.w = containerLeft / 3;
+        prev.x = (containerWidth + windowWidth) / 2 + 2;
+        next.x = windowWidth - prev.w - 2;
 
-        //next.y = prev.y;
-        //next.w = prev.w;
-        //next.h = prev.h;
-        //pageLabel.x = containerLeft * 3 / 2 + containerWidth + 1;
-        //pageLabel.y = prev.y + 5;
-        //pageLabel.text = "(" + itemPanel.getPage() + "/" + itemPanel.getNumPages() + ")";
+        next.y = prev.y;
+        next.w = prev.w;
+        next.h = prev.h;
+        pageLabel.x = containerLeft * 3 / 2 + containerWidth + 1;
+        pageLabel.y = prev.y + 5;
+        pageLabel.text = "(" + itemPanel.getPage() + "/" + itemPanel.getNumPages() + ")";
 
-        //itemPanel.y = prev.h + prev.y;
-        //itemPanel.x = (containerWidth + windowWidth) / 2 + 3;
-        //itemPanel.w = windowWidth - 3 - itemPanel.x;
-        //itemPanel.h = windowHeight - 15 - itemPanel.y;
-        //if (!canPerformAction("item")) {
-        //    itemPanel.h += 15;
-        //}
-        //itemPanel.resize();
+        itemPanel.y = prev.h + prev.y;
+        itemPanel.x = (containerWidth + windowWidth) / 2 + 3;
+        itemPanel.w = windowWidth - 3 - itemPanel.x;
+        itemPanel.h = windowHeight - 15 - itemPanel.y;
+        if (!canPerformAction("item")) {
+            itemPanel.h += 15;
+        }
+        itemPanel.resize();
 
-        //more.w = more.h = less.w = less.h = 16;
-        //less.x = prev.x;
-        //more.x = windowWidth - less.w - 2;
-        //more.y = less.y = windowHeight - more.h - 2;
+        more.w = more.h = less.w = less.h = 16;
+        less.x = prev.x;
+        more.x = windowWidth - less.w - 2;
+        more.y = less.y = windowHeight - more.h - 2;
 
-        //quantity.x = less.x + less.w + 2;
-        //quantity.y = less.y;
-        //quantity.w = more.x - quantity.x - 2;
-        //quantity.h = less.h;
+        quantity.x = less.x + less.w + 2;
+        quantity.y = less.y;
+        quantity.w = more.x - quantity.x - 2;
+        quantity.h = less.h;
 
         options.x = isEnabled() ? 0 : 6;
         options.y = isEnabled() ? windowHeight - 22 : windowHeight - 28;
@@ -117,12 +117,12 @@ public abstract class LayoutStyleDefault extends LayoutStyle {
         searchField.y = windowHeight - searchField.h - 2;
 
         dropDown.h = 20;
-        dropDown.w = ((containerWidth + windowWidth) / 2 + 2) - dropDown.x - 3;
+        dropDown.w = prev.x - dropDown.x - 3;
         searchField.h = 20;
         searchField.w = 150;
         searchField.x = (windowWidth - searchField.w) / 2;
 
-        if (!visiblity.showSearchSection) {
+        if (!visiblity.showItemSection) {
             //TODO dropDown.setDropDown(0);
             searchField.setFocus(false);
         }

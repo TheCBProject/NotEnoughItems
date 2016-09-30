@@ -13,6 +13,8 @@ import codechicken.nei.SearchField.ISearchProvider;
 import codechicken.nei.api.API;
 import codechicken.nei.api.ItemInfo;
 import codechicken.nei.guihook.GuiContainerManager;
+import codechicken.nei.jei.EnumItemBrowser;
+import codechicken.nei.jei.JEIIntegrationManager;
 import codechicken.nei.util.LogHelper;
 import codechicken.nei.util.NEIClientUtils;
 import net.minecraft.client.Minecraft;
@@ -55,7 +57,11 @@ public class SubsetWidget extends codechicken.nei.widget.Button implements IItem
                 if (slot < sorted.size()) {
                     SubsetTag tag = sorted.get(slot);
                     if (NEIClientUtils.shiftKey()) {
-                        LayoutManager.searchField.setText("@" + tag.fullname);
+                        String searchTag = tag.fullname;//TODO
+                        if (searchTag.startsWith("mod.") && JEIIntegrationManager.searchBoxOwner == EnumItemBrowser.JEI){
+                            searchTag = searchTag.replace("mod.", "");
+                        }
+                        LayoutManager.searchField.setText("@" + searchTag);
                     } else if (button == 0 && count >= 2) {
                         SubsetWidget.showOnly(tag);
                     } else {

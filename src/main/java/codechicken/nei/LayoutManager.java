@@ -9,6 +9,8 @@ import codechicken.nei.layout.LayoutStyleMinecraft;
 import codechicken.nei.layout.LayoutStyleTMIOld;
 import codechicken.nei.network.NEIClientPacketHandler;
 import codechicken.nei.widget.Button;
+import codechicken.nei.widget.ItemPanel;
+import codechicken.nei.widget.Label;
 import codechicken.nei.widget.Widget;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
@@ -43,18 +45,20 @@ public class LayoutManager implements IContainerInputHandler, IContainerTooltipH
      */
     private static TreeSet<Widget> controlWidgets;
 
-    //public static ItemPanel itemPanel;
+    private static boolean showItemPanel;
+
+    public static ItemPanel itemPanel;
     public static SubsetWidget dropDown;
     public static TextField searchField;
 
     public static Button options;
 
-    //public static Button prev;
-    //public static Button next;
-    //public static Label pageLabel;
-    //public static Button more;
-    //public static Button less;
-    //public static ItemQuantityField quantity;
+    public static Button prev;
+    public static Button next;
+    public static Label pageLabel;
+    public static Button more;
+    public static Button less;
+    public static ItemQuantityField quantity;
 
     public static SaveLoadButton[] stateButtons;
     public static Button[] deleteButtons;
@@ -223,9 +227,9 @@ public class LayoutManager implements IContainerInputHandler, IContainerTooltipH
 
             GlStateManager.enableLighting();
             GlStateManager.disableDepth();
-        } //else {
-        // showItemPanel = false;
-        //}
+        } else {
+         showItemPanel = false;
+        }
     }
 
     @Override
@@ -297,7 +301,7 @@ public class LayoutManager implements IContainerInputHandler, IContainerTooltipH
     }
 
     private static void init() {
-        //itemPanel = new ItemPanel();
+        itemPanel = new ItemPanel();
         dropDown = new SubsetWidget();
         searchField = new SearchField("search");
 
@@ -316,72 +320,72 @@ public class LayoutManager implements IContainerInputHandler, IContainerTooltipH
                 return translate("inventory.options");
             }
         };
-        //prev = new Button("Prev") {
-        //    public boolean onButtonPress(boolean rightclick) {
-        //        if (!rightclick) {
-        //            LayoutManager.itemPanel.scroll(-1);
-        //            return true;
-        //        }
-        //        return false;
-        //    }
-        //
-        //      @Override
-        //     public String getRenderLabel() {
-        //         return translate("inventory.prev");
-        //     }
-        // };
-        //next = new Button("Next") {
-        //    public boolean onButtonPress(boolean rightclick) {
-        //        if (!rightclick) {
-        //            LayoutManager.itemPanel.scroll(1);
-        //            return true;
-        //        }
-        //        return false;
-        //    }
-        //
-        //    @Override
-        //    public String getRenderLabel() {
-        //        return translate("inventory.next");
-        //    }
-        //};
-        //pageLabel = new Label("(0/0)", true);
-        //more = new Button("+") {
-        //    @Override
-        //    public boolean onButtonPress(boolean rightclick) {
-        //        if (rightclick) {
-        //            return false;
-        //        }
-        //
-        //        int modifier = controlKey() ? 64 : shiftKey() ? 10 : 1;
-        //
-        //        int quantity = getItemQuantity() + modifier;
-        //        if (quantity < 0) {
-        //            quantity = 0;
-        //        }
-        //
-        //        setItemQuantity(quantity);
-        //        return true;
-        //    }
-        //};
-        //less = new Button("-") {
-        //    @Override
-        //    public boolean onButtonPress(boolean rightclick) {
-        //        if (rightclick) {
-        //            return false;
-        //        }
-        //
-        //        int modifier = controlKey() ? -64 : shiftKey() ? -10 : -1;
-        //
-        //        int quantity = getItemQuantity() + modifier;
-        //        if (quantity < 0) {
-        //            quantity = 0;
-        //        }
-        //
-        //        setItemQuantity(quantity);
-        //        return true;
-        //    }
-        //};
-        //quantity = new ItemQuantityField("quantity");
+        prev = new Button("Prev") {
+            public boolean onButtonPress(boolean rightclick) {
+                if (!rightclick) {
+                    LayoutManager.itemPanel.scroll(-1);
+                    return true;
+                }
+                return false;
+            }
+
+              @Override
+             public String getRenderLabel() {
+                 return translate("inventory.prev");
+             }
+         };
+        next = new Button("Next") {
+            public boolean onButtonPress(boolean rightclick) {
+                if (!rightclick) {
+                    LayoutManager.itemPanel.scroll(1);
+                    return true;
+                }
+                return false;
+            }
+
+            @Override
+            public String getRenderLabel() {
+                return translate("inventory.next");
+            }
+        };
+        pageLabel = new Label("(0/0)", true);
+        more = new Button("+") {
+            @Override
+            public boolean onButtonPress(boolean rightclick) {
+                if (rightclick) {
+                    return false;
+                }
+
+                int modifier = controlKey() ? 64 : shiftKey() ? 10 : 1;
+
+                int quantity = getItemQuantity() + modifier;
+                if (quantity < 0) {
+                    quantity = 0;
+                }
+
+                setItemQuantity(quantity);
+                return true;
+            }
+        };
+        less = new Button("-") {
+            @Override
+            public boolean onButtonPress(boolean rightclick) {
+                if (rightclick) {
+                    return false;
+                }
+
+                int modifier = controlKey() ? -64 : shiftKey() ? -10 : -1;
+
+                int quantity = getItemQuantity() + modifier;
+                if (quantity < 0) {
+                    quantity = 0;
+                }
+
+                setItemQuantity(quantity);
+                return true;
+            }
+        };
+        quantity = new ItemQuantityField("quantity");
 
         stateButtons = new SaveLoadButton[7];
         deleteButtons = new Button[7];
@@ -642,18 +646,18 @@ public class LayoutManager implements IContainerInputHandler, IContainerTooltipH
         }
 
         addWidget(options);
-        //showItemPanel = visiblity.showItemPanel;
-        //if (visiblity.showItemPanel) {
-        //    addWidget(itemPanel);
-        //    addWidget(prev);
-        //    addWidget(next);
-        //    addWidget(pageLabel);
-        //    if (canPerformAction("item")) {
-        //        addWidget(more);
-        //        addWidget(less);
-        //        addWidget(quantity);
-        //    }
-        //}
+        showItemPanel = visiblity.showItemPanel;
+        if (visiblity.showItemPanel) {
+            addWidget(itemPanel);
+            addWidget(prev);
+            addWidget(next);
+            addWidget(pageLabel);
+            if (canPerformAction("item")) {
+                addWidget(more);
+                addWidget(less);
+                addWidget(quantity);
+            }
+        }
 
         if (visiblity.showSearchSection) {
             addWidget(dropDown);
@@ -747,7 +751,7 @@ public class LayoutManager implements IContainerInputHandler, IContainerTooltipH
 
     @Override
     public boolean shouldShowTooltip(GuiContainer gui) {
-        return true;
+        return itemPanel.draggedStack == null;
     }
 
     public static Widget getInputFocused() {
@@ -866,8 +870,7 @@ public class LayoutManager implements IContainerInputHandler, IContainerTooltipH
         }
     }
 
-    @Deprecated//USE JEI!!
     public static boolean isItemPanelActive() {
-        return false;
+        return showItemPanel;
     }
 }

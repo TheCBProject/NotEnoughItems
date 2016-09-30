@@ -14,6 +14,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.INetHandlerPlayClient;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -235,7 +236,7 @@ public class NEIClientPacketHandler implements IClientPacketHandler {
 
     public static void sendMobSpawnerID(int x, int y, int z, String mobtype) {
         PacketCustom packet = new PacketCustom(channel, 15);
-        packet.writeCoord(x, y, z);
+        packet.writePos(new BlockPos(x, y, z));
         packet.writeString(mobtype);
         packet.sendToServer();
     }
