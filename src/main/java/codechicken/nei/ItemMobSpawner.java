@@ -1,7 +1,9 @@
 package codechicken.nei;
 
+import codechicken.core.featurehack.GameDataManipulator;
 import codechicken.nei.network.NEIClientPacketHandler;
 import codechicken.nei.util.LogHelper;
+import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -17,6 +19,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityMobSpawner;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -32,7 +35,7 @@ public class ItemMobSpawner extends ItemBlock {
     private static ItemMobSpawner instance;
 
     public static void register() {
-        //GameDataManipulator.replaceItem(Block.getIdFromBlock(Blocks.mob_spawner), instance = new ItemMobSpawner());
+        //GameDataManipulator.replaceItemBlock(Blocks.MOB_SPAWNER, instance = new ItemMobSpawner());
     }
 
     public static void initRender() {

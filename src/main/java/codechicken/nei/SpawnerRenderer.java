@@ -1,28 +1,32 @@
 package codechicken.nei;
 
+import codechicken.lib.render.item.IItemRenderer;
+import codechicken.lib.model.ModelRegistryHelper;
+import codechicken.lib.texture.TextureUtils;
+import codechicken.lib.util.TransformUtils;
 import codechicken.lib.util.ClientUtils;
-import codechicken.lib.render.BlockRenderer;
-import codechicken.lib.render.IItemRenderer;
-import codechicken.lib.render.ModelRegistryHelper;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.block.model.*;
+import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
+import net.minecraftforge.client.model.IPerspectiveAwareModel;
+import org.apache.commons.lang3.tuple.Pair;
 
+import javax.vecmath.Matrix4f;
+import java.util.ArrayList;
 import java.util.List;
 
 //import net.minecraft.entity.boss.BossStatus;
 
-public class SpawnerRenderer implements IItemRenderer {
+public class SpawnerRenderer implements IItemRenderer, IPerspectiveAwareModel {
     public static void load(ItemMobSpawner item) {
         ModelRegistryHelper.registerItemRenderer(item, new SpawnerRenderer());
     }
@@ -62,9 +66,9 @@ public class SpawnerRenderer implements IItemRenderer {
             GlStateManager.disableLighting();
             GlStateManager.popMatrix();
 
-            GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+            GlStateManager.enableRescaleNormal();
             OpenGlHelper.setActiveTexture(OpenGlHelper.lightmapTexUnit);
-            GL11.glDisable(GL11.GL_TEXTURE_2D);
+            GlStateManager.disableTexture2D();
             OpenGlHelper.setActiveTexture(OpenGlHelper.defaultTexUnit);
         } catch (Exception e) {
             if (Tessellator.getInstance().getBuffer().isDrawing) {
@@ -77,7 +81,7 @@ public class SpawnerRenderer implements IItemRenderer {
 
     @Override
     public List<BakedQuad> getQuads(IBlockState state, EnumFacing side, long rand) {
-        return null;
+        return new ArrayList<BakedQuad>();
     }
 
     @Override
@@ -97,16 +101,21 @@ public class SpawnerRenderer implements IItemRenderer {
 
     @Override
     public TextureAtlasSprite getParticleTexture() {
-        return Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite("minecraft:blocks/mob_spawner");
+        return TextureUtils.getBlockTexture("mob_spawner");
     }
 
     @Override
     public ItemCameraTransforms getItemCameraTransforms() {
-        return BlockRenderer.blockCameraTransform;
+        return ItemCameraTransforms.DEFAULT;
     }
 
     @Override
     public ItemOverrideList getOverrides() {
         return ItemOverrideList.NONE;
+    }
+
+    @Override
+    public Pair<? extends IBakedModel, Matrix4f> handlePerspective(TransformType cameraTransformType) {
+        return MapWrapper.handlePerspective(this, TransformUtils.DEFAULT_BLOCK.getTransforms(), cameraTransformType);
     }
 }

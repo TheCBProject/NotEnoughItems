@@ -1,6 +1,6 @@
 package codechicken.nei;
 
-import codechicken.lib.render.TextureUtils;
+import codechicken.lib.texture.TextureUtils;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;

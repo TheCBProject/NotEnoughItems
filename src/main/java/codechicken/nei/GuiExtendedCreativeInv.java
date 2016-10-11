@@ -1,6 +1,6 @@
 package codechicken.nei;
 
-import codechicken.lib.render.TextureUtils;
+import codechicken.lib.texture.TextureUtils;
 import codechicken.nei.api.INEIGuiHandler;
 import codechicken.nei.api.TaggedInventoryArea;
 import codechicken.nei.util.NEIServerUtils;

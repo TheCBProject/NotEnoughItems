@@ -27,7 +27,6 @@ public class JEIIntegrationManager {
     public static EnumItemBrowser recipeOwner = EnumItemBrowser.NEI;
     public static EnumItemBrowser itemPannelOwner = EnumItemBrowser.JEI;
 
-    @Deprecated
     public static void pushChanges(VisibilityData data) {
         JeiRuntime runtime = Internal.getRuntime();
         ItemListOverlay overlay = runtime.getItemListOverlay();

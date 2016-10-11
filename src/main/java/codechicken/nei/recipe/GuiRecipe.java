@@ -1,7 +1,7 @@
 package codechicken.nei.recipe;
 
 import codechicken.lib.gui.GuiDraw;
-import codechicken.lib.render.TextureUtils;
+import codechicken.lib.texture.TextureUtils;
 import codechicken.nei.GuiNEIButton;
 import codechicken.nei.LayoutManager;
 import codechicken.nei.NEIClientConfig;

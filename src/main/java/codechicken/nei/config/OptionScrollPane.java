@@ -60,13 +60,14 @@ public abstract class OptionScrollPane extends GuiScrollPane {
     public static void drawOverlayTex(int x, int y, int w, int h, float zLevel) {
         GlStateManager.color(1, 1, 1, 1);
         Minecraft.getMinecraft().renderEngine.bindTexture(Gui.OPTIONS_BACKGROUND);
-        VertexBuffer worldRenderer = CCRenderState.startDrawing(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+        CCRenderState ccrs = CCRenderState.instance();
+        VertexBuffer worldRenderer = ccrs.startDrawing(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
 
         worldRenderer.pos(x, y, zLevel).tex(0, 0).endVertex();
         worldRenderer.pos(x, y + h, zLevel).tex(0, h / 16D).endVertex();
         worldRenderer.pos(x + w, y + h, zLevel).tex(w / 16D, h / 16D).endVertex();
         worldRenderer.pos(x + w, y, zLevel).tex(w / 16D, 0).endVertex();
-        CCRenderState.draw();
+        ccrs.draw();
     }
 
     public static void drawOverlayGrad(int x1, int x2, int y1, int y2, float zLevel) {
@@ -75,14 +76,15 @@ public abstract class OptionScrollPane extends GuiScrollPane {
         GlStateManager.enableBlend();
         GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GlStateManager.shadeModel(GL11.GL_SMOOTH);
-        VertexBuffer worldRenderer = CCRenderState.startDrawing(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
+        CCRenderState ccrs = CCRenderState.instance();
+        VertexBuffer worldRenderer = ccrs.startDrawing(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
         worldRenderer.pos(x2, y1, zLevel).color(0, 0, 0, 255).endVertex();
         worldRenderer.pos(x1, y1, zLevel).color(0, 0, 0, 255).endVertex();
 
         worldRenderer.pos(x1, y2, zLevel).color(0, 0, 0, 0).endVertex();
         worldRenderer.pos(x2, y2, zLevel).color(0, 0, 0, 0).endVertex();
 
-        CCRenderState.draw();
+        ccrs.draw();
         GlStateManager.disableBlend();
         GlStateManager.enableCull();
         GlStateManager.enableTexture2D();

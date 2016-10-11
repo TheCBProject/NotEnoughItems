@@ -1,6 +1,6 @@
 package codechicken.nei;
 
-import codechicken.lib.render.TextureUtils;
+import codechicken.lib.texture.TextureUtils;
 import codechicken.nei.network.NEIClientPacketHandler;
 import codechicken.nei.util.NEIServerUtils;
 import net.minecraft.client.gui.Gui;

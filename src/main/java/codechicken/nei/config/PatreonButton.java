@@ -1,7 +1,7 @@
 package codechicken.nei.config;
 
 import codechicken.core.gui.GuiCCButton;
-import codechicken.lib.render.TextureUtils;
+import codechicken.lib.texture.TextureUtils;
 import net.minecraft.client.renderer.GlStateManager;
 
 public class PatreonButton extends GuiCCButton {
