@@ -1,7 +1,7 @@
 package codechicken.nei;
 
-import codechicken.lib.render.item.IItemRenderer;
 import codechicken.lib.model.ModelRegistryHelper;
+import codechicken.lib.render.item.IItemRenderer;
 import codechicken.lib.texture.TextureUtils;
 import codechicken.lib.util.TransformUtils;
 import codechicken.lib.util.ClientUtils;
