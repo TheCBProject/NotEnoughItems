@@ -1,8 +1,9 @@
 package codechicken.nei;
 
-import codechicken.lib.util.CommonUtils;
 import codechicken.core.launch.CodeChickenCorePlugin;
+import codechicken.lib.CodeChickenLib;
 import codechicken.lib.asm.ObfMapping;
+import codechicken.lib.util.CommonUtils;
 import codechicken.nei.api.IConfigureNEI;
 import codechicken.nei.asm.NEICorePlugin;
 import com.google.common.eventbus.EventBus;
@@ -99,7 +100,7 @@ public class NEIModContainer extends DummyModContainer {
 
     @Override
     public VersionRange acceptableMinecraftVersionRange() {
-        return VersionParser.parseRange(CodeChickenCorePlugin.mcVersion);
+        return VersionParser.parseRange(CodeChickenLib.mcVersion);
     }
 
     @Override

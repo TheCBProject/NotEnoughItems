@@ -1,6 +1,5 @@
 package codechicken.nei.asm;
 
-import codechicken.core.launch.CodeChickenCorePlugin;
 import net.minecraftforge.fml.relauncher.IFMLCallHook;
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin.TransformerExclusions;
@@ -14,7 +13,6 @@ public class NEICorePlugin implements IFMLLoadingPlugin, IFMLCallHook {
 
     @Override
     public String[] getASMTransformerClass() {
-        CodeChickenCorePlugin.versionCheck(CodeChickenCorePlugin.mcVersion, "NotEnoughItems");
         return new String[] { "codechicken.nei.asm.NEITransformer" };
     }
 
