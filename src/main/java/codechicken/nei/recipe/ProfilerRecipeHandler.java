@@ -1,7 +1,7 @@
 package codechicken.nei.recipe;
 
-import codechicken.core.TaskProfiler;
-import codechicken.core.TaskProfiler.ProfilerResult;
+import codechicken.lib.thread.TaskProfiler;
+import codechicken.lib.thread.TaskProfiler.ProfilerResult;
 import codechicken.nei.NEIClientConfig;
 import codechicken.nei.api.IOverlayHandler;
 import codechicken.nei.api.IRecipeOverlayRenderer;
