@@ -120,8 +120,8 @@ public class ClientHandler {
         MinecraftForge.EVENT_BUS.register(instance);
 
         ItemInfo.init();
-        API.registerHighlightHandler(new DefaultHighlightHandler(), ItemInfo.Layout.HEADER);
-        HUDRenderer.load();
+        //API.registerHighlightHandler(new DefaultHighlightHandler(), ItemInfo.Layout.HEADER);
+        //HUDRenderer.load();
         WorldOverlayRenderer.load();
     }
 

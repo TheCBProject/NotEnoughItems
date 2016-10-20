@@ -7,6 +7,7 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
+@Deprecated
 public interface IHighlightHandler {
     ItemStack identifyHighlight(World world, EntityPlayer player, RayTraceResult rayTraceResult);
 

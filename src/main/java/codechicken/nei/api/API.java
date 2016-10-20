@@ -179,6 +179,7 @@ public class API {
      * @param block   The block to handle, null for all.
      * @param handler The handler to be registered.
      */
+    @Deprecated
     public static void registerHighlightIdentifier(Block block, IHighlightHandler handler) {
         ItemInfo.highlightIdentifiers.put(block, handler);
     }
@@ -198,6 +199,7 @@ public class API {
      * @param handler The handler to be registered.
      * @param layout  A HUDAugmenterRegistry.Layout entry. HEADER is displayed before BODY which is displayed before FOOTER.
      */
+    @Deprecated
     public static void registerHighlightHandler(IHighlightHandler handler, ItemInfo.Layout... layout) {
         ItemInfo.registerHighlightHandler(handler, layout);
     }

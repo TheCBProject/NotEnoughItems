@@ -13,6 +13,7 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
+@Deprecated
 public class DefaultHighlightHandler implements IHighlightHandler {
     @Override
     public List<String> handleTextData(ItemStack stack, World world, EntityPlayer player, RayTraceResult rayTraceResult, List<String> currenttip, ItemInfo.Layout layout) {

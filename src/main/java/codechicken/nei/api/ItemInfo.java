@@ -50,6 +50,7 @@ public class ItemInfo {
         HEADER, BODY, FOOTER
     }
 
+    @Deprecated
     public static final ArrayListMultimap<Layout, IHighlightHandler> highlightHandlers = ArrayListMultimap.create();
     public static final ItemStackMap<String> nameOverrides = new ItemStackMap<String>();
     public static final ItemStackSet hiddenItems = new ItemStackSet();
@@ -58,6 +59,7 @@ public class ItemInfo {
     public static final ArrayListMultimap<Item, ItemStack> itemVariants = ArrayListMultimap.create();
 
     public static final LinkedList<IInfiniteItemHandler> infiniteHandlers = new LinkedList<IInfiniteItemHandler>();
+    @Deprecated
     public static final ArrayListMultimap<Block, IHighlightHandler> highlightIdentifiers = ArrayListMultimap.create();
     public static final HashSet<Class<? extends Slot>> fastTransferExemptions = new HashSet<Class<? extends Slot>>();
 
@@ -422,6 +424,7 @@ public class ItemInfo {
         EntityList.ENTITY_EGGS.put(id, new EntityEggInfo(id, i, j));
     }
 
+    @Deprecated
     public static ArrayList<ItemStack> getIdentifierItems(World world, EntityPlayer player, RayTraceResult hit) {
         BlockPos pos = hit.getBlockPos();
         IBlockState state = world.getBlockState(pos);
@@ -470,12 +473,14 @@ public class ItemInfo {
         return items;
     }
 
+    @Deprecated
     public static void registerHighlightHandler(IHighlightHandler handler, ItemInfo.Layout... layouts) {
         for (ItemInfo.Layout layout : layouts) {
             ItemInfo.highlightHandlers.get(layout).add(handler);
         }
     }
 
+    @Deprecated
     public static List<String> getText(ItemStack itemStack, World world, EntityPlayer player, RayTraceResult rayTraceResult) {
         List<String> retString = new ArrayList<String>();
 

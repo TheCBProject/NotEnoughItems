@@ -134,10 +134,10 @@ public class NEIClientConfig {
         tag.getTag("inventory.searchmode").getIntValue(1);
         API.addOption(new OptionCycled("inventory.searchmode", 3, true));
 
-        tag.getTag("world.highlight_tips").getBooleanValue(false);
-        tag.getTag("world.highlight_tips.x").getIntValue(5000);
-        tag.getTag("world.highlight_tips.y").getIntValue(100);
-        API.addOption(new OptionOpenGui("world.highlight_tips", GuiHighlightTips.class));
+        //tag.getTag("world.highlight_tips").getBooleanValue(false);
+        //tag.getTag("world.highlight_tips.x").getIntValue(5000);
+        //tag.getTag("world.highlight_tips.y").getIntValue(100);
+        //API.addOption(new OptionOpenGui("world.highlight_tips", GuiHighlightTips.class));
 
         tag.getTag("inventory.profileRecipes").getBooleanValue(false);
         API.addOption(new OptionToggleButton("inventory.profileRecipes", true));

@@ -19,6 +19,7 @@ import java.util.Arrays;
 import static codechicken.lib.gui.GuiDraw.displaySize;
 import static codechicken.lib.gui.GuiDraw.getMousePosition;
 
+@Deprecated//Waila is a thing now.
 public class GuiHighlightTips extends GuiScreenWidget {
     private String name;
     private GuiCCButton toggleButton;
