@@ -21,7 +21,7 @@ public class NEITransformer implements IClassTransformer {
     public NEITransformer() {
         if (FMLLaunchHandler.side().isClient()) {
             //Generates method to set the placed position of a mob spawner for the item callback. More portable than copying vanilla placement code
-            transformer.add(new MethodWriter(ACC_PUBLIC, new ObfMapping("net/minecraft/block/BlockMobSpawner", "func_180633_a", "(Lnet/minecraft/world/World;Lnet/minecraft/util/BlockPos;Lnet/minecraft/block/state/IBlockState;Lnet/minecraft/entity/EntityLivingBase;Lnet/minecraft/item/ItemStack;)V"), asmblocks.get("spawnerPlaced")));
+            //transformer.add(new MethodWriter(ACC_PUBLIC, new ObfMapping("net/minecraft/block/BlockMobSpawner", "func_180633_a", "(Lnet/minecraft/world/World;Lnet/minecraft/util/BlockPos;Lnet/minecraft/block/state/IBlockState;Lnet/minecraft/entity/EntityLivingBase;Lnet/minecraft/item/ItemStack;)V"), asmblocks.get("spawnerPlaced")));
             transformer.add(new MethodInjector(new ObfMapping("net/minecraft/client/gui/inventory/GuiContainerCreative", "func_147053_i", "()V"), asmblocks.get("i_creativeTabSearch"), true));
         }
 
