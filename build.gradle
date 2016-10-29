@@ -112,20 +112,20 @@ uploadArchives {
                         name project.archivesBaseName
                         packaging 'jar'
                         description 'NotEnoughItems'
-                        url 'https://github.com/covers1624/NotEnoughItems'
+                        url 'https://github.com/TheCBProject/NotEnoughItems'
                         scm {
-                            url 'https://github.com/covers1624/NotEnoughItems'
-                            connection 'scm:git:git@github.com:covers1624/NotEnoughItems.git'
-                            developerConnection 'scm:git:git@github.com:covers1624/NotEnoughItems.git'
+                            url 'https://github.com/TheCBProject/NotEnoughItems'
+                            connection 'scm:git:git@github.com:TheCBProject/NotEnoughItems.git'
+                            developerConnection 'scm:git:git@github.com:TheCBProject/NotEnoughItems.git'
                         }
                         issueManagement {
                             system 'github'
-                            url 'https://github.com/covers1624/NotEnoughItems/issues'
+                            url 'https://github.com/TheCBProject/NotEnoughItems/issues'
                         }
                         licenses {
                             license {
                                 name 'License'
-                                url 'https://raw.githubusercontent.com/covers1624/NotEnoughItems/master/LICENSE.txt'
+                                url 'https://raw.githubusercontent.com/TheCBProject/NotEnoughItems/master/LICENSE.txt'
                                 distribution 'repo'
                             }
                         }
