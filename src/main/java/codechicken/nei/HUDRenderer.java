@@ -17,6 +17,7 @@ import java.util.List;
 
 import static codechicken.lib.gui.GuiDraw.*;
 
+@Deprecated
 public class HUDRenderer implements IKeyStateTracker {
     @Override
     public void tickKeyStates() {
@@ -92,6 +93,6 @@ public class HUDRenderer implements IKeyStateTracker {
     }
 
     public static void load() {
-        KeyManager.trackers.add(new HUDRenderer());
+        //KeyManager.trackers.add(new HUDRenderer());
     }
 }

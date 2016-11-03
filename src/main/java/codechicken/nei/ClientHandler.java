@@ -170,9 +170,9 @@ public class ClientHandler {
 
     @SubscribeEvent
     public void tickEvent(TickEvent.RenderTickEvent event) {
-        if (event.phase == Phase.END && NEIClientConfig.isEnabled()) {
-            HUDRenderer.renderOverlay();
-        }
+        //if (event.phase == Phase.END && NEIClientConfig.isEnabled()) {
+            //HUDRenderer.renderOverlay();
+        //}
     }
 
     @SubscribeEvent
