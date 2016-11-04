@@ -1,7 +1,7 @@
 package codechicken.nei;
 
-import codechicken.core.ServerUtils;
 import codechicken.lib.inventory.InventoryUtils;
+import codechicken.lib.util.ServerUtils;
 import codechicken.nei.network.NEIServerPacketHandler;
 import codechicken.nei.util.LogHelper;
 import codechicken.nei.util.NEIServerUtils;

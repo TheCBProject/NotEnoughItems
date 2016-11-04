@@ -8,6 +8,7 @@ import mezz.jei.ItemFilter;
 import mezz.jei.JeiRuntime;
 import mezz.jei.config.Config;
 import mezz.jei.gui.ItemListOverlay;
+import mezz.jei.gui.ItemListOverlayInternal;
 import mezz.jei.input.GuiTextFieldFilter;
 import net.minecraft.item.ItemStack;
 
@@ -23,14 +24,14 @@ public class JEIIntegrationManager {
 
     public static final JEIProxy proxy = new JEIProxy();
 
-    public static EnumItemBrowser searchBoxOwner = EnumItemBrowser.NEI;
+    public static EnumItemBrowser searchBoxOwner = EnumItemBrowser.JEI;
     public static EnumItemBrowser recipeOwner = EnumItemBrowser.NEI;
     public static EnumItemBrowser itemPannelOwner = EnumItemBrowser.JEI;
 
     public static void pushChanges(VisibilityData data) {
         JeiRuntime runtime = Internal.getRuntime();
         ItemListOverlay overlay = runtime.getItemListOverlay();
-        GuiTextFieldFilter fieldFilter = getTextFieldFilter(overlay);
+        GuiTextFieldFilter fieldFilter = getTextFieldFilter(overlay.getInternal());
 
         if (searchBoxOwner == EnumItemBrowser.JEI) {
             data.showSearchSection = false;
@@ -90,14 +91,14 @@ public class JEIIntegrationManager {
 
 
     public static GuiTextFieldFilter getTextFieldFilter() {
-        if (Internal.getRuntime() == null) {
+        if (Internal.getRuntime() == null || Internal.getRuntime().getItemListOverlay().getInternal() == null) {
             return null;
         }
-        return getTextFieldFilter(Internal.getRuntime().getItemListOverlay());
+        return getTextFieldFilter(Internal.getRuntime().getItemListOverlay().getInternal());
     }
 
 
-    private static GuiTextFieldFilter getTextFieldFilter(ItemListOverlay overlay) {
+    private static GuiTextFieldFilter getTextFieldFilter(ItemListOverlayInternal overlay) {
         try {
             Field field = overlay.getClass().getDeclaredField("searchField");
             field.setAccessible(true);
@@ -129,7 +130,7 @@ public class JEIIntegrationManager {
 
     public static List<ItemStack> getFilteredItems() {
         ItemListOverlay overlay = Internal.getRuntime().getItemListOverlay();
-        ItemFilter filter = getItemFilter(getTextFieldFilter(overlay));
+        ItemFilter filter = getItemFilter(getTextFieldFilter(overlay.getInternal()));
         if (filter != null) {
             return filter.getItemStacks();
         }

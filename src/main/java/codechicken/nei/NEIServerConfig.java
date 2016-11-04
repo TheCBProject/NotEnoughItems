@@ -1,10 +1,10 @@
 package codechicken.nei;
 
 import codechicken.lib.util.CommonUtils;
-import codechicken.core.ServerUtils;
 import codechicken.lib.config.ConfigFile;
 import codechicken.lib.inventory.InventoryUtils;
 import codechicken.lib.packet.PacketCustom;
+import codechicken.lib.util.ServerUtils;
 import codechicken.nei.network.NEIServerPacketHandler;
 import codechicken.nei.util.LogHelper;
 import codechicken.nei.util.NEIServerUtils;
