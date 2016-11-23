@@ -2,14 +2,15 @@ package codechicken.nei.featurehack;
 
 import codechicken.lib.item.filtering.IItemFilter;
 import codechicken.lib.thread.RestartableTask;
-import codechicken.nei.ItemList;
-import codechicken.nei.ItemSorter;
 import com.google.common.base.Strings;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.gui.inventory.GuiContainerCreative;
 import net.minecraft.client.gui.inventory.GuiContainerCreative.ContainerCreative;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.TextFormatting;
 
@@ -25,6 +26,7 @@ public class VanillaCreativeTabSearchHooks {
     private static HashMap<CreativeTabs, ArrayList<ItemStack>> tabCache = new HashMap<CreativeTabs, ArrayList<ItemStack>>();
 
     public static void updateSearchListThreaded(GuiContainerCreative guiContainerCreative) {
+        filterTask.stop();
         filterTask.setContainerCreative((ContainerCreative) guiContainerCreative.inventorySlots);
         filterTask.setSearchBox(guiContainerCreative.searchField);
         filterTask.setCreativeTab(CreativeTabs.CREATIVE_TAB_ARRAY[guiContainerCreative.getSelectedTabIndex()]);
@@ -82,10 +84,6 @@ public class VanillaCreativeTabSearchHooks {
             if (interrupted()) {
                 return;
             }
-            ItemSorter.sort(filtered);
-            if (interrupted()) {
-                return;
-            }
             containerCreative.itemList = filtered;
             containerCreative.scrollTo(0.0F);
         }
@@ -101,7 +99,7 @@ public class VanillaCreativeTabSearchHooks {
             GuiTextField textField = filterTask.getSearchBox();
             if (Strings.isNullOrEmpty(textField.getText())) {
                 return true;
-            }
+            }//TODO Replace this with logic inside VanillaFilterTask.execute and allow for oreDict search.
             if (textField.getText().toLowerCase().startsWith("@")) {
                 String expectedMod = textField.getText().toLowerCase().replace("@", "");
                 if (expectedMod.isEmpty()) {
@@ -121,20 +119,22 @@ public class VanillaCreativeTabSearchHooks {
     }
 
     private static List<ItemStack> getStacksForTab(CreativeTabs creativeTab) {
-        if (creativeTab == CreativeTabs.SEARCH) {
-            return ItemList.items;
-        }
         ArrayList<ItemStack> tabStacks = new ArrayList<ItemStack>();
-        if (tabCache.containsKey(creativeTab)) {
-            tabCache.get(creativeTab);
-        } else {
-            for (ItemStack stack : ItemList.items) {
-                if (stack.getItem().getCreativeTab() == creativeTab) {
-                    tabStacks.add(stack);
+        if (creativeTab == CreativeTabs.SEARCH) {
+            for (Item item : Item.REGISTRY) {
+                if (item != null) {
+                    item.getSubItems(item, null, tabStacks);
                 }
             }
-            tabCache.put(creativeTab, tabStacks);
+            for (Enchantment enchantment : Enchantment.REGISTRY) {
+                if (enchantment != null && enchantment.type != null) {
+                    Items.ENCHANTED_BOOK.getAll(enchantment, tabStacks);
+                }
+            }
         }
+
+        creativeTab.displayAllRelevantItems(tabStacks);
+
         return tabStacks;
     }
 
