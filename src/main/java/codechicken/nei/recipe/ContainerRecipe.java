@@ -1,6 +1,7 @@
 package codechicken.nei.recipe;
 
 import codechicken.nei.api.stack.PositionedStack;
+import codechicken.nei.jei.JEIIntegrationManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
@@ -118,9 +119,15 @@ public class ContainerRecipe extends Container {
         ItemStack stack = recipeInventory.getStackInSlot(slot);
         if (stack != null) {
             if (button == 0) {
-                GuiCraftingRecipe.openRecipeGui("item", stack);
+                boolean opened = GuiCraftingRecipe.openRecipeGui("item", stack);
+                if (!opened) {
+                    JEIIntegrationManager.openRecipeGui(stack);
+                }
             } else if (button == 1) {
-                GuiUsageRecipe.openRecipeGui("item", stack);
+                boolean opened = GuiUsageRecipe.openRecipeGui("item", stack);
+                if (!opened) {
+                    JEIIntegrationManager.openUsageGui(stack);
+                }
             }
         }
         return null;

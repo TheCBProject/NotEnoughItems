@@ -1,11 +1,11 @@
 package codechicken.nei.network;
 
-import codechicken.core.IGuiPacketSender;
-import codechicken.core.ServerUtils;
+import codechicken.lib.gui.IGuiPacketSender;
 import codechicken.core.inventory.ContainerExtended;
 import codechicken.core.inventory.SlotDummy;
 import codechicken.lib.packet.PacketCustom;
 import codechicken.lib.packet.PacketCustom.IServerPacketHandler;
+import codechicken.lib.util.ServerUtils;
 import codechicken.nei.*;
 import codechicken.nei.container.ContainerCreativeInv;
 import codechicken.nei.container.ExtendedCreativeInv;

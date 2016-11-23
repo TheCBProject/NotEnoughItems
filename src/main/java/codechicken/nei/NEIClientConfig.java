@@ -11,7 +11,9 @@ import codechicken.lib.util.CommonUtils;
 import codechicken.nei.api.*;
 import codechicken.nei.api.layout.LayoutStyle;
 import codechicken.nei.config.*;
+import codechicken.nei.jei.EnumItemBrowser;
 import codechicken.nei.jei.JEIIntegrationManager;
+import codechicken.nei.jei.gui.ItemBrowserButton;
 import codechicken.nei.jei.gui.SearchBoxButton;
 import codechicken.nei.recipe.RecipeInfo;
 import codechicken.nei.util.LogHelper;
@@ -155,7 +157,24 @@ public class NEIClientConfig {
 
         JEIIntegrationManager.initConfig(tag);
 
-        API.addOption(new SearchBoxButton("jei.searchBoxOwner"));
+        API.addOption(new ItemBrowserButton("jei.itemPanel") {
+            @Override
+            protected void setValue(EnumItemBrowser itemBrowser) {
+                JEIIntegrationManager.setItemPanelOwner(itemBrowser);
+            }
+        });
+
+        API.addOption(new ItemBrowserButton("jei.searchBox") {
+            @Override
+            public boolean isEnabled() {
+                return JEIIntegrationManager.itemPannelOwner == EnumItemBrowser.JEI;
+            }
+
+            @Override
+            protected void setValue(EnumItemBrowser itemBrowser) {
+                JEIIntegrationManager.setSearchBoxOwner(itemBrowser);
+            }
+        });
 
         setDefaultKeyBindings();
     }

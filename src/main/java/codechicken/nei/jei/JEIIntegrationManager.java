@@ -6,6 +6,9 @@ import codechicken.nei.jei.proxy.JEIProxy;
 import mezz.jei.Internal;
 import mezz.jei.ItemFilter;
 import mezz.jei.JeiRuntime;
+import mezz.jei.RecipeRegistry;
+import mezz.jei.api.recipe.IFocus;
+import mezz.jei.api.recipe.IFocus.Mode;
 import mezz.jei.config.Config;
 import mezz.jei.gui.ItemListOverlay;
 import mezz.jei.gui.ItemListOverlayInternal;
@@ -24,9 +27,9 @@ public class JEIIntegrationManager {
 
     public static final JEIProxy proxy = new JEIProxy();
 
-    public static EnumItemBrowser searchBoxOwner = EnumItemBrowser.JEI;
-    public static EnumItemBrowser recipeOwner = EnumItemBrowser.NEI;
-    public static EnumItemBrowser itemPannelOwner = EnumItemBrowser.JEI;
+    public static EnumItemBrowser searchBoxOwner = EnumItemBrowser.NEI;
+    public static EnumItemBrowser recipePriority = EnumItemBrowser.NEI;
+    public static EnumItemBrowser itemPannelOwner = EnumItemBrowser.NEI;
 
     public static void pushChanges(VisibilityData data) {
         JeiRuntime runtime = Internal.getRuntime();
@@ -45,15 +48,12 @@ public class JEIIntegrationManager {
             }
         }
         if (itemPannelOwner == EnumItemBrowser.JEI) {
-            data.showItemSection = false;
+            data.showItemPanel = false;
             if (!Config.isOverlayEnabled()) {
                 Config.toggleOverlayEnabled();
             }
         } else {
-            if (!data.showWidgets) {
-                return;
-            }
-            data.showItemSection = true;
+            data.showItemPanel = data.showSearchSection = true;
             if (Config.isOverlayEnabled()) {
                 Config.toggleOverlayEnabled();
             }
@@ -61,17 +61,36 @@ public class JEIIntegrationManager {
 
     }
 
-
     public static void initConfig(ConfigTagParent tag) {
-        tag.removeTag("jei.panelOwner");
 
-        setSearchBoxOwner(tag.getTag("jei.searchBoxOwner").getIntValue(0));
+        setItemPanelOwner(tag.getTag("jei.itemPanel").getIntValue(0));
+        setSearchBoxOwner(tag.getTag("jei.searchBox").getIntValue(0));
 
-        //if (searchBoxOwner == EnumItemBrowser.JEI){
-        //NEIClientConfig.setSearchExpression(Config.getFilterText(), false);
-        //}
     }
 
+    public static boolean openRecipeGui(ItemStack stack) {
+        //if (JEI installed) {
+        RecipeRegistry registry = Internal.getRuntime().getRecipeRegistry();
+        IFocus focus = registry.createFocus(Mode.OUTPUT, stack);
+        if (registry.getRecipeCategories(focus).isEmpty()) {
+            return false;
+        }
+        Internal.getRuntime().getRecipesGui().show(focus);
+        //}
+        return false;
+    }
+
+    public static boolean openUsageGui(ItemStack stack) {
+        //if (JEI installed) {
+        RecipeRegistry registry = Internal.getRuntime().getRecipeRegistry();
+        IFocus focus = registry.createFocus(Mode.INPUT, stack);
+        if (registry.getRecipeCategories(focus).isEmpty()) {
+            return false;
+        }
+        Internal.getRuntime().getRecipesGui().show(focus);
+        //}
+        return false;
+    }
 
     public static boolean setSearchBoxOwner(int ordinal) {
         try {
@@ -83,12 +102,25 @@ public class JEIIntegrationManager {
         }
     }
 
-
     public static boolean setSearchBoxOwner(EnumItemBrowser browser) {
         searchBoxOwner = browser;
         return true;
     }
 
+    public static boolean setItemPanelOwner(EnumItemBrowser browser) {
+        itemPannelOwner = browser;
+        return true;
+    }
+
+    public static boolean setItemPanelOwner(int ordinal) {
+        try {
+            itemPannelOwner = EnumItemBrowser.values()[ordinal];
+            return true;
+        } catch (IndexOutOfBoundsException e) {
+            itemPannelOwner = EnumItemBrowser.NEI;
+            return false;
+        }
+    }
 
     public static GuiTextFieldFilter getTextFieldFilter() {
         if (Internal.getRuntime() == null || Internal.getRuntime().getItemListOverlay().getInternal() == null) {
@@ -97,8 +129,10 @@ public class JEIIntegrationManager {
         return getTextFieldFilter(Internal.getRuntime().getItemListOverlay().getInternal());
     }
 
-
     private static GuiTextFieldFilter getTextFieldFilter(ItemListOverlayInternal overlay) {
+        if (overlay == null) {
+            return null;
+        }
         try {
             Field field = overlay.getClass().getDeclaredField("searchField");
             field.setAccessible(true);

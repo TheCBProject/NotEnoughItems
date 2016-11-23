@@ -6,6 +6,7 @@ import codechicken.nei.NEIController;
 import codechicken.nei.api.GuiInfo;
 import codechicken.nei.api.INEIGuiHandler;
 import codechicken.nei.guihook.GuiContainerManager;
+import codechicken.nei.jei.JEIIntegrationManager;
 import codechicken.nei.network.NEIClientPacketHandler;
 import codechicken.nei.recipe.GuiCraftingRecipe;
 import codechicken.nei.recipe.GuiRecipe;
@@ -282,9 +283,15 @@ public class ItemPanel extends Widget {
             ItemStack item = hoverSlot.item;
             if (NEIController.manager.window instanceof GuiRecipe || !NEIClientConfig.canCheatItem(item)) {
                 if (button == 0) {
-                    GuiCraftingRecipe.openRecipeGui("item", item);
+                    boolean opened = GuiCraftingRecipe.openRecipeGui("item", item);
+                    if (!opened) {
+                        JEIIntegrationManager.openRecipeGui(item);
+                    }
                 } else if (button == 1) {
-                    GuiUsageRecipe.openRecipeGui("item", item);
+                    boolean opened = GuiUsageRecipe.openRecipeGui("item", item);
+                    if (!opened) {
+                        JEIIntegrationManager.openUsageGui(item);
+                    }
                 }
 
                 draggedStack = null;

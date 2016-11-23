@@ -6,8 +6,12 @@ import codechicken.nei.ItemList.AnyMultiItemFilter;
 import codechicken.nei.ItemList.EverythingItemFilter;
 import codechicken.nei.ItemList.PatternItemFilter;
 import codechicken.nei.api.API;
+import codechicken.nei.jei.EnumItemBrowser;
+import codechicken.nei.jei.JEIIntegrationManager;
+import codechicken.nei.widget.ItemPanel;
 import net.minecraft.util.text.TextFormatting;
 
+import java.awt.*;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -61,6 +65,14 @@ public class SearchField extends TextField implements IItemFilterProvider {
     }
 
     @Override
+    public int getTextColour() {
+        if (JEIIntegrationManager.itemPannelOwner == EnumItemBrowser.JEI ? JEIIntegrationManager.getFilteredItems().size() == 0 : ItemPanel.items.size() == 0) {
+            return Color.red.getRGB();
+        }
+        return super.getTextColour();
+    }
+
+    @Override
     public void drawBox() {
         if (searchInventories()) {
             drawGradientRect(x, y, w, h, 0xFFFFFF00, 0xFFC0B000);
@@ -76,8 +88,9 @@ public class SearchField extends TextField implements IItemFilterProvider {
             if (focused() && (System.currentTimeMillis() - lastclicktime < 500)) {//double click
                 NEIClientConfig.world.nbt.setBoolean("searchinventories", !searchInventories());
                 NEIClientConfig.world.saveNBT();
+            } else {
+                lastclicktime = System.currentTimeMillis();
             }
-            lastclicktime = System.currentTimeMillis();
         }
         return super.handleClick(mousex, mousey, button);
     }

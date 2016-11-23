@@ -1,12 +1,9 @@
 package codechicken.nei;
 
-import codechicken.nei.jei.JEIIntegrationManager;
 import codechicken.nei.widget.Widget;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.util.ChatAllowedCharacters;
 import org.lwjgl.input.Keyboard;
-
-import java.awt.*;
 
 import static codechicken.lib.gui.GuiDraw.*;
 
@@ -23,9 +20,6 @@ public abstract class TextField extends Widget {
     public int cursorCounter;
 
     public int getTextColour() {
-        if (JEIIntegrationManager.getFilteredItems().size() == 0) {
-            return Color.red.getRGB();
-        }
         return focused() ? 0xFFE0E0E0 : 0xFF909090;
     }
 

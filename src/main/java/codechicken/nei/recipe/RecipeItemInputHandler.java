@@ -3,6 +3,7 @@ package codechicken.nei.recipe;
 import codechicken.nei.NEIClientConfig;
 import codechicken.nei.guihook.GuiContainerManager;
 import codechicken.nei.guihook.IContainerInputHandler;
+import codechicken.nei.jei.JEIIntegrationManager;
 import codechicken.nei.util.NEIClientUtils;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.item.ItemStack;
@@ -16,11 +17,19 @@ public class RecipeItemInputHandler implements IContainerInputHandler {
         }
 
         if (keyCode == NEIClientConfig.getKeyBinding("gui.usage") || (keyCode == NEIClientConfig.getKeyBinding("gui.recipe") && NEIClientUtils.shiftKey())) {
-            return GuiUsageRecipe.openRecipeGui("item", stackover.copy());
+            boolean opened = GuiUsageRecipe.openRecipeGui("item", stackover.copy());
+            if (!opened) {
+                opened = JEIIntegrationManager.openUsageGui(stackover.copy());
+            }
+            return opened;
         }
 
         if (keyCode == NEIClientConfig.getKeyBinding("gui.recipe")) {
-            return GuiCraftingRecipe.openRecipeGui("item", stackover.copy());
+            boolean opened = GuiCraftingRecipe.openRecipeGui("item", stackover.copy());
+            if (!opened) {
+                opened = JEIIntegrationManager.openRecipeGui(stackover.copy());
+            }
+            return opened;
         }
 
         return false;

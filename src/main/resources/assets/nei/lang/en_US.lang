@@ -156,6 +156,12 @@ nei.options.tools.dump.itempanel.mode.3=PNG
 nei.options.tools.dump.itempanel.icon.dumped=Item Panel icons were dumped to %s
 nei.options.tools.dump.itempanel.icon.cancelled=Dump cancelled
 
+nei.options.jei=JEI Integration
+nei.options.jei.itemPanel.0=NEI ItemPanel
+nei.options.jei.itemPanel.1=JEI ItemPanel
+nei.options.jei.searchBox.0=NEI SearchBox
+nei.options.jei.searchBox.1=JEI SearchBox
+
 nei.layoutstyle.minecraft=Minecraft
 nei.layoutstyle.oldtmi=Old TMI
 

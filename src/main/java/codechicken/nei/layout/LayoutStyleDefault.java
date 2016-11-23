@@ -122,7 +122,7 @@ public abstract class LayoutStyleDefault extends LayoutStyle {
         searchField.w = 150;
         searchField.x = (windowWidth - searchField.w) / 2;
 
-        if (!visiblity.showItemSection) {
+        if (!visiblity.showSearchSection) {
             //TODO dropDown.setDropDown(0);
             searchField.setFocus(false);
         }
