@@ -58,8 +58,8 @@ public class SubsetWidget extends codechicken.nei.widget.Button implements IItem
                     SubsetTag tag = sorted.get(slot);
                     if (NEIClientUtils.shiftKey()) {
                         String searchTag = tag.fullname;//TODO
-                        if (searchTag.startsWith("mod.") && JEIIntegrationManager.searchBoxOwner == EnumItemBrowser.JEI){
-                            searchTag = searchTag.replace("mod.", "");
+                        if (searchTag.startsWith("Mod.") && JEIIntegrationManager.itemPannelOwner == EnumItemBrowser.JEI){
+                            searchTag = searchTag.replace("Mod.", "");
                         }
                         LayoutManager.searchField.setText("@" + searchTag);
                     } else if (button == 0 && count >= 2) {
