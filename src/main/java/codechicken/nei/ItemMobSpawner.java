@@ -1,6 +1,6 @@
 package codechicken.nei;
 
-import codechicken.core.featurehack.GameDataManipulator;
+
 import codechicken.nei.network.NEIClientPacketHandler;
 import codechicken.nei.util.LogHelper;
 import net.minecraft.block.Block;
