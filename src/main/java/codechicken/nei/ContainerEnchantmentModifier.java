@@ -223,7 +223,7 @@ public class ContainerEnchantmentModifier extends ContainerEnchantment {
         }
 
         Item item = toolstack.getItem();
-        int enchantablity = item.getItemEnchantability();
+        int enchantablity = item.getItemEnchantability(toolstack);
         if (enchantablity == 0 && validate) {
             percentscrolled = 0;
             return;
