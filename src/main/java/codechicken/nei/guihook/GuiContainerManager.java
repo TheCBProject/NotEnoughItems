@@ -216,7 +216,7 @@ public class GuiContainerManager {
             }
 
             drawItems.zLevel = zLevel;
-            drawItems.renderItemIntoGUI(new ItemStack(Blocks.FIRE), i, j);
+            drawItems.renderItemIntoGUI(new ItemStack(Blocks.STONE), i, j);
         }
 
         enable2DRender();
