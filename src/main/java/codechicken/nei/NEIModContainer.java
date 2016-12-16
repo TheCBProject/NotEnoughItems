@@ -84,6 +84,7 @@ public class NEIModContainer extends DummyModContainer {
 
     @Subscribe
     public void preInit(FMLPreInitializationEvent event) {
+        FingerprintChecker.runFingerprintChecks();
         if (CommonUtils.isClient()) {
             ClientHandler.preInit();
         }
@@ -111,5 +112,10 @@ public class NEIModContainer extends DummyModContainer {
     @Override
     public Class<?> getCustomResourcePackClass() {
         return getSource().isFile() ? FMLFileResourcePack.class : FMLFolderResourcePack.class;
+    }
+
+    @Override
+    public Object getMod() {
+        return this;
     }
 }
