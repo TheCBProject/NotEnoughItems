@@ -67,7 +67,6 @@ public class ContainerEventHandler {
                 if (!isContainerTextFieldFocused()) {
                     IClickedIngredient ingredient = getIngeredientUnderMouseForKey();
                     if (ingredient != null) {
-
                         if (eventKey == 1 || (eventKey == 0 && NEIClientUtils.shiftKey())) {
                             GuiUsageRecipe.openRecipeGui("item", ingredient.getValue());
                         }
@@ -75,7 +74,6 @@ public class ContainerEventHandler {
                             GuiCraftingRecipe.openRecipeGui("item", ingredient.getValue());
                         }
                     }
-
                 }
             }
         }
@@ -90,19 +88,21 @@ public class ContainerEventHandler {
         }
 
         if (JEIIntegrationManager.itemPannelOwner == EnumItemBrowser.JEI && Minecraft.getMinecraft().thePlayer != null) {
-            if (!event.isCanceled()) {
-                if (!isContainerTextFieldFocused()) {
-                    IClickedIngredient ingredient = getIngeredientUnderMouseForKey();
-                    if (ingredient != null) {
-                        int eventKey = Keyboard.getEventKey();
-                        if (eventKey == NEIClientConfig.getKeyBinding("gui.usage") || (eventKey == NEIClientConfig.getKeyBinding("gui.recipe") && NEIClientUtils.shiftKey())) {
-                            GuiUsageRecipe.openRecipeGui("item", ingredient.getValue());
+            if (Minecraft.getMinecraft().currentScreen instanceof GuiContainer) {
+                if (!event.isCanceled()) {
+                    if (!isContainerTextFieldFocused()) {
+                        IClickedIngredient ingredient = getIngeredientUnderMouseForKey();
+                        if (ingredient != null) {
+                            int eventKey = Keyboard.getEventKey();
+                            if (eventKey == NEIClientConfig.getKeyBinding("gui.usage") || (eventKey == NEIClientConfig.getKeyBinding("gui.recipe") && NEIClientUtils.shiftKey())) {
+                                GuiUsageRecipe.openRecipeGui("item", ingredient.getValue());
+                            }
+                            if (eventKey == NEIClientConfig.getKeyBinding("gui.recipe")) {
+                                GuiCraftingRecipe.openRecipeGui("item", ingredient.getValue());
+                            }
                         }
-                        if (eventKey == NEIClientConfig.getKeyBinding("gui.recipe")) {
-                            GuiCraftingRecipe.openRecipeGui("item", ingredient.getValue());
-                        }
-                    }
 
+                    }
                 }
             }
         }
