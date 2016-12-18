@@ -15,6 +15,7 @@ import mezz.jei.GuiEventHandler;
 import mezz.jei.JeiStarter;
 import mezz.jei.JustEnoughItems;
 import mezz.jei.config.Config;
+import mezz.jei.gui.ItemListOverlayInternal;
 import mezz.jei.input.GuiTextFieldFilter;
 import mezz.jei.input.IClickedIngredient;
 import mezz.jei.input.InputHandler;
@@ -61,7 +62,7 @@ public class ContainerEventHandler {
             }
         }
         int eventKey = Mouse.getEventButton();
-        if (JEIIntegrationManager.itemPannelOwner == EnumItemBrowser.JEI) {
+        if (JEIIntegrationManager.itemPannelOwner == EnumItemBrowser.JEI && Minecraft.getMinecraft().thePlayer != null) {
             if (!Config.isCheatItemsEnabled() && Minecraft.getMinecraft().currentScreen instanceof GuiContainer) {
                 if (!isContainerTextFieldFocused()) {
                     IClickedIngredient ingredient = getIngeredientUnderMouseForKey();
@@ -88,7 +89,7 @@ public class ContainerEventHandler {
             LayoutManager.searchField.setText(fieldFilter.getText(), false);
         }
 
-        if (JEIIntegrationManager.itemPannelOwner == EnumItemBrowser.JEI) {
+        if (JEIIntegrationManager.itemPannelOwner == EnumItemBrowser.JEI && Minecraft.getMinecraft().thePlayer != null) {
             if (!event.isCanceled()) {
                 if (!isContainerTextFieldFocused()) {
                     IClickedIngredient ingredient = getIngeredientUnderMouseForKey();
@@ -108,22 +109,12 @@ public class ContainerEventHandler {
     }
 
     private IClickedIngredient<?> getIngeredientUnderMouseForKey() {
-        MouseHelper helper = new MouseHelper();
-        ObfMapping jeiStartedField = new ObfMapping("mezz/jei/ProxyCommonClient", "starter", "");
-        ObfMapping guiEventHandlerField = new ObfMapping("mezz/jei/JeiStarter", "guiEventHandler", "");
-        ObfMapping inputHandlerField = new ObfMapping("mezz/jei/GuiEventHandler", "inputHandler", "");
-        ObfMapping getIngredientMethod = new ObfMapping("mezz/jei/input/InputHandler", "getIngredientUnderMouseForKey", "(II)Lmezz/jei/input/IClickedIngredient;");
-
-        JeiStarter starter = ReflectionManager.getField(jeiStartedField, JustEnoughItems.getProxy(), JeiStarter.class);
-        GuiEventHandler guiHandler = ReflectionManager.getField(guiEventHandlerField, starter, GuiEventHandler.class);
-        if (guiHandler != null) {
-            InputHandler inputHandler = ReflectionManager.getField(inputHandlerField, guiHandler, InputHandler.class);
-            if (inputHandler != null) {
-                return ReflectionManager.callMethod(getIngredientMethod, IClickedIngredient.class, inputHandler, helper.getX(), helper.getY());
-            }
+        ItemListOverlayInternal internal = JEIIntegrationManager.getItemListOverlayInternal();
+        if (internal == null) {
+            return null;
         }
-
-        return null;
+        MouseHelper helper = new MouseHelper();
+        return internal.getIngredientUnderMouse(helper.getX(), helper.getY());
     }
 
     private boolean isContainerTextFieldFocused() {
