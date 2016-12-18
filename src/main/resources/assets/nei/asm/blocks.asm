@@ -299,7 +299,7 @@ GETFIELD net/minecraft/client/gui/inventory/GuiContainer.field_147002_h : Lnet/m
 GETFIELD net/minecraft/inventory/Container.field_75152_c : I
 ILOAD 2
 ILOAD 3
-ILOAD 4
+ALOAD 4
 ALOAD 0
 GETFIELD net/minecraft/client/gui/inventory/GuiContainer.field_146297_k : Lnet/minecraft/client/Minecraft;
 GETFIELD net/minecraft/client/Minecraft.field_71439_g : Lnet/minecraft/client/entity/EntityPlayerSP;
@@ -311,7 +311,7 @@ ALOAD 0
 GETFIELD net/minecraft/client/gui/inventory/GuiContainer.manager : Lcodechicken/nei/guihook/GuiContainerManager;
 ILOAD 2
 ILOAD 3
-ILOAD 4
+ALOAD 4
 INVOKEVIRTUAL codechicken/nei/guihook/GuiContainerManager.handleSlotClick (IILnet/minecraft/inventory/ClickType;)V
 
 list lastKeyTyped

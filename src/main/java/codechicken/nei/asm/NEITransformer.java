@@ -122,8 +122,8 @@ public class NEITransformer implements IClassTransformer {
             }
         });
 
-        //Replace general handleSlotClick call with delegate TODO
-        //transformer.add(new MethodReplacer(new ObfMapping(GuiContainer, "func_184098_a", "(Lnet/minecraft/inventory/Slot;IILnet/minecraft/inventory/ClickType;)V"), asmblocks.get("d_handleSlotClick"), asmblocks.get("handleSlotClick")));
+        //Replace general handleMouseClick call with delegate
+        transformer.add(new MethodReplacer(new ObfMapping(guiContainer, "func_184098_a", "(Lnet/minecraft/inventory/Slot;IILnet/minecraft/inventory/ClickType;)V"), asmblocks.get("d_handleSlotClick"), asmblocks.get("handleSlotClick")));
 
         //Inject lastKeyTyped at the start of keyTyped
         transformer.add(new MethodInjector(new ObfMapping(guiContainer, "func_73869_a", "(CI)V"), asmblocks.get("lastKeyTyped"), true));
