@@ -3,18 +3,21 @@ package codechicken.nei.api;
 import codechicken.lib.item.filtering.IItemFilter;
 import codechicken.lib.item.filtering.IItemFilterProvider;
 import codechicken.nei.*;
-import codechicken.nei.KeyManager.KeyState;
 import codechicken.nei.SearchField.ISearchProvider;
 import codechicken.nei.SubsetWidget.SubsetTag;
 import codechicken.nei.api.layout.LayoutStyle;
+import codechicken.nei.config.KeyBindings;
 import codechicken.nei.config.Option;
-import codechicken.nei.config.OptionKeyBind;
 import codechicken.nei.recipe.*;
 import net.minecraft.block.Block;
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.client.settings.IKeyConflictContext;
+import net.minecraftforge.client.settings.KeyModifier;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import org.lwjgl.input.Keyboard;
 
 import java.util.Collections;
@@ -143,11 +146,11 @@ public class API {
      *
      * @param ident      An identifier for your key, eg "shoot"
      * @param defaultKey The default value, commonly obtained from {@link Keyboard}
+     * @deprecated use {@link ClientRegistry#registerKeyBinding(KeyBinding)}
      */
+    @Deprecated
     public static void addKeyBind(String ident, int defaultKey) {
-        NEIClientConfig.setDefaultKeyBinding(ident, defaultKey);
-        KeyManager.keyStates.put(ident, new KeyState());
-        addOption(new OptionKeyBind(ident));
+        KeyBindings.setDefaultKeyBinding(ident, defaultKey);
     }
 
     public static void addOption(Option option) {

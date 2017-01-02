@@ -1,6 +1,5 @@
 package codechicken.nei;
 
-import codechicken.lib.config.ConfigTag;
 import codechicken.nei.KeyManager.IKeyStateTracker;
 import codechicken.nei.api.ItemInfo;
 import codechicken.nei.guihook.GuiContainerManager;
@@ -21,10 +20,10 @@ import static codechicken.lib.gui.GuiDraw.*;
 public class HUDRenderer implements IKeyStateTracker {
     @Override
     public void tickKeyStates() {
-        if (KeyManager.keyStates.get("world.highlight_tips").down) {
-            ConfigTag tag = NEIClientConfig.getSetting("world.highlight_tips");
-            tag.setBooleanValue(!tag.getBooleanValue());
-        }
+//        if (KeyBindings.get("nei.options.keys.world.highlight_tips").isPressed()) {
+//            ConfigTag tag = NEIClientConfig.getSetting("world.highlight_tips");
+//            tag.setBooleanValue(!tag.getBooleanValue());
+//        }
     }
 
     public static void renderOverlay() {

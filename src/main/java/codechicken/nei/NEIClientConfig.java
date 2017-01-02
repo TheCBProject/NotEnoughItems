@@ -14,7 +14,6 @@ import codechicken.nei.config.*;
 import codechicken.nei.jei.EnumItemBrowser;
 import codechicken.nei.jei.JEIIntegrationManager;
 import codechicken.nei.jei.gui.ItemBrowserButton;
-import codechicken.nei.jei.gui.SearchBoxButton;
 import codechicken.nei.recipe.RecipeInfo;
 import codechicken.nei.util.LogHelper;
 import codechicken.nei.util.NEIClientUtils;
@@ -27,7 +26,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.WorldSummary;
-import org.lwjgl.input.Keyboard;
 
 import java.io.File;
 import java.util.Collections;
@@ -176,7 +174,7 @@ public class NEIClientConfig {
             }
         });
 
-        setDefaultKeyBindings();
+        KeyBindings.setDefaultKeyBindings();
     }
 
     private static void linkOptionList() {
@@ -201,28 +199,6 @@ public class NEIClientConfig {
                 return new GuiNEIOptionList(parent, list, world);
             }
         });
-    }
-
-    private static void setDefaultKeyBindings() {
-        API.addKeyBind("gui.recipe", Keyboard.KEY_R);
-        API.addKeyBind("gui.usage", Keyboard.KEY_U);
-        API.addKeyBind("gui.back", Keyboard.KEY_BACK);
-        API.addKeyBind("gui.enchant", Keyboard.KEY_X);
-        API.addKeyBind("gui.potion", Keyboard.KEY_P);
-        API.addKeyBind("gui.prev", Keyboard.KEY_PRIOR);
-        API.addKeyBind("gui.next", Keyboard.KEY_NEXT);
-        API.addKeyBind("gui.hide", Keyboard.KEY_O);
-        API.addKeyBind("gui.search", Keyboard.KEY_F);
-        API.addKeyBind("world.chunkoverlay", Keyboard.KEY_F9);
-        API.addKeyBind("world.moboverlay", Keyboard.KEY_F7);
-        API.addKeyBind("world.highlight_tips", Keyboard.KEY_NUMPAD0);
-        API.addKeyBind("world.dawn", 0);
-        API.addKeyBind("world.noon", 0);
-        API.addKeyBind("world.dusk", 0);
-        API.addKeyBind("world.midnight", 0);
-        API.addKeyBind("world.rain", 0);
-        API.addKeyBind("world.heal", 0);
-        API.addKeyBind("world.creative", 0);
     }
 
     public static OptionList getOptionList() {
@@ -275,14 +251,6 @@ public class NEIClientConfig {
         world.saveNBT();
     }
 
-    public static int getKeyBinding(String string) {
-        return getSetting("keys." + string).getIntValue();
-    }
-
-    public static void setDefaultKeyBinding(String string, int key) {
-        getSetting("keys." + string).getIntValue(key);
-    }
-
     public static void bootNEI(World world) {
         if (configLoaded) {
             return;
@@ -296,6 +264,8 @@ public class NEIClientConfig {
         RecipeInfo.load();
         LayoutManager.load();
         NEIController.load();
+
+        KeyBindings.register();
 
         configLoaded = true;
 

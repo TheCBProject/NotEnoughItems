@@ -4,6 +4,7 @@ import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.KeyManager.IKeyStateTracker;
 import codechicken.nei.api.*;
 import codechicken.nei.api.layout.LayoutStyle;
+import codechicken.nei.config.KeyBindings;
 import codechicken.nei.guihook.*;
 import codechicken.nei.layout.LayoutStyleMinecraft;
 import codechicken.nei.layout.LayoutStyleTMIOld;
@@ -169,7 +170,7 @@ public class LayoutManager implements IContainerInputHandler, IContainerTooltipH
 
     @Override
     public boolean lastKeyTyped(GuiContainer gui, char keyChar, int keyID) {
-        if (keyID == getKeyBinding("gui.hide")) {
+        if (KeyBindings.get("nei.options.keys.gui.hide").isActiveAndMatches(keyID)) {
             toggleBooleanSetting("inventory.hidden");
             return true;
         }
@@ -847,25 +848,25 @@ public class LayoutManager implements IContainerInputHandler, IContainerTooltipH
             return;
         }
 
-        if (KeyManager.keyStates.get("world.dawn").down) {
+        if (KeyBindings.get("nei.options.keys.world.dawn").isPressed()) {
             timeButtons[0].onButtonPress(false);
         }
-        if (KeyManager.keyStates.get("world.noon").down) {
+        if (KeyBindings.get("nei.options.keys.world.noon").isPressed()) {
             timeButtons[1].onButtonPress(false);
         }
-        if (KeyManager.keyStates.get("world.dusk").down) {
+        if (KeyBindings.get("nei.options.keys.world.dusk").isPressed()) {
             timeButtons[2].onButtonPress(false);
         }
-        if (KeyManager.keyStates.get("world.midnight").down) {
+        if (KeyBindings.get("nei.options.keys.world.midnight").isPressed()) {
             timeButtons[3].onButtonPress(false);
         }
-        if (KeyManager.keyStates.get("world.rain").down) {
+        if (KeyBindings.get("nei.options.keys.world.rain").isPressed()) {
             rain.onButtonPress(false);
         }
-        if (KeyManager.keyStates.get("world.heal").down) {
+        if (KeyBindings.get("nei.options.keys.world.heal").isPressed()) {
             heal.onButtonPress(false);
         }
-        if (KeyManager.keyStates.get("world.creative").down) {
+        if (KeyBindings.get("nei.options.keys.world.creative").isPressed()) {
             gamemode.onButtonPress(false);
         }
     }

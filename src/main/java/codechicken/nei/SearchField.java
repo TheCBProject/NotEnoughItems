@@ -6,6 +6,7 @@ import codechicken.nei.ItemList.AnyMultiItemFilter;
 import codechicken.nei.ItemList.EverythingItemFilter;
 import codechicken.nei.ItemList.PatternItemFilter;
 import codechicken.nei.api.API;
+import codechicken.nei.config.KeyBindings;
 import codechicken.nei.jei.EnumItemBrowser;
 import codechicken.nei.jei.JEIIntegrationManager;
 import codechicken.nei.widget.ItemPanel;
@@ -103,7 +104,7 @@ public class SearchField extends TextField implements IItemFilterProvider {
 
     @Override
     public void lastKeyTyped(int keyID, char keyChar) {
-        if (keyID == NEIClientConfig.getKeyBinding("gui.search")) {
+        if (KeyBindings.get("nei.options.keys.gui.search").isActiveAndMatches(keyID)) {
             setFocus(true);
         }
     }

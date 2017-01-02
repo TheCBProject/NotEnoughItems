@@ -5,6 +5,7 @@ import codechicken.nei.NEIClientConfig;
 import codechicken.nei.NEIController;
 import codechicken.nei.api.GuiInfo;
 import codechicken.nei.api.INEIGuiHandler;
+import codechicken.nei.config.KeyBindings;
 import codechicken.nei.guihook.GuiContainerManager;
 import codechicken.nei.jei.JEIIntegrationManager;
 import codechicken.nei.network.NEIClientPacketHandler;
@@ -317,11 +318,11 @@ public class ItemPanel extends Widget {
 
     @Override
     public boolean handleKeyPress(int keyID, char keyChar) {
-        if (keyID == NEIClientConfig.getKeyBinding("gui.next")) {
+        if (KeyBindings.get("nei.options.keys.gui.next").isActiveAndMatches(keyID)) {
             scroll(1);
             return true;
         }
-        if (keyID == NEIClientConfig.getKeyBinding("gui.prev")) {
+        if (KeyBindings.get("nei.options.keys.gui.prev").isActiveAndMatches(keyID)) {
             scroll(-1);
             return true;
         }
