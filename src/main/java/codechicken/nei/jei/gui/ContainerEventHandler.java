@@ -1,24 +1,19 @@
 package codechicken.nei.jei.gui;
 
-import codechicken.lib.asm.ObfMapping;
 import codechicken.lib.gui.GuiDraw;
-import codechicken.lib.util.ReflectionManager;
 import codechicken.nei.LayoutManager;
 import codechicken.nei.NEIClientConfig;
 import codechicken.nei.SearchField;
+import codechicken.nei.config.KeyBindings;
 import codechicken.nei.jei.EnumItemBrowser;
 import codechicken.nei.jei.JEIIntegrationManager;
 import codechicken.nei.recipe.GuiCraftingRecipe;
 import codechicken.nei.recipe.GuiUsageRecipe;
 import codechicken.nei.util.NEIClientUtils;
-import mezz.jei.GuiEventHandler;
-import mezz.jei.JeiStarter;
-import mezz.jei.JustEnoughItems;
 import mezz.jei.config.Config;
 import mezz.jei.gui.ItemListOverlayInternal;
 import mezz.jei.input.GuiTextFieldFilter;
 import mezz.jei.input.IClickedIngredient;
-import mezz.jei.input.InputHandler;
 import mezz.jei.util.MouseHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiRepair;
@@ -94,10 +89,10 @@ public class ContainerEventHandler {
                         IClickedIngredient ingredient = getIngeredientUnderMouseForKey();
                         if (ingredient != null) {
                             int eventKey = Keyboard.getEventKey();
-                            if (eventKey == NEIClientConfig.getKeyBinding("gui.usage") || (eventKey == NEIClientConfig.getKeyBinding("gui.recipe") && NEIClientUtils.shiftKey())) {
+                            if (KeyBindings.get("nei.options.keys.gui.usage").isActiveAndMatches(eventKey)) {
                                 GuiUsageRecipe.openRecipeGui("item", ingredient.getValue());
                             }
-                            if (eventKey == NEIClientConfig.getKeyBinding("gui.recipe")) {
+                            if (KeyBindings.get("nei.options.keys.gui.recipe").isActiveAndMatches(eventKey)) {
                                 GuiCraftingRecipe.openRecipeGui("item", ingredient.getValue());
                             }
                         }

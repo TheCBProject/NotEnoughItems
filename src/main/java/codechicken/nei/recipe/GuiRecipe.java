@@ -4,11 +4,11 @@ import codechicken.lib.gui.GuiDraw;
 import codechicken.lib.texture.TextureUtils;
 import codechicken.nei.GuiNEIButton;
 import codechicken.nei.LayoutManager;
-import codechicken.nei.NEIClientConfig;
 import codechicken.nei.api.IGuiContainerOverlay;
 import codechicken.nei.api.IOverlayHandler;
 import codechicken.nei.api.IRecipeOverlayRenderer;
 import codechicken.nei.api.stack.PositionedStack;
+import codechicken.nei.config.KeyBindings;
 import codechicken.nei.guihook.GuiContainerManager;
 import codechicken.nei.guihook.IContainerTooltipHandler;
 import codechicken.nei.guihook.IGuiClientSide;
@@ -92,9 +92,9 @@ public abstract class GuiRecipe extends GuiContainer implements IGuiContainerOve
             }
         }
 
-        if (i == mc.gameSettings.keyBindInventory.getKeyCode()) {
+        if (mc.gameSettings.keyBindInventory.isActiveAndMatches(i)) {
             mc.displayGuiScreen(firstGui);
-        } else if (i == NEIClientConfig.getKeyBinding("gui.back")) {
+        } else if (KeyBindings.get("nei.options.keys.gui.back").isActiveAndMatches(i)) {
             mc.displayGuiScreen(prevGui);
         }
 

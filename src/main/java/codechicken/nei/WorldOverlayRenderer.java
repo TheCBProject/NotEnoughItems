@@ -4,6 +4,7 @@ import codechicken.lib.math.MathHelper;
 import codechicken.lib.render.RenderUtils;
 import codechicken.lib.vec.Cuboid6;
 import codechicken.nei.KeyManager.IKeyStateTracker;
+import codechicken.nei.config.KeyBindings;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
@@ -34,10 +35,10 @@ public class WorldOverlayRenderer implements IKeyStateTracker {
             return;
         }
 
-        if (KeyManager.keyStates.get("world.moboverlay").down) {
+        if (KeyBindings.get("nei.options.keys.world.moboverlay").isPressed()) {
             mobOverlay = (mobOverlay + 1) % 2;
         }
-        if (KeyManager.keyStates.get("world.chunkoverlay").down) {
+        if (KeyBindings.get("nei.options.keys.world.chunkoverlay").isPressed()) {
             chunkOverlay = (chunkOverlay + 1) % 3;
         }
     }

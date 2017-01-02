@@ -1,10 +1,9 @@
 package codechicken.nei.recipe;
 
-import codechicken.nei.NEIClientConfig;
+import codechicken.nei.config.KeyBindings;
 import codechicken.nei.guihook.GuiContainerManager;
 import codechicken.nei.guihook.IContainerInputHandler;
 import codechicken.nei.jei.JEIIntegrationManager;
-import codechicken.nei.util.NEIClientUtils;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.item.ItemStack;
 
@@ -16,7 +15,7 @@ public class RecipeItemInputHandler implements IContainerInputHandler {
             return false;
         }
 
-        if (keyCode == NEIClientConfig.getKeyBinding("gui.usage") || (keyCode == NEIClientConfig.getKeyBinding("gui.recipe") && NEIClientUtils.shiftKey())) {
+        if (KeyBindings.get("nei.options.keys.gui.usage").isActiveAndMatches(keyCode)) {
             boolean opened = GuiUsageRecipe.openRecipeGui("item", stackover.copy());
             if (!opened) {
                 opened = JEIIntegrationManager.openUsageGui(stackover.copy());
@@ -24,7 +23,7 @@ public class RecipeItemInputHandler implements IContainerInputHandler {
             return opened;
         }
 
-        if (keyCode == NEIClientConfig.getKeyBinding("gui.recipe")) {
+        if (KeyBindings.get("nei.options.keys.gui.recipe").isActiveAndMatches(keyCode)) {
             boolean opened = GuiCraftingRecipe.openRecipeGui("item", stackover.copy());
             if (!opened) {
                 opened = JEIIntegrationManager.openRecipeGui(stackover.copy());

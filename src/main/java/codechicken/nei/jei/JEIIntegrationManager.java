@@ -10,9 +10,11 @@ import mezz.jei.RecipeRegistry;
 import mezz.jei.api.recipe.IFocus;
 import mezz.jei.api.recipe.IFocus.Mode;
 import mezz.jei.config.Config;
+import mezz.jei.config.KeyBindings;
 import mezz.jei.gui.ItemListOverlay;
 import mezz.jei.gui.ItemListOverlayInternal;
 import mezz.jei.input.GuiTextFieldFilter;
+import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.item.ItemStack;
 
 import java.lang.reflect.Field;
@@ -177,4 +179,23 @@ public class JEIIntegrationManager {
         return new ArrayList<ItemStack>();
     }
 
+    public static KeyBinding getShowUses() {
+        return KeyBindings.showUses;
+    }
+
+    public static KeyBinding getShowRecipes() {
+        return KeyBindings.showRecipe;
+    }
+
+    public static KeyBinding getFocusSearch() {
+        return KeyBindings.focusSearch;
+    }
+
+    public static KeyBinding getRecipeBack() {
+        return KeyBindings.recipeBack;
+    }
+
+    public static KeyBinding getToggleOverlay() {
+        return KeyBindings.toggleOverlay;
+    }
 }
