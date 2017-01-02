@@ -27,9 +27,9 @@ public class JEIIntegrationManager {
 
     public static final JEIProxy proxy = new JEIProxy();
 
-    public static EnumItemBrowser searchBoxOwner = EnumItemBrowser.NEI;
+    public static EnumItemBrowser searchBoxOwner = EnumItemBrowser.JEI;
     public static EnumItemBrowser recipePriority = EnumItemBrowser.NEI;
-    public static EnumItemBrowser itemPannelOwner = EnumItemBrowser.NEI;
+    public static EnumItemBrowser itemPannelOwner = EnumItemBrowser.JEI;
 
     public static void pushChanges(VisibilityData data) {
         JeiRuntime runtime = Internal.getRuntime();
@@ -63,8 +63,8 @@ public class JEIIntegrationManager {
 
     public static void initConfig(ConfigTagParent tag) {
 
-        setItemPanelOwner(tag.getTag("jei.itemPanel").getIntValue(0));
-        setSearchBoxOwner(tag.getTag("jei.searchBox").getIntValue(0));
+        setItemPanelOwner(tag.getTag("jei.itemPanel").getIntValue(1));
+        setSearchBoxOwner(tag.getTag("jei.searchBox").getIntValue(1));
 
     }
 
