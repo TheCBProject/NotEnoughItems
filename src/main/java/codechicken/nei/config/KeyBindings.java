@@ -19,7 +19,7 @@ public class KeyBindings {
 	private static Map<String, KeyBinding> keyBindings = new HashMap<String, KeyBinding>();
 	private static List<KeyBinding> keyBindingsToRegister = new ArrayList<KeyBinding>();
 
-	public static void setDefaultKeyBindings() {
+	static {
 		setDefaultKeyBinding("nei.options.keys.gui.recipe", JEIIntegrationManager.getShowRecipes());
 		setDefaultKeyBinding("nei.options.keys.gui.usage", JEIIntegrationManager.getShowUses());
 		setDefaultKeyBinding("nei.options.keys.gui.back", JEIIntegrationManager.getRecipeBack());

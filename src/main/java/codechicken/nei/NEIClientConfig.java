@@ -173,8 +173,6 @@ public class NEIClientConfig {
                 JEIIntegrationManager.setSearchBoxOwner(itemBrowser);
             }
         });
-
-        KeyBindings.setDefaultKeyBindings();
     }
 
     private static void linkOptionList() {
@@ -264,8 +262,6 @@ public class NEIClientConfig {
         RecipeInfo.load();
         LayoutManager.load();
         NEIController.load();
-
-        KeyBindings.register();
 
         configLoaded = true;
 
