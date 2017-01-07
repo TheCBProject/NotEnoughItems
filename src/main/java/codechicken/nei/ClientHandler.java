@@ -4,6 +4,7 @@ import codechicken.lib.util.ClientUtils;
 import codechicken.lib.packet.PacketCustom;
 import codechicken.nei.api.API;
 import codechicken.nei.api.ItemInfo;
+import codechicken.nei.config.KeyBindings;
 import codechicken.nei.jei.gui.ContainerEventHandler;
 import codechicken.nei.network.NEIClientPacketHandler;
 import codechicken.nei.util.NEIClientUtils;
@@ -123,6 +124,8 @@ public class ClientHandler {
         //API.registerHighlightHandler(new DefaultHighlightHandler(), ItemInfo.Layout.HEADER);
         //HUDRenderer.load();
         WorldOverlayRenderer.load();
+
+        KeyBindings.register();
     }
 
     @SubscribeEvent
