@@ -137,7 +137,7 @@ public class ClientHandler {
                 NEIClientConfig.setHasSMPCounterPart(false);
                 NEIClientConfig.setInternalEnabled(false);
 
-                if (!Minecraft.getMinecraft().isSingleplayer())//wait for server to initiate in singleplayer
+                if (!Minecraft.getMinecraft().isSingleplayer() && ClientUtils.inWorld())//wait for server to initiate in singleplayer
                 {
                     NEIClientConfig.loadWorld("remote/" + ClientUtils.getServerIP().replace(':', '~'));
                 }
