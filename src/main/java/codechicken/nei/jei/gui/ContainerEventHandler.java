@@ -1,6 +1,7 @@
 package codechicken.nei.jei.gui;
 
 import codechicken.lib.gui.GuiDraw;
+import codechicken.lib.util.ClientUtils;
 import codechicken.nei.LayoutManager;
 import codechicken.nei.NEIClientConfig;
 import codechicken.nei.SearchField;
@@ -137,7 +138,7 @@ public class ContainerEventHandler {
     @SubscribeEvent(priority = EventPriority.LOWEST)//We need to be called after JEI as this is is a render overlay.
     public void onDrawBackgroundEventPost(BackgroundDrawnEvent event) {
         GuiTextFieldFilter fieldFilter = JEIIntegrationManager.getTextFieldFilter();
-        if (fieldFilter == null || !SearchField.searchInventories() || JEIIntegrationManager.searchBoxOwner != EnumItemBrowser.JEI) {
+        if (!ClientUtils.inWorld() || fieldFilter == null || !SearchField.searchInventories() || JEIIntegrationManager.searchBoxOwner != EnumItemBrowser.JEI) {
             return;
         }
 
