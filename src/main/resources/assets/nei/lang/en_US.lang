@@ -155,6 +155,10 @@ nei.options.tools.dump.itempanel.mode.2=Json
 nei.options.tools.dump.itempanel.mode.3=PNG
 nei.options.tools.dump.itempanel.icon.dumped=Item Panel icons were dumped to %s
 nei.options.tools.dump.itempanel.icon.cancelled=Dump cancelled
+nei.options.tools.dump.fluid=Fluid
+nei.options.tools.dump.fluids=Fluids
+nei.options.tools.dump.sound_event=Sound Event
+nei.options.tools.dump.sound_events=Sound Events
 
 nei.options.jei=JEI Integration
 nei.options.jei.itemPanel.0=NEI ItemPanel

@@ -5,7 +5,8 @@ import codechicken.lib.item.filtering.IItemFilterProvider;
 import codechicken.nei.*;
 import codechicken.nei.ItemList.ItemsLoadedCallback;
 import codechicken.nei.config.ItemPanelDumper;
-import codechicken.nei.config.RegistryDumper;
+import codechicken.nei.config.dumps.FluidRegistryDumper;
+import codechicken.nei.config.dumps.ForgeRegistryDumper;
 import codechicken.nei.guihook.GuiContainerManager;
 import codechicken.nei.recipe.BrewingRecipeHandler;
 import codechicken.nei.recipe.RecipeItemInputHandler;
@@ -23,14 +24,15 @@ import net.minecraft.entity.EntityList.EntityEggInfo;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.*;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionHelper;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.registry.RegistryNamespaced;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
@@ -38,6 +40,8 @@ import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.IShearable;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.ModContainer;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
+import net.minecraftforge.fml.common.registry.IForgeRegistry;
 
 import java.util.*;
 import java.util.Map.Entry;
@@ -47,7 +51,9 @@ import java.util.Map.Entry;
  */
 public class ItemInfo {
     public enum Layout {
-        HEADER, BODY, FOOTER
+        HEADER,
+        BODY,
+        FOOTER
     }
 
     @Deprecated
@@ -144,80 +150,71 @@ public class ItemInfo {
     }
 
     private static void addIDDumps() {
-        API.addOption(new RegistryDumper<Item>("tools.dump.item") {
+        API.addOption(new ForgeRegistryDumper<Item>("tools.dump.item") {
+            @Override
+            public IForgeRegistry<Item> registry() {
+                return ForgeRegistries.ITEMS;
+            }
+
+            @Override
+            public String[] dump(Item obj, ResourceLocation registryName) {
+                int id = Item.getIdFromItem(obj);
+                boolean hasBlock = Block.getBlockFromItem(obj) != null && Block.getBlockFromItem(obj) != Blocks.AIR;
+                return new String[] { registryName.toString(), Integer.toString(id), Boolean.toString(hasBlock), obj.getClass().getCanonicalName() };
+            }
+
             @Override
             public String[] header() {
-                return new String[] { "Name", "ID", "Has Block", "Mod", "Class" };
-            }
-
-            @Override
-            public String[] dump(Item item, int id, String name) {
-                return new String[] { name, Integer.toString(id), Boolean.toString(Block.getBlockFromItem(item) != Blocks.AIR), ItemInfo.itemOwners.get(item), item.getClass().getCanonicalName() };
-            }
-
-            @Override
-            public RegistryNamespaced registry() {
-                return Item.REGISTRY;
+                return new String[] { "Registry Name", "ID", "Has Block", "Class" };
             }
         });
-        API.addOption(new RegistryDumper<Block>("tools.dump.block") {
+        API.addOption(new ForgeRegistryDumper<Block>("tools.dump.block") {
+            @Override
+            public IForgeRegistry<Block> registry() {
+                return ForgeRegistries.BLOCKS;
+            }
+
+            @Override
+            public String[] dump(Block obj, ResourceLocation registryName) {
+                int id = Block.getIdFromBlock(obj);
+                boolean hasBlock = Item.getItemFromBlock(obj) != null; //&& Block.getBlockFromItem(obj) != Blocks.AIR;
+                return new String[] { registryName.toString(), Integer.toString(id), Boolean.toString(hasBlock), obj.getClass().getCanonicalName() };
+            }
+
             @Override
             public String[] header() {
-                return new String[] { "Name", "ID", "Has Item", "Mod", "Class" };
-            }
-
-            @Override
-            public String[] dump(Block item, int id, String name) {
-                return new String[] { name, Integer.toString(id), Boolean.toString(Item.getItemFromBlock(item) != null), ItemInfo.itemOwners.get(item), item.getClass().getCanonicalName() };
-            }
-
-            @Override
-            public RegistryNamespaced registry() {
-                return Block.REGISTRY;
+                return new String[] { "Registry Name", "ID", "Has Item", "Class" };
             }
         });
-        //TODO Test.
-        API.addOption(new RegistryDumper<Potion>("tools.dump.potion") {
+        API.addOption(new FluidRegistryDumper());
+        API.addOption(new ForgeRegistryDumper<Potion>("tools.dump.potion") {
+            @Override
+            public IForgeRegistry<Potion> registry() {
+                return ForgeRegistries.POTIONS;
+            }
+
+            @Override
+            public String[] dump(Potion obj, ResourceLocation registryName) {
+                int id = Potion.getIdFromPotion(obj);
+                return new String[] { registryName.toString(), Integer.toString(id), Boolean.toString(obj.isBadEffect()), Boolean.toString(obj.isBeneficial()), obj.getClass().getCanonicalName() };
+            }
+
+            @Override
             public String[] header() {
-                return new String[] { "ID", "Unlocalised name", "Class" };
-            }
-
-            @Override
-            public String[] dump(Potion potion, int id, String name) {
-                return new String[] { Integer.toString(id), potion.getName(), potion.getClass().getCanonicalName() };
-            }
-
-            @Override
-            public RegistryNamespaced registry() {
-                return Potion.REGISTRY;
+                return new String[] { "Registry Name", "ID", "Is bad Effect", "Is beneficial", "Class" };
             }
         });
-        //TODO Test.
-        API.addOption(new RegistryDumper<Enchantment>("tools.dump.enchantment") {
-            public String[] header() {
-                return new String[] { "ID", "Unlocalised name", "Type", "Min Level", "Max Level", "Class" };
+        API.addOption(new ForgeRegistryDumper<Biome>("tools.dump.biome") {
+            @Override
+            public IForgeRegistry<Biome> registry() {
+                return ForgeRegistries.BIOMES;
             }
 
             @Override
-            public String[] dump(Enchantment ench, int id, String name) {
-                return new String[] { Integer.toString(id), ench.getName(), ench.type.toString(), Integer.toString(ench.getMinLevel()), Integer.toString(ench.getMaxLevel()), ench.getClass().getCanonicalName() };
-            }
+            public String[] dump(Biome obj, ResourceLocation registryName) {
+                int id = Biome.getIdForBiome(obj);
 
-            @Override
-            public RegistryNamespaced registry() {
-                return Enchantment.REGISTRY;
-            }
-        });
-        //TODO Test.
-        API.addOption(new RegistryDumper<Biome>("tools.dump.biome") {
-            @Override
-            public String[] header() {
-                return new String[] { "ID", "Name", "Temperature", "Rainfall", "Spawn Chance", "Root Height", "Height Variation", "Types", "Class" };
-            }
-
-            @Override
-            public String[] dump(Biome biome, int id, String name) {
-                BiomeDictionary.Type[] types = BiomeDictionary.getTypesForBiome(biome);
+                BiomeDictionary.Type[] types = BiomeDictionary.getTypesForBiome(obj);
                 StringBuilder s_types = new StringBuilder();
                 for (BiomeDictionary.Type t : types) {
                     if (s_types.length() > 0) {
@@ -225,17 +222,56 @@ public class ItemInfo {
                     }
                     s_types.append(t.name());
                 }
-
-                return new String[] { Integer.toString(id), biome.getBiomeName(), Float.toString(biome.getFloatTemperature(BlockPos.ORIGIN)), Float.toString(biome.getRainfall()), Float.toString(biome.getSpawningChance()), Float.toString(biome.getBaseHeight()), Float.toString(biome.getHeightVariation()), s_types.toString(), biome.getClass().getCanonicalName() };
+                return new String[] { registryName.toString(), Integer.toString(id), obj.getBiomeName(), Float.toString(obj.getFloatTemperature(BlockPos.ORIGIN)), Float.toString(obj.getRainfall()), Float.toString(obj.getSpawningChance()), Float.toString(obj.getBaseHeight()), Float.toString(obj.getHeightVariation()), s_types.toString(), obj.getClass().getCanonicalName() };
             }
 
             @Override
-            public RegistryNamespaced registry() {
-                return Biome.REGISTRY;
+            public String[] header() {
+                return new String[] { "Registry Name", "ID", "Name", "Temperature", "Rainfall", "Spawn Chance", "Root Height", "Height Variation", "Types", "Class" };
+            }
+        });
+        API.addOption(new ForgeRegistryDumper<SoundEvent>("tools.dump.sound_event") {
+            @Override
+            public IForgeRegistry<SoundEvent> registry() {
+                return ForgeRegistries.SOUND_EVENTS;
+            }
+
+            @Override
+            public String[] dump(SoundEvent obj, ResourceLocation registryName) {
+                int id = SoundEvent.REGISTRY.getIDForObject(obj);
+                return new String[] { registryName.toString(), Integer.toString(id), obj.getClass().getCanonicalName() };
+            }
+
+            @Override
+            public String[] header() {
+                return new String[] { "Registry Name", "ID", "Class" };
+            }
+        });
+        API.addOption(new ForgeRegistryDumper<Enchantment>("tools.dump.enchantment") {
+            @Override
+            public IForgeRegistry<Enchantment> registry() {
+                return null;
+            }
+
+            @Override
+            public String[] dump(Enchantment obj, ResourceLocation registryName) {
+                int id = Enchantment.getEnchantmentID(obj);
+                StringBuilder s_slots = new StringBuilder();
+                for (EntityEquipmentSlot slot : obj.applicableEquipmentTypes) {
+                    if (s_slots.length() > 0) {
+                        s_slots.append(", ");
+                    }
+                    s_slots.append(slot.getName());
+                }
+                return new String[] { registryName.toString(), Integer.toString(id), obj.getName(), obj.type.toString(), Integer.toString(obj.getMinLevel()), Integer.toString(obj.getMinLevel()), obj.getRarity().name(), s_slots.toString(), obj.getClass().getCanonicalName() };
+            }
+
+            @Override
+            public String[] header() {
+                return new String[] { "Registry Name", "ID", "Name", "Type", "Min Level", "Max Level", "Rarity", "Slots", "Class" };
             }
         });
         API.addOption(new ItemPanelDumper("tools.dump.itempanel"));
-        //TODO Fluid registry Dumper.
     }
 
     private static void parseModItems() {
@@ -348,18 +384,18 @@ public class ItemInfo {
                     swords.with(item);
                 } else if (item instanceof ItemArmor) {
                     switch (((ItemArmor) item).armorType) {
-                    case HEAD:
-                        helmets.with(item);
-                        break;
-                    case CHEST:
-                        chest.with(item);
-                        break;
-                    case LEGS:
-                        legs.with(item);
-                        break;
-                    case FEET:
-                        boots.with(item);
-                        break;
+                        case HEAD:
+                            helmets.with(item);
+                            break;
+                        case CHEST:
+                            chest.with(item);
+                            break;
+                        case LEGS:
+                            legs.with(item);
+                            break;
+                        case FEET:
+                            boots.with(item);
+                            break;
                     }
                 } else if (item == Items.ARROW || item == Items.BOW) {
                     ranged.with(item);
