@@ -431,6 +431,7 @@ public class GuiContainerManager {
 
     public void renderToolTips(int mousex, int mousey) {
         List<String> tooltip = new LinkedList<String>();
+        ItemStack stack = null;
 
         for (IContainerTooltipHandler handler : instanceTooltipHandlers) {
             tooltip = handler.handleTooltip(window, mousex, mousey, tooltip);
@@ -438,7 +439,7 @@ public class GuiContainerManager {
 
         if (tooltip.isEmpty() && shouldShowTooltip(window))//mouseover tip, not holding an item
         {
-            ItemStack stack = getStackMouseOver(window);
+            stack = getStackMouseOver(window);
             if (stack != null) {
                 tooltip = itemDisplayNameMultiline(stack, window, true);
             }
@@ -451,7 +452,7 @@ public class GuiContainerManager {
         if (tooltip.size() > 0) {
             tooltip.set(0, tooltip.get(0) + GuiDraw.TOOLTIP_LINESPACE);//add space after 'title'
         }
-        drawMultilineTip(mousex + 12, mousey - 12, tooltip);
+        drawMultilineTip(stack, mousex + 12, mousey - 12, tooltip);
     }
 
     public static boolean shouldShowTooltip(GuiContainer window) {

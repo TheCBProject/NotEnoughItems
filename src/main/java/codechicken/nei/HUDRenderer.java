@@ -72,7 +72,7 @@ public class HUDRenderer implements IKeyStateTracker {
         RenderHelper.disableStandardItemLighting();
         GlStateManager.disableDepth();
 
-        drawTooltipBox(x, y, w, h);
+        //drawTooltipBox(x, y, w, h);
 
         int ty = (h - 8 * textData.size()) / 2;
         for (int i = 0; i < textData.size(); i++) {
