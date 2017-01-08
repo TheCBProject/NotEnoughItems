@@ -2,8 +2,6 @@ package codechicken.nei;
 
 import codechicken.core.launch.CodeChickenCorePlugin;
 import codechicken.lib.CodeChickenLib;
-import codechicken.lib.asm.ObfMapping;
-import codechicken.lib.util.CommonUtils;
 import codechicken.nei.api.IConfigureNEI;
 import codechicken.nei.asm.NEICorePlugin;
 import com.google.common.eventbus.EventBus;
@@ -36,7 +34,8 @@ public class NEIModContainer extends DummyModContainer {
     @Override
     public Set<ArtifactVersion> getRequirements() {
         Set<ArtifactVersion> deps = new HashSet<ArtifactVersion>();
-        if (ObfMapping.obfuscated) {
+        if (!super.getMetadata().version.contains("$")) {
+            deps.add(VersionParser.parseVersionReference("CodeChickenLib@[" + CodeChickenLib.version + ",)"));
             deps.add(VersionParser.parseVersionReference("CodeChickenCore@[" + CodeChickenCorePlugin.version + ",)"));
             deps.add(VersionParser.parseVersionReference("JEI@[3.13.2,)"));
         }
@@ -85,14 +84,14 @@ public class NEIModContainer extends DummyModContainer {
     @Subscribe
     public void preInit(FMLPreInitializationEvent event) {
         FingerprintChecker.runFingerprintChecks();
-        if (CommonUtils.isClient()) {
+        if (event.getSide().isClient()) {
             ClientHandler.preInit();
         }
     }
 
     @Subscribe
     public void init(FMLInitializationEvent event) {
-        if (CommonUtils.isClient()) {
+        if (event.getSide().isClient()) {
             ClientHandler.init();
         }
 
