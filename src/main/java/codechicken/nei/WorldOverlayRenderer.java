@@ -2,6 +2,7 @@ package codechicken.nei;
 
 import codechicken.lib.math.MathHelper;
 import codechicken.lib.render.RenderUtils;
+import codechicken.lib.render.state.GlStateManagerHelper;
 import codechicken.lib.vec.Cuboid6;
 import codechicken.nei.KeyManager.IKeyStateTracker;
 import codechicken.nei.config.KeyBindings;
@@ -45,14 +46,17 @@ public class WorldOverlayRenderer implements IKeyStateTracker {
 
     public static void render(float frame) {
         GlStateManager.pushMatrix();
+        GlStateManagerHelper.pushState();
         Entity entity = Minecraft.getMinecraft().getRenderViewEntity();
         RenderUtils.translateToWorldCoords(entity, frame);
 
         renderChunkBounds(entity);
         renderMobSpawnOverlay(entity);
+        GlStateManagerHelper.popState();
         GlStateManager.popMatrix();
     }
 
+    //TODO Improve the performance of this.
     private static void renderMobSpawnOverlay(Entity entity) {
         if (mobOverlay == 0) {
             return;
