@@ -2,6 +2,7 @@ package codechicken.nei.jei.gui;
 
 import codechicken.lib.gui.GuiDraw;
 import codechicken.lib.util.ClientUtils;
+import codechicken.nei.ItemList;
 import codechicken.nei.LayoutManager;
 import codechicken.nei.NEIClientConfig;
 import codechicken.nei.SearchField;
@@ -44,16 +45,22 @@ public class ContainerEventHandler {
         if (Mouse.getEventButton() == -1 || event.getGui() == null || !Mouse.getEventButtonState()) {
             return;
         }
+        MouseHelper mouse = new MouseHelper();
+        int eventButton = Mouse.getEventButton();
         if (JEIIntegrationManager.searchBoxOwner == EnumItemBrowser.JEI) {
-            GuiScreen guiScreen = event.getGui();
             GuiTextFieldFilter fieldFilter = JEIIntegrationManager.getTextFieldFilter();
-            if (fieldFilter != null && fieldFilter.isMouseOver(Mouse.getEventX() * guiScreen.width / guiScreen.mc.displayWidth, guiScreen.height - Mouse.getEventY() * guiScreen.height / guiScreen.mc.displayHeight - 1)) {
-                if (fieldFilter.isFocused() && (System.currentTimeMillis() - lastSearchBoxClickTime < 500)) {//double click
-                    NEIClientConfig.world.nbt.setBoolean("searchinventories", !SearchField.searchInventories());
-                    NEIClientConfig.world.saveNBT();
-                    lastSearchBoxClickTime = 0L;
-                } else {
-                    lastSearchBoxClickTime = System.currentTimeMillis();
+            if (fieldFilter != null && fieldFilter.isMouseOver(mouse.getX(), mouse.getY())) {
+                if (eventButton == 0) {
+                    if (fieldFilter.isFocused() && (System.currentTimeMillis() - lastSearchBoxClickTime < 500)) {//double click
+                        NEIClientConfig.world.nbt.setBoolean("searchinventories", !SearchField.searchInventories());
+                        NEIClientConfig.world.saveNBT();
+                        lastSearchBoxClickTime = 0L;
+                    } else {
+                        lastSearchBoxClickTime = System.currentTimeMillis();
+                    }
+                } else if (eventButton == 1) {
+                    NEIClientConfig.setSearchExpression("", false);
+                    LayoutManager.searchField.setText("", false);
                 }
             }
         }
