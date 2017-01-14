@@ -1,0 +1,196 @@
+nei.load=Läs in
+nei.save=Spara
+
+nei.enchant=Förtrolla
+nei.enchant.level=Nivå
+nei.enchant.locked=Låst
+nei.enchant.unlocked=Olåst
+
+nei.inventory.options=Alternativ
+nei.inventory.prev=Föreg
+nei.inventory.next=Nästa
+nei.inventory.item_subsets=Undergrupper av föremål
+nei.inventory.delete.inv=RADERA ALLA FÖREMÅL i utrustningen
+nei.inventory.delete.one=Radera %s
+nei.inventory.delete.all=Radera ALLA %s
+nei.inventory.delete.enable=Aktivera raderingsläge
+nei.inventory.delete.1=Slå på raderingsläge
+nei.inventory.delete.0=Slå av raderingsläge
+nei.inventory.rain.enable=Aktivera regn
+nei.inventory.rain.1=Slå på regn
+nei.inventory.rain.0=Slå av regn
+nei.inventory.magnet.enable=Aktivera magnetläge
+nei.inventory.magnet.1=Slå på magnetläge
+nei.inventory.magnet.0=Slå av magnetläge
+nei.inventory.dawn.enable=Aktivera gryning-middag
+nei.inventory.dawn.set=Ändra tid till gryning
+nei.inventory.noon.enable=Aktivera middag-skymning
+nei.inventory.noon.set=Ändra tid till middag
+nei.inventory.dusk.enable=Aktivera skymning-midnatt
+nei.inventory.dusk.set=Ändra tid till gryning
+nei.inventory.midnight.enable=Aktivera midnatt-gryning
+nei.inventory.midnight.set=Ändra tid till midnatt
+nei.inventory.heal=Hela spelare
+nei.inventory.gamemode.0=Ändra spelläge till överlevnad
+nei.inventory.gamemode.1=Ändra spelläge till kreativt
+nei.inventory.gamemode.2=Ändra spelläge till kreativt+
+nei.inventory.gamemode.3=Ändra spelläge till äventyr
+
+nei.chat.gamemode.0=Du spelar nu med överlevnad
+nei.chat.gamemode.1=Du spelar nu med kreativt
+nei.chat.gamemode.2=Du spelar nu med kreativt+
+nei.chat.gamemode.3=Du spelar nu med äventyr
+nei.chat.rain.on=Regn aktiverades
+nei.chat.rain.off=Regn inaktiverades
+nei.chat.time=Dag %d, kl. %d:00
+nei.chat.give.noitem=Det finns inget sådant föremål.
+
+nei.options=NEI-alternativ
+nei.options.back=Tillbaka
+nei.options.world=Värld
+nei.options.global=Globalt
+nei.options.global.tip.0=Alternativen gäller för alla världar
+nei.options.global.tip.1=Klicka på W intill ett:alternativ för att aktivera ett:åsidosättande för denna värld
+nei.options.wbutton.tip.0=Använder globala inställningar
+nei.options.wbutton.tip.1=Överstrider global inställning
+
+nei.options.keys=Kortkommandon
+nei.options.keys.gui=Utrustning
+nei.options.keys.gui.recipe=Recept
+nei.options.keys.gui.usage=Användning
+nei.options.keys.gui.enchant=Förtrollningar
+nei.options.keys.gui.potion=Brygder
+nei.options.keys.gui.back=Föreg recept
+nei.options.keys.gui.prev=Föreg sida
+nei.options.keys.gui.next=Nästa sida
+nei.options.keys.gui.hide=Visa/dölj NEI
+nei.options.keys.gui.search=Markera sökfält
+nei.options.keys.world=Värld
+nei.options.keys.world.chunkoverlay=Överlägg för chunkgränser
+nei.options.keys.world.moboverlay=Överlägg för hur monster skapas
+nei.options.keys.world.highlight_tips=Markera inforutor
+nei.options.keys.world.dawn=Gryning
+nei.options.keys.world.noon=Middag
+nei.options.keys.world.dusk=Skymning
+nei.options.keys.world.midnight=Midnatt
+nei.options.keys.world.rain=Regn
+nei.options.keys.world.heal=Hela
+nei.options.keys.world.creative=Spelläge
+nei.options.keys.world.creative.tip=Växla spelläge
+
+nei.options.inventory=Utrustning
+nei.options.inventory.widgetsenabled.true=NEI aktiverat
+nei.options.inventory.widgetsenabled.false=NEI inaktiverat
+nei.options.inventory.cheatmode.0=Receptläge
+nei.options.inventory.cheatmode.1=Hjälpmedelsläge
+nei.options.inventory.cheatmode.2=Fuskläge
+nei.options.inventory.layoutstyle=Utseendestil
+nei.options.inventory.profileRecipes=Profilrecept
+nei.options.inventory.profileRecipes.true=Sant
+nei.options.inventory.profileRecipes.false=Falskt
+nei.options.inventory.itemsort=Sortering av föremålspanelen
+nei.options.inventory.itemIDs=Föremåls-ID
+nei.options.inventory.itemIDs.0=Dold
+nei.options.inventory.itemIDs.1=Auto
+nei.options.inventory.itemIDs.2=Visas
+nei.options.inventory.searchmode=Sökningsläge
+nei.options.inventory.searchmode.0=Vanlig
+nei.options.inventory.searchmode.1=Utvidgad
+nei.options.inventory.searchmode.2=Regex
+nei.options.inventory.utilities=Hjälpmedel
+nei.options.inventory.utilities.tip=Välj funktioner till hjälpmedelsläget
+nei.options.inventory.utilities.time=Tid
+nei.options.inventory.utilities.rain=Regn
+nei.options.inventory.utilities.heal=Hela
+nei.options.inventory.utilities.delete=Radera
+nei.options.inventory.utilities.magnet=Magnet
+nei.options.inventory.utilities.gamemode=Spelläge
+nei.options.inventory.utilities.enchant=Förtrollning
+nei.options.inventory.utilities.potion=Brygder
+nei.options.inventory.utilities.item=Föremål
+nei.options.inventory.gamemodes=Spellägen
+nei.options.inventory.gamemodes.tip=Välj spellägen att växla mellan
+nei.options.inventory.gamemodes.creative=Kreativt
+nei.options.inventory.gamemodes.creative+=Kreativt+
+nei.options.inventory.gamemodes.adventure=Äventyr
+
+nei.options.command=Kommandon
+nei.options.command.creative=Spelläge
+nei.options.command.creative.tip={0} = 1 för kreativt, 0 för överlevnad, {1} = spelare
+nei.options.command.item=Föremål
+nei.options.command.item.tip={0} = spelare, {1} = namn, {2} = mängd, {3} = skada, {4} = nbt, {5} = id
+nei.options.command.time=Tid
+nei.options.command.time.tip={0} = världstid
+nei.options.command.rain=Regn
+nei.options.command.rain.tip={0} = 1 för på, 0 för av
+nei.options.command.heal=Hela
+nei.options.command.heal.tip={0} = spelare
+
+nei.options.world.highlight_tips=Markera inforutor
+nei.options.world.highlight_tips.hide=Dold
+nei.options.world.highlight_tips.show=Visas
+
+nei.options.tools=Verktyg
+nei.options.tools.dump=Datadumpar
+nei.options.tools.dump.dump=Dumpa
+nei.options.tools.dump.dumped=%s ID:n dumpades till %s
+nei.options.tools.dump.mode.0=Används
+nei.options.tools.dump.mode.1=Fritt
+nei.options.tools.dump.mode.2=Alla
+nei.options.tools.dump.item=Föremål
+nei.options.tools.dump.items=Föremål
+nei.options.tools.dump.block=Block
+nei.options.tools.dump.blocks=Block
+nei.options.tools.dump.potion=Brygd
+nei.options.tools.dump.potions=Brygder
+nei.options.tools.dump.enchantment=Förtrollning
+nei.options.tools.dump.enchantments=Förtrollningar
+nei.options.tools.dump.biome=Biom
+nei.options.tools.dump.biomes=Biomer
+nei.options.tools.dump.itempanel=Föremålspanel
+nei.options.tools.dump.itempanel.dumped=Föremålspanelens innehåll dumpades till %s
+nei.options.tools.dump.itempanel.mode.0=CSV
+nei.options.tools.dump.itempanel.mode.1=NBT
+nei.options.tools.dump.itempanel.mode.2=Json
+nei.options.tools.dump.itempanel.mode.3=PNG
+nei.options.tools.dump.itempanel.icon.dumped=Föremålspanelens ikoner dumpades till %s
+nei.options.tools.dump.itempanel.icon.cancelled=Dump avbröts
+nei.options.tools.dump.fluid=Vätska
+nei.options.tools.dump.fluids=Vätskor
+nei.options.tools.dump.sound_event=Ljudhändelse
+nei.options.tools.dump.sound_events=Ljudhändelser
+
+nei.options.jei=JEI-integrering
+nei.options.jei.itemPanel.0=NEI:s föremålspanel
+nei.options.jei.itemPanel.1=JEI:s föremålspanel
+nei.options.jei.searchBox.0=NEI:s sökfält
+nei.options.jei.searchBox.1=JEI:s sökfält
+
+nei.layoutstyle.minecraft=Minecraft
+nei.layoutstyle.oldtmi=Gammal TMI
+
+nei.recipe.page=Sida %s/%s
+nei.recipe.shaped=Formad tillverkning
+nei.recipe.shapeless=Formlös tillverkning
+nei.recipe.furnace=Smältning
+nei.recipe.fuel=Bränsle
+nei.recipe.fuel.required=%s krävs
+nei.recipe.fuel.processed=%s bearbetat
+nei.recipe.fuel.produced=%s producerat
+nei.recipe.firework=Fyrverkeri
+nei.recipe.firework.tooltip0=Färger färglägger laddningarna
+nei.recipe.firework.tooltip1=Lägger till övergående färger vid omfärgning
+nei.recipe.firework.tooltip2=Flera laddningar kan skapas från en raket
+nei.recipe.brewing=Bryggning
+nei.recipe.profiler.crafting=Tillverkningsprofilering
+nei.recipe.profiler.usage=Användningsprofilering
+
+nei.itemsort.minecraft=Minecraft
+nei.itemsort.minecraft.tip=Sortera föremål från vanillaversionen av Minecraft först
+nei.itemsort.mod=Mod
+nei.itemsort.mod.tip=Grupperar föremål i samma mod, sorterade efter modnamn
+nei.itemsort.id=Föremål-ID
+nei.itemsort.default=Standard
+nei.itemsort.default.tip=Lämna den naturliga sorteringen för varje föremål oförändrad
+nei.itemsort.damage=Föremålsskada
+nei.itemsort.name=Visningsnamn
