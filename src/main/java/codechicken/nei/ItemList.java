@@ -167,7 +167,7 @@ public class ItemList {
             for (int damage = 0; damage < 16; damage++) {
                 try {
                     ItemStack stack = new ItemStack(item, 1, damage);
-                    IBakedModel model = GuiContainerManager.drawItems.getItemModelMesher().getItemModel(stack);
+                    IBakedModel model = GuiContainerManager.getRenderItem().getItemModelMesher().getItemModel(stack);
                     String name = GuiContainerManager.concatenatedDisplayName(stack, false);
                     String s = name + "@" + (model == null ? 0 : model.hashCode());
                     if (!damageIconSet.contains(s)) {

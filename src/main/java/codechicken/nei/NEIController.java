@@ -161,14 +161,14 @@ public class NEIController implements IContainerSlotClickHandler, IContainerInpu
         if (slotIndex >= 0 && NEIClientUtils.shiftKey() && NEIClientUtils.getHeldItem() != null && !slot.getHasStack()) {
             ItemStack held = NEIClientUtils.getHeldItem();
             manager.handleSlotClick(slot.slotNumber, button, ClickType.PICKUP);
-            if (slot.isItemValid(held) && !ItemInfo.fastTransferExemptions.contains(slot.getClass())) {
+            if (slot.isItemValid(held) && !ItemInfo.fastTransferExemptions.contains(slot.getClass()) && !ItemInfo.fastTransferContainerExemptions.contains(gui.getClass())) {
                 fastTransferManager.performMassTransfer(gui, pickedUpFromSlot, slotIndex, held);
             }
 
             return true;
         }
 
-        if (slotIndex == -999 && NEIClientUtils.shiftKey() && button == 0) {
+        if (slotIndex == -999 && NEIClientUtils.shiftKey() && button == 0 && !ItemInfo.fastTransferContainerExemptions.contains(gui.getClass())) {
             fastTransferManager.throwAll(gui, pickedUpFromSlot);
             return true;
         }
@@ -229,7 +229,7 @@ public class NEIController implements IContainerSlotClickHandler, IContainerInpu
 
         int slotIndex = slot.slotNumber;
 
-        if (keyCode == Minecraft.getMinecraft().gameSettings.keyBindDrop.getKeyCode() && NEIClientUtils.shiftKey()) {
+        if (keyCode == Minecraft.getMinecraft().gameSettings.keyBindDrop.getKeyCode() && NEIClientUtils.shiftKey() && !ItemInfo.fastTransferContainerExemptions.contains(gui.getClass())) {
             FastTransferManager.clickSlot(gui, slotIndex);
             fastTransferManager.throwAll(gui, slotIndex);
             FastTransferManager.clickSlot(gui, slotIndex);
@@ -248,7 +248,7 @@ public class NEIController implements IContainerSlotClickHandler, IContainerInpu
 
         Point mousePos = getMousePosition();
         Slot mouseover = manager.window.getSlotAtPosition(mousePos.x, mousePos.y);
-        if (mouseover != null && mouseover.getHasStack()) {
+        if (mouseover != null && mouseover.getHasStack() && !ItemInfo.fastTransferContainerExemptions.contains(gui.getClass())) {
             if (scrolled > 0) {
                 fastTransferManager.transferItem(manager.window, mouseover.slotNumber);
             } else {

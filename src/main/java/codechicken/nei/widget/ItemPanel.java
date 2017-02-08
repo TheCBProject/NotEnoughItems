@@ -15,6 +15,7 @@ import codechicken.nei.recipe.GuiUsageRecipe;
 import codechicken.nei.util.NEIClientUtils;
 import codechicken.nei.util.NEIServerUtils;
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
@@ -154,9 +155,10 @@ public class ItemPanel extends Widget {
     @Override
     public void postDraw(int mousex, int mousey) {
         if (draggedStack != null) {
-            GuiContainerManager.drawItems.zLevel += 100;
+            RenderItem drawItems = GuiContainerManager.getRenderItem();
+            drawItems.zLevel += 100;
             GuiContainerManager.drawItem(mousex - 8, mousey - 8, draggedStack);
-            GuiContainerManager.drawItems.zLevel -= 100;
+            drawItems.zLevel -= 100;
         }
     }
 

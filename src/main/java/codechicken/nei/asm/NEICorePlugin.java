@@ -56,13 +56,11 @@ public class NEICorePlugin implements IFMLLoadingPlugin, IFMLCallHook {
     }
     private static void cclCheck() {
         try {
-            FMLLog.info("Does CCL Exist??");
             Class.forName("codechicken.lib.asm.ASMHelper", false, NEICorePlugin.class.getClassLoader());
             missingCCL = false;
         } catch (ClassNotFoundException cNFE) {
             cNFE.printStackTrace();
             missingCCL = true;
         }
-        FMLLog.info(missingCCL +"");
     }
 }

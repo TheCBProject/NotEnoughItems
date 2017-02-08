@@ -11,10 +11,12 @@ import codechicken.nei.guihook.GuiContainerManager;
 import codechicken.nei.recipe.BrewingRecipeHandler;
 import codechicken.nei.recipe.RecipeItemInputHandler;
 import codechicken.nei.recipe.potion.PotionRecipeHelper;
+import codechicken.nei.thirdparty.colossalchests.ColossalChestsConfig;
 import codechicken.nei.util.LogHelper;
 import com.google.common.collect.ArrayListMultimap;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.Enchantment;
@@ -68,6 +70,7 @@ public class ItemInfo {
     @Deprecated
     public static final ArrayListMultimap<Block, IHighlightHandler> highlightIdentifiers = ArrayListMultimap.create();
     public static final HashSet<Class<? extends Slot>> fastTransferExemptions = new HashSet<Class<? extends Slot>>();
+    public static final HashSet<Class<? extends GuiContainer>> fastTransferContainerExemptions = new HashSet<Class<? extends GuiContainer>>();
 
     public static final HashMap<Item, String> itemOwners = new HashMap<Item, String>();
 
@@ -107,6 +110,7 @@ public class ItemInfo {
     }
 
     public static void load(World world) {
+        ColossalChestsConfig.init();
         PotionRecipeHelper.init();
         addVanillaBlockProperties();
         addDefaultDropDowns();

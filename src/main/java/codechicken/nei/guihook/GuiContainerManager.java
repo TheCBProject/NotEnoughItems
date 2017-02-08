@@ -31,7 +31,7 @@ import static codechicken.lib.gui.GuiDraw.*;
 public class GuiContainerManager {
     public GuiContainer window;
 
-    public static RenderItem drawItems = Minecraft.getMinecraft().getRenderItem();
+    //public static RenderItem drawItems = Minecraft.getMinecraft().getRenderItem();
     public static final LinkedList<IContainerTooltipHandler> tooltipHandlers = new LinkedList<IContainerTooltipHandler>();
     public static final LinkedList<IContainerInputHandler> inputHandlers = new LinkedList<IContainerInputHandler>();
     public static final LinkedList<IContainerDrawHandler> drawHandlers = new LinkedList<IContainerDrawHandler>();
@@ -50,6 +50,10 @@ public class GuiContainerManager {
     public static GuiContainerManager getManager(GuiContainer gui) {
         //gets GuiContainer.manager using ASM
         return null;
+    }
+
+    public static RenderItem getRenderItem() {
+        return Minecraft.getMinecraft().getRenderItem();
     }
 
     /**
@@ -189,6 +193,7 @@ public class GuiContainerManager {
 
     public static void drawItem(int i, int j, ItemStack itemstack, FontRenderer fontRenderer) {
         enable3DRender();
+        RenderItem drawItems = getRenderItem();
         float zLevel = drawItems.zLevel += 100F;
         try {
             drawItems.renderItemAndEffectIntoGUI(itemstack, i, j);
@@ -537,6 +542,7 @@ public class GuiContainerManager {
         if (window instanceof IGuiSlotDraw) {
             ((IGuiSlotDraw) window).drawSlotItem(slot, stack, x, y, quantity);
         } else {
+            RenderItem drawItems = getRenderItem();
             drawItems.renderItemAndEffectIntoGUI(stack, x, y);
             drawItems.renderItemOverlayIntoGUI(fontRenderer, stack, x, y, quantity);
         }

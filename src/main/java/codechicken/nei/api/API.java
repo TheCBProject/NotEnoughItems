@@ -197,6 +197,15 @@ public class API {
     }
 
     /**
+     * Tells NEI not to perform any Fast Transfer operations on a GuiContainer of a specific class.
+     *
+     * @param guiClass The class of the container to be exempted
+     */
+    public static void addFastTransferExemptContainer(Class<? extends GuiContainer> guiClass) {
+        ItemInfo.fastTransferContainerExemptions.add(guiClass);
+    }
+
+    /**
      * Register a new text handler for the block highlight tooltip with a layout specification (HEADER, BODY or FOOTER).
      *
      * @param handler The handler to be registered.
