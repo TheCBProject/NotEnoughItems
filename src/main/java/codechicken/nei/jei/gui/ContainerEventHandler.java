@@ -23,6 +23,7 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.gui.inventory.GuiContainerCreative;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.event.GuiScreenEvent.BackgroundDrawnEvent;
 import net.minecraftforge.client.event.GuiScreenEvent.KeyboardInputEvent;
 import net.minecraftforge.client.event.GuiScreenEvent.MouseInputEvent;
@@ -69,7 +70,7 @@ public class ContainerEventHandler {
             if (!Config.isCheatItemsEnabled() && Minecraft.getMinecraft().currentScreen instanceof GuiContainer) {
                 if (!isContainerTextFieldFocused()) {
                     IClickedIngredient ingredient = getIngeredientUnderMouseForKey();
-                    if (ingredient != null) {
+                    if (ingredient != null && ingredient.getValue() instanceof ItemStack) {
                         if (eventKey == 1 || (eventKey == 0 && NEIClientUtils.shiftKey())) {
                             GuiUsageRecipe.openRecipeGui("item", ingredient.getValue());
                         }
@@ -95,7 +96,7 @@ public class ContainerEventHandler {
                 if (!event.isCanceled()) {
                     if (!isContainerTextFieldFocused()) {
                         IClickedIngredient ingredient = getIngeredientUnderMouseForKey();
-                        if (ingredient != null) {
+                        if (ingredient != null && ingredient.getValue() instanceof ItemStack) {
                             int eventKey = Keyboard.getEventKey();
                             if (KeyBindings.get("nei.options.keys.gui.usage").isActiveAndMatches(eventKey)) {
                                 GuiUsageRecipe.openRecipeGui("item", ingredient.getValue());
