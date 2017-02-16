@@ -21,7 +21,7 @@ import java.io.PrintWriter;
 import java.util.LinkedList;
 
 public class ItemPanelDumper extends DataDumper {
-    private static int[] resolutions = new int[] { 16, 32, 48, 64, 128, 256 };
+    private static int[] resolutions = new int[] { 16, 32, 48, 64, 128, 256, 512 };
 
     public ItemPanelDumper(String name) {
         super(name);
