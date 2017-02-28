@@ -34,14 +34,6 @@ INVOKEVIRTUAL codechicken/nei/guihook/GuiContainerManager.load ()V
 LEND
 RETURN
 
-list m_handleMouseInput
-ALOAD 0
-INVOKESPECIAL net/minecraft/client/gui/GuiScreen.func_146274_d ()V
-ALOAD 0
-GETFIELD net/minecraft/client/gui/inventory/GuiContainer.manager : Lcodechicken/nei/guihook/GuiContainerManager;
-INVOKEVIRTUAL codechicken/nei/guihook/GuiContainerManager.handleMouseWheel ()V
-RETURN
-
 list preDraw
 ALOAD 0
 GETFIELD net/minecraft/client/gui/inventory/GuiContainer.manager : Lcodechicken/nei/guihook/GuiContainerManager;

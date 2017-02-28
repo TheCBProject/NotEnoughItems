@@ -75,10 +75,6 @@ public class RecipeItemInputHandler implements IContainerInputHandler {
     }
 
     @Override
-    public void onMouseScrolled(GuiContainer gui, int mousex, int mousey, int scrolled) {
-    }
-
-    @Override
     public void onMouseDragged(GuiContainer gui, int mousex, int mousey, int button, long heldTime) {
     }
 }

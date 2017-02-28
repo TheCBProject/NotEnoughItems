@@ -266,10 +266,6 @@ public abstract class TemplateRecipeHandler implements ICraftingHandler, IUsageH
         }
 
         @Override
-        public void onMouseScrolled(GuiContainer gui, int mousex, int mousey, int scrolled) {
-        }
-
-        @Override
         public List<String> handleTooltip(GuiContainer gui, int mousex, int mousey, List<String> currenttip) {
             if (!canHandle(gui)) {
                 return currenttip;

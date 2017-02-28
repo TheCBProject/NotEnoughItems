@@ -35,9 +35,6 @@ public class NEITransformer implements IClassTransformer {
         //Generate load method
         transformer.add(new MethodWriter(ACC_PUBLIC, new ObfMapping(guiContainer, "func_146280_a", "(Lnet/minecraft/client/Minecraft;II)V"), asmblocks.get("m_setWorldAndResolution")));
 
-        //Generate handleMouseInput method
-        transformer.add(new MethodWriter(ACC_PUBLIC, new ObfMapping(guiContainer, "func_146274_d", "()V"), asmblocks.get("m_handleMouseInput")));
-
         addProtectedForwarder(new ObfMapping(guiContainer, "func_184098_a", "(Lnet/minecraft/inventory/Slot;IILnet/minecraft/inventory/ClickType;)V"), new ObfMapping("codechicken/nei/guihook/DefaultSlotClickHandler", "callHandleMouseClick", "(Lnet/minecraft/client/gui/inventory/GuiContainer;Lnet/minecraft/inventory/Slot;IILnet/minecraft/inventory/ClickType;)V"));
 
         //Inject preDraw at the start of drawScreen

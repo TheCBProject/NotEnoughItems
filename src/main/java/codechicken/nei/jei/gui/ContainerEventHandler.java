@@ -89,6 +89,14 @@ public class ContainerEventHandler {
     }
 
     @SubscribeEvent
+    public void onGuiMouseEventPost(MouseInputEvent.Post event) {
+        GuiContainerManager guiContainerManager = GuiContainerManager.getManager();
+        if (guiContainerManager != null) {
+            guiContainerManager.handleMouseWheel();
+        }
+    }
+
+    @SubscribeEvent
     public void onKeyTypedPre(GuiScreenEvent.KeyboardInputEvent.Pre event) {
         GuiContainerManager guiContainerManager = GuiContainerManager.getManager();
         if (guiContainerManager != null) {

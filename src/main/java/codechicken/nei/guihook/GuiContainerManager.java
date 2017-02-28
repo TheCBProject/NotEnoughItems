@@ -371,10 +371,6 @@ public class GuiContainerManager {
         Point mousepos = getMousePosition();
 
         for (IContainerInputHandler inputHandler : inputHandlers) {
-            inputHandler.onMouseScrolled(window, mousepos.x, mousepos.y, scrolled);
-        }
-
-        for (IContainerInputHandler inputHandler : inputHandlers) {
             if (inputHandler.mouseScrolled(window, mousepos.x, mousepos.y, scrolled)) {
                 return;
             }
@@ -544,9 +540,6 @@ public class GuiContainerManager {
         }
     }
 
-    /**
-     * Called from handleMouseInput
-     */
     public void handleMouseWheel() {
         int i = Mouse.getEventDWheel();
         if (i != 0) {
