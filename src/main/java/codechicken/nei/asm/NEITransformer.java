@@ -25,16 +25,6 @@ public class NEITransformer implements IClassTransformer {
             transformer.add(new MethodInjector(new ObfMapping("net/minecraft/client/gui/inventory/GuiContainerCreative", "func_147053_i", "()V"), asmblocks.get("i_creativeTabSearch"), true));
         }
 
-        //fix workbench container losing items on shift click output without room for the full stack
-        transformer.add(new MethodTransformer(new ObfMapping("net/minecraft/inventory/ContainerWorkbench", "func_82846_b", "(Lnet/minecraft/entity/player/EntityPlayer;I)Lnet/minecraft/item/ItemStack;")) {
-            @Override
-            public void transform(MethodNode mv) {
-                ASMHelper.logger.debug("NEI: Applying workbench fix");
-                InsnListSection key = findN(mv.instructions, asmblocks.get("n_workbenchFix").list).get(0);
-                key.insertBefore(asmblocks.get("workbenchFix").rawListCopy());
-            }
-        });
-
         String guiContainer = "net/minecraft/client/gui/inventory/GuiContainer";
         //add manager field
         transformer.add(new FieldWriter(ACC_PUBLIC, new ObfMapping(guiContainer, "manager", "Lcodechicken/nei/guihook/GuiContainerManager;")));

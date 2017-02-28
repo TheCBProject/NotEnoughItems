@@ -5,35 +5,6 @@ ALOAD 5
 INVOKESTATIC codechicken/nei/ItemMobSpawner.onBlockPlaced(Lnet/minecraft/world/World;Lnet/minecraft/util/BlockPos;Lnet/minecraft/item/ItemStack;)V
 RETURN
 
-list n_workbenchFix
-ALOAD 0
-ALOAD 5
-BIPUSH 10
-BIPUSH 46
-ICONST_1
-INVOKEVIRTUAL net/minecraft/inventory/ContainerWorkbench.func_75135_a (Lnet/minecraft/item/ItemStack;IIZ)Z
-
-list workbenchFix
-NEW codechicken/lib/inventory/InventoryRange
-DUP
-ALOAD 0
-GETFIELD net/minecraft/inventory/ContainerWorkbench.field_75151_b : Ljava/util/List;
-BIPUSH 10
-INVOKEINTERFACE java/util/List.get (I)Ljava/lang/Object;
-CHECKCAST net/minecraft/inventory/Slot
-GETFIELD net/minecraft/inventory/Slot.field_75224_c : Lnet/minecraft/inventory/IInventory;
-ICONST_0
-BIPUSH 36
-INVOKESPECIAL codechicken/lib/inventory/InventoryRange.<init>(Lnet/minecraft/inventory/IInventory;II)V
-ALOAD 5
-ICONST_1
-INVOKESTATIC codechicken/lib/inventory/InventoryUtils.insertItem(Lcodechicken/lib/inventory/InventoryRange;Lnet/minecraft/item/ItemStack;Z)I
-IFEQ LCONT
-ACONST_NULL
-ARETURN
-LCONT
-
-
 #begin GuiContainer patches
 
 list m_getManager
