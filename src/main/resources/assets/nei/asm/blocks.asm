@@ -113,12 +113,6 @@ ILOAD 1
 ILOAD 2
 INVOKEVIRTUAL codechicken/nei/guihook/GuiContainerManager.renderToolTips (II)V
 
-list d_zLevel
-LDC 200F
-
-list zLevel
-LDC 500F
-
 list d_drawSlot
 ALOAD 0
 GETFIELD net/minecraft/client/gui/inventory/GuiContainer.field_146296_j : Lnet/minecraft/client/renderer/RenderItem;

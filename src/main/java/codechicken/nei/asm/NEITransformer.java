@@ -50,9 +50,6 @@ public class NEITransformer implements IClassTransformer {
         ASMBlock d_renderToolTip = Boolean.parseBoolean(System.getProperty("nei.altRenderToolTipNeedle", "false")) ? asmblocks.get("d_renderToolTipIntellijEclipseCompilerFix") : asmblocks.get("d_renderToolTip");
         transformer.add(new MethodReplacer(new ObfMapping(guiContainer, "func_73863_a", "(IIF)V"), d_renderToolTip, asmblocks.get("renderTooltips")));
 
-        //Replace zLevel = 200 with zLevel = 500 in drawItemStack
-        transformer.add(new MethodReplacer(new ObfMapping(guiContainer, "func_146982_a", "(Lnet/minecraft/item/ItemStack;IILjava/lang/String;)V"), asmblocks.get("d_zLevel"), asmblocks.get("zLevel")));
-
         //Replace default renderItem with delegate and slot overlay/underlay
         transformer.add(new MethodReplacer(new ObfMapping(guiContainer, "func_146977_a", "(Lnet/minecraft/inventory/Slot;)V"), asmblocks.get("d_drawSlot"), asmblocks.get("drawSlot")));
 
