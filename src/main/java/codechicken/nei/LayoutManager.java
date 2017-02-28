@@ -747,10 +747,6 @@ public class LayoutManager implements IContainerInputHandler, IContainerTooltipH
     }
 
     @Override
-    public void onMouseScrolled(GuiContainer gui, int mousex, int mousey, int scrolled) {
-    }
-
-    @Override
     public boolean shouldShowTooltip(GuiContainer gui) {
         return itemPanel.draggedStack == null;
     }

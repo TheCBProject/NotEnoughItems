@@ -72,16 +72,6 @@ public interface IContainerInputHandler {
     boolean mouseScrolled(GuiContainer gui, int mousex, int mousey, int scrolled);
 
     /**
-     * This version of mouseScrolled is passive and will be called on every input handler before mouseScrolled is processed
-     *
-     * @param gui      An instance of the currentscreen
-     * @param mousex   The x position of the mouse in pixels from left
-     * @param mousey   The y position of the mouse in pixels from top
-     * @param scrolled The number of notches scrolled. Positive for up.
-     */
-    void onMouseScrolled(GuiContainer gui, int mousex, int mousey, int scrolled);
-
-    /**
      * This version of mouseClicked is passive and will be called on every input handler before mouseClicked is processed
      *
      * @param gui      An instance of the currentscreen

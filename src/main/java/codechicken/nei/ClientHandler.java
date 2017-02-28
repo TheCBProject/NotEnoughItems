@@ -5,6 +5,7 @@ import codechicken.lib.packet.PacketCustom;
 import codechicken.nei.api.API;
 import codechicken.nei.api.ItemInfo;
 import codechicken.nei.config.KeyBindings;
+import codechicken.nei.guihook.GuiContainerManager;
 import codechicken.nei.jei.gui.ContainerEventHandler;
 import codechicken.nei.network.NEIClientPacketHandler;
 import codechicken.nei.util.NEIClientUtils;
@@ -14,16 +15,21 @@ import net.minecraft.client.gui.*;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.world.World;
+import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.CustomModLoadingErrorDisplayException;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import org.lwjgl.input.Keyboard;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 
+@SideOnly(Side.CLIENT)
 public class ClientHandler {
     private static ClientHandler instance;
 
@@ -182,6 +188,30 @@ public class ClientHandler {
     public void renderLastEvent(RenderWorldLastEvent event) {
         if (NEIClientConfig.isEnabled()) {
             WorldOverlayRenderer.render(event.getPartialTicks());
+        }
+    }
+
+    @SubscribeEvent
+    public void onGuiMouseEventPost(GuiScreenEvent.MouseInputEvent.Post event) {
+        GuiContainerManager guiContainerManager = GuiContainerManager.getManager();
+        if (guiContainerManager != null) {
+            guiContainerManager.handleMouseWheel();
+        }
+    }
+
+    @SubscribeEvent
+    public void onKeyTypedPre(GuiScreenEvent.KeyboardInputEvent.Pre event) {
+        GuiContainerManager guiContainerManager = GuiContainerManager.getManager();
+        if (guiContainerManager != null) {
+            char c = Keyboard.getEventCharacter();
+            int eventKey = Keyboard.getEventKey();
+            if (eventKey == 0 && c >= 32 || Keyboard.getEventKeyState()) {
+                if (guiContainerManager.firstKeyTyped(c, eventKey)) {
+                    event.setCanceled(true);
+                } else if (guiContainerManager.lastKeyTyped(c, eventKey)) {
+                    event.setCanceled(true);
+                }
+            }
         }
     }
 

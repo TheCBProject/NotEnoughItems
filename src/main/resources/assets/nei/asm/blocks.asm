@@ -5,44 +5,6 @@ ALOAD 5
 INVOKESTATIC codechicken/nei/ItemMobSpawner.onBlockPlaced(Lnet/minecraft/world/World;Lnet/minecraft/util/BlockPos;Lnet/minecraft/item/ItemStack;)V
 RETURN
 
-list n_commaFix
-LDC *
-INVOKEVIRTUAL java/lang/StringBuilder.append (C)Ljava/lang/StringBuilder;
-INVOKEVIRTUAL java/lang/StringBuilder.toString ()Ljava/lang/String;
-ARETURN
-
-list commaFix
-INVOKESTATIC codechicken/nei/NEIServerUtils.fixTrailingCommaList(Ljava/lang/StringBuilder;)Ljava/lang/StringBuilder;
-
-list n_workbenchFix
-ALOAD 0
-ALOAD 5
-BIPUSH 10
-BIPUSH 46
-ICONST_1
-INVOKEVIRTUAL net/minecraft/inventory/ContainerWorkbench.func_75135_a (Lnet/minecraft/item/ItemStack;IIZ)Z
-
-list workbenchFix
-NEW codechicken/lib/inventory/InventoryRange
-DUP
-ALOAD 0
-GETFIELD net/minecraft/inventory/ContainerWorkbench.field_75151_b : Ljava/util/List;
-BIPUSH 10
-INVOKEINTERFACE java/util/List.get (I)Ljava/lang/Object;
-CHECKCAST net/minecraft/inventory/Slot
-GETFIELD net/minecraft/inventory/Slot.field_75224_c : Lnet/minecraft/inventory/IInventory;
-ICONST_0
-BIPUSH 36
-INVOKESPECIAL codechicken/lib/inventory/InventoryRange.<init>(Lnet/minecraft/inventory/IInventory;II)V
-ALOAD 5
-ICONST_1
-INVOKESTATIC codechicken/lib/inventory/InventoryUtils.insertItem(Lcodechicken/lib/inventory/InventoryRange;Lnet/minecraft/item/ItemStack;Z)I
-IFEQ LCONT
-ACONST_NULL
-ARETURN
-LCONT
-
-
 #begin GuiContainer patches
 
 list m_getManager
@@ -70,20 +32,6 @@ ALOAD 0
 GETFIELD net/minecraft/client/gui/inventory/GuiContainer.manager : Lcodechicken/nei/guihook/GuiContainerManager;
 INVOKEVIRTUAL codechicken/nei/guihook/GuiContainerManager.load ()V
 LEND
-RETURN
-
-list m_handleKeyboardInput
-ALOAD 0
-GETFIELD net/minecraft/client/gui/inventory/GuiContainer.manager : Lcodechicken/nei/guihook/GuiContainerManager;
-INVOKEVIRTUAL codechicken/nei/guihook/GuiContainerManager.handleKeyboardInput ()V
-RETURN
-
-list m_handleMouseInput
-ALOAD 0
-INVOKESPECIAL net/minecraft/client/gui/GuiScreen.func_146274_d ()V
-ALOAD 0
-GETFIELD net/minecraft/client/gui/inventory/GuiContainer.manager : Lcodechicken/nei/guihook/GuiContainerManager;
-INVOKEVIRTUAL codechicken/nei/guihook/GuiContainerManager.handleMouseWheel ()V
 RETURN
 
 list preDraw
@@ -164,12 +112,6 @@ GETFIELD net/minecraft/client/gui/inventory/GuiContainer.manager : Lcodechicken/
 ILOAD 1
 ILOAD 2
 INVOKEVIRTUAL codechicken/nei/guihook/GuiContainerManager.renderToolTips (II)V
-
-list d_zLevel
-LDC 200F
-
-list zLevel
-LDC 500F
 
 list d_drawSlot
 ALOAD 0
@@ -313,16 +255,6 @@ ILOAD 2
 ILOAD 3
 ALOAD 4
 INVOKEVIRTUAL codechicken/nei/guihook/GuiContainerManager.handleSlotClick (IILnet/minecraft/inventory/ClickType;)V
-
-list lastKeyTyped
-ALOAD 0
-GETFIELD net/minecraft/client/gui/inventory/GuiContainer.manager : Lcodechicken/nei/guihook/GuiContainerManager;
-ILOAD 2
-ILOAD 1
-INVOKEVIRTUAL codechicken/nei/guihook/GuiContainerManager.lastKeyTyped (IC)Z
-IFEQ LCONT
-RETURN
-LCONT
 
 list n_updateScreen
 ALOAD 0

@@ -2,7 +2,6 @@ package codechicken.nei.jei.gui;
 
 import codechicken.lib.gui.GuiDraw;
 import codechicken.lib.util.ClientUtils;
-import codechicken.nei.ItemList;
 import codechicken.nei.LayoutManager;
 import codechicken.nei.NEIClientConfig;
 import codechicken.nei.SearchField;
@@ -29,6 +28,8 @@ import net.minecraftforge.client.event.GuiScreenEvent.KeyboardInputEvent;
 import net.minecraftforge.client.event.GuiScreenEvent.MouseInputEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
@@ -37,6 +38,7 @@ import org.lwjgl.input.Mouse;
  * <p/>
  * Used to sniff input from events before JEI cancels them.
  */
+@SideOnly(Side.CLIENT)
 public class ContainerEventHandler {
 
     private long lastSearchBoxClickTime;

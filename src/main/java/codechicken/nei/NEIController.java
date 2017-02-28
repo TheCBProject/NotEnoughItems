@@ -282,10 +282,6 @@ public class NEIController implements IContainerSlotClickHandler, IContainerInpu
     }
 
     @Override
-    public void onMouseScrolled(GuiContainer gui, int mousex, int mousey, int scrolled) {
-    }
-
-    @Override
     public void onMouseUp(GuiContainer gui, int mousex, int mousey, int button) {
     }
 

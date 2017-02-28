@@ -25,21 +25,6 @@ public class NEITransformer implements IClassTransformer {
             transformer.add(new MethodInjector(new ObfMapping("net/minecraft/client/gui/inventory/GuiContainerCreative", "func_147053_i", "()V"), asmblocks.get("i_creativeTabSearch"), true));
         }
 
-        //Removes trailing seperators from NBTTagList/Compound.toString because OCD
-        //TODO
-        //transformer.add(new MethodInjector(new ObfMapping("net/minecraft/nbt/NBTTagCompound", "toString", "()Ljava/lang/String;"), asmblocks.get("n_commaFix"), asmblocks.get("commaFix"), true));
-        //transformer.add(new MethodInjector(new ObfMapping("net/minecraft/nbt/NBTTagList", "toString", "()Ljava/lang/String;"), asmblocks.get("n_commaFix"), asmblocks.get("commaFix"), true));
-
-        //fix workbench container losing items on shift click output without room for the full stack
-        transformer.add(new MethodTransformer(new ObfMapping("net/minecraft/inventory/ContainerWorkbench", "func_82846_b", "(Lnet/minecraft/entity/player/EntityPlayer;I)Lnet/minecraft/item/ItemStack;")) {
-            @Override
-            public void transform(MethodNode mv) {
-                ASMHelper.logger.debug("NEI: Applying workbench fix");
-                InsnListSection key = findN(mv.instructions, asmblocks.get("n_workbenchFix").list).get(0);
-                key.insertBefore(asmblocks.get("workbenchFix").rawListCopy());
-            }
-        });
-
         String guiContainer = "net/minecraft/client/gui/inventory/GuiContainer";
         //add manager field
         transformer.add(new FieldWriter(ACC_PUBLIC, new ObfMapping(guiContainer, "manager", "Lcodechicken/nei/guihook/GuiContainerManager;")));
@@ -49,20 +34,6 @@ public class NEITransformer implements IClassTransformer {
 
         //Generate load method
         transformer.add(new MethodWriter(ACC_PUBLIC, new ObfMapping(guiContainer, "func_146280_a", "(Lnet/minecraft/client/Minecraft;II)V"), asmblocks.get("m_setWorldAndResolution")));
-
-        //Generate handleKeyboardInput method
-        transformer.add(new MethodWriter(ACC_PUBLIC, new ObfMapping(guiContainer, "func_146282_l", "()V"), asmblocks.get("m_handleKeyboardInput")));
-
-        //Generate handleKeyboardInput method
-        transformer.add(new MethodWriter(ACC_PUBLIC, new ObfMapping(guiContainer, "func_146282_l", "()V"), asmblocks.get("m_handleKeyboardInput")));
-
-        //Generate handleKeyboardInput method
-        transformer.add(new MethodWriter(ACC_PUBLIC, new ObfMapping(guiContainer, "func_146282_l", "()V"), asmblocks.get("m_handleKeyboardInput")));
-
-        //Generate handleMouseInput method
-        transformer.add(new MethodWriter(ACC_PUBLIC, new ObfMapping(guiContainer, "func_146274_d", "()V"), asmblocks.get("m_handleMouseInput")));
-
-        addProtectedForwarder(new ObfMapping(guiContainer, "func_73869_a", "(CI)V"), new ObfMapping("codechicken/nei/guihook/GuiContainerManager", "callKeyTyped", "(Lnet/minecraft/client/gui/inventory/GuiContainer;CI)V"));
 
         addProtectedForwarder(new ObfMapping(guiContainer, "func_184098_a", "(Lnet/minecraft/inventory/Slot;IILnet/minecraft/inventory/ClickType;)V"), new ObfMapping("codechicken/nei/guihook/DefaultSlotClickHandler", "callHandleMouseClick", "(Lnet/minecraft/client/gui/inventory/GuiContainer;Lnet/minecraft/inventory/Slot;IILnet/minecraft/inventory/ClickType;)V"));
 
@@ -78,9 +49,6 @@ public class NEITransformer implements IClassTransformer {
         //Replace default renderToolTip with delegate
         ASMBlock d_renderToolTip = Boolean.parseBoolean(System.getProperty("nei.altRenderToolTipNeedle", "false")) ? asmblocks.get("d_renderToolTipIntellijEclipseCompilerFix") : asmblocks.get("d_renderToolTip");
         transformer.add(new MethodReplacer(new ObfMapping(guiContainer, "func_73863_a", "(IIF)V"), d_renderToolTip, asmblocks.get("renderTooltips")));
-
-        //Replace zLevel = 200 with zLevel = 500 in drawItemStack
-        transformer.add(new MethodReplacer(new ObfMapping(guiContainer, "func_146982_a", "(Lnet/minecraft/item/ItemStack;IILjava/lang/String;)V"), asmblocks.get("d_zLevel"), asmblocks.get("zLevel")));
 
         //Replace default renderItem with delegate and slot overlay/underlay
         transformer.add(new MethodReplacer(new ObfMapping(guiContainer, "func_146977_a", "(Lnet/minecraft/inventory/Slot;)V"), asmblocks.get("d_drawSlot"), asmblocks.get("drawSlot")));
@@ -124,9 +92,6 @@ public class NEITransformer implements IClassTransformer {
 
         //Replace general handleMouseClick call with delegate
         transformer.add(new MethodReplacer(new ObfMapping(guiContainer, "func_184098_a", "(Lnet/minecraft/inventory/Slot;IILnet/minecraft/inventory/ClickType;)V"), asmblocks.get("d_handleSlotClick"), asmblocks.get("handleSlotClick")));
-
-        //Inject lastKeyTyped at the start of keyTyped
-        transformer.add(new MethodInjector(new ObfMapping(guiContainer, "func_73869_a", "(CI)V"), asmblocks.get("lastKeyTyped"), true));
 
         //Inject updateScreen hook after super call
         transformer.add(new MethodInjector(new ObfMapping(guiContainer, "func_73876_c", "()V"), asmblocks.get("n_updateScreen"), asmblocks.get("updateScreen"), false));
