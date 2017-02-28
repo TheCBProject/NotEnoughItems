@@ -2,12 +2,10 @@ package codechicken.nei.jei.gui;
 
 import codechicken.lib.gui.GuiDraw;
 import codechicken.lib.util.ClientUtils;
-import codechicken.nei.ItemList;
 import codechicken.nei.LayoutManager;
 import codechicken.nei.NEIClientConfig;
 import codechicken.nei.SearchField;
 import codechicken.nei.config.KeyBindings;
-import codechicken.nei.guihook.GuiContainerManager;
 import codechicken.nei.jei.EnumItemBrowser;
 import codechicken.nei.jei.JEIIntegrationManager;
 import codechicken.nei.recipe.GuiCraftingRecipe;
@@ -25,7 +23,6 @@ import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.gui.inventory.GuiContainerCreative;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.client.event.GuiScreenEvent.BackgroundDrawnEvent;
 import net.minecraftforge.client.event.GuiScreenEvent.KeyboardInputEvent;
 import net.minecraftforge.client.event.GuiScreenEvent.MouseInputEvent;
@@ -83,30 +80,6 @@ public class ContainerEventHandler {
                             GuiCraftingRecipe.openRecipeGui("item", ingredient.getValue());
                         }
                     }
-                }
-            }
-        }
-    }
-
-    @SubscribeEvent
-    public void onGuiMouseEventPost(MouseInputEvent.Post event) {
-        GuiContainerManager guiContainerManager = GuiContainerManager.getManager();
-        if (guiContainerManager != null) {
-            guiContainerManager.handleMouseWheel();
-        }
-    }
-
-    @SubscribeEvent
-    public void onKeyTypedPre(GuiScreenEvent.KeyboardInputEvent.Pre event) {
-        GuiContainerManager guiContainerManager = GuiContainerManager.getManager();
-        if (guiContainerManager != null) {
-            char c = Keyboard.getEventCharacter();
-            int eventKey = Keyboard.getEventKey();
-            if (eventKey == 0 && c >= 32 || Keyboard.getEventKeyState()) {
-                if (guiContainerManager.firstKeyTyped(c, eventKey)) {
-                    event.setCanceled(true);
-                } else if (guiContainerManager.lastKeyTyped(c, eventKey)) {
-                    event.setCanceled(true);
                 }
             }
         }
