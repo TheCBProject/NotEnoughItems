@@ -13,6 +13,10 @@ import net.minecraft.inventory.ClickType;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraftforge.client.event.GuiScreenEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
@@ -28,6 +32,7 @@ import java.util.regex.Pattern;
 
 import static codechicken.lib.gui.GuiDraw.*;
 
+@SideOnly(Side.CLIENT)
 public class GuiContainerManager {
     public GuiContainer window;
 
@@ -319,23 +324,6 @@ public class GuiContainerManager {
         }
     }
 
-    /**
-     * Override for keyTyped
-     */
-    public boolean lastKeyTyped(int keyID, char keyChar) {
-        if (keyID == 1) {
-            return false;
-        }
-
-        for (IContainerInputHandler inputhander : inputHandlers) {
-            if (inputhander.lastKeyTyped(window, keyChar, keyID)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
     public boolean firstKeyTyped(char keyChar, int keyID) {
         for (IContainerInputHandler inputhander : inputHandlers) {
             inputhander.onKeyTyped(window, keyChar, keyID);
@@ -347,6 +335,20 @@ public class GuiContainerManager {
             }
         }
 
+        return false;
+    }
+
+    /**
+     * Override for keyTyped
+     */
+    public boolean lastKeyTyped(char keyChar, int keyID) {
+        if (keyID != 1) {
+            for (IContainerInputHandler inputhander : inputHandlers) {
+                if (inputhander.lastKeyTyped(window, keyChar, keyID)) {
+                    return true;
+                }
+            }
+        }
         return false;
     }
 
@@ -509,30 +511,6 @@ public class GuiContainerManager {
         for (IContainerSlotClickHandler handler : slotClickHandlers) {
             handler.afterSlotClick(window, slotIndex, button, slot, clickType);
         }
-    }
-
-    // Support inputting Chinese characters
-    public void handleKeyboardInput() {
-        // Support for LWGJL 2.9.0 or later
-        int k = Keyboard.getEventKey();
-        char c = Keyboard.getEventCharacter();
-        if (Keyboard.getEventKeyState() || (k == 0 && Character.isDefined(c))) {
-            keyTyped(c, k);
-        }
-
-        window.mc.dispatchKeypresses();
-    }
-
-    public void keyTyped(char c, int k) {
-        if (firstKeyTyped(c, k)) {
-            return;
-        }
-
-        callKeyTyped(window, c, k);
-    }
-
-    private static void callKeyTyped(GuiContainer window, char c, int k) {
-        //calls GuiContainer.keyTyped using ASM generated forwarder
     }
 
     /**

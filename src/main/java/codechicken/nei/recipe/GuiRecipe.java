@@ -81,7 +81,7 @@ public abstract class GuiRecipe extends GuiContainer implements IGuiContainerOve
             mc.displayGuiScreen(firstGui);
             return;
         }
-        if (GuiContainerManager.getManager(this).lastKeyTyped(i, c)) {
+        if (GuiContainerManager.getManager(this).lastKeyTyped(c, i)) {
             return;
         }
 

@@ -34,12 +34,6 @@ INVOKEVIRTUAL codechicken/nei/guihook/GuiContainerManager.load ()V
 LEND
 RETURN
 
-list m_handleKeyboardInput
-ALOAD 0
-GETFIELD net/minecraft/client/gui/inventory/GuiContainer.manager : Lcodechicken/nei/guihook/GuiContainerManager;
-INVOKEVIRTUAL codechicken/nei/guihook/GuiContainerManager.handleKeyboardInput ()V
-RETURN
-
 list m_handleMouseInput
 ALOAD 0
 INVOKESPECIAL net/minecraft/client/gui/GuiScreen.func_146274_d ()V
@@ -275,16 +269,6 @@ ILOAD 2
 ILOAD 3
 ALOAD 4
 INVOKEVIRTUAL codechicken/nei/guihook/GuiContainerManager.handleSlotClick (IILnet/minecraft/inventory/ClickType;)V
-
-list lastKeyTyped
-ALOAD 0
-GETFIELD net/minecraft/client/gui/inventory/GuiContainer.manager : Lcodechicken/nei/guihook/GuiContainerManager;
-ILOAD 2
-ILOAD 1
-INVOKEVIRTUAL codechicken/nei/guihook/GuiContainerManager.lastKeyTyped (IC)Z
-IFEQ LCONT
-RETURN
-LCONT
 
 list n_updateScreen
 ALOAD 0

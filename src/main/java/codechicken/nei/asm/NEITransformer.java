@@ -35,19 +35,8 @@ public class NEITransformer implements IClassTransformer {
         //Generate load method
         transformer.add(new MethodWriter(ACC_PUBLIC, new ObfMapping(guiContainer, "func_146280_a", "(Lnet/minecraft/client/Minecraft;II)V"), asmblocks.get("m_setWorldAndResolution")));
 
-        //Generate handleKeyboardInput method
-        transformer.add(new MethodWriter(ACC_PUBLIC, new ObfMapping(guiContainer, "func_146282_l", "()V"), asmblocks.get("m_handleKeyboardInput")));
-
-        //Generate handleKeyboardInput method
-        transformer.add(new MethodWriter(ACC_PUBLIC, new ObfMapping(guiContainer, "func_146282_l", "()V"), asmblocks.get("m_handleKeyboardInput")));
-
-        //Generate handleKeyboardInput method
-        transformer.add(new MethodWriter(ACC_PUBLIC, new ObfMapping(guiContainer, "func_146282_l", "()V"), asmblocks.get("m_handleKeyboardInput")));
-
         //Generate handleMouseInput method
         transformer.add(new MethodWriter(ACC_PUBLIC, new ObfMapping(guiContainer, "func_146274_d", "()V"), asmblocks.get("m_handleMouseInput")));
-
-        addProtectedForwarder(new ObfMapping(guiContainer, "func_73869_a", "(CI)V"), new ObfMapping("codechicken/nei/guihook/GuiContainerManager", "callKeyTyped", "(Lnet/minecraft/client/gui/inventory/GuiContainer;CI)V"));
 
         addProtectedForwarder(new ObfMapping(guiContainer, "func_184098_a", "(Lnet/minecraft/inventory/Slot;IILnet/minecraft/inventory/ClickType;)V"), new ObfMapping("codechicken/nei/guihook/DefaultSlotClickHandler", "callHandleMouseClick", "(Lnet/minecraft/client/gui/inventory/GuiContainer;Lnet/minecraft/inventory/Slot;IILnet/minecraft/inventory/ClickType;)V"));
 
@@ -109,9 +98,6 @@ public class NEITransformer implements IClassTransformer {
 
         //Replace general handleMouseClick call with delegate
         transformer.add(new MethodReplacer(new ObfMapping(guiContainer, "func_184098_a", "(Lnet/minecraft/inventory/Slot;IILnet/minecraft/inventory/ClickType;)V"), asmblocks.get("d_handleSlotClick"), asmblocks.get("handleSlotClick")));
-
-        //Inject lastKeyTyped at the start of keyTyped
-        transformer.add(new MethodInjector(new ObfMapping(guiContainer, "func_73869_a", "(CI)V"), asmblocks.get("lastKeyTyped"), true));
 
         //Inject updateScreen hook after super call
         transformer.add(new MethodInjector(new ObfMapping(guiContainer, "func_73876_c", "()V"), asmblocks.get("n_updateScreen"), asmblocks.get("updateScreen"), false));
