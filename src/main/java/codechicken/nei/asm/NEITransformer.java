@@ -25,11 +25,6 @@ public class NEITransformer implements IClassTransformer {
             transformer.add(new MethodInjector(new ObfMapping("net/minecraft/client/gui/inventory/GuiContainerCreative", "func_147053_i", "()V"), asmblocks.get("i_creativeTabSearch"), true));
         }
 
-        //Removes trailing seperators from NBTTagList/Compound.toString because OCD
-        //TODO
-        //transformer.add(new MethodInjector(new ObfMapping("net/minecraft/nbt/NBTTagCompound", "toString", "()Ljava/lang/String;"), asmblocks.get("n_commaFix"), asmblocks.get("commaFix"), true));
-        //transformer.add(new MethodInjector(new ObfMapping("net/minecraft/nbt/NBTTagList", "toString", "()Ljava/lang/String;"), asmblocks.get("n_commaFix"), asmblocks.get("commaFix"), true));
-
         //fix workbench container losing items on shift click output without room for the full stack
         transformer.add(new MethodTransformer(new ObfMapping("net/minecraft/inventory/ContainerWorkbench", "func_82846_b", "(Lnet/minecraft/entity/player/EntityPlayer;I)Lnet/minecraft/item/ItemStack;")) {
             @Override

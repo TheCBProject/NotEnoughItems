@@ -5,15 +5,6 @@ ALOAD 5
 INVOKESTATIC codechicken/nei/ItemMobSpawner.onBlockPlaced(Lnet/minecraft/world/World;Lnet/minecraft/util/BlockPos;Lnet/minecraft/item/ItemStack;)V
 RETURN
 
-list n_commaFix
-LDC *
-INVOKEVIRTUAL java/lang/StringBuilder.append (C)Ljava/lang/StringBuilder;
-INVOKEVIRTUAL java/lang/StringBuilder.toString ()Ljava/lang/String;
-ARETURN
-
-list commaFix
-INVOKESTATIC codechicken/nei/NEIServerUtils.fixTrailingCommaList(Ljava/lang/StringBuilder;)Ljava/lang/StringBuilder;
-
 list n_workbenchFix
 ALOAD 0
 ALOAD 5

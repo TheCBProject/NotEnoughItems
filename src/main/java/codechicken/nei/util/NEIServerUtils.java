@@ -407,13 +407,6 @@ public class NEIServerUtils {
         };
     }
 
-    public static StringBuilder fixTrailingCommaList(StringBuilder sb) {
-        if (sb.charAt(sb.length() - 1) == ',') {
-            sb.deleteCharAt(sb.length() - 1);
-        }
-        return sb;
-    }
-
     public static void logOnce(Throwable t, Set<String> stackTraces, String message) {
         logOnce(t, stackTraces, message, "");
     }
