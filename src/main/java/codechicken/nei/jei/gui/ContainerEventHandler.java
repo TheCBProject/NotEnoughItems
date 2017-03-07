@@ -148,7 +148,7 @@ public class ContainerEventHandler {
     @SubscribeEvent(priority = EventPriority.LOWEST)//We need to be called after JEI as this is is a render overlay.
     public void onDrawBackgroundEventPost(BackgroundDrawnEvent event) {
         GuiTextFieldFilter fieldFilter = JEIIntegrationManager.getTextFieldFilter();
-        if (!ClientUtils.inWorld() || fieldFilter == null || !SearchField.searchInventories() || JEIIntegrationManager.searchBoxOwner != EnumItemBrowser.JEI) {
+        if (!ClientUtils.inWorld() || !isNEIInWorld() || fieldFilter == null || !SearchField.searchInventories() || JEIIntegrationManager.searchBoxOwner != EnumItemBrowser.JEI) {
             return;
         }
 
@@ -162,6 +162,10 @@ public class ContainerEventHandler {
         GuiDraw.drawGradientRect(x + w, y - 1, 1, h + 2, 0xFFFFFF00, 0xFFC0B000);//Left
         GuiDraw.drawGradientRect(x - 1, y + h, w + 2, 1, 0xFFFFFF00, 0xFFC0B000);//Bottom
 
+    }
+
+    private boolean isNEIInWorld() {
+        return NEIClientConfig.world != null && NEIClientConfig.world.nbt != null;
     }
 
 }
