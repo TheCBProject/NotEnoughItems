@@ -1,9 +1,9 @@
 package codechicken.nei.network;
 
+import codechicken.lib.packet.ICustomPacketHandler.IClientPacketHandler;
 import codechicken.lib.util.ClientUtils;
 import codechicken.lib.inventory.InventoryUtils;
 import codechicken.lib.packet.PacketCustom;
-import codechicken.lib.packet.PacketCustom.IClientPacketHandler;
 import codechicken.nei.*;
 import codechicken.nei.container.ContainerCreativeInv;
 import codechicken.nei.container.ExtendedCreativeInv;
@@ -26,7 +26,7 @@ public class NEIClientPacketHandler implements IClientPacketHandler {
     public void handlePacket(PacketCustom packet, Minecraft mc, INetHandlerPlayClient netHandler) {
         switch (packet.getType()) {
         case 1:
-            handleSMPCheck(packet.readUByte(), packet.readString(), mc.theWorld);
+            handleSMPCheck(packet.readUByte(), packet.readString(), mc.world);
             break;
         case 10:
             handleLoginState(packet);
@@ -38,23 +38,23 @@ public class NEIClientPacketHandler implements IClientPacketHandler {
             handleActionEnabled(packet);
             break;
         case 13:
-            ClientHandler.instance().addSMPMagneticItem(packet.readInt(), mc.theWorld);
+            ClientHandler.instance().addSMPMagneticItem(packet.readInt(), mc.world);
             break;
         case 14:
             handleGamemode(mc, packet.readUByte());
             break;
         case 21:
-            ClientUtils.openSMPGui(packet.readUByte(), new GuiEnchantmentModifier(mc.thePlayer.inventory, mc.theWorld));
+            ClientUtils.openSMPGui(packet.readUByte(), new GuiEnchantmentModifier(mc.player.inventory, mc.world));
             break;
         case 23:
             if (packet.readBoolean()) {
-                ClientUtils.openSMPGui(packet.readUByte(), new GuiExtendedCreativeInv(new ContainerCreativeInv(mc.thePlayer, new ExtendedCreativeInv(null, Side.CLIENT))));
+                ClientUtils.openSMPGui(packet.readUByte(), new GuiExtendedCreativeInv(new ContainerCreativeInv(mc.player, new ExtendedCreativeInv(null, Side.CLIENT))));
             } else {
-                mc.displayGuiScreen(new GuiInventory(mc.thePlayer));
+                mc.displayGuiScreen(new GuiInventory(mc.player));
             }
             break;
         case 24:
-            ClientUtils.openSMPGui(packet.readUByte(), new GuiPotionCreator(mc.thePlayer.inventory));
+            ClientUtils.openSMPGui(packet.readUByte(), new GuiPotionCreator(mc.player.inventory));
             break;
         }
     }

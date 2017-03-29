@@ -91,17 +91,17 @@ public class ItemStackMap<T> {
                 switch (getKeyType(actualDamage(key), key.getTagCompound())) {
                 case 0:
                     if (metaMap == null) {
-                        metaMap = new HashMap<StackMetaKey, T>();
+                        metaMap = new HashMap<>();
                     }
                     return metaMap.put(new StackMetaKey(key), value);
                 case 1:
                     if (tagMap == null) {
-                        tagMap = new HashMap<NBTTagCompound, T>();
+                        tagMap = new HashMap<>();
                     }
                     return tagMap.put(key.getTagCompound(), value);
                 case 2:
                     if (damageMap == null) {
-                        damageMap = new HashMap<Integer, T>();
+                        damageMap = new HashMap<>();
                     }
                     return damageMap.put(actualDamage(key), value);
                 case 3:
@@ -187,21 +187,21 @@ public class ItemStackMap<T> {
 
         public void addEntries(Item item, List<Entry<T>> list) {
             if (wildcard != null) {
-                list.add(new Entry<T>(newItemStack(item, 1, WILDCARD_VALUE, WILDCARD_TAG), wildcard));
+                list.add(new Entry<>(newItemStack(item, 1, WILDCARD_VALUE, WILDCARD_TAG), wildcard));
             }
             if (damageMap != null) {
                 for (Map.Entry<Integer, T> entry : damageMap.entrySet()) {
-                    list.add(new Entry<T>(newItemStack(item, 1, entry.getKey(), WILDCARD_TAG), entry.getValue()));
+                    list.add(new Entry<>(newItemStack(item, 1, entry.getKey(), WILDCARD_TAG), entry.getValue()));
                 }
             }
             if (tagMap != null) {
                 for (Map.Entry<NBTTagCompound, T> entry : tagMap.entrySet()) {
-                    list.add(new Entry<T>(newItemStack(item, 1, WILDCARD_VALUE, entry.getKey()), entry.getValue()));
+                    list.add(new Entry<>(newItemStack(item, 1, WILDCARD_VALUE, entry.getKey()), entry.getValue()));
                 }
             }
             if (metaMap != null) {
                 for (Map.Entry<StackMetaKey, T> entry : metaMap.entrySet()) {
-                    list.add(new Entry<T>(newItemStack(item, 1, entry.getKey().damage, entry.getKey().tag), entry.getValue()));
+                    list.add(new Entry<>(newItemStack(item, 1, entry.getKey().damage, entry.getKey().tag), entry.getValue()));
                 }
             }
         }
@@ -237,7 +237,7 @@ public class ItemStackMap<T> {
         WILDCARD_TAG.setBoolean("*", true);
     }
 
-    private HashMap<Item, DetailMap> itemMap = new HashMap<Item, DetailMap>();
+    private HashMap<Item, DetailMap> itemMap = new HashMap<>();
     private int size;
 
     public T get(ItemStack key) {
@@ -275,7 +275,7 @@ public class ItemStackMap<T> {
     }
 
     public List<ItemStack> keys() {
-        LinkedList<ItemStack> list = new LinkedList<ItemStack>();
+        LinkedList<ItemStack> list = new LinkedList<>();
         for (Map.Entry<Item, DetailMap> entry : itemMap.entrySet()) {
             entry.getValue().addKeys(entry.getKey(), list);
         }
@@ -283,7 +283,7 @@ public class ItemStackMap<T> {
     }
 
     public List<T> values() {
-        LinkedList<T> list = new LinkedList<T>();
+        LinkedList<T> list = new LinkedList<>();
         for (DetailMap map : itemMap.values()) {
             map.addValues(list);
         }
@@ -291,7 +291,7 @@ public class ItemStackMap<T> {
     }
 
     public List<Entry<T>> entries() {
-        LinkedList<Entry<T>> list = new LinkedList<Entry<T>>();
+        LinkedList<Entry<T>> list = new LinkedList<>();
         for (Map.Entry<Item, DetailMap> entry : itemMap.entrySet()) {
             entry.getValue().addEntries(entry.getKey(), list);
         }

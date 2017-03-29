@@ -8,8 +8,8 @@ import java.util.List;
 public class NEIActions {
     public static final int protocol = 0;
 
-    public static HashMap<String, NEIActions> nameActionMap = new HashMap<String, NEIActions>();
-    public static HashSet<String> canDisable = new HashSet<String>();
+    public static HashMap<String, NEIActions> nameActionMap = new HashMap<>();
+    public static HashSet<String> canDisable = new HashSet<>();
 
     public static void addAction(String name, String base, boolean smpreq) {
         NEIActions action = new NEIActions(name, base, smpreq);
@@ -75,7 +75,7 @@ public class NEIActions {
     }
 
     public static List<String> baseActions() {
-        List<String> list = new LinkedList<String>();
+        List<String> list = new LinkedList<>();
         for (NEIActions a : nameActionMap.values()) {
             if (a.base.equals(a.name)) {
                 list.add(a.name);

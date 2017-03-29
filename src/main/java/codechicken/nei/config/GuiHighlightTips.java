@@ -1,22 +1,18 @@
 package codechicken.nei.config;
 
-import codechicken.core.gui.GuiCCButton;
-import codechicken.core.gui.GuiScreenWidget;
+import codechicken.lib.gui.GuiCCButton;
+import codechicken.lib.gui.GuiScreenWidget;
 import codechicken.lib.math.MathHelper;
 import codechicken.lib.vec.Rectangle4i;
-import codechicken.nei.HUDRenderer;
 import codechicken.nei.util.NEIClientUtils;
 import net.minecraft.client.Minecraft;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.TextFormatting;
 import org.lwjgl.input.Keyboard;
 
 import java.awt.*;
 import java.io.IOException;
 import java.util.Arrays;
 
-import static codechicken.lib.gui.GuiDraw.displaySize;
+import static codechicken.lib.gui.GuiDraw.getDisplaySize;
 import static codechicken.lib.gui.GuiDraw.getMousePosition;
 
 @Deprecated//Waila is a thing now.
@@ -87,7 +83,7 @@ public class GuiHighlightTips extends GuiScreenWidget {
     public Point getDrag() {
         Point mouse = getMousePosition();
         Point drag = new Point(mouse.x - dragDown.x, mouse.y - dragDown.y);
-        Dimension size = displaySize();
+        Dimension size = getDisplaySize();
         Dimension sample = sampleSize();
         drag.x *= 10000;
         drag.y *= 10000;
@@ -130,7 +126,7 @@ public class GuiHighlightTips extends GuiScreenWidget {
 
     public Rectangle4i selectionBox() {
         Point pos = renderPos();
-        Dimension size = displaySize();
+        Dimension size = getDisplaySize();
         Dimension rect = sampleSize();
         return new Rectangle4i((size.width - rect.width) * pos.x / 10000, (size.height - rect.height) * pos.y / 10000, rect.width, rect.height);
     }

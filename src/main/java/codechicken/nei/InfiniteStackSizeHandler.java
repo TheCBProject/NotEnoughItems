@@ -1,6 +1,6 @@
 package codechicken.nei;
 
-import codechicken.lib.inventory.InventoryUtils;
+import codechicken.lib.util.ItemUtils;
 import codechicken.nei.api.IInfiniteItemHandler;
 import codechicken.nei.util.NEIServerUtils;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -9,12 +9,12 @@ import net.minecraft.item.ItemStack;
 public class InfiniteStackSizeHandler implements IInfiniteItemHandler {
     @Override
     public void onPickup(ItemStack heldItem) {
-        heldItem.stackSize = 1;
+        heldItem.setCount(1);
     }
 
     @Override
     public void onPlaceInfinite(ItemStack heldItem) {
-        heldItem.stackSize = 111;
+        heldItem.setCount(111);
     }
 
     @Override
@@ -24,13 +24,13 @@ public class InfiniteStackSizeHandler implements IInfiniteItemHandler {
 
     @Override
     public boolean isItemInfinite(ItemStack stack) {
-        return stack.stackSize == -1 || stack.stackSize > 100;
+        return stack.getCount() == -1 || stack.getCount() > 100;
     }
 
     @Override
     public void replenishInfiniteStack(InventoryPlayer inv, int slotNo) {
         ItemStack stack = inv.getStackInSlot(slotNo);
-        stack.stackSize = 111;
+        stack.setCount(111);
 
         for (int i = 0; i < inv.getSizeInventory(); i++) {
             if (i == slotNo) {
@@ -45,6 +45,6 @@ public class InfiniteStackSizeHandler implements IInfiniteItemHandler {
 
     @Override
     public ItemStack getInfiniteItem(ItemStack typeStack) {
-        return InventoryUtils.copyStack(typeStack, -1);
+        return ItemUtils.copyStack(typeStack, -1);
     }
 }

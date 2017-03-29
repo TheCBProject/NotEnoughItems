@@ -18,7 +18,7 @@ public abstract class ForgeRegistryDumper<V extends IForgeRegistryEntry<V>> exte
 
     @Override
     public Iterable<String[]> dump(int mode) {
-        LinkedList<String[]> list = new LinkedList<String[]>();
+        LinkedList<String[]> list = new LinkedList<>();
         IForgeRegistry<V> registry = registry();
 
         for (V obj : registry) {

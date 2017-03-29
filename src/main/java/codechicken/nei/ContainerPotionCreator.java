@@ -1,10 +1,11 @@
 package codechicken.nei;
 
-import codechicken.core.inventory.ContainerExtended;
-import codechicken.core.inventory.SlotHandleClicks;
+import codechicken.lib.inventory.container.ContainerExtended;
+import codechicken.lib.inventory.container.SlotHandleClicks;
 import codechicken.lib.inventory.InventoryNBT;
 import codechicken.lib.inventory.InventoryUtils;
 import codechicken.lib.packet.PacketCustom;
+import codechicken.lib.util.ItemUtils;
 import codechicken.nei.network.NEIClientPacketHandler;
 import codechicken.nei.util.NEIClientUtils;
 import net.minecraft.entity.player.EntityPlayer;
@@ -60,7 +61,7 @@ public class ContainerPotionCreator extends ContainerExtended {
                 putStack(null);
             } else if (held != null) {
                 if (isItemValid(held)) {
-                    putStack(InventoryUtils.copyStack(held, 1));
+                    putStack(ItemUtils.copyStack(held, 1));
                     player.inventory.setItemStack(null);
                 }
             } else if (getHasStack()) {
@@ -122,7 +123,7 @@ public class ContainerPotionCreator extends ContainerExtended {
     public void onContainerClosed(EntityPlayer player) {
         super.onContainerClosed(player);
 
-        if (!player.worldObj.isRemote) {
+        if (!player.world.isRemote) {
             InventoryUtils.dropOnClose(player, potionInv);
         }
     }

@@ -15,7 +15,7 @@ public class DefaultOverlayRenderer implements IRecipeOverlayRenderer {
 
     public DefaultOverlayRenderer(List<PositionedStack> ai, IStackPositioner positioner) {
         positioner = this.positioner = positioner;
-        ingreds = new ArrayList<PositionedStack>();
+        ingreds = new ArrayList<>();
         for (PositionedStack stack : ai) {
             ingreds.add(stack.copy());
         }
@@ -29,7 +29,7 @@ public class DefaultOverlayRenderer implements IRecipeOverlayRenderer {
 
         GuiContainerManager.setItemRenderColour(0xA0A0A0B0);
         for (PositionedStack stack : ingreds) {
-            if (stack.relx == slot.xDisplayPosition && stack.rely == slot.yDisplayPosition) {
+            if (stack.relx == slot.xPos && stack.rely == slot.yPos) {
                 GuiContainerManager.drawItem(stack.relx, stack.rely, stack.item);
             }
         }

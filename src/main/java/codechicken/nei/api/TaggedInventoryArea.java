@@ -8,7 +8,7 @@ import net.minecraft.item.ItemStack;
 import java.util.HashSet;
 
 public class TaggedInventoryArea {
-    public HashSet<Integer> slots = new HashSet<Integer>();
+    public HashSet<Integer> slots = new HashSet<>();
     public String tagName;
     /**
      * Only for player inventories.

@@ -34,7 +34,7 @@ public class ContainerEnchantmentModifier extends ContainerEnchantment {
         int level;
     }
 
-    public ArrayList<EnchantmentHash> slotEnchantment = new ArrayList<EnchantmentHash>();
+    public ArrayList<EnchantmentHash> slotEnchantment = new ArrayList<>();
     int level = 5;
 
     public int scrollclicky = -1;

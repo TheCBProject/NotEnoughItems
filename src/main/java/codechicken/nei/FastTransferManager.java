@@ -29,30 +29,30 @@ public class FastTransferManager {
             Slot slot1 = container.getSlot(arg0);
             Slot slot2 = container.getSlot(arg1);
 
-            if (slot2.yDisplayPosition != slot1.yDisplayPosition) {
-                return slot1.yDisplayPosition - slot2.yDisplayPosition;
+            if (slot2.yPos != slot1.yPos) {
+                return slot1.yPos - slot2.yPos;
             }
-            return slot1.xDisplayPosition - slot2.xDisplayPosition;
+            return slot1.xPos - slot2.xPos;
         }
     }
 
-    public LinkedList<LinkedList<Integer>> slotZones = new LinkedList<LinkedList<Integer>>();
-    public HashMap<Integer, Integer> slotZoneMap = new HashMap<Integer, Integer>();
+    public LinkedList<LinkedList<Integer>> slotZones = new LinkedList<>();
+    public HashMap<Integer, Integer> slotZoneMap = new HashMap<>();
 
     private void generateSlotMap(Container container, ItemStack stack) {
         stack = stack.copy();
-        stack.stackSize = 1;
+        stack.setCount(1);
 
         for (int slotNo = 0; slotNo < container.inventorySlots.size(); slotNo++) {
             if (slotZoneMap.containsKey(slotNo) || !container.getSlot(slotNo).isItemValid(stack)) {
                 continue;
             }
 
-            HashSet<Integer> connectedSlots = new HashSet<Integer>();
+            HashSet<Integer> connectedSlots = new HashSet<>();
             findConnectedSlots(container, slotNo, connectedSlots);
 
-            LinkedList<Integer> zoneSlots = new LinkedList<Integer>(connectedSlots);
-            Collections.sort(zoneSlots, new SlotPositionComparator(container));
+            LinkedList<Integer> zoneSlots = new LinkedList<>(connectedSlots);
+            zoneSlots.sort(new SlotPositionComparator(container));
             slotZones.add(zoneSlots);
 
             for (int i : zoneSlots) {
@@ -72,7 +72,7 @@ public class FastTransferManager {
             }
 
             Slot slot1 = container.getSlot(i);
-            if (Math.abs(slot.xDisplayPosition - slot1.xDisplayPosition) <= threshold && Math.abs(slot.yDisplayPosition - slot1.yDisplayPosition) <= threshold) {
+            if (Math.abs(slot.xPos - slot1.xPos) <= threshold && Math.abs(slot.yPos - slot1.yPos) <= threshold) {
                 findConnectedSlots(container, i, connectedSlots);
             }
         }
@@ -139,11 +139,11 @@ public class FastTransferManager {
             return -1;
         }
 
-        stack.stackSize = 1;
+        stack.setCount(1);
         slot.putStack(stack.copy());
 
         LinkedList<ItemStack> compareBefore = saveContainer(container);
-        container.slotClick(fromSlot, 0, ClickType.QUICK_MOVE, Minecraft.getMinecraft().thePlayer);
+        container.slotClick(fromSlot, 0, ClickType.QUICK_MOVE, Minecraft.getMinecraft().player);
         LinkedList<ItemStack> compareAfter = saveContainer(container);
 
         try {
@@ -160,7 +160,7 @@ public class FastTransferManager {
 
                 if (!areStacksIdentical(before, after) && after != null) {
                     if (before == null ? areStacksSameType(stack, after) ://transfered into this empty slot
-                            areStacksSameType(stack, after) && after.stackSize - before.stackSize > 0)//it added to this stack
+                            areStacksSameType(stack, after) && after.getCount() - before.getCount() > 0)//it added to this stack
                     {
                         return i;
                     }
@@ -174,7 +174,7 @@ public class FastTransferManager {
     }
 
     public LinkedList<ItemStack> saveContainer(Container container) {
-        LinkedList<ItemStack> stacks = new LinkedList<ItemStack>();
+        LinkedList<ItemStack> stacks = new LinkedList<>();
         for (int i = 0; i < container.inventorySlots.size(); i++) {
             stacks.add(copyStack(container.getSlot(i).getStack()));
         }
@@ -187,7 +187,7 @@ public class FastTransferManager {
             container.getSlot(i).putStack(items.get(i));
         }
 
-        container.slotClick(-999, 0, ClickType.PICKUP, Minecraft.getMinecraft().thePlayer);
+        container.slotClick(-999, 0, ClickType.PICKUP, Minecraft.getMinecraft().player);
     }
 
     public void transferItem(GuiContainer window, int fromSlot) {
@@ -229,8 +229,8 @@ public class FastTransferManager {
         Slot slot = window.inventorySlots.getSlot(toSlot);
         ItemStack slotStack = slot.getStack();
         if (slotStack == null ||
-                slotStack.stackSize == slot.getSlotStackLimit() ||
-                slotStack.stackSize == slotStack.getMaxStackSize()) {
+                slotStack.getCount() == slot.getSlotStackLimit() ||
+                slotStack.getCount() == slotStack.getMaxStackSize()) {
             return;
         }
 
@@ -278,8 +278,8 @@ public class FastTransferManager {
             ItemStack stack1 = slot.getStack();
 
             if (areStacksSameType(stack, stack1) &&
-                    stack1.stackSize != slot.getSlotStackLimit() && //get from full stacks on second pass
-                    stack1.stackSize != stack1.getMaxStackSize()) {
+                    stack1.getCount() != slot.getSlotStackLimit() && //get from full stacks on second pass
+                    stack1.getCount() != stack1.getMaxStackSize()) {
                 moveOneItem(window, i, toSlot);
                 return true;
             }

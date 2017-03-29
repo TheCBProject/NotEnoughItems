@@ -1,10 +1,9 @@
 package codechicken.nei.network;
 
-import codechicken.lib.gui.IGuiPacketSender;
-import codechicken.core.inventory.ContainerExtended;
-import codechicken.core.inventory.SlotDummy;
+import codechicken.lib.inventory.container.ContainerExtended;
+import codechicken.lib.inventory.container.SlotDummy;
+import codechicken.lib.packet.ICustomPacketHandler.IServerPacketHandler;
 import codechicken.lib.packet.PacketCustom;
-import codechicken.lib.packet.PacketCustom.IServerPacketHandler;
 import codechicken.lib.util.ServerUtils;
 import codechicken.nei.*;
 import codechicken.nei.container.ContainerCreativeInv;
@@ -20,6 +19,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.INetHandlerPlayServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityMobSpawner;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -48,13 +48,13 @@ public class NEIServerPacketHandler implements IServerPacketHandler {
             NEIServerUtils.toggleMagnetMode(sender);
             break;
         case 7:
-            NEIServerUtils.setHourForward(sender.worldObj, packet.readUByte(), true);
+            NEIServerUtils.setHourForward(sender.world, packet.readUByte(), true);
             break;
         case 8:
             NEIServerUtils.healPlayer(sender);
             break;
         case 9:
-            NEIServerUtils.toggleRaining(sender.worldObj, true);
+            NEIServerUtils.toggleRaining(sender.world, true);
             break;
         case 10:
             sendLoginState(sender);
@@ -72,7 +72,7 @@ public class NEIServerPacketHandler implements IServerPacketHandler {
             NEIServerUtils.cycleCreativeInv(sender, packet.readInt());
             break;
         case 15:
-            handleMobSpawnerID(sender.worldObj, packet.readPos(), packet.readString());
+            handleMobSpawnerID(sender.world, packet.readPos(), packet.readString());
             break;
         case 20:
             handleContainerPacket(sender, packet);
@@ -111,7 +111,7 @@ public class NEIServerPacketHandler implements IServerPacketHandler {
     private void handleMobSpawnerID(World world, BlockPos coord, String mobtype) {
         TileEntity tile = world.getTileEntity(coord);
         if (tile instanceof TileEntityMobSpawner) {
-            ((TileEntityMobSpawner) tile).getSpawnerBaseLogic().setEntityName(mobtype);
+            ((TileEntityMobSpawner) tile).getSpawnerBaseLogic().setEntityId(new ResourceLocation(mobtype));
             tile.markDirty();
             IBlockState state = world.getBlockState(coord);
             world.notifyBlockUpdate(coord, state, state, 4);
@@ -127,14 +127,11 @@ public class NEIServerPacketHandler implements IServerPacketHandler {
 
     public static void processCreativeInv(EntityPlayerMP sender, boolean open) {
         if (open) {
-            ServerUtils.openSMPContainer(sender, new ContainerCreativeInv(sender, new ExtendedCreativeInv(NEIServerConfig.forPlayer(sender.getName()), Side.SERVER)), new IGuiPacketSender() {
-                @Override
-                public void sendPacket(EntityPlayerMP player, int windowId) {
-                    PacketCustom packet = new PacketCustom(channel, 23);
-                    packet.writeBoolean(true);
-                    packet.writeByte(windowId);
-                    packet.sendToPlayer(player);
-                }
+            ServerUtils.openSMPContainer(sender, new ContainerCreativeInv(sender, new ExtendedCreativeInv(NEIServerConfig.forPlayer(sender.getName()), Side.SERVER)), (player, windowId) -> {
+                PacketCustom packet = new PacketCustom(channel, 23);
+                packet.writeBoolean(true);
+                packet.writeByte(windowId);
+                packet.sendToPlayer(player);
             });
         } else {
             sender.closeContainer();
@@ -154,7 +151,7 @@ public class NEIServerPacketHandler implements IServerPacketHandler {
         ItemStack item = packet.readItemStack();
 
         ItemStack old = NEIServerUtils.getSlotContents(player, slot, container);
-        boolean deleting = item == null || old != null && NEIServerUtils.areStacksSameType(item, old) && item.stackSize < old.stackSize;
+        boolean deleting = item == null || old != null && NEIServerUtils.areStacksSameType(item, old) && item.getCount() < old.getCount();
         if (NEIServerConfig.canPlayerPerformAction(player.getName(), deleting ? "delete" : "item")) {
             NEIServerUtils.setSlotContents(player, slot, item, container);
         }
@@ -171,13 +168,10 @@ public class NEIServerPacketHandler implements IServerPacketHandler {
     }
 
     private void openEnchantmentGui(EntityPlayerMP player) {
-        ServerUtils.openSMPContainer(player, new ContainerEnchantmentModifier(player.inventory, player.worldObj), new IGuiPacketSender() {
-            @Override
-            public void sendPacket(EntityPlayerMP player, int windowId) {
-                PacketCustom packet = new PacketCustom(channel, 21);
-                packet.writeByte(windowId);
-                packet.sendToPlayer(player);
-            }
+        ServerUtils.openSMPContainer(player, new ContainerEnchantmentModifier(player.inventory, player.world), (player1, windowId) -> {
+            PacketCustom packet = new PacketCustom(channel, 21);
+            packet.writeByte(windowId);
+            packet.sendToPlayer(player1);
         });
     }
 
@@ -186,13 +180,10 @@ public class NEIServerPacketHandler implements IServerPacketHandler {
         for (int i = 0; i < b.getSizeInventory(); i++) {
             b.setInventorySlotContents(i, packet.readItemStack());
         }
-        ServerUtils.openSMPContainer(player, new ContainerPotionCreator(player.inventory, b), new IGuiPacketSender() {
-            @Override
-            public void sendPacket(EntityPlayerMP player, int windowId) {
-                PacketCustom packet = new PacketCustom(channel, 24);
-                packet.writeByte(windowId);
-                packet.sendToPlayer(player);
-            }
+        ServerUtils.openSMPContainer(player, new ContainerPotionCreator(player.inventory, b), (player1, windowId) -> {
+            PacketCustom packet1 = new PacketCustom(channel, 24);
+            packet1.writeByte(windowId);
+            packet1.sendToPlayer(player1);
         });
     }
 
@@ -205,10 +196,10 @@ public class NEIServerPacketHandler implements IServerPacketHandler {
     }
 
     private void sendLoginState(EntityPlayerMP player) {
-        LinkedList<String> actions = new LinkedList<String>();
-        LinkedList<String> disabled = new LinkedList<String>();
-        LinkedList<String> enabled = new LinkedList<String>();
-        LinkedList<ItemStack> bannedItems = new LinkedList<ItemStack>();
+        LinkedList<String> actions = new LinkedList<>();
+        LinkedList<String> disabled = new LinkedList<>();
+        LinkedList<String> enabled = new LinkedList<>();
+        LinkedList<ItemStack> bannedItems = new LinkedList<>();
         PlayerSave playerSave = NEIServerConfig.forPlayer(player.getName());
 
         for (String name : NEIActions.nameActionMap.keySet()) {
@@ -257,7 +248,7 @@ public class NEIServerPacketHandler implements IServerPacketHandler {
         LogHelper.debug("Sending serverside check to: " + player.getName());
         PacketCustom packet = new PacketCustom(channel, 1);
         packet.writeByte(NEIActions.protocol);
-        packet.writeString(player.worldObj.getWorldInfo().getWorldName());
+        packet.writeString(player.world.getWorldInfo().getWorldName());
 
         packet.sendToPlayer(player);
     }

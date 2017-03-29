@@ -23,6 +23,11 @@ public class ExtendedCreativeInv implements IInventory {
     }
 
     @Override
+    public boolean isEmpty() {
+        return false;
+    }
+
+    @Override
     public ItemStack getStackInSlot(int slot) {
         if (side.isClient()) {
             return NEIClientConfig.creativeInv[slot];
@@ -35,13 +40,13 @@ public class ExtendedCreativeInv implements IInventory {
         ItemStack item = getStackInSlot(slot);
 
         if (item != null) {
-            if (item.stackSize <= size) {
+            if (item.getCount() <= size) {
                 setInventorySlotContents(slot, null);
                 markDirty();
                 return item;
             }
             ItemStack itemstack1 = item.splitStack(size);
-            if (item.stackSize == 0) {
+            if (item.getCount() == 0) {
                 setInventorySlotContents(slot, null);
             }
 
@@ -84,7 +89,7 @@ public class ExtendedCreativeInv implements IInventory {
     }
 
     @Override
-    public boolean isUseableByPlayer(EntityPlayer var1) {
+    public boolean isUsableByPlayer(EntityPlayer var1) {
         return true;
     }
 

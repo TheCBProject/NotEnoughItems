@@ -15,6 +15,7 @@ import com.google.common.collect.ListMultimap;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -26,7 +27,7 @@ public class ItemList {
     /**
      * Fields are replaced atomically and contents never modified.
      */
-    public static volatile List<ItemStack> items = new ArrayList<ItemStack>();
+    public static volatile List<ItemStack> items = new ArrayList<>();
     /**
      * Fields are replaced atomically and contents never modified.
      */
@@ -34,11 +35,11 @@ public class ItemList {
     /**
      * Updates to this should be synchronised on this
      */
-    public static final List<IItemFilterProvider> itemFilterers = new LinkedList<IItemFilterProvider>();
-    public static final List<ItemsLoadedCallback> loadCallbacks = new LinkedList<ItemsLoadedCallback>();
+    public static final List<IItemFilterProvider> itemFilterers = new LinkedList<>();
+    public static final List<ItemsLoadedCallback> loadCallbacks = new LinkedList<>();
 
-    private static HashSet<Item> erroredItems = new HashSet<Item>();
-    private static HashSet<String> stackTraces = new HashSet<String>();
+    private static HashSet<Item> erroredItems = new HashSet<>();
+    private static HashSet<String> stackTraces = new HashSet<>();
 
     public static class EverythingItemFilter implements IItemFilter {
         @Override
@@ -68,14 +69,14 @@ public class ItemList {
     }
 
     public static class AllMultiItemFilter implements IItemFilter {
-        public List<IItemFilter> filters = new LinkedList<IItemFilter>();
+        public List<IItemFilter> filters = new LinkedList<>();
 
         public AllMultiItemFilter(List<IItemFilter> filters) {
             this.filters = filters;
         }
 
         public AllMultiItemFilter() {
-            this(new LinkedList<IItemFilter>());
+            this(new LinkedList<>());
         }
 
         @Override
@@ -95,14 +96,14 @@ public class ItemList {
     }
 
     public static class AnyMultiItemFilter implements IItemFilter {
-        public List<IItemFilter> filters = new LinkedList<IItemFilter>();
+        public List<IItemFilter> filters = new LinkedList<>();
 
         public AnyMultiItemFilter(List<IItemFilter> filters) {
             this.filters = filters;
         }
 
         public AnyMultiItemFilter() {
-            this(new LinkedList<IItemFilter>());
+            this(new LinkedList<>());
         }
 
         @Override
@@ -152,7 +153,7 @@ public class ItemList {
     }
 
     public static List<IItemFilter> getItemFilters() {
-        LinkedList<IItemFilter> filters = new LinkedList<IItemFilter>();
+        LinkedList<IItemFilter> filters = new LinkedList<>();
         synchronized (itemFilterers) {
             for (IItemFilterProvider p : itemFilterers) {
                 filters.add(p.getFilter());
@@ -163,7 +164,7 @@ public class ItemList {
 
     public static final RestartableTask loadItems = new RestartableTask("NEI Item Loading") {
         private void damageSearch(Item item, List<ItemStack> permutations) {
-            HashSet<String> damageIconSet = new HashSet<String>();
+            HashSet<String> damageIconSet = new HashSet<>();
             for (int damage = 0; damage < 16; damage++) {
                 try {
                     ItemStack stack = new ItemStack(item, 1, damage);
@@ -186,8 +187,8 @@ public class ItemList {
         public void execute() {
             ThreadOperationTimer timer = getTimer(500);
 
-            LinkedList<ItemStack> items = new LinkedList<ItemStack>();
-            LinkedList<ItemStack> permutations = new LinkedList<ItemStack>();
+            LinkedList<ItemStack> items = new LinkedList<>();
+            LinkedList<ItemStack> permutations = new LinkedList<>();
             ListMultimap<Item, ItemStack> itemMap = ArrayListMultimap.create();
 
             timer.setLimit(500);
@@ -207,7 +208,7 @@ public class ItemList {
                     permutations.addAll(ItemInfo.itemOverrides.get(item));
 
                     if (permutations.isEmpty()) {
-                        item.getSubItems(item, null, permutations);
+                        item.getSubItems(item, null, new NonNullList<>(permutations, null));
                     }
 
                     if (permutations.isEmpty()) {
@@ -241,7 +242,7 @@ public class ItemList {
     public static final RestartableTask updateFilter = new RestartableTask("NEI Item Filtering") {
         @Override
         public void execute() {
-            ArrayList<ItemStack> filtered = new ArrayList<ItemStack>();
+            ArrayList<ItemStack> filtered = new ArrayList<>();
             IItemFilter filter = getItemListFilter();
             for (ItemStack item : items) {
                 if (interrupted()) {

@@ -1,6 +1,6 @@
 [
 {
-  "modid": "NotEnoughItems",
+  "modid": "nei",
   "name": "Not Enough Items",
   "version": "${version}",
   "mcversion": "${mc_version}",

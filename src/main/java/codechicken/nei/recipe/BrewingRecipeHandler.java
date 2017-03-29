@@ -66,7 +66,7 @@ public class BrewingRecipeHandler extends TemplateRecipeHandler {
 
         @Override
         public ArrayList<PositionedStack> getIngredients() {
-            ArrayList<PositionedStack> recipestacks = new ArrayList<PositionedStack>();
+            ArrayList<PositionedStack> recipestacks = new ArrayList<>();
             recipestacks.add(recipe.ingredient);
             recipestacks.add(recipe.input);
             return recipestacks;
@@ -74,7 +74,7 @@ public class BrewingRecipeHandler extends TemplateRecipeHandler {
     }
 
     public static final ItemStackSet ingredients = new ItemStackSet();
-    public static final HashSet<NEIBrewingRecipe> apotions = new HashSet<NEIBrewingRecipe>();
+    public static final HashSet<NEIBrewingRecipe> apotions = new HashSet<>();
 
     @Override
     public void loadTransferRects() {
@@ -188,7 +188,7 @@ public class BrewingRecipeHandler extends TemplateRecipeHandler {
     }
 
     public static void searchPotions() {
-        ArrayList<ItemStack> allPotions = new ArrayList<ItemStack>();
+        ArrayList<ItemStack> allPotions = new ArrayList<>();
         for (IPotionRecipe recipe : PotionRecipeHelper.getRecipes()) {
             allPotions.add(recipe.getRecipeOutput());
         }

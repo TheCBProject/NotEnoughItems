@@ -18,7 +18,7 @@ public class ShapelessRecipeHandler extends ShapedRecipeHandler {
 
     public class CachedShapelessRecipe extends CachedRecipe {
         public CachedShapelessRecipe() {
-            ingredients = new ArrayList<PositionedStack>();
+            ingredients = new ArrayList<>();
         }
 
         public CachedShapelessRecipe(ItemStack output) {
@@ -142,7 +142,7 @@ public class ShapelessRecipeHandler extends ShapedRecipeHandler {
     }
 
     public CachedShapelessRecipe forgeShapelessRecipe(ShapelessOreRecipe recipe) {
-        ArrayList<Object> items = recipe.getInput();
+        List<Object> items = recipe.getInput();
 
         for (Object item : items) {
             if (item instanceof List && ((List<?>) item).isEmpty())//ore handler, no ores

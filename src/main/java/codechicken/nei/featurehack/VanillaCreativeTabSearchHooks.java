@@ -12,6 +12,7 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.TextFormatting;
 
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ import java.util.List;
  */
 public class VanillaCreativeTabSearchHooks {
 
-    private static HashMap<CreativeTabs, ArrayList<ItemStack>> tabCache = new HashMap<CreativeTabs, ArrayList<ItemStack>>();
+    private static HashMap<CreativeTabs, ArrayList<ItemStack>> tabCache = new HashMap<>();
 
     public static void updateSearchListThreaded(GuiContainerCreative guiContainerCreative) {
         filterTask.stop();
@@ -66,7 +67,7 @@ public class VanillaCreativeTabSearchHooks {
 
         @Override
         public void execute() {
-            ArrayList<ItemStack> filtered = new ArrayList<ItemStack>();
+            List<ItemStack> filtered = new ArrayList<>();
             if (containerCreative == null) {
                 stop();
             }
@@ -84,7 +85,7 @@ public class VanillaCreativeTabSearchHooks {
             if (interrupted()) {
                 return;
             }
-            containerCreative.itemList = filtered;
+            containerCreative.itemList = new NonNullList<>(filtered, null);
             containerCreative.scrollTo(0.0F);
         }
 
@@ -109,7 +110,7 @@ public class VanillaCreativeTabSearchHooks {
                     return true;
                 }
             }
-            for (String toolTipString : item.getTooltip(Minecraft.getMinecraft().thePlayer, Minecraft.getMinecraft().gameSettings.advancedItemTooltips)) {
+            for (String toolTipString : item.getTooltip(Minecraft.getMinecraft().player, Minecraft.getMinecraft().gameSettings.advancedItemTooltips)) {
                 if (TextFormatting.getTextWithoutFormattingCodes(toolTipString).toLowerCase().contains(textField.getText().toLowerCase())) {
                     return true;
                 }
@@ -119,11 +120,11 @@ public class VanillaCreativeTabSearchHooks {
     }
 
     private static List<ItemStack> getStacksForTab(CreativeTabs creativeTab) {
-        ArrayList<ItemStack> tabStacks = new ArrayList<ItemStack>();
+        ArrayList<ItemStack> tabStacks = new ArrayList<>();
         if (creativeTab == CreativeTabs.SEARCH) {
             for (Item item : Item.REGISTRY) {
                 if (item != null) {
-                    item.getSubItems(item, null, tabStacks);
+                    item.getSubItems(item, null, new NonNullList<>(tabStacks, null));
                 }
             }
             for (Enchantment enchantment : Enchantment.REGISTRY) {
@@ -133,7 +134,7 @@ public class VanillaCreativeTabSearchHooks {
             }
         }
 
-        creativeTab.displayAllRelevantItems(tabStacks);
+        creativeTab.displayAllRelevantItems(new NonNullList<>(tabStacks, null));
 
         return tabStacks;
     }

@@ -17,10 +17,10 @@ import java.util.List;
  * Don't bother using this.
  */
 public class PotionRecipeHelper {
-    private static ArrayList<IPotionRecipe> allRecipes = new ArrayList<IPotionRecipe>();
-    private static ArrayList<IPotionRecipe> normalRecipes = new ArrayList<IPotionRecipe>();
-    private static ArrayList<IPotionRecipe> splashRecipes = new ArrayList<IPotionRecipe>();
-    private static ArrayList<IPotionRecipe> lingeringRecipes = new ArrayList<IPotionRecipe>();
+    private static ArrayList<IPotionRecipe> allRecipes = new ArrayList<>();
+    private static ArrayList<IPotionRecipe> normalRecipes = new ArrayList<>();
+    private static ArrayList<IPotionRecipe> splashRecipes = new ArrayList<>();
+    private static ArrayList<IPotionRecipe> lingeringRecipes = new ArrayList<>();
 
     public static void addNormalRecipe(Item potionItem, PotionType input, Item ingredient, PotionType output) {
         IPotionRecipe recipe = new PotionTypeRecipe(PotionUtils.addPotionToItemStack(new ItemStack(potionItem), input), new ItemStack(ingredient), output);

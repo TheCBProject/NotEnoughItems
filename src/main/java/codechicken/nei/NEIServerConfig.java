@@ -29,9 +29,9 @@ public class NEIServerConfig {
 
     public static File saveDir;
     public static ConfigFile serverConfig;
-    public static Map<Integer, NBTTagCompound> dimTags = new HashMap<Integer, NBTTagCompound>();
-    public static HashMap<String, PlayerSave> playerSaves = new HashMap<String, PlayerSave>();
-    public static ItemStackMap<Set<String>> bannedItems = new ItemStackMap<Set<String>>();
+    public static Map<Integer, NBTTagCompound> dimTags = new HashMap<>();
+    public static HashMap<String, PlayerSave> playerSaves = new HashMap<>();
+    public static ItemStackMap<Set<String>> bannedItems = new ItemStackMap<>();
 
     public static void load(World world) {
         if (ServerUtils.mc() != server) {
@@ -145,7 +145,7 @@ public class NEIServerConfig {
 
     public static HashSet<String> getPlayerList(String tag) {
         String[] list = serverConfig.getTag(tag).getValue("").replace(" ", "").split(",");
-        return new HashSet<String>(Arrays.asList(list));
+        return new HashSet<>(Arrays.asList(list));
     }
 
     public static void addPlayerToList(String playername, String tag) {
@@ -188,7 +188,7 @@ public class NEIServerConfig {
         bannedItems.clear();
         File file = new File(saveDir, "banneditems.cfg");
         if (!file.exists()) {
-            bannedItems.put(new ItemStack(Blocks.COMMAND_BLOCK), new HashSet<String>(Arrays.asList("NONE")));
+            bannedItems.put(new ItemStack(Blocks.COMMAND_BLOCK), new HashSet<>(Arrays.asList("NONE")));
             saveBannedItems();
             return;
         }
@@ -206,7 +206,7 @@ public class NEIServerConfig {
                 }
                 try {
                     NBTTagCompound key = JsonToNBT.getTagFromJson(s.substring(0, delim));
-                    Set<String> values = new HashSet<String>();
+                    Set<String> values = new HashSet<>();
                     for (String s2 : s.substring(delim + 1).split(",")) {
                         values.add(s2.trim());
                     }

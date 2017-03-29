@@ -10,9 +10,9 @@ import java.util.*;
 import static codechicken.lib.gui.GuiDraw.drawString;
 
 public abstract class OptionStringSet extends Option {
-    public LinkedList<String> options = new LinkedList<String>();
+    public LinkedList<String> options = new LinkedList<>();
     public Multimap<String, String> dependants = ArrayListMultimap.create();
-    public Map<String, String> dependancies = new HashMap<String, String>();
+    public Map<String, String> dependancies = new HashMap<>();
     public Multimap<String, String> groups = ArrayListMultimap.create();
 
     public OptionStringSet(String name) {
@@ -106,7 +106,7 @@ public abstract class OptionStringSet extends Option {
                 setValue(grp);
             }
         } else {
-            List<String> setUtils = new LinkedList<String>(values());
+            List<String> setUtils = new LinkedList<>(values());
             setUtils.add(s);
             setValues(setUtils);
         }
@@ -122,7 +122,7 @@ public abstract class OptionStringSet extends Option {
                 remValue(grp);
             }
         } else {
-            List<String> values = new LinkedList<String>(values());
+            List<String> values = new LinkedList<>(values());
             values.remove(s);
             setValues(values);
         }

@@ -27,7 +27,7 @@ public class ItemPanel extends Widget {
     /**
      * Should not be externally modified, use updateItemList
      */
-    public static ArrayList<ItemStack> items = new ArrayList<ItemStack>();
+    public static ArrayList<ItemStack> items = new ArrayList<>();
     /**
      * Swapped into visible items on update
      */
@@ -235,7 +235,7 @@ public class ItemPanel extends Widget {
         for (INEIGuiHandler handler : GuiInfo.guiHandlers) {
             if (handler.handleDragNDrop(gui, mousex, mousey, draggedStack, button)) {
                 handled = true;
-                if (draggedStack.stackSize == 0) {
+                if (draggedStack.getCount() == 0) {
                     draggedStack = null;
                     return true;
                 }
@@ -249,8 +249,8 @@ public class ItemPanel extends Widget {
         Slot overSlot = gui.getSlotAtPosition(mousex, mousey);
         if (overSlot != null && overSlot.isItemValid(draggedStack)) {
             if (NEIClientConfig.canCheatItem(draggedStack)) {
-                int contents = overSlot.getHasStack() ? overSlot.getStack().stackSize : 0;
-                int add = button == 0 ? draggedStack.stackSize : 1;
+                int contents = overSlot.getHasStack() ? overSlot.getStack().getCount() : 0;
+                int add = button == 0 ? draggedStack.getCount() : 1;
                 if (overSlot.getHasStack() && !NEIServerUtils.areStacksSameType(draggedStack, overSlot.getStack())) {
                     contents = 0;
                 }
@@ -259,9 +259,9 @@ public class ItemPanel extends Widget {
                 if (total > contents) {
                     NEIClientUtils.setSlotContents(overSlot.slotNumber, NEIServerUtils.copyStack(draggedStack, total), true);
                     NEIClientPacketHandler.sendGiveItem(NEIServerUtils.copyStack(draggedStack, total), false, false);
-                    draggedStack.stackSize -= total - contents;
+                    draggedStack.shrink(total - contents);
                 }
-                if (draggedStack.stackSize == 0) {
+                if (draggedStack.getCount() == 0) {
                     draggedStack = null;
                 }
             } else {

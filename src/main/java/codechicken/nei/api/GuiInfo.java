@@ -11,8 +11,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 
 public class GuiInfo {
-    public static LinkedList<INEIGuiHandler> guiHandlers = new LinkedList<INEIGuiHandler>();
-    public static HashSet<Class<? extends GuiContainer>> customSlotGuis = new HashSet<Class<? extends GuiContainer>>();
+    public static LinkedList<INEIGuiHandler> guiHandlers = new LinkedList<>();
+    public static HashSet<Class<? extends GuiContainer>> customSlotGuis = new HashSet<>();
 
     public static void load() {
         API.registerNEIGuiHandler(new NEICreativeGuiHandler());

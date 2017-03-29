@@ -17,7 +17,7 @@ public class PotionUpgradeRecipe implements IPotionRecipe {
     public PotionUpgradeRecipe(ItemStack input, ItemStack ingredient, Item output) {
         this.input = input;
         this.ingredient = ingredient;
-        int stackSize = input.stackSize;
+        int stackSize = input.getCount();
         int meta = input.getItemDamage();
         NBTTagCompound tagCompound = input.getTagCompound();
         this.output = new ItemStack(output, stackSize, meta);

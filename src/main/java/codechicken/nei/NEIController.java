@@ -63,7 +63,7 @@ public class NEIController implements IContainerSlotClickHandler, IContainerInpu
             return;
         }
 
-        LinkedList<ItemStack> beforeStacks = new LinkedList<ItemStack>();
+        LinkedList<ItemStack> beforeStacks = new LinkedList<>();
         for (int i = 0; i < inventory.getSizeInventory(); i++) {
             beforeStacks.add(NEIServerUtils.copyStack(inventory.getStackInSlot(i)));
         }
@@ -189,7 +189,7 @@ public class NEIController implements IContainerSlotClickHandler, IContainerInpu
         }
 
         if (NEIClientConfig.canPerformAction("item") && NEIClientConfig.hasSMPCounterPart()) {
-            if (heldStackInfinite != null && slot != null && slot.inventory == Minecraft.getMinecraft().thePlayer.inventory) {
+            if (heldStackInfinite != null && slot != null && slot.inventory == Minecraft.getMinecraft().player.inventory) {
                 ItemStack stack = slot.getStack();
                 if (stack != null) {
                     heldStackInfinite.onPlaceInfinite(stack);

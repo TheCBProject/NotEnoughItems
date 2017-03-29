@@ -29,13 +29,13 @@ public class HUDRenderer implements IKeyStateTracker {
     public static void renderOverlay() {
         Minecraft mc = Minecraft.getMinecraft();
         if (mc.currentScreen == null &&
-                mc.theWorld != null &&
+                mc.world != null &&
                 !mc.gameSettings.keyBindPlayerList.isKeyDown() &&
                 NEIClientConfig.getBooleanSetting("world.highlight_tips") &&
                 mc.objectMouseOver != null &&
                 mc.objectMouseOver.typeOfHit == RayTraceResult.Type.BLOCK) {
-            World world = mc.theWorld;
-            ArrayList<ItemStack> items = ItemInfo.getIdentifierItems(world, mc.thePlayer, mc.objectMouseOver);
+            World world = mc.world;
+            ArrayList<ItemStack> items = ItemInfo.getIdentifierItems(world, mc.player, mc.objectMouseOver);
             if (items.isEmpty()) {
                 return;
             }
@@ -49,7 +49,7 @@ public class HUDRenderer implements IKeyStateTracker {
                 }
             }
 
-            renderOverlay(stack, ItemInfo.getText(stack, world, mc.thePlayer, mc.objectMouseOver), getPositioning());
+            renderOverlay(stack, ItemInfo.getText(stack, world, mc.player, mc.objectMouseOver), getPositioning());
         }
     }
 
@@ -64,7 +64,7 @@ public class HUDRenderer implements IKeyStateTracker {
         }
         int h = Math.max(24, 10 + 10 * textData.size());
 
-        Dimension size = displaySize();
+        Dimension size = getDisplaySize();
         int x = (size.width - w - 1) * pos.x / 10000;
         int y = (size.height - h - 1) * pos.y / 10000;
 

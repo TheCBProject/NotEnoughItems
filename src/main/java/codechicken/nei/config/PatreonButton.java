@@ -1,6 +1,6 @@
 package codechicken.nei.config;
 
-import codechicken.core.gui.GuiCCButton;
+import codechicken.lib.gui.GuiCCButton;
 import codechicken.lib.texture.TextureUtils;
 import net.minecraft.client.renderer.GlStateManager;
 

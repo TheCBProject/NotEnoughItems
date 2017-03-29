@@ -34,7 +34,7 @@ public class ItemPanelDumper extends DataDumper {
 
     @Override
     public Iterable<String[]> dump(int mode) {
-        LinkedList<String[]> list = new LinkedList<String[]>();
+        LinkedList<String[]> list = new LinkedList<>();
         for (ItemStack stack : ItemPanel.items) {
             list.add(new String[] { Item.REGISTRY.getNameForObject(stack.getItem()).toString(), Integer.toString(Item.getIdFromItem(stack.getItem())), Integer.toString(InventoryUtils.actualDamage(stack)), stack.getTagCompound() == null ? "false" : "true", TextFormatting.getTextWithoutFormattingCodes(GuiContainerManager.itemDisplayNameShort(stack)) });
         }

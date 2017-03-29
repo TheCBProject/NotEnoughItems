@@ -8,6 +8,7 @@ import java.awt.*;
 import java.util.List;
 
 import static codechicken.lib.gui.GuiDraw.*;
+import static codechicken.lib.texture.TextureUtils.changeTexture;
 
 public abstract class OptionButton extends Option {
     protected static ResourceLocation guiTex = new ResourceLocation("textures/gui/widgets.png");

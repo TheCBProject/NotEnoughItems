@@ -88,7 +88,7 @@ public class GuiItemIconDumper extends GuiScreen {
     }
 
     private void drawItems() {
-        Dimension d = GuiDraw.displayRes();
+        Dimension d = GuiDraw.getDisplayRes();
 
         GlStateManager.matrixMode(GL11.GL_PROJECTION);
         GlStateManager.loadIdentity();
@@ -158,7 +158,7 @@ public class GuiItemIconDumper extends GuiScreen {
 
     private BufferedImage screenshot() {
         Framebuffer fb = Minecraft.getMinecraft().getFramebuffer();
-        Dimension mcSize = GuiDraw.displayRes();
+        Dimension mcSize = GuiDraw.getDisplayRes();
         Dimension texSize = mcSize;
 
         if (OpenGlHelper.isFramebufferEnabled()) {

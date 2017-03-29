@@ -1,7 +1,7 @@
 package codechicken.nei;
 
-import codechicken.core.gui.GuiScrollSlot;
 import codechicken.lib.gui.GuiDraw;
+import codechicken.lib.gui.GuiScrollSlot;
 import codechicken.lib.item.filtering.IItemFilter;
 import codechicken.lib.item.filtering.IItemFilterProvider;
 import codechicken.lib.thread.RestartableTask;
@@ -17,6 +17,7 @@ import codechicken.nei.jei.EnumItemBrowser;
 import codechicken.nei.jei.JEIIntegrationManager;
 import codechicken.nei.util.LogHelper;
 import codechicken.nei.util.NEIClientUtils;
+import codechicken.nei.widget.Button;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -29,14 +30,18 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Pattern;
 
-public class SubsetWidget extends codechicken.nei.widget.Button implements IItemFilterProvider, ItemsLoadedCallback, ISearchProvider {
+public class SubsetWidget extends Button implements IItemFilterProvider, ItemsLoadedCallback, ISearchProvider {
+
     public static class SubsetState {
+
         int state = 2;
-        ArrayList<ItemStack> items = new ArrayList<ItemStack>();
+        ArrayList<ItemStack> items = new ArrayList<>();
     }
 
     public static class SubsetTag {
+
         protected class SubsetSlot extends GuiScrollSlot {
+
             public SubsetSlot() {
                 super(0, 0, 0, 0);
                 setSmoothScroll(false);
@@ -58,7 +63,7 @@ public class SubsetWidget extends codechicken.nei.widget.Button implements IItem
                     SubsetTag tag = sorted.get(slot);
                     if (NEIClientUtils.shiftKey()) {
                         String searchTag = tag.fullname;//TODO
-                        if (searchTag.startsWith("Mod.") && JEIIntegrationManager.itemPannelOwner == EnumItemBrowser.JEI){
+                        if (searchTag.startsWith("Mod.") && JEIIntegrationManager.itemPannelOwner == EnumItemBrowser.JEI) {
                             searchTag = searchTag.replace("Mod.", "").replace(" ", "");
                         }
                         LayoutManager.searchField.setText("@" + searchTag);
@@ -129,7 +134,7 @@ public class SubsetWidget extends codechicken.nei.widget.Button implements IItem
 
         public final String fullname;
         public final IItemFilter filter;
-        public TreeMap<String, SubsetTag> children = new TreeMap<String, SubsetTag>();
+        public TreeMap<String, SubsetTag> children = new TreeMap<>();
         public List<SubsetTag> sorted = Collections.emptyList();
         private int childwidth;
 
@@ -180,7 +185,7 @@ public class SubsetWidget extends codechicken.nei.widget.Button implements IItem
         }
 
         private void recacheChildren() {
-            sorted = new ArrayList<SubsetTag>(children.values());
+            sorted = new ArrayList<>(children.values());
             childwidth = 0;
             for (SubsetTag tag : sorted) {
                 childwidth = Math.max(childwidth, tag.nameWidth() + 2);
@@ -391,12 +396,12 @@ public class SubsetWidget extends codechicken.nei.widget.Button implements IItem
     public static Rectangle4i area = new Rectangle4i();
     public static ItemStack hoverStack;
 
-    private static HashMap<String, SubsetState> subsetState = new HashMap<String, SubsetState>();
+    private static HashMap<String, SubsetState> subsetState = new HashMap<>();
     /**
      * All operations on this variable should be synchronised.
      */
     private static final ItemStackSet hiddenItems = new ItemStackSet();
-    private static final AtomicReference<NBTTagList> dirtyHiddenItems = new AtomicReference<NBTTagList>();
+    private static final AtomicReference<NBTTagList> dirtyHiddenItems = new AtomicReference<>();
 
     public static SubsetState getState(SubsetTag tag) {
         SubsetState state = subsetState.get(tag.fullname);
@@ -478,11 +483,11 @@ public class SubsetWidget extends codechicken.nei.widget.Button implements IItem
             hiddenItems.clear();
         }
 
-        List<ItemStack> itemList = new LinkedList<ItemStack>();
+        List<ItemStack> itemList = new LinkedList<>();
         try {
             NBTTagList list = NEIClientConfig.world.nbt.getTagList("hiddenItems", 10);
             for (int i = 0; i < list.tagCount(); i++) {
-                itemList.add(ItemStack.loadItemStackFromNBT(list.getCompoundTagAt(i)));
+                itemList.add(new ItemStack(list.getCompoundTagAt(i)));
             }
         } catch (Exception e) {
             LogHelper.errorError("Error loading hiddenItems", e);
@@ -530,6 +535,7 @@ public class SubsetWidget extends codechicken.nei.widget.Button implements IItem
     private static final UpdateStateTask updateState = new UpdateStateTask();
 
     private static class UpdateStateTask extends RestartableTask {
+
         private volatile boolean reallocate;
 
         public UpdateStateTask() {
@@ -549,8 +555,8 @@ public class SubsetWidget extends codechicken.nei.widget.Button implements IItem
 
         @Override
         public void execute() {
-            HashMap<String, SubsetState> state = new HashMap<String, SubsetState>();
-            List<SubsetTag> tags = new LinkedList<SubsetTag>();
+            HashMap<String, SubsetState> state = new HashMap<>();
+            List<SubsetTag> tags = new LinkedList<>();
             synchronized (root) {
                 cloneStates(root, tags, state);
                 if (interrupted()) {
@@ -748,13 +754,10 @@ public class SubsetWidget extends codechicken.nei.widget.Button implements IItem
 
     @Override
     public IItemFilter getFilter() {
-        return new IItemFilter()//synchronise access on hiddenItems
-        {
-            @Override
-            public boolean matches(ItemStack item) {
-                synchronized (hiddenItems) {
-                    return !hiddenItems.matches(item);
-                }
+        //synchronise access on hiddenItems
+        return item -> {
+            synchronized (hiddenItems) {
+                return !hiddenItems.matches(item);
             }
         };
     }
@@ -781,7 +784,7 @@ public class SubsetWidget extends codechicken.nei.widget.Button implements IItem
                 return null;
             }
 
-            List<SubsetTag> matching = new LinkedList<SubsetTag>();
+            List<SubsetTag> matching = new LinkedList<>();
             root.search(matching, p);
             if (matching.isEmpty()) {
                 return null;

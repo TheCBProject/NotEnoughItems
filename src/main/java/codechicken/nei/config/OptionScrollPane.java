@@ -1,6 +1,6 @@
 package codechicken.nei.config;
 
-import codechicken.core.gui.GuiScrollPane;
+import codechicken.lib.gui.GuiScrollPane;
 import codechicken.lib.render.CCRenderState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;

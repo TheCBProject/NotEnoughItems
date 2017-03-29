@@ -22,7 +22,7 @@ import java.util.Map.Entry;
 public class FurnaceRecipeHandler extends TemplateRecipeHandler {
     public class SmeltingPair extends CachedRecipe {
         public SmeltingPair(ItemStack ingred, ItemStack result) {
-            ingred.stackSize = 1;
+            ingred.setCount(1);
             this.ingred = new PositionedStack(ingred, 51, 6);
             this.result = new PositionedStack(result, 111, 24);
         }
@@ -136,7 +136,7 @@ public class FurnaceRecipeHandler extends TemplateRecipeHandler {
     }
 
     private static Set<Item> excludedFuels() {
-        Set<Item> efuels = new HashSet<Item>();
+        Set<Item> efuels = new HashSet<>();
         efuels.add(Item.getItemFromBlock(Blocks.BROWN_MUSHROOM));
         efuels.add(Item.getItemFromBlock(Blocks.RED_MUSHROOM));
         efuels.add(Item.getItemFromBlock(Blocks.STANDING_SIGN));
@@ -146,7 +146,7 @@ public class FurnaceRecipeHandler extends TemplateRecipeHandler {
     }
 
     private static void findFuels() {
-        afuels = new ArrayList<FuelPair>();
+        afuels = new ArrayList<>();
         Set<Item> efuels = excludedFuels();
         for (ItemStack item : ItemList.items) {
             Block block = Block.getBlockFromItem(item.getItem());

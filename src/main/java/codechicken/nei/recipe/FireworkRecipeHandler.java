@@ -18,7 +18,7 @@ import java.util.List;
 
 public class FireworkRecipeHandler extends ShapelessRecipeHandler {
     public class CachedFireworkRecipe extends CachedShapelessRecipe {
-        LinkedList<Object> itemList = new LinkedList<Object>();
+        LinkedList<Object> itemList = new LinkedList<>();
 
         public Object[] baseIngredients;
         public Object extraIngred;
@@ -59,7 +59,7 @@ public class FireworkRecipeHandler extends ShapelessRecipeHandler {
     private InventoryCrafting inventoryCrafting = new InventoryCraftingDummy();
     private RecipeFireworks recipeFireworks = new RecipeFireworks();
 
-    public ArrayList<CachedFireworkRecipe> mfireworks = new ArrayList<CachedFireworkRecipe>();
+    public ArrayList<CachedFireworkRecipe> mfireworks = new ArrayList<>();
 
     public FireworkRecipeHandler() {
         super();

@@ -1,6 +1,6 @@
 package codechicken.nei.config;
 
-import codechicken.core.gui.GuiCCButton;
+import codechicken.lib.gui.GuiCCButton;
 import codechicken.nei.util.LogHelper;
 import net.minecraft.client.gui.GuiConfirmOpenLink;
 import net.minecraft.client.gui.GuiScreen;

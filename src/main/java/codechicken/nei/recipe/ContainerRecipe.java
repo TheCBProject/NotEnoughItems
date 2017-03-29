@@ -10,15 +10,22 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.ITextComponent;
 
 public class ContainerRecipe extends Container {
+
     private class RecipeInventory implements IInventory {
+
         @Override
-        public boolean isUseableByPlayer(EntityPlayer entityplayer) {
+        public boolean isUsableByPlayer(EntityPlayer entityplayer) {
             return true;
         }
 
         @Override
         public int getSizeInventory() {
             return inventorySlots.size();
+        }
+
+        @Override
+        public boolean isEmpty() {
+            return false;
         }
 
         @Override
@@ -147,7 +154,7 @@ public class ContainerRecipe extends Container {
     public Slot getSlotWithStack(PositionedStack stack, int recipex, int recipey) {
         for (int i = 0; i < inventorySlots.size(); i++) {
             Slot slot = inventorySlots.get(i);
-            if (slot.xDisplayPosition == (stack.relx + recipex) && slot.yDisplayPosition == (stack.rely + recipey)) {
+            if (slot.xPos == (stack.relx + recipex) && slot.yPos == (stack.rely + recipey)) {
                 return slot;
             }
         }

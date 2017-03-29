@@ -36,7 +36,7 @@ public class FuelRecipeHandler extends FurnaceRecipeHandler {
         }
     }
 
-    private ArrayList<SmeltingPair> mfurnace = new ArrayList<FurnaceRecipeHandler.SmeltingPair>();
+    private ArrayList<SmeltingPair> mfurnace = new ArrayList<>();
 
     public FuelRecipeHandler() {
         super();

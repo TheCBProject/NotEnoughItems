@@ -34,9 +34,9 @@ public class RecipeInfo {
         }
     }
 
-    static HashMap<OverlayKey, IOverlayHandler> overlayMap = new HashMap<OverlayKey, IOverlayHandler>();
-    static HashMap<OverlayKey, IStackPositioner> positionerMap = new HashMap<OverlayKey, IStackPositioner>();
-    static HashMap<Class<? extends GuiContainer>, int[]> offsets = new HashMap<Class<? extends GuiContainer>, int[]>();
+    static HashMap<OverlayKey, IOverlayHandler> overlayMap = new HashMap<>();
+    static HashMap<OverlayKey, IStackPositioner> positionerMap = new HashMap<>();
+    static HashMap<Class<? extends GuiContainer>, int[]> offsets = new HashMap<>();
 
     public static void registerOverlayHandler(Class<? extends GuiContainer> classz, IOverlayHandler handler, String ident) {
         overlayMap.put(new OverlayKey(classz, ident), handler);

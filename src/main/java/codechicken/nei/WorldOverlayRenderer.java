@@ -69,7 +69,7 @@ public class WorldOverlayRenderer implements IKeyStateTracker {
 
         GlStateManager.color(1, 0, 0);
 
-        World world = entity.worldObj;
+        World world = entity.world;
         int x1 = (int) entity.posX;
         int z1 = (int) entity.posZ;
         int y1 = (int) MathHelper.clip(entity.posY, 16, world.getHeight() - 16);
@@ -108,7 +108,6 @@ public class WorldOverlayRenderer implements IKeyStateTracker {
         GlStateManager.enableTexture2D();
     }
 
-    //private static Entity dummyEntity = new EntityPig(null);
     private static Cuboid6 c = new Cuboid6();
 
     private static int getSpawnMode(Chunk chunk, int x, int y, int z) {
@@ -157,8 +156,8 @@ public class WorldOverlayRenderer implements IKeyStateTracker {
                     y2 = dy;
                 }
 
-                if (y1 > entity.worldObj.getHeight()) {
-                    y2 = entity.worldObj.getHeight();
+                if (y1 > entity.world.getHeight()) {
+                    y2 = entity.world.getHeight();
                     y1 = y2 - dy;
                 }
 
@@ -191,8 +190,8 @@ public class WorldOverlayRenderer implements IKeyStateTracker {
                         y2 = dy;
                     }
 
-                    if (y1 > entity.worldObj.getHeight()) {
-                        y2 = entity.worldObj.getHeight();
+                    if (y1 > entity.world.getHeight()) {
+                        y2 = entity.world.getHeight();
                         y1 = y2 - dy;
                     }
 

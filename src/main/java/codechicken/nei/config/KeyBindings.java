@@ -16,8 +16,8 @@ import org.lwjgl.input.Keyboard;
 public class KeyBindings {
 	private static final String categoryNameGui = "NEI (Not Enough Items) Gui";
 	private static final String categoryNameWorld = "NEI (Not Enough Items) World";
-	private static Map<String, KeyBinding> keyBindings = new HashMap<String, KeyBinding>();
-	private static List<KeyBinding> keyBindingsToRegister = new ArrayList<KeyBinding>();
+	private static Map<String, KeyBinding> keyBindings = new HashMap<>();
+	private static List<KeyBinding> keyBindingsToRegister = new ArrayList<>();
 
 	static {
 		setDefaultKeyBinding("nei.options.keys.gui.recipe", JEIIntegrationManager.getShowRecipes());

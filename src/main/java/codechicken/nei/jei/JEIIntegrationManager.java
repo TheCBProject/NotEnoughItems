@@ -176,7 +176,7 @@ public class JEIIntegrationManager {
         if (filter != null) {
             return filter.getItemStacks();
         }
-        return new ArrayList<ItemStack>();
+        return new ArrayList<>();
     }
 
     public static KeyBinding getShowUses() {

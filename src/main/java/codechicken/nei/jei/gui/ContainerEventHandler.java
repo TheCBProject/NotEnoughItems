@@ -68,7 +68,7 @@ public class ContainerEventHandler {
             }
         }
         int eventKey = Mouse.getEventButton();
-        if (JEIIntegrationManager.itemPannelOwner == EnumItemBrowser.JEI && Minecraft.getMinecraft().thePlayer != null) {
+        if (JEIIntegrationManager.itemPannelOwner == EnumItemBrowser.JEI && Minecraft.getMinecraft().player != null) {
             if (!Config.isCheatItemsEnabled() && Minecraft.getMinecraft().currentScreen instanceof GuiContainer) {
                 if (!isContainerTextFieldFocused()) {
                     IClickedIngredient ingredient = getIngeredientUnderMouseForKey();
@@ -93,7 +93,7 @@ public class ContainerEventHandler {
             LayoutManager.searchField.setText(fieldFilter.getText(), false);
         }
 
-        if (JEIIntegrationManager.itemPannelOwner == EnumItemBrowser.JEI && Minecraft.getMinecraft().thePlayer != null) {
+        if (JEIIntegrationManager.itemPannelOwner == EnumItemBrowser.JEI && Minecraft.getMinecraft().player != null) {
             if (Minecraft.getMinecraft().currentScreen instanceof GuiContainer) {
                 if (!event.isCanceled()) {
                     if (!isContainerTextFieldFocused()) {

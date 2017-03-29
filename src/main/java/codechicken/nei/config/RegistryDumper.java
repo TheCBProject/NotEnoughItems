@@ -12,7 +12,7 @@ public abstract class RegistryDumper<T> extends DataDumper {
 
     @Override
     public Iterable<String[]> dump(int mode) {
-        LinkedList<String[]> list = new LinkedList<String[]>();
+        LinkedList<String[]> list = new LinkedList<>();
         RegistryNamespaced registry = registry();
 
         for (T obj : (Iterable<T>) registry) {

@@ -130,14 +130,14 @@ public class NEIServerUtils {
         notice.getStyle().setColor(TextFormatting.GRAY).setItalic(true);
 
         if (NEIServerConfig.canPlayerPerformAction("CONSOLE", permission)) {
-            ServerUtils.mc().addChatMessage(notice);
+            ServerUtils.mc().sendMessage(notice);
         }
 
         for (EntityPlayer p : ServerUtils.getPlayers()) {
             if (p == sender) {
-                p.addChatComponentMessage(msg);
+                p.sendMessage(msg);
             } else if (NEIServerConfig.canPlayerPerformAction(p.getName(), permission)) {
-                p.addChatComponentMessage(notice);
+                p.sendMessage(notice);
             }
         }
     }
@@ -184,8 +184,8 @@ public class NEIServerUtils {
         if (stack1.getItem() != stack2.getItem()) {
             return Item.getIdFromItem(stack1.getItem()) - Item.getIdFromItem(stack2.getItem());
         }
-        if (stack1.stackSize != stack2.stackSize) {
-            return stack1.stackSize - stack2.stackSize;
+        if (stack1.getCount() != stack2.getCount()) {
+            return stack1.getCount() - stack2.getCount();
         }
         return stack1.getItemDamage() - stack2.getItemDamage();
     }
@@ -201,11 +201,11 @@ public class NEIServerUtils {
 
     public static void givePlayerItem(EntityPlayerMP player, ItemStack stack, boolean infinite, boolean doGive) {
         if (stack.getItem() == null) {
-            player.addChatComponentMessage(setColour(new TextComponentTranslation("nei.chat.give.noitem"), TextFormatting.WHITE));
+            player.sendMessage(setColour(new TextComponentTranslation("nei.chat.give.noitem"), TextFormatting.WHITE));
             return;
         }
 
-        int given = stack.stackSize;
+        int given = stack.getCount();
         if (doGive) {
             if (infinite) {
                 player.inventory.addItemStackToInventory(stack);
@@ -223,7 +223,7 @@ public class NEIServerUtils {
             return null;
         }
 
-        itemstack.stackSize += i;
+        itemstack.grow(i);
         return itemstack.splitStack(i);
     }
 
@@ -232,7 +232,7 @@ public class NEIServerUtils {
             return null;
         }
 
-        return copyStack(itemstack, itemstack.stackSize);
+        return copyStack(itemstack, itemstack.getCount());
     }
 
     public static void toggleMagnetMode(EntityPlayerMP player) {
@@ -283,7 +283,7 @@ public class NEIServerUtils {
 
         //tell the client to change it
         new PacketCustom(NEIServerPacketHandler.channel, 14).writeByte(mode).sendToPlayer(player);
-        player.addChatMessage(new TextComponentTranslation("nei.chat.gamemode." + mode));
+        player.sendMessage(new TextComponentTranslation("nei.chat.gamemode." + mode));
     }
 
     public static void cycleCreativeInv(EntityPlayerMP player, int steps) {
@@ -325,7 +325,7 @@ public class NEIServerUtils {
     }
 
     public static List<int[]> getEnchantments(ItemStack itemstack) {
-        ArrayList<int[]> arraylist = new ArrayList<int[]>();
+        ArrayList<int[]> arraylist = new ArrayList<>();
         if (itemstack != null) {
             NBTTagList nbttaglist = itemstack.getEnchantmentTagList();
             if (nbttaglist != null) {

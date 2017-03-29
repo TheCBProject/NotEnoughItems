@@ -27,7 +27,7 @@ public class FluidRegistryDumper extends DataDumper {
     public Iterable<String[]> dump(int mode) {
         Map<String, Fluid> registeredFluids = FluidRegistry.getRegisteredFluids();
         Map<Fluid, Integer> fluidIDMap = FluidRegistry.getRegisteredFluidIDs();
-        List<String[]> dumps = new LinkedList<String[]>();
+        List<String[]> dumps = new LinkedList<>();
         for (Entry<String, Fluid> fluidEntry : registeredFluids.entrySet()) {
             Fluid fluid = fluidEntry.getValue();
             int id = fluidIDMap.get(fluid);

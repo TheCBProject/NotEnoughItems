@@ -29,7 +29,7 @@ public class ShapedRecipeHandler extends TemplateRecipeHandler {
 
         public CachedShapedRecipe(int width, int height, Object[] items, ItemStack out) {
             result = new PositionedStack(out, 119, 24);
-            ingredients = new ArrayList<PositionedStack>();
+            ingredients = new ArrayList<>();
             setIngredients(width, height, items);
         }
 

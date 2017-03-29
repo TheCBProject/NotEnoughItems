@@ -26,7 +26,7 @@ public enum EnumItemBrowser {
     public abstract boolean isValid();
 
     public static LinkedList<EnumItemBrowser> getValidBrowsers() {
-        LinkedList<EnumItemBrowser> validBrowsers = new LinkedList<EnumItemBrowser>();
+        LinkedList<EnumItemBrowser> validBrowsers = new LinkedList<>();
         for (EnumItemBrowser browser : values()) {
             if (browser.isValid()) {
                 validBrowsers.add(browser);

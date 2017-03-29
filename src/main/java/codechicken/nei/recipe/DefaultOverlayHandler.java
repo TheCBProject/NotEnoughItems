@@ -1,6 +1,7 @@
 package codechicken.nei.recipe;
 
 import codechicken.lib.inventory.InventoryUtils;
+import codechicken.lib.util.ItemUtils;
 import codechicken.nei.FastTransferManager;
 import codechicken.nei.api.IOverlayHandler;
 import codechicken.nei.api.stack.PositionedStack;
@@ -15,7 +16,7 @@ import java.util.*;
 public class DefaultOverlayHandler implements IOverlayHandler {
     public static class DistributedIngred {
         public DistributedIngred(ItemStack item) {
-            stack = InventoryUtils.copyStack(item, 1);
+            stack = ItemUtils.copyStack(item, 1);
         }
 
         public ItemStack stack;
@@ -76,7 +77,7 @@ public class DefaultOverlayHandler implements IOverlayHandler {
     private boolean clearIngredients(GuiContainer gui, List<PositionedStack> ingreds) {
         for (PositionedStack pstack : ingreds) {
             for (Slot slot : gui.inventorySlots.inventorySlots) {
-                if (slot.xDisplayPosition == pstack.relx + offsetx && slot.yDisplayPosition == pstack.rely + offsety) {
+                if (slot.xPos == pstack.relx + offsetx && slot.yPos == pstack.rely + offsety) {
                     if (!slot.getHasStack()) {
                         continue;
                     }
@@ -96,7 +97,7 @@ public class DefaultOverlayHandler implements IOverlayHandler {
     private void moveIngredients(GuiContainer gui, List<IngredientDistribution> assignedIngredients, int quantity) {
         for (IngredientDistribution distrib : assignedIngredients) {
             ItemStack pstack = distrib.permutation;
-            int transferCap = quantity * pstack.stackSize;
+            int transferCap = quantity * pstack.getCount();
             int transferred = 0;
 
             int destSlotIndex = 0;
@@ -115,7 +116,7 @@ public class DefaultOverlayHandler implements IOverlayHandler {
                 }
 
                 FastTransferManager.clickSlot(gui, slot.slotNumber);
-                int amount = Math.min(transferCap - transferred, stack.stackSize);
+                int amount = Math.min(transferCap - transferred, stack.getCount());
                 for (int c = 0; c < amount; c++) {
                     FastTransferManager.clickSlot(gui, dest.slotNumber, 1);
                     transferred++;
@@ -160,7 +161,7 @@ public class DefaultOverlayHandler implements IOverlayHandler {
     private Slot[][] assignIngredSlots(GuiContainer gui, List<PositionedStack> ingredients, List<IngredientDistribution> assignedIngredients) {
         Slot[][] recipeSlots = mapIngredSlots(gui, ingredients);//setup the slot map
 
-        HashMap<Slot, Integer> distribution = new HashMap<Slot, Integer>();
+        HashMap<Slot, Integer> distribution = new HashMap<>();
         for (int i = 0; i < recipeSlots.length; i++) {
             for (Slot slot : recipeSlots[i]) {
                 if (!distribution.containsKey(slot)) {
@@ -169,12 +170,12 @@ public class DefaultOverlayHandler implements IOverlayHandler {
             }
         }
 
-        HashSet<Slot> avaliableSlots = new HashSet<Slot>(distribution.keySet());
-        HashSet<Integer> remainingIngreds = new HashSet<Integer>();
-        ArrayList<LinkedList<Slot>> assignedSlots = new ArrayList<LinkedList<Slot>>();
+        HashSet<Slot> avaliableSlots = new HashSet<>(distribution.keySet());
+        HashSet<Integer> remainingIngreds = new HashSet<>();
+        ArrayList<LinkedList<Slot>> assignedSlots = new ArrayList<>();
         for (int i = 0; i < ingredients.size(); i++) {
             remainingIngreds.add(i);
-            assignedSlots.add(new LinkedList<Slot>());
+            assignedSlots.add(new LinkedList<>());
         }
 
         while (avaliableSlots.size() > 0 && remainingIngreds.size() > 0) {
@@ -210,7 +211,7 @@ public class DefaultOverlayHandler implements IOverlayHandler {
     }
 
     private List<IngredientDistribution> assignIngredients(List<PositionedStack> ingredients, List<DistributedIngred> ingredStacks) {
-        ArrayList<IngredientDistribution> assignedIngredients = new ArrayList<IngredientDistribution>();
+        ArrayList<IngredientDistribution> assignedIngredients = new ArrayList<>();
         for (PositionedStack posstack : ingredients)//assign what we need and have
         {
             DistributedIngred biggestIngred = null;
@@ -219,11 +220,11 @@ public class DefaultOverlayHandler implements IOverlayHandler {
             for (ItemStack pstack : posstack.items) {
                 for (int j = 0; j < ingredStacks.size(); j++) {
                     DistributedIngred istack = ingredStacks.get(j);
-                    if (!InventoryUtils.canStack(pstack, istack.stack) || istack.invAmount - istack.distributed < pstack.stackSize) {
+                    if (!InventoryUtils.canStack(pstack, istack.stack) || istack.invAmount - istack.distributed < pstack.getCount()) {
                         continue;
                     }
 
-                    int relsize = (istack.invAmount - istack.invAmount / istack.recipeAmount * istack.distributed) / pstack.stackSize;
+                    int relsize = (istack.invAmount - istack.invAmount / istack.recipeAmount * istack.distributed) / pstack.getCount();
                     if (relsize > biggestSize) {
                         biggestSize = relsize;
                         biggestIngred = istack;
@@ -238,7 +239,7 @@ public class DefaultOverlayHandler implements IOverlayHandler {
                 return null;
             }
 
-            biggestIngred.distributed += permutation.stackSize;
+            biggestIngred.distributed += permutation.getCount();
             assignedIngredients.add(new IngredientDistribution(biggestIngred, permutation));
         }
 
@@ -253,14 +254,14 @@ public class DefaultOverlayHandler implements IOverlayHandler {
                 ItemStack pstack = slot.getStack();
                 DistributedIngred istack = findIngred(ingredStacks, pstack);
                 if (istack != null) {
-                    istack.invAmount += pstack.stackSize;
+                    istack.invAmount += pstack.getCount();
                 }
             }
         }
     }
 
     private List<DistributedIngred> getPermutationIngredients(List<PositionedStack> ingredients) {
-        ArrayList<DistributedIngred> ingredStacks = new ArrayList<DistributedIngred>();
+        ArrayList<DistributedIngred> ingredStacks = new ArrayList<>();
         for (PositionedStack posstack : ingredients)//work out what we need
         {
             for (ItemStack pstack : posstack.items) {
@@ -268,7 +269,7 @@ public class DefaultOverlayHandler implements IOverlayHandler {
                 if (istack == null) {
                     ingredStacks.add(istack = new DistributedIngred(pstack));
                 }
-                istack.recipeAmount += pstack.stackSize;
+                istack.recipeAmount += pstack.getCount();
             }
         }
         return ingredStacks;
@@ -283,10 +284,10 @@ public class DefaultOverlayHandler implements IOverlayHandler {
         Slot[][] recipeSlotList = new Slot[ingredients.size()][];
         for (int i = 0; i < ingredients.size(); i++)//identify slots
         {
-            LinkedList<Slot> recipeSlots = new LinkedList<Slot>();
+            LinkedList<Slot> recipeSlots = new LinkedList<>();
             PositionedStack pstack = ingredients.get(i);
             for (Slot slot : gui.inventorySlots.inventorySlots) {
-                if (slot.xDisplayPosition == pstack.relx + offsetx && slot.yDisplayPosition == pstack.rely + offsety) {
+                if (slot.xPos == pstack.relx + offsetx && slot.yPos == pstack.rely + offsety) {
                     recipeSlots.add(slot);
                     break;
                 }

@@ -83,7 +83,7 @@ public class ServerHandler {
         double maxspeedy = 0.5;
         double speedxz = 0.05;
         double speedy = 0.07;
-        List<EntityItem> items = player.worldObj.getEntitiesWithinAABB(EntityItem.class, player.getEntityBoundingBox().expand(distancexz, distancey, distancexz));
+        List<EntityItem> items = player.world.getEntitiesWithinAABB(EntityItem.class, player.getEntityBoundingBox().expand(distancexz, distancey, distancexz));
         for (EntityItem item : items) {
             if (item.cannotPickup()) {
                 continue;

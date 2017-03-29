@@ -75,8 +75,8 @@ public class OptionList extends OptionButton {
         return fullName.substring(i + 1);
     }
 
-    public ArrayList<Option> optionList = new ArrayList<Option>();
-    public HashMap<String, Option> options = new HashMap<String, Option>();
+    public ArrayList<Option> optionList = new ArrayList<>();
+    public HashMap<String, Option> options = new HashMap<>();
 
     public OptionList(String name) {
         super(name);

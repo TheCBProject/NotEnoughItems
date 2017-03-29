@@ -1,8 +1,6 @@
 package codechicken.nei;
 
-import codechicken.core.*;
 import codechicken.lib.asm.discovery.ClassDiscoverer;
-import codechicken.lib.asm.discovery.IStringMatcher;
 import codechicken.lib.config.ConfigFile;
 import codechicken.lib.config.ConfigTag;
 import codechicken.lib.config.ConfigTagParent;
@@ -17,7 +15,6 @@ import codechicken.nei.jei.gui.ItemBrowserButton;
 import codechicken.nei.recipe.RecipeInfo;
 import codechicken.nei.util.LogHelper;
 import codechicken.nei.util.NEIClientUtils;
-import codechicken.obfuscator.ObfuscationRun;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -26,8 +23,10 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.WorldSummary;
+import org.apache.commons.io.FileUtils;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -47,16 +46,13 @@ public class NEIClientConfig {
     private static boolean statesSaved[] = new boolean[7];
 
     public static boolean hasSMPCounterpart;
-    public static HashSet<String> permissableActions = new HashSet<String>();
-    public static HashSet<String> disabledActions = new HashSet<String>();
-    public static HashSet<String> enabledActions = new HashSet<String>();
+    public static HashSet<String> permissableActions = new HashSet<>();
+    public static HashSet<String> disabledActions = new HashSet<>();
+    public static HashSet<String> enabledActions = new HashSet<>();
 
     public static ItemStackSet bannedBlocks = new ItemStackSet();
 
     static {
-        if (global.config.getTag("checkUpdates").getBooleanValue(true)) {
-            CCUpdateChecker.updateCheck("NotEnoughItems");
-        }
         linkOptionList();
         setDefaults();
     }
@@ -102,7 +98,7 @@ public class NEIClientConfig {
 
             @Override
             public boolean cycle() {
-                LinkedList<Integer> list = new LinkedList<Integer>();
+                LinkedList<Integer> list = new LinkedList<>();
                 for (Entry<Integer, LayoutStyle> entry : LayoutManager.layoutStyles.entrySet()) {
                     list.add(entry.getKey());
                 }
@@ -265,11 +261,7 @@ public class NEIClientConfig {
 
         configLoaded = true;
 
-        ClassDiscoverer classDiscoverer = new ClassDiscoverer(new IStringMatcher() {
-            public boolean matches(String test) {
-                return test.startsWith("NEI") && test.endsWith("Config.class");
-            }
-        }, IConfigureNEI.class);
+        ClassDiscoverer classDiscoverer = new ClassDiscoverer(test -> test.startsWith("NEI") && test.endsWith("Config.class"), IConfigureNEI.class);
 
         classDiscoverer.findClasses();
 
@@ -423,8 +415,8 @@ public class NEIClientConfig {
 
         NBTTagCompound statesave = global.nbt.getCompoundTag("save" + state);
         GuiContainer currentContainer = NEIClientUtils.getGuiContainer();
-        LinkedList<TaggedInventoryArea> saveAreas = new LinkedList<TaggedInventoryArea>();
-        saveAreas.add(new TaggedInventoryArea(Minecraft.getMinecraft().thePlayer.inventory));
+        LinkedList<TaggedInventoryArea> saveAreas = new LinkedList<>();
+        saveAreas.add(new TaggedInventoryArea(Minecraft.getMinecraft().player.inventory));
 
         for (INEIGuiHandler handler : GuiInfo.guiHandlers) {
             List<TaggedInventoryArea> areaList = handler.getInventoryAreas(currentContainer);
@@ -450,7 +442,7 @@ public class NEIClientConfig {
                     continue;
                 }
 
-                NEIClientUtils.setSlotContents(slot, ItemStack.loadItemStackFromNBT(stacksave), area.isContainer());
+                NEIClientUtils.setSlotContents(slot, new ItemStack(stacksave), area.isContainer());
             }
         }
     }
@@ -458,8 +450,8 @@ public class NEIClientConfig {
     public static void saveState(int state) {
         NBTTagCompound statesave = global.nbt.getCompoundTag("save" + state);
         GuiContainer currentContainer = NEIClientUtils.getGuiContainer();
-        LinkedList<TaggedInventoryArea> saveAreas = new LinkedList<TaggedInventoryArea>();
-        saveAreas.add(new TaggedInventoryArea(Minecraft.getMinecraft().thePlayer.inventory));
+        LinkedList<TaggedInventoryArea> saveAreas = new LinkedList<>();
+        saveAreas.add(new TaggedInventoryArea(Minecraft.getMinecraft().player.inventory));
 
         for (INEIGuiHandler handler : GuiInfo.guiHandlers) {
             List<TaggedInventoryArea> areaList = handler.getInventoryAreas(currentContainer);
@@ -567,14 +559,18 @@ public class NEIClientConfig {
             LogHelper.errorError("Error loading saves", e);
             return;
         }
-        HashSet<String> saveFileNames = new HashSet<String>();
+        HashSet<String> saveFileNames = new HashSet<>();
         for (WorldSummary save : saves) {
             saveFileNames.add(save.getFileName());
         }
 
         for (File file : saveDir.listFiles()) {
             if (file.isDirectory() && !saveFileNames.contains(file.getName())) {
-                ObfuscationRun.deleteDir(file, true);
+                try {
+                    FileUtils.deleteDirectory(file);
+                } catch (IOException e) {
+                    throw new RuntimeException("Failed to delete folder: " + file, e);
+                }
             }
         }
     }

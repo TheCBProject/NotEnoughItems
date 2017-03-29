@@ -51,7 +51,7 @@ public class SearchField extends TextField implements IItemFilterProvider {
         }
     }
 
-    public static List<ISearchProvider> searchProviders = new LinkedList<ISearchProvider>();
+    public static List<ISearchProvider> searchProviders = new LinkedList<>();
 
     long lastclicktime;
 
@@ -136,8 +136,8 @@ public class SearchField extends TextField implements IItemFilterProvider {
     public IItemFilter getFilter() {
         String s_filter = text().toLowerCase();
 
-        List<IItemFilter> primary = new LinkedList<IItemFilter>();
-        List<IItemFilter> secondary = new LinkedList<IItemFilter>();
+        List<IItemFilter> primary = new LinkedList<>();
+        List<IItemFilter> secondary = new LinkedList<>();
         for (ISearchProvider p : searchProviders) {
             IItemFilter filter = p.getFilter(s_filter);
             if (filter != null) {

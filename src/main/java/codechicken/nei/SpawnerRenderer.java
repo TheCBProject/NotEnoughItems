@@ -41,7 +41,7 @@ public class SpawnerRenderer implements IItemRenderer, IPerspectiveAwareModel {
         //String bossName = BossStatus.bossName;
         //int bossTimeout = BossStatus.statusBarTime;
         Minecraft mc = Minecraft.getMinecraft();
-        World world = mc.theWorld;
+        World world = mc.world;
 
         IBakedModel baseModel = mc.getRenderItem().getItemModelMesher().getModelManager().getModel(new ModelResourceLocation("mob_spawner"));
         GlStateManager.pushMatrix();
@@ -81,7 +81,7 @@ public class SpawnerRenderer implements IItemRenderer, IPerspectiveAwareModel {
 
     @Override
     public List<BakedQuad> getQuads(IBlockState state, EnumFacing side, long rand) {
-        return new ArrayList<BakedQuad>();
+        return new ArrayList<>();
     }
 
     @Override

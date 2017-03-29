@@ -1,7 +1,7 @@
 package codechicken.nei.config;
 
-import codechicken.core.gui.GuiCCButton;
-import codechicken.core.gui.GuiScreenWidget;
+import codechicken.lib.gui.GuiCCButton;
+import codechicken.lib.gui.GuiScreenWidget;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.util.text.translation.I18n;
@@ -92,7 +92,7 @@ public abstract class GuiOptionPane extends GuiScreenWidget {
 
     public void drawTooltip() {
         Point mouse = getMousePosition();
-        drawMultilineTip(mouse.x + 12, mouse.y - 12, handleTooltip(mouse.x, mouse.y, new LinkedList<String>()));
+        drawMultiLineTip(mouse.x + 12, mouse.y - 12, handleTooltip(mouse.x, mouse.y, new LinkedList<>()));
     }
 
     public List<String> handleTooltip(int mx, int my, List<String> tooltip) {

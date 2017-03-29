@@ -44,7 +44,7 @@ public class PositionedStack {
             return;
         }
 
-        ArrayList<ItemStack> stacks = new ArrayList<ItemStack>();
+        ArrayList<ItemStack> stacks = new ArrayList<>();
         for (ItemStack item : items) {
             if (item == null || item.getItem() == null) {
                 continue;
@@ -57,7 +57,7 @@ public class PositionedStack {
                         stacks.add(stack.copy());
                     }
                 } else {
-                    ItemStack base = new ItemStack(item.getItem(), item.stackSize);
+                    ItemStack base = new ItemStack(item.getItem(), item.getCount());
                     base.setTagCompound(item.getTagCompound());
                     stacks.add(base);
                 }
@@ -78,8 +78,8 @@ public class PositionedStack {
 
     public void setMaxSize(int i) {
         for (ItemStack item : items) {
-            if (item.stackSize > i) {
-                item.stackSize = i;
+            if (item.getCount() > i) {
+                item.setCount(i);
             }
         }
     }

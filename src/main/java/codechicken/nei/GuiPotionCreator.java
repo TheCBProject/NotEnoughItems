@@ -1,9 +1,9 @@
 package codechicken.nei;
 
-import codechicken.core.gui.GuiCCButton;
-import codechicken.core.gui.GuiCCTextField;
-import codechicken.core.gui.GuiScrollSlot;
-import codechicken.core.inventory.GuiContainerWidget;
+import codechicken.lib.gui.GuiCCButton;
+import codechicken.lib.gui.GuiCCTextField;
+import codechicken.lib.gui.GuiScrollSlot;
+import codechicken.lib.inventory.container.GuiContainerWidget;
 import codechicken.lib.util.FontUtils;
 import codechicken.lib.texture.TextureUtils;
 import net.minecraft.client.renderer.GlStateManager;
@@ -21,7 +21,7 @@ public class GuiPotionCreator extends GuiContainerWidget {
     public class GuiSlotPotionEffects extends GuiScrollSlot {
         public int selectedslot = -1;
         public boolean enabled = true;
-        private ArrayList<Potion> validPotions = new ArrayList<Potion>();
+        private ArrayList<Potion> validPotions = new ArrayList<>();
 
         public GuiSlotPotionEffects(int x, int y) {
             super(x, y, 108, 76);

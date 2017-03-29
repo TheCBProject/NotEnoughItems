@@ -17,6 +17,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityMobSpawner;
+import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -28,8 +30,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 public class ItemMobSpawner extends ItemBlock {
-    private static Map<Integer, EntityLiving> entityHashMap = new HashMap<Integer, EntityLiving>();
-    private static Map<Integer, String> IDtoNameMap = new HashMap<Integer, String>();
+    private static Map<Integer, EntityLiving> entityHashMap = new HashMap<>();
+    private static Map<Integer, String> IDtoNameMap = new HashMap<>();
     public static int idPig;
     private static boolean loaded;
     private static ItemMobSpawner instance;
@@ -61,7 +63,7 @@ public class ItemMobSpawner extends ItemBlock {
             String mobtype = IDtoNameMap.get(stack.getItemDamage());
             if (mobtype != null) {
                 NEIClientPacketHandler.sendMobSpawnerID(pos.getX(), pos.getY(), pos.getZ(), mobtype);
-                tileentitymobspawner.getSpawnerBaseLogic().setEntityName(mobtype);
+                tileentitymobspawner.getSpawnerBaseLogic().setEntityId(new ResourceLocation(mobtype));
             }
         }
     }
@@ -80,19 +82,19 @@ public class ItemMobSpawner extends ItemBlock {
     public static EntityLiving getEntity(int ID) {
         EntityLiving e = entityHashMap.get(ID);
         if (e == null) {
-            World world = Minecraft.getMinecraft().theWorld;
-            Class<? extends Entity> clazz = EntityList.ID_TO_CLASS.get(ID);
-            try {
-                e = (EntityLiving) clazz.getConstructor(World.class).newInstance(world);
-            } catch (Throwable t) {
-                if (clazz == null) {
-                    LogHelper.error("Null class for entity (" + ID + ", " + IDtoNameMap.get(ID));
-                } else {
-                    LogHelper.errorError("Error creating instance of entity: " + clazz.getName(), t);
-                }
-                e = getEntity(idPig);
-            }
-            entityHashMap.put(ID, e);
+            World world = Minecraft.getMinecraft().world;
+            //Class<? extends Entity> clazz = EntityList.ID_TO_CLASS.get(ID);
+            //try {
+            //    e = (EntityLiving) clazz.getConstructor(World.class).newInstance(world);
+            //} catch (Throwable t) {
+            //    if (clazz == null) {
+            //        LogHelper.error("Null class for entity (" + ID + ", " + IDtoNameMap.get(ID));
+            //    } else {
+            //        LogHelper.errorError("Error creating instance of entity: " + clazz.getName(), t);
+            //    }
+            //    e = getEntity(idPig);
+            //}
+            //entityHashMap.put(ID, e);
         }
         return e;
     }
@@ -108,8 +110,8 @@ public class ItemMobSpawner extends ItemBlock {
             return;
         }
         loaded = true;
-        HashMap<Class<? extends Entity>, String> classToStringMapping = (HashMap<Class<? extends Entity>, String>) EntityList.CLASS_TO_NAME;
-        HashMap<Class<? extends Entity>, Integer> classToIDMapping = (HashMap<Class<? extends Entity>, Integer>) EntityList.CLASS_TO_ID;
+        HashMap<Class<? extends Entity>, String> classToStringMapping = null;//(HashMap<Class<? extends Entity>, String>) EntityList.CLASS_TO_NAME;
+        HashMap<Class<? extends Entity>, Integer> classToIDMapping = null;//(HashMap<Class<? extends Entity>, Integer>) EntityList.CLASS_TO_ID;
         for (Class<? extends Entity> entityClass : classToStringMapping.keySet()) {
             if (!EntityLiving.class.isAssignableFrom(entityClass)) {
                 continue;
@@ -143,7 +145,7 @@ public class ItemMobSpawner extends ItemBlock {
     }
 
     @Override
-    public void getSubItems(Item item, CreativeTabs tab, List<ItemStack> list) {
+    public void getSubItems(Item item, CreativeTabs tab, NonNullList<ItemStack> list) {
         if (!NEIClientConfig.hasSMPCounterPart()) {
             list.add(new ItemStack(item));
         } else {

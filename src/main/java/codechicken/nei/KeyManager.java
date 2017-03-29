@@ -10,7 +10,7 @@ public class KeyManager {
         void tickKeyStates();
     }
 
-    public static LinkedList<IKeyStateTracker> trackers = new LinkedList<IKeyStateTracker>();
+    public static LinkedList<IKeyStateTracker> trackers = new LinkedList<>();
 
     public static void tickKeyStates() {
         for (IKeyStateTracker tracker : trackers) {

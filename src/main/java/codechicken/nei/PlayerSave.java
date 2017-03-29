@@ -27,7 +27,7 @@ public class PlayerSave {
     private boolean wasOp;
 
     //runtime things
-    public HashSet<EntityItem> magneticItems = new HashSet<EntityItem>();
+    public HashSet<EntityItem> magneticItems = new HashSet<>();
 
     public PlayerSave(EntityPlayerMP player, File saveLocation) {
         this.player = player;

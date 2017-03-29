@@ -33,7 +33,7 @@ import java.util.Iterator;
 public class ClientHandler {
     private static ClientHandler instance;
 
-    private ArrayList<EntityItem> SMPmagneticItems = new ArrayList<EntityItem>();
+    private ArrayList<EntityItem> SMPmagneticItems = new ArrayList<>();
     private World lastworld;
     private GuiScreen lastGui;
 
@@ -141,8 +141,8 @@ public class ClientHandler {
         }
 
         Minecraft mc = Minecraft.getMinecraft();
-        if (mc.theWorld != null) {
-            if (loadWorld(mc.theWorld)) {
+        if (mc.world != null) {
+            if (loadWorld(mc.world)) {
                 NEIClientConfig.setHasSMPCounterPart(false);
                 NEIClientConfig.setInternalEnabled(false);
 
@@ -158,12 +158,12 @@ public class ClientHandler {
 
             KeyManager.tickKeyStates();
 
-            NEIController.updateUnlimitedItems(mc.thePlayer.inventory);
+            NEIController.updateUnlimitedItems(mc.player.inventory);
             if (mc.currentScreen == null) {
-                NEIController.processCreativeCycling(mc.thePlayer.inventory);
+                NEIController.processCreativeCycling(mc.player.inventory);
             }
 
-            updateMagnetMode(mc.theWorld, mc.thePlayer);
+            updateMagnetMode(mc.world, mc.player);
         }
 
         GuiScreen gui = mc.currentScreen;

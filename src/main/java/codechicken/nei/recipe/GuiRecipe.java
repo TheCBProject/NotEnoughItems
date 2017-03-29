@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class GuiRecipe extends GuiContainer implements IGuiContainerOverlay, IGuiClientSide, IGuiHandleMouseWheel, IContainerTooltipHandler {
-    public ArrayList<? extends IRecipeHandler> currenthandlers = new ArrayList<IRecipeHandler>();
+    public ArrayList<? extends IRecipeHandler> currenthandlers = new ArrayList<>();
 
     public int page;
     public int recipetype;

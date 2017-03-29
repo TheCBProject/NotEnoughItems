@@ -9,7 +9,7 @@ public abstract class ArrayDumper<T> extends DataDumper {
 
     @Override
     public Iterable<String[]> dump(int mode) {
-        LinkedList<String[]> list = new LinkedList<String[]>();
+        LinkedList<String[]> list = new LinkedList<>();
         T[] array = array();
         for (int i = 0; i < array.length; i++) {
             T obj = array[i];

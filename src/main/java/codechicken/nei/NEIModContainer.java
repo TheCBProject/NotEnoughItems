@@ -1,6 +1,5 @@
 package codechicken.nei;
 
-import codechicken.core.launch.CodeChickenCorePlugin;
 import codechicken.lib.CodeChickenLib;
 import codechicken.nei.api.IConfigureNEI;
 import codechicken.nei.asm.NEICorePlugin;
@@ -9,7 +8,10 @@ import com.google.common.eventbus.Subscribe;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.client.FMLFileResourcePack;
 import net.minecraftforge.fml.client.FMLFolderResourcePack;
-import net.minecraftforge.fml.common.*;
+import net.minecraftforge.fml.common.DummyModContainer;
+import net.minecraftforge.fml.common.LoadController;
+import net.minecraftforge.fml.common.MetadataCollection;
+import net.minecraftforge.fml.common.ModMetadata;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.versioning.ArtifactVersion;
@@ -17,26 +19,32 @@ import net.minecraftforge.fml.common.versioning.VersionParser;
 import net.minecraftforge.fml.common.versioning.VersionRange;
 
 import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-@Mod(modid = "nei")// Fixes no resource domain being registered.
 public class NEIModContainer extends DummyModContainer {
-    public static LinkedList<IConfigureNEI> plugins = new LinkedList<IConfigureNEI>();
+
+    public static LinkedList<IConfigureNEI> plugins = new LinkedList<>();
+    private static URL UPDATE_URL;
 
     public NEIModContainer() {
-        super(MetadataCollection.from(MetadataCollection.class.getResourceAsStream("/neimod.info"), "NotEnoughItems").getMetadataForId("NotEnoughItems", null));
+        super(MetadataCollection.from(MetadataCollection.class.getResourceAsStream("/neimod.info"), "NotEnoughItems").getMetadataForId("nei", null));
         loadMetadata();
+        try {
+            UPDATE_URL = new URL("http://chickenbones.net/Files/notification/version.php?query=forge&version=" + CodeChickenLib.MC_VERSION_DEP + "&file=NotEnoughItems");
+        } catch (MalformedURLException ignored) {
+        }
     }
 
     @Override
     public Set<ArtifactVersion> getRequirements() {
-        Set<ArtifactVersion> deps = new HashSet<ArtifactVersion>();
+        Set<ArtifactVersion> deps = new HashSet<>();
         if (!super.getMetadata().version.contains("$")) {
-            deps.add(VersionParser.parseVersionReference("CodeChickenLib@[" + CodeChickenLib.version + ",)"));
-            deps.add(VersionParser.parseVersionReference("CodeChickenCore@[" + CodeChickenCorePlugin.version + ",)"));
+            deps.add(VersionParser.parseVersionReference("codechickenlib@[" + CodeChickenLib.MOD_VERSION + ",)"));
             deps.add(VersionParser.parseVersionReference("JEI@[3.13.2,)"));
         }
         return deps;
@@ -44,7 +52,7 @@ public class NEIModContainer extends DummyModContainer {
 
     @Override
     public List<ArtifactVersion> getDependencies() {
-        return new LinkedList<ArtifactVersion>(getRequirements());
+        return new LinkedList<>(getRequirements());
     }
 
     private String description;
@@ -100,7 +108,7 @@ public class NEIModContainer extends DummyModContainer {
 
     @Override
     public VersionRange acceptableMinecraftVersionRange() {
-        return VersionParser.parseRange(CodeChickenLib.mcVersion);
+        return VersionParser.parseRange(CodeChickenLib.MC_VERSION_DEP);
     }
 
     @Override
@@ -116,5 +124,10 @@ public class NEIModContainer extends DummyModContainer {
     @Override
     public Object getMod() {
         return this;
+    }
+
+    @Override
+    public URL getUpdateUrl() {
+        return UPDATE_URL;
     }
 }

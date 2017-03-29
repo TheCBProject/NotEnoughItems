@@ -1,7 +1,7 @@
 package codechicken.nei;
 
-import codechicken.core.inventory.ContainerExtended;
-import codechicken.core.inventory.SlotDummy;
+import codechicken.lib.inventory.container.ContainerExtended;
+import codechicken.lib.inventory.container.SlotDummy;
 import codechicken.nei.api.INEIGuiAdapter;
 import codechicken.nei.network.NEIClientPacketHandler;
 import codechicken.nei.util.NEIClientUtils;

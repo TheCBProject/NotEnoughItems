@@ -58,12 +58,7 @@ public class ProfilerRecipeHandler implements ICraftingHandler, IUsageHandler {
             }
         }
 
-        Collections.sort(results, new Comparator<ProfilerResult>() {
-            @Override
-            public int compare(ProfilerResult o1, ProfilerResult o2) {
-                return o1.time < o2.time ? 1 : -1;
-            }
-        });
+        results.sort((o1, o2) -> o1.time < o2.time ? 1 : -1);
 
         for (int i = recipe * 6; i < results.size() && i < (recipe + 1) * 6; i++) {
             ProfilerResult r = results.get(i);
@@ -84,12 +79,12 @@ public class ProfilerRecipeHandler implements ICraftingHandler, IUsageHandler {
 
     @Override
     public ArrayList<PositionedStack> getIngredientStacks(int recipe) {
-        return new ArrayList<PositionedStack>();
+        return new ArrayList<>();
     }
 
     @Override
     public ArrayList<PositionedStack> getOtherStacks(int recipetype) {
-        return new ArrayList<PositionedStack>();
+        return new ArrayList<>();
     }
 
     @Override

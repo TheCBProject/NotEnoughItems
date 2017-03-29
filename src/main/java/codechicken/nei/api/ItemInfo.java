@@ -31,6 +31,7 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.*;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionHelper;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
@@ -39,6 +40,7 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.BiomeDictionary;
+import net.minecraftforge.common.BiomeDictionary.Type;
 import net.minecraftforge.common.IShearable;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.ModContainer;
@@ -60,22 +62,22 @@ public class ItemInfo {
 
     @Deprecated
     public static final ArrayListMultimap<Layout, IHighlightHandler> highlightHandlers = ArrayListMultimap.create();
-    public static final ItemStackMap<String> nameOverrides = new ItemStackMap<String>();
+    public static final ItemStackMap<String> nameOverrides = new ItemStackMap<>();
     public static final ItemStackSet hiddenItems = new ItemStackSet();
     public static final ItemStackSet finiteItems = new ItemStackSet();
     public static final ArrayListMultimap<Item, ItemStack> itemOverrides = ArrayListMultimap.create();
     public static final ArrayListMultimap<Item, ItemStack> itemVariants = ArrayListMultimap.create();
 
-    public static final LinkedList<IInfiniteItemHandler> infiniteHandlers = new LinkedList<IInfiniteItemHandler>();
+    public static final LinkedList<IInfiniteItemHandler> infiniteHandlers = new LinkedList<>();
     @Deprecated
     public static final ArrayListMultimap<Block, IHighlightHandler> highlightIdentifiers = ArrayListMultimap.create();
-    public static final HashSet<Class<? extends Slot>> fastTransferExemptions = new HashSet<Class<? extends Slot>>();
-    public static final HashSet<Class<? extends GuiContainer>> fastTransferContainerExemptions = new HashSet<Class<? extends GuiContainer>>();
+    public static final HashSet<Class<? extends Slot>> fastTransferExemptions = new HashSet<>();
+    public static final HashSet<Class<? extends GuiContainer>> fastTransferContainerExemptions = new HashSet<>();
 
-    public static final HashMap<Item, String> itemOwners = new HashMap<Item, String>();
+    public static final HashMap<Item, String> itemOwners = new HashMap<>();
 
     //lookup optimisation
-    public static final HashMap<ItemStack, String> itemSearchNames = new HashMap<ItemStack, String>();
+    public static final HashMap<ItemStack, String> itemSearchNames = new HashMap<>();
 
     public static boolean isHidden(ItemStack stack) {
         return hiddenItems.contains(stack);
@@ -131,26 +133,11 @@ public class ItemInfo {
     }
 
     private static void addSearchOptimisation() {
-        ItemList.loadCallbacks.add(new ItemsLoadedCallback() {
-            @Override
-            public void itemsLoaded() {
-                itemSearchNames.clear();
-            }
-        });
+        ItemList.loadCallbacks.add(() -> itemSearchNames.clear());
     }
 
     private static void addHiddenItemFilter() {
-        API.addItemFilter(new IItemFilterProvider() {
-            @Override
-            public IItemFilter getFilter() {
-                return new IItemFilter() {
-                    @Override
-                    public boolean matches(ItemStack item) {
-                        return !hiddenItems.contains(item);
-                    }
-                };
-            }
-        });
+        API.addItemFilter(() -> item -> !hiddenItems.contains(item));
     }
 
     private static void addIDDumps() {
@@ -218,13 +205,13 @@ public class ItemInfo {
             public String[] dump(Biome obj, ResourceLocation registryName) {
                 int id = Biome.getIdForBiome(obj);
 
-                BiomeDictionary.Type[] types = BiomeDictionary.getTypesForBiome(obj);
+                Set<Type> types = BiomeDictionary.getTypes(obj);
                 StringBuilder s_types = new StringBuilder();
                 for (BiomeDictionary.Type t : types) {
                     if (s_types.length() > 0) {
                         s_types.append(", ");
                     }
-                    s_types.append(t.name());
+                    s_types.append(t.getName());
                 }
                 return new String[] { registryName.toString(), Integer.toString(id), obj.getBiomeName(), Float.toString(obj.getFloatTemperature(BlockPos.ORIGIN)), Float.toString(obj.getRainfall()), Float.toString(obj.getSpawningChance()), Float.toString(obj.getBaseHeight()), Float.toString(obj.getHeightVariation()), s_types.toString(), obj.getClass().getCanonicalName() };
             }
@@ -279,7 +266,7 @@ public class ItemInfo {
     }
 
     private static void parseModItems() {
-        HashMap<String, ItemStackSet> modSubsets = new HashMap<String, ItemStackSet>();
+        HashMap<String, ItemStackSet> modSubsets = new HashMap<>();
         for (Item item : Item.REGISTRY) {
             ResourceLocation ident = Item.REGISTRY.getNameForObject(item);
             if (ident == null) {
@@ -317,18 +304,8 @@ public class ItemInfo {
     }
 
     private static void addDefaultDropDowns() {
-        API.addSubset("Items", new IItemFilter() {
-            @Override
-            public boolean matches(ItemStack item) {
-                return Block.getBlockFromItem(item.getItem()) == Blocks.AIR;
-            }
-        });
-        API.addSubset("Blocks", new IItemFilter() {
-            @Override
-            public boolean matches(ItemStack item) {
-                return Block.getBlockFromItem(item.getItem()) != Blocks.AIR;
-            }
-        });
+        API.addSubset("Items", item -> Block.getBlockFromItem(item.getItem()) == Blocks.AIR);
+        API.addSubset("Blocks", item -> Block.getBlockFromItem(item.getItem()) != Blocks.AIR);
         API.addSubset("Blocks.MobSpawners", ItemStackSet.of(Blocks.MOB_SPAWNER));
     }
 
@@ -348,8 +325,9 @@ public class ItemInfo {
         ItemStackSet food = new ItemStackSet();
         ItemStackSet potioningredients = new ItemStackSet();
 
-        ArrayList<ItemStackSet> creativeTabRanges = new ArrayList<ItemStackSet>(CreativeTabs.CREATIVE_TAB_ARRAY.length);
-        List<ItemStack> stackList = new LinkedList<ItemStack>();
+        ArrayList<ItemStackSet> creativeTabRanges = new ArrayList<>(CreativeTabs.CREATIVE_TAB_ARRAY.length);
+        List<ItemStack> stackList = new LinkedList<>();
+        NonNullList<ItemStack> nonNullStackList = new NonNullList<>(stackList, null);
 
         for (Item item : Item.REGISTRY) {
             if (item == null) {
@@ -366,7 +344,7 @@ public class ItemInfo {
                         creativeTabRanges.set(itemTab.getTabIndex(), set = new ItemStackSet());
                     }
                     stackList.clear();
-                    item.getSubItems(item, itemTab, stackList);
+                    item.getSubItems(item, itemTab, nonNullStackList);
                     for (ItemStack stack : stackList) {
                         set.add(stack);
                     }
@@ -413,7 +391,7 @@ public class ItemInfo {
             }
 
             try {
-                LinkedList<ItemStack> subItems = new LinkedList<ItemStack>();
+                NonNullList<ItemStack> subItems = new NonNullList<>(new LinkedList<ItemStack>(), null);
                 item.getSubItems(item, null, subItems);
                 for (ItemStack stack : subItems) {
                     if (PotionHelper.isReagent(stack)) {
@@ -459,10 +437,10 @@ public class ItemInfo {
         //addEntityEgg(EntityIronGolem.class, 0xC5C2C1, 0xffe1cc);
     }
 
-    private static void addEntityEgg(Class<? extends Entity> entity, int i, int j) {
-        String id = EntityList.getEntityStringFromClass(entity);
-        EntityList.ENTITY_EGGS.put(id, new EntityEggInfo(id, i, j));
-    }
+    //private static void addEntityEgg(Class<? extends Entity> entity, int i, int j) {
+    //    String id = EntityList.getEntityStringFromClass(entity);
+    //    EntityList.ENTITY_EGGS.put(id, new EntityEggInfo(id, i, j));
+    //}
 
     @Deprecated
     public static ArrayList<ItemStack> getIdentifierItems(World world, EntityPlayer player, RayTraceResult hit) {
@@ -470,9 +448,9 @@ public class ItemInfo {
         IBlockState state = world.getBlockState(pos);
         Block block = state.getBlock();
 
-        ArrayList<ItemStack> items = new ArrayList<ItemStack>();
+        ArrayList<ItemStack> items = new ArrayList<>();
 
-        ArrayList<IHighlightHandler> handlers = new ArrayList<IHighlightHandler>();
+        ArrayList<IHighlightHandler> handlers = new ArrayList<>();
         if (highlightIdentifiers.containsKey(null)) {
             handlers.addAll(highlightIdentifiers.get(null));
         }
@@ -522,7 +500,7 @@ public class ItemInfo {
 
     @Deprecated
     public static List<String> getText(ItemStack itemStack, World world, EntityPlayer player, RayTraceResult rayTraceResult) {
-        List<String> retString = new ArrayList<String>();
+        List<String> retString = new ArrayList<>();
 
         for (ItemInfo.Layout layout : ItemInfo.Layout.values()) {
             for (IHighlightHandler handler : ItemInfo.highlightHandlers.get(layout)) {

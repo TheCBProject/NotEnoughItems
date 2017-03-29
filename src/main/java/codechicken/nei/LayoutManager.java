@@ -9,10 +9,7 @@ import codechicken.nei.guihook.*;
 import codechicken.nei.layout.LayoutStyleMinecraft;
 import codechicken.nei.layout.LayoutStyleTMIOld;
 import codechicken.nei.network.NEIClientPacketHandler;
-import codechicken.nei.widget.Button;
-import codechicken.nei.widget.ItemPanel;
-import codechicken.nei.widget.Label;
-import codechicken.nei.widget.Widget;
+import codechicken.nei.widget.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -30,6 +27,7 @@ import java.util.List;
 import java.util.TreeSet;
 
 import static codechicken.lib.gui.GuiDraw.*;
+import static codechicken.lib.texture.TextureUtils.changeTexture;
 import static codechicken.nei.NEIClientConfig.*;
 import static codechicken.nei.util.NEIClientUtils.*;
 
@@ -40,11 +38,11 @@ public class LayoutManager implements IContainerInputHandler, IContainerTooltipH
     /**
      * Sorted bottom first
      */
-    private static TreeSet<Widget> drawWidgets = new TreeSet<Widget>(new WidgetZOrder(false));
+    private static TreeSet<Widget> drawWidgets = new TreeSet<>(new WidgetZOrder(false));
     /**
      * Sorted top first
      */
-    private static TreeSet<Widget> controlWidgets = new TreeSet<Widget>(new WidgetZOrder(true));
+    private static TreeSet<Widget> controlWidgets = new TreeSet<>(new WidgetZOrder(true));
 
     private static boolean showItemPanel;
 
@@ -73,7 +71,7 @@ public class LayoutManager implements IContainerInputHandler, IContainerTooltipH
 
     public static IRecipeOverlayRenderer overlayRenderer;
 
-    public static HashMap<Integer, LayoutStyle> layoutStyles = new HashMap<Integer, LayoutStyle>();
+    public static HashMap<Integer, LayoutStyle> layoutStyles = new HashMap<>();
 
     public static void load() {
         API.addLayoutStyle(0, new LayoutStyleMinecraft());
@@ -638,8 +636,8 @@ public class LayoutManager implements IContainerInputHandler, IContainerTooltipH
     }
 
     public static void updateWidgetVisiblities(GuiContainer gui, VisibilityData visiblity) {
-        drawWidgets = new TreeSet<Widget>(new WidgetZOrder(false));
-        controlWidgets = new TreeSet<Widget>(new WidgetZOrder(true));
+        drawWidgets = new TreeSet<>(new WidgetZOrder(false));
+        controlWidgets = new TreeSet<>(new WidgetZOrder(true));
 
         if (!visiblity.showNEI) {
             //showItemPanel = false;
@@ -779,7 +777,7 @@ public class LayoutManager implements IContainerInputHandler, IContainerTooltipH
         if (world.nbt.getBoolean("searchinventories") && (item == null ? !getSearchExpression().equals("") : !ItemList.getItemListFilter().matches(item))) {
             GlStateManager.disableLighting();
             GlStateManager.translate(0, 0, 200);
-            drawRect(slot.xDisplayPosition, slot.yDisplayPosition, 16, 16, 0x80000000);
+            drawRect(slot.xPos, slot.yPos, 16, 16, 0x80000000);
             GlStateManager.translate(0, 0, -200);
             GlStateManager.enableLighting();
         }

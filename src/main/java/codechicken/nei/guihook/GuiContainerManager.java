@@ -37,11 +37,11 @@ public class GuiContainerManager {
     public GuiContainer window;
 
     //public static RenderItem drawItems = Minecraft.getMinecraft().getRenderItem();
-    public static final LinkedList<IContainerTooltipHandler> tooltipHandlers = new LinkedList<IContainerTooltipHandler>();
-    public static final LinkedList<IContainerInputHandler> inputHandlers = new LinkedList<IContainerInputHandler>();
-    public static final LinkedList<IContainerDrawHandler> drawHandlers = new LinkedList<IContainerDrawHandler>();
-    public static final LinkedList<IContainerObjectHandler> objectHandlers = new LinkedList<IContainerObjectHandler>();
-    public static final LinkedList<IContainerSlotClickHandler> slotClickHandlers = new LinkedList<IContainerSlotClickHandler>();
+    public static final LinkedList<IContainerTooltipHandler> tooltipHandlers = new LinkedList<>();
+    public static final LinkedList<IContainerInputHandler> inputHandlers = new LinkedList<>();
+    public static final LinkedList<IContainerDrawHandler> drawHandlers = new LinkedList<>();
+    public static final LinkedList<IContainerObjectHandler> objectHandlers = new LinkedList<>();
+    public static final LinkedList<IContainerSlotClickHandler> slotClickHandlers = new LinkedList<>();
 
     static {
         addSlotClickHandler(new DefaultSlotClickHandler());
@@ -127,12 +127,12 @@ public class GuiContainerManager {
     public static List<String> itemDisplayNameMultiline(ItemStack itemstack, GuiContainer gui, boolean includeHandlers) {
         List<String> namelist = null;
         try {
-            namelist = itemstack.getTooltip(Minecraft.getMinecraft().thePlayer, includeHandlers && Minecraft.getMinecraft().gameSettings.advancedItemTooltips);
+            namelist = itemstack.getTooltip(Minecraft.getMinecraft().player, includeHandlers && Minecraft.getMinecraft().gameSettings.advancedItemTooltips);
         } catch (Throwable ignored) {
         }
 
         if (namelist == null) {
-            namelist = new ArrayList<String>();
+            namelist = new ArrayList<>();
         }
 
         if (namelist.size() == 0) {
@@ -194,7 +194,7 @@ public class GuiContainerManager {
     }
 
     private static int modelviewDepth = -1;
-    private static HashSet<String> stackTraces = new HashSet<String>();
+    private static HashSet<String> stackTraces = new HashSet<>();
 
     public static void drawItem(int i, int j, ItemStack itemstack, FontRenderer fontRenderer) {
         enable3DRender();
@@ -273,7 +273,7 @@ public class GuiContainerManager {
     public GuiContainerManager(GuiContainer screen) {
         window = screen;
         if (screen instanceof IContainerTooltipHandler) {
-            instanceTooltipHandlers = new LinkedList<IContainerTooltipHandler>();
+            instanceTooltipHandlers = new LinkedList<>();
             instanceTooltipHandlers.add((IContainerTooltipHandler) screen);
             instanceTooltipHandlers.addAll(tooltipHandlers);
         } else {
@@ -432,32 +432,6 @@ public class GuiContainerManager {
         enable3DRender();
     }
 
-    public void renderToolTips(int mousex, int mousey) {
-        List<String> tooltip = new LinkedList<String>();
-        ItemStack stack = null;
-
-        for (IContainerTooltipHandler handler : instanceTooltipHandlers) {
-            tooltip = handler.handleTooltip(window, mousex, mousey, tooltip);
-        }
-
-        if (tooltip.isEmpty() && shouldShowTooltip(window))//mouseover tip, not holding an item
-        {
-            stack = getStackMouseOver(window);
-            if (stack != null) {
-                tooltip = itemDisplayNameMultiline(stack, window, true);
-            }
-
-            for (IContainerTooltipHandler handler : instanceTooltipHandlers) {
-                tooltip = handler.handleItemTooltip(window, stack, mousex, mousey, tooltip);
-            }
-        }
-
-        if (tooltip.size() > 0) {
-            tooltip.set(0, tooltip.get(0) + GuiDraw.TOOLTIP_LINESPACE);//add space after 'title'
-        }
-        drawMultilineTip(stack, mousex + 12, mousey - 12, tooltip);
-    }
-
     public static boolean shouldShowTooltip(GuiContainer window) {
         for (IContainerObjectHandler handler : objectHandlers) {
             if (!handler.shouldShowTooltip(window)) {
@@ -465,7 +439,7 @@ public class GuiContainerManager {
             }
         }
 
-        return window.mc.thePlayer.inventory.getItemStack() == null;
+        return window.mc.player.inventory.getItemStack() == null;
     }
 
     public void renderSlotUnderlay(Slot slot) {
@@ -533,10 +507,10 @@ public class GuiContainerManager {
         if (window instanceof IGuiClientSide)//send the calls directly to the container bypassing the MPController window send
         {
             //slotClick
-            window.mc.thePlayer.openContainer.slotClick(slotIndex, button, clickType, window.mc.thePlayer);
+            window.mc.player.openContainer.slotClick(slotIndex, button, clickType, window.mc.player);
         } else {
             //windowClick
-            window.mc.playerController.windowClick(window.inventorySlots.windowId, slotIndex, button, clickType, window.mc.thePlayer);
+            window.mc.playerController.windowClick(window.inventorySlots.windowId, slotIndex, button, clickType, window.mc.player);
         }
     }
 
