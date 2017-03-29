@@ -13,6 +13,17 @@ GETFIELD net/minecraft/client/gui/inventory/GuiContainer.manager : Lcodechicken/
 ARETURN
 
 list m_setWorldAndResolution
+ALOAD 1
+GETFIELD net/minecraft/client/Minecraft.field_71462_r : Lnet/minecraft/client/gui/GuiScreen;
+ALOAD 0
+IF_ACMPNE LSKIP
+ALOAD 0
+NEW codechicken/nei/guihook/GuiContainerManager
+DUP
+ALOAD 0
+INVOKESPECIAL codechicken/nei/guihook/GuiContainerManager.<init> (Lnet/minecraft/client/gui/inventory/GuiContainer;)V
+PUTFIELD net/minecraft/client/gui/inventory/GuiContainer.manager : Lcodechicken/nei/guihook/GuiContainerManager;
+LSKIP
 ALOAD 0
 ALOAD 1
 ILOAD 2
@@ -22,12 +33,6 @@ ALOAD 1
 GETFIELD net/minecraft/client/Minecraft.field_71462_r : Lnet/minecraft/client/gui/GuiScreen;
 ALOAD 0
 IF_ACMPNE LEND
-ALOAD 0
-NEW codechicken/nei/guihook/GuiContainerManager
-DUP
-ALOAD 0
-INVOKESPECIAL codechicken/nei/guihook/GuiContainerManager.<init> (Lnet/minecraft/client/gui/inventory/GuiContainer;)V
-PUTFIELD net/minecraft/client/gui/inventory/GuiContainer.manager : Lcodechicken/nei/guihook/GuiContainerManager;
 ALOAD 0
 GETFIELD net/minecraft/client/gui/inventory/GuiContainer.manager : Lcodechicken/nei/guihook/GuiContainerManager;
 INVOKEVIRTUAL codechicken/nei/guihook/GuiContainerManager.load ()V

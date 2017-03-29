@@ -40,11 +40,11 @@ public class LayoutManager implements IContainerInputHandler, IContainerTooltipH
     /**
      * Sorted bottom first
      */
-    private static TreeSet<Widget> drawWidgets;
+    private static TreeSet<Widget> drawWidgets = new TreeSet<Widget>(new WidgetZOrder(false));
     /**
      * Sorted top first
      */
-    private static TreeSet<Widget> controlWidgets;
+    private static TreeSet<Widget> controlWidgets = new TreeSet<Widget>(new WidgetZOrder(true));
 
     private static boolean showItemPanel;
 
