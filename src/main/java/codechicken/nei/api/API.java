@@ -9,6 +9,7 @@ import codechicken.nei.api.layout.LayoutStyle;
 import codechicken.nei.config.KeyBindings;
 import codechicken.nei.config.Option;
 import codechicken.nei.recipe.*;
+import codechicken.nei.util.LogHelper;
 import net.minecraft.block.Block;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.settings.KeyBinding;
@@ -35,7 +36,8 @@ public class API {
      * @param handler The handler to register
      */
     public static void registerRecipeHandler(ICraftingHandler handler) {
-        GuiCraftingRecipe.registerRecipeHandler(handler);
+        LogHelper.debug("Snuffing crafting handler registration for: %s", handler.getClass());
+        //GuiCraftingRecipe.registerRecipeHandler(handler);
     }
 
     /**
@@ -44,7 +46,8 @@ public class API {
      * @param handler The handler to register
      */
     public static void registerUsageHandler(IUsageHandler handler) {
-        GuiUsageRecipe.registerUsageHandler(handler);
+        LogHelper.debug("Snuffing usage handler registration for: %s", handler.getClass());
+        //GuiUsageRecipe.registerUsageHandler(handler);
     }
 
     /**

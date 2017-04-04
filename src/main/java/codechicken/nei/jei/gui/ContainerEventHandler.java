@@ -67,7 +67,7 @@ public class ContainerEventHandler {
                 }
             }
         }
-        int eventKey = Mouse.getEventButton();
+        /*int eventKey = Mouse.getEventButton();
         if (JEIIntegrationManager.itemPannelOwner == EnumItemBrowser.JEI && Minecraft.getMinecraft().thePlayer != null) {
             if (!Config.isCheatItemsEnabled() && Minecraft.getMinecraft().currentScreen instanceof GuiContainer) {
                 if (!isContainerTextFieldFocused()) {
@@ -82,7 +82,7 @@ public class ContainerEventHandler {
                     }
                 }
             }
-        }
+        }*/
     }
 
     @SubscribeEvent(priority = EventPriority.LOWEST, receiveCanceled = true)//we need to be called after JEI has registered the key press and updated the search box.
@@ -93,7 +93,7 @@ public class ContainerEventHandler {
             LayoutManager.searchField.setText(fieldFilter.getText(), false);
         }
 
-        if (JEIIntegrationManager.itemPannelOwner == EnumItemBrowser.JEI && Minecraft.getMinecraft().thePlayer != null) {
+        /*if (JEIIntegrationManager.itemPannelOwner == EnumItemBrowser.JEI && Minecraft.getMinecraft().thePlayer != null) {
             if (Minecraft.getMinecraft().currentScreen instanceof GuiContainer) {
                 if (!event.isCanceled()) {
                     if (!isContainerTextFieldFocused()) {
@@ -111,7 +111,7 @@ public class ContainerEventHandler {
                     }
                 }
             }
-        }
+        }*/
     }
 
     private IClickedIngredient<?> getIngeredientUnderMouseForKey() {

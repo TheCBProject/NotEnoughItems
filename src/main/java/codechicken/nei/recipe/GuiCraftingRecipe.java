@@ -7,6 +7,8 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import java.util.ArrayList;
 
 public class GuiCraftingRecipe extends GuiRecipe {
+
+    @Deprecated
     public static boolean openRecipeGui(String outputId, Object... results) {
         Minecraft mc = Minecraft.getMinecraft();
         GuiContainer prevscreen = mc.currentScreen instanceof GuiContainer ? (GuiContainer) mc.currentScreen : null;

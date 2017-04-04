@@ -10,25 +10,27 @@ import net.minecraft.item.ItemStack;
 public class RecipeItemInputHandler implements IContainerInputHandler {
     @Override
     public boolean lastKeyTyped(GuiContainer gui, char keyChar, int keyCode) {
-        ItemStack stackover = GuiContainerManager.getStackMouseOver(gui);
+        ItemStack stackover = GuiContainerManager.getStackMouseOver_WidgetsOnly(gui);
         if (stackover == null) {
             return false;
         }
 
         if (KeyBindings.get("nei.options.keys.gui.usage").isActiveAndMatches(keyCode)) {
-            boolean opened = GuiUsageRecipe.openRecipeGui("item", stackover.copy());
+            /*boolean opened = GuiUsageRecipe.openRecipeGui("item", stackover.copy());
             if (!opened) {
                 opened = JEIIntegrationManager.openUsageGui(stackover.copy());
             }
-            return opened;
+            return opened;*/
+            return JEIIntegrationManager.openUsageGui(stackover.copy());
         }
 
         if (KeyBindings.get("nei.options.keys.gui.recipe").isActiveAndMatches(keyCode)) {
-            boolean opened = GuiCraftingRecipe.openRecipeGui("item", stackover.copy());
+            /*boolean opened = GuiCraftingRecipe.openRecipeGui("item", stackover.copy());
             if (!opened) {
                 opened = JEIIntegrationManager.openRecipeGui(stackover.copy());
             }
-            return opened;
+            return opened;*/
+            return JEIIntegrationManager.openRecipeGui(stackover.copy());
         }
 
         return false;
@@ -36,17 +38,17 @@ public class RecipeItemInputHandler implements IContainerInputHandler {
 
     @Override
     public boolean mouseClicked(GuiContainer gui, int mousex, int mousey, int button) {
-        ItemStack stackover = GuiContainerManager.getStackMouseOver(gui);
+        ItemStack stackover = GuiContainerManager.getStackMouseOver_WidgetsOnly(gui);
         if (stackover == null || !(gui instanceof GuiRecipe)) {
             return false;
         }
 
         if (button == 0) {
-            return GuiCraftingRecipe.openRecipeGui("item", stackover.copy());
+            return JEIIntegrationManager.openRecipeGui(stackover.copy());
         }
 
         if (button == 1) {
-            return GuiUsageRecipe.openRecipeGui("item", stackover.copy());
+            return JEIIntegrationManager.openUsageGui(stackover.copy());
         }
 
         return false;

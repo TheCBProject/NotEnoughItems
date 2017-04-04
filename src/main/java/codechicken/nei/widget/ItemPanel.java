@@ -286,15 +286,15 @@ public class ItemPanel extends Widget {
             ItemStack item = hoverSlot.item;
             if (NEIController.manager.window instanceof GuiRecipe || !NEIClientConfig.canCheatItem(item)) {
                 if (button == 0) {
-                    boolean opened = GuiCraftingRecipe.openRecipeGui("item", item);
-                    if (!opened) {
+                    //boolean opened = GuiCraftingRecipe.openRecipeGui("item", item);
+                    //if (!opened) {
                         JEIIntegrationManager.openRecipeGui(item);
-                    }
+                    //}
                 } else if (button == 1) {
-                    boolean opened = GuiUsageRecipe.openRecipeGui("item", item);
-                    if (!opened) {
+                    //boolean opened = GuiUsageRecipe.openRecipeGui("item", item);
+                    //if (!opened) {
                         JEIIntegrationManager.openUsageGui(item);
-                    }
+                    //}
                 }
 
                 draggedStack = null;
