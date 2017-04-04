@@ -119,15 +119,15 @@ public class ContainerRecipe extends Container {
         ItemStack stack = recipeInventory.getStackInSlot(slot);
         if (stack != null) {
             if (button == 0) {
-                boolean opened = GuiCraftingRecipe.openRecipeGui("item", stack);
-                if (!opened) {
+                //boolean opened = GuiCraftingRecipe.openRecipeGui("item", stack);
+                //if (!opened) {
                     JEIIntegrationManager.openRecipeGui(stack);
-                }
+                //}
             } else if (button == 1) {
-                boolean opened = GuiUsageRecipe.openRecipeGui("item", stack);
-                if (!opened) {
+                //boolean opened = GuiUsageRecipe.openRecipeGui("item", stack);
+                //if (!opened) {
                     JEIIntegrationManager.openUsageGui(stack);
-                }
+                //}
             }
         }
         return null;

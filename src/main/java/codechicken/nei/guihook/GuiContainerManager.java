@@ -299,6 +299,24 @@ public class GuiContainerManager {
         return null;
     }
 
+    public static ItemStack getStackMouseOver_WidgetsOnly(GuiContainer window) {
+        Point mousePos = getMousePosition();
+
+        for (IContainerObjectHandler objectHandler : objectHandlers) {
+            ItemStack item = objectHandler.getStackUnderMouse(window, mousePos.x, mousePos.y);
+            if (item != null) {
+                return item;
+            }
+        }
+
+        //Slot slot = getSlotMouseOver(window);
+        //if (slot != null) {
+        //    return slot.getStack();
+        //}
+
+        return null;
+    }
+
     public static Slot getSlotMouseOver(GuiContainer window) {
         Point mousePos = getMousePosition();
         if (getManager(window).objectUnderMouse(mousePos.x, mousePos.y)) {
