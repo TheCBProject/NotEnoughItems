@@ -61,7 +61,7 @@ public class SubsetWidget extends Button implements IItemFilterProvider, ItemsLo
                     SubsetTag tag = sorted.get(slot);
                     if (NEIClientUtils.shiftKey()) {
                         String searchTag = tag.fullname;//TODO
-                        if (searchTag.startsWith("Mod.") && JEIIntegrationManager.itemPannelOwner == EnumItemBrowser.JEI) {
+                        if (searchTag.startsWith("Mod.") && JEIIntegrationManager.itemPanelOwner == EnumItemBrowser.JEI) {
                             searchTag = searchTag.replace("Mod.", "").replace(" ", "");
                         }
                         codechicken.nei.LayoutManager.searchField.setText("@" + searchTag);

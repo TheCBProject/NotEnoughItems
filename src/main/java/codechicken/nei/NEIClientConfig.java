@@ -157,7 +157,7 @@ public class NEIClientConfig {
         API.addOption(new ItemBrowserButton("jei.searchBox") {
             @Override
             public boolean isEnabled() {
-                return JEIIntegrationManager.itemPannelOwner == EnumItemBrowser.JEI;
+                return JEIIntegrationManager.itemPanelOwner == EnumItemBrowser.JEI;
             }
 
             @Override

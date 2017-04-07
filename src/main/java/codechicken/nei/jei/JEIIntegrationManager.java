@@ -1,7 +1,10 @@
 package codechicken.nei.jei;
 
+import codechicken.lib.asm.proxy.FunctionProxy;
 import codechicken.lib.config.ConfigTagParent;
 import codechicken.nei.VisibilityData;
+import codechicken.nei.jei.proxy.DummyProxy;
+import codechicken.nei.jei.proxy.IJEIProxy;
 import codechicken.nei.jei.proxy.JEIProxy;
 import mezz.jei.Internal;
 import mezz.jei.ItemFilter;
@@ -16,6 +19,7 @@ import mezz.jei.gui.ItemListOverlayInternal;
 import mezz.jei.input.GuiTextFieldFilter;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.common.Loader;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -27,11 +31,13 @@ import java.util.List;
  */
 public class JEIIntegrationManager {
 
-    public static final JEIProxy proxy = new JEIProxy();
+    @FunctionProxy
+    public static IJEIProxy proxy;
+
+    public static boolean jeiLoaded;
 
     public static EnumItemBrowser searchBoxOwner = EnumItemBrowser.JEI;
-    public static EnumItemBrowser recipePriority = EnumItemBrowser.NEI;
-    public static EnumItemBrowser itemPannelOwner = EnumItemBrowser.JEI;
+    public static EnumItemBrowser itemPanelOwner = EnumItemBrowser.JEI;
 
     public static void pushChanges(VisibilityData data) {
         JeiRuntime runtime = Internal.getRuntime();
@@ -49,7 +55,7 @@ public class JEIIntegrationManager {
                 fieldFilter.setVisible(false);
             }
         }
-        if (itemPannelOwner == EnumItemBrowser.JEI) {
+        if (itemPanelOwner == EnumItemBrowser.JEI) {
             data.showItemPanel = false;
             if (!Config.isOverlayEnabled()) {
                 Config.toggleOverlayEnabled();
@@ -70,28 +76,12 @@ public class JEIIntegrationManager {
 
     }
 
-    public static boolean openRecipeGui(ItemStack stack) {
-        //if (JEI installed) {
-        RecipeRegistry registry = Internal.getRuntime().getRecipeRegistry();
-        IFocus focus = registry.createFocus(Mode.OUTPUT, stack);
-        if (registry.getRecipeCategories(focus).isEmpty()) {
-            return false;
-        }
-        Internal.getRuntime().getRecipesGui().show(focus);
-        //}
-        return false;
+    public static void openRecipeGui(ItemStack stack) {
+        proxy.openRecipeGui(stack);
     }
 
-    public static boolean openUsageGui(ItemStack stack) {
-        //if (JEI installed) {
-        RecipeRegistry registry = Internal.getRuntime().getRecipeRegistry();
-        IFocus focus = registry.createFocus(Mode.INPUT, stack);
-        if (registry.getRecipeCategories(focus).isEmpty()) {
-            return false;
-        }
-        Internal.getRuntime().getRecipesGui().show(focus);
-        //}
-        return false;
+    public static void openUsageGui(ItemStack stack) {
+        proxy.openUsageGui(stack);
     }
 
     public static boolean setSearchBoxOwner(int ordinal) {
@@ -110,16 +100,16 @@ public class JEIIntegrationManager {
     }
 
     public static boolean setItemPanelOwner(EnumItemBrowser browser) {
-        itemPannelOwner = browser;
+        itemPanelOwner = browser;
         return true;
     }
 
     public static boolean setItemPanelOwner(int ordinal) {
         try {
-            itemPannelOwner = EnumItemBrowser.values()[ordinal];
+            itemPanelOwner = EnumItemBrowser.values()[ordinal];
             return true;
         } catch (IndexOutOfBoundsException e) {
-            itemPannelOwner = EnumItemBrowser.NEI;
+            itemPanelOwner = EnumItemBrowser.NEI;
             return false;
         }
     }
@@ -199,4 +189,23 @@ public class JEIIntegrationManager {
     public static KeyBinding getToggleOverlay() {
         return KeyBindings.toggleOverlay;
     }
+
+    /**
+     * Gracefully handles JEI integration breaking, sets SearchBox and ItemPanel back to defaults, disables further integration.
+     *
+     * @param throwable The error that occurred.
+     */
+    public static void handleJEIError(Throwable throwable) {
+        //TODO
+    }
+
+    public static String proxyCallback() {
+        if (Loader.isModLoaded("jei")) {
+            jeiLoaded = true;
+            return JEIProxy.class.getName();
+        }
+        jeiLoaded = false;
+        return DummyProxy.class.getName();
+    }
+
 }

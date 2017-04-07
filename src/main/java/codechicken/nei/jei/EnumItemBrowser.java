@@ -19,7 +19,7 @@ public enum EnumItemBrowser {
     JEI {
         @Override
         public boolean isValid() {
-            return Loader.isModLoaded("JEI");
+            return Loader.isModLoaded("jei");
         }
     };
 

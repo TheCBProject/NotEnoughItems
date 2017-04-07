@@ -71,7 +71,7 @@ public class SearchField extends TextField implements IItemFilterProvider {
 
     @Override
     public int getTextColour() {
-        if (JEIIntegrationManager.itemPannelOwner == EnumItemBrowser.JEI ? JEIIntegrationManager.getFilteredItems().size() == 0 : ItemPanel.items.size() == 0) {
+        if (JEIIntegrationManager.itemPanelOwner == EnumItemBrowser.JEI ? JEIIntegrationManager.getFilteredItems().size() == 0 : ItemPanel.items.size() == 0) {
             return Color.red.getRGB();
         }
         return super.getTextColour();

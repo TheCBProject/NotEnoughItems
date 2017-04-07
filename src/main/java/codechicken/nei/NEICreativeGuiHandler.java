@@ -1,11 +1,11 @@
 package codechicken.nei;
 
-import codechicken.nei.api.INEIGuiAdapter;
+import codechicken.nei.api.INEIGuiHandler;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.gui.inventory.GuiContainerCreative;
 import net.minecraft.creativetab.CreativeTabs;
 
-public class NEICreativeGuiHandler extends INEIGuiAdapter {
+public class NEICreativeGuiHandler implements INEIGuiHandler {
 
     @Override
     public VisibilityData modifyVisibility(GuiContainer gui, VisibilityData currentVisibility) {

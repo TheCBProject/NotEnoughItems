@@ -1,6 +1,6 @@
 package codechicken.nei.handler;
 
-import codechicken.nei.api.INEIGuiAdapter;
+import codechicken.nei.api.INEIGuiHandler;
 import codechicken.nei.api.TaggedInventoryArea;
 import codechicken.nei.util.NEIServerUtils;
 import net.minecraft.client.gui.inventory.GuiChest;
@@ -11,7 +11,7 @@ import net.minecraft.item.ItemStack;
 import java.util.Collections;
 import java.util.List;
 
-public class NEIChestGuiHandler extends INEIGuiAdapter {
+public class NEIChestGuiHandler  implements INEIGuiHandler {
 
     public int chestSize(GuiContainer gui) {
         return ((ContainerChest) gui.inventorySlots).getLowerChestInventory().getSizeInventory();
