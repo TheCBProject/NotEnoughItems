@@ -1,6 +1,6 @@
 package codechicken.nei.widget;
 
-import codechicken.nei.Image;
+import codechicken.lib.vec.Rectangle4i;
 import codechicken.nei.LayoutManager;
 import codechicken.nei.util.NEIClientUtils;
 
@@ -9,6 +9,7 @@ import java.util.List;
 import static codechicken.lib.gui.GuiDraw.getStringWidth;
 
 public abstract class Button extends Widget {
+
     public Button(String s) {
         label = s;
     }
@@ -18,7 +19,7 @@ public abstract class Button extends Widget {
     }
 
     public int contentWidth() {
-        return getRenderIcon() == null ? getStringWidth(label) : getRenderIcon().width;
+        return getRenderIcon() == null ? getStringWidth(label) : getRenderIcon().w;
     }
 
     @Override
@@ -38,21 +39,20 @@ public abstract class Button extends Widget {
 
     public abstract boolean onButtonPress(boolean rightclick);
 
-    public Image getRenderIcon() {
+    public Rectangle4i getRenderIcon() {
         return icon;
     }
 
     @Override
-    public List<String> handleTooltip(int mx, int my, List<String> tooltip) {
+    public void handleTooltip(int mx, int my, List<String> tooltip) {
         if (!contains(mx, my)) {
-            return tooltip;
+            return;
         }
 
         String tip = getButtonTip();
         if (tip != null) {
             tooltip.add(tip);
         }
-        return tooltip;
     }
 
     public String getButtonTip() {
@@ -64,7 +64,7 @@ public abstract class Button extends Widget {
     }
 
     public String label;
-    public Image icon;
+    public Rectangle4i icon;
 
     /**
      * 0x4 = state flag, as opposed to 1 click

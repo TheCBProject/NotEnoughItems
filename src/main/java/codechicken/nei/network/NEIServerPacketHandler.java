@@ -5,11 +5,16 @@ import codechicken.lib.inventory.container.SlotDummy;
 import codechicken.lib.packet.ICustomPacketHandler.IServerPacketHandler;
 import codechicken.lib.packet.PacketCustom;
 import codechicken.lib.util.ServerUtils;
-import codechicken.nei.*;
+import codechicken.nei.NEIServerConfig;
+import codechicken.nei.PlayerSave;
 import codechicken.nei.container.ContainerCreativeInv;
+import codechicken.nei.container.ContainerEnchantmentModifier;
+import codechicken.nei.container.ContainerPotionCreator;
 import codechicken.nei.container.ExtendedCreativeInv;
+import codechicken.nei.util.ItemStackMap;
 import codechicken.nei.util.LogHelper;
 import codechicken.nei.util.NEIServerUtils;
+import codechicken.nei.widget.action.NEIActions;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -28,6 +33,7 @@ import java.util.LinkedList;
 import java.util.Set;
 
 public class NEIServerPacketHandler implements IServerPacketHandler {
+
     @Override
     public void handlePacket(PacketCustom packet, EntityPlayerMP sender, INetHandlerPlayServer netHandler) {
         if (!NEIServerConfig.authenticatePacket(sender, packet)) {
@@ -35,63 +41,63 @@ public class NEIServerPacketHandler implements IServerPacketHandler {
         }
 
         switch (packet.getType()) {
-        case 1:
-            handleGiveItem(sender, packet);
-            break;
-        case 4:
-            NEIServerUtils.deleteAllItems(sender);
-            break;
-        case 5:
-            setInventorySlot(sender, packet);
-            break;
-        case 6:
-            NEIServerUtils.toggleMagnetMode(sender);
-            break;
-        case 7:
-            NEIServerUtils.setHourForward(sender.world, packet.readUByte(), true);
-            break;
-        case 8:
-            NEIServerUtils.healPlayer(sender);
-            break;
-        case 9:
-            NEIServerUtils.toggleRaining(sender.world, true);
-            break;
-        case 10:
-            sendLoginState(sender);
-            break;
-        case 11:
-            sender.updateCraftingInventory(sender.openContainer, sender.openContainer.getInventory());
-            break;
-        case 12:
-            handlePropertyChange(sender, packet);
-            break;
-        case 13:
-            NEIServerUtils.setGamemode(sender, packet.readUByte());
-            break;
-        case 14:
-            NEIServerUtils.cycleCreativeInv(sender, packet.readInt());
-            break;
-        case 15:
-            handleMobSpawnerID(sender.world, packet.readPos(), packet.readString());
-            break;
-        case 20:
-            handleContainerPacket(sender, packet);
-            break;
-        case 21:
-            openEnchantmentGui(sender);
-            break;
-        case 22:
-            modifyEnchantment(sender, packet.readUByte(), packet.readUByte(), packet.readBoolean());
-            break;
-        case 23:
-            processCreativeInv(sender, packet.readBoolean());
-            break;
-        case 24:
-            openPotionGui(sender, packet);
-            break;
-        case 25:
-            handleDummySlotSet(sender, packet);
-            break;
+            case 1:
+                handleGiveItem(sender, packet);
+                break;
+            case 4:
+                NEIServerUtils.deleteAllItems(sender);
+                break;
+            case 5:
+                setInventorySlot(sender, packet);
+                break;
+            case 6:
+                NEIServerUtils.toggleMagnetMode(sender);
+                break;
+            case 7:
+                NEIServerUtils.setHourForward(sender.world, packet.readUByte(), true);
+                break;
+            case 8:
+                NEIServerUtils.healPlayer(sender);
+                break;
+            case 9:
+                NEIServerUtils.toggleRaining(sender.world, true);
+                break;
+            case 10:
+                sendLoginState(sender);
+                break;
+            case 11:
+                sender.updateCraftingInventory(sender.openContainer, sender.openContainer.getInventory());
+                break;
+            case 12:
+                handleActionDisableStateChange(sender, packet);
+                break;
+            case 13:
+                NEIServerUtils.setGamemode(sender, packet.readUByte());
+                break;
+            case 14:
+                NEIServerUtils.cycleCreativeInv(sender, packet.readInt());
+                break;
+            case 15:
+                handleMobSpawnerID(sender.world, packet.readPos(), packet.readString());
+                break;
+            case 20:
+                handleContainerPacket(sender, packet);
+                break;
+            case 21:
+                openEnchantmentGui(sender);
+                break;
+            case 22:
+                modifyEnchantment(sender, packet.readUByte(), packet.readUByte(), packet.readBoolean());
+                break;
+            case 23:
+                processCreativeInv(sender, packet.readBoolean());
+                break;
+            case 24:
+                openPotionGui(sender, packet);
+                break;
+            case 25:
+                handleDummySlotSet(sender, packet);
+                break;
         }
     }
 
@@ -118,16 +124,24 @@ public class NEIServerPacketHandler implements IServerPacketHandler {
         }
     }
 
-    private void handlePropertyChange(EntityPlayerMP sender, PacketCustom packet) {
+    /**
+     * Handles when a client disables an action.
+     * For Example, Noon, Weather.
+     * If the player is permitted to change the action, a packet is then relayed to all clients in the dimension.
+     *
+     * @param sender The player that changed the actions state.
+     * @param packet The packet containing data.
+     */
+    private void handleActionDisableStateChange(EntityPlayerMP sender, PacketCustom packet) {
         String name = packet.readString();
         if (NEIServerConfig.canPlayerPerformAction(sender.getName(), name)) {
-            NEIServerConfig.disableAction(sender.dimension, name, packet.readBoolean());
+            NEIServerConfig.setDisableActionState(sender.dimension, name, packet.readBoolean());
         }
     }
 
     public static void processCreativeInv(EntityPlayerMP sender, boolean open) {
         if (open) {
-            ServerUtils.openSMPContainer(sender, new ContainerCreativeInv(sender, new ExtendedCreativeInv(NEIServerConfig.forPlayer(sender.getName()), Side.SERVER)), (player, windowId) -> {
+            ServerUtils.openSMPContainer(sender, new ContainerCreativeInv(sender, new ExtendedCreativeInv(NEIServerConfig.getSaveForPlayer(sender.getName()), Side.SERVER)), (player, windowId) -> {
                 PacketCustom packet = new PacketCustom(channel, 23);
                 packet.writeBoolean(true);
                 packet.writeByte(windowId);
@@ -187,20 +201,44 @@ public class NEIServerPacketHandler implements IServerPacketHandler {
         });
     }
 
-    public static void sendActionDisabled(int dim, String name, boolean disable) {
+    /**
+     * Sends a packet to all clients in the dimension notifying them of a specific actions disable state change.
+     *
+     * @param dim     The dimension the change happened for.
+     * @param name    The name of the action.
+     * @param disable The actions state.
+     */
+    public static void sendActionDisabledState(int dim, String name, boolean disable) {
         new PacketCustom(channel, 11).writeString(name).writeBoolean(disable).sendToDimension(dim);
     }
 
-    public static void sendActionEnabled(EntityPlayerMP player, String name, boolean enable) {
+    /**
+     * Sends an actions state change to the client.
+     *
+     * @param player The player in which the action has changed for.
+     * @param name   The actions identifier.
+     * @param enable The actions state.
+     */
+    public static void sendActionStateChange(EntityPlayerMP player, String name, boolean enable) {
         new PacketCustom(channel, 12).writeString(name).writeBoolean(enable).sendToPlayer(player);
     }
 
+    /**
+     * Requested by the client when a successful ServerSide Check has happened.
+     * Sends the following to the client:
+     * Permissible actions.
+     * Disabled actions.
+     * Enabled actions.
+     * Banned Items.
+     *
+     * @param player The player Requesting a LoginState.
+     */
     private void sendLoginState(EntityPlayerMP player) {
         LinkedList<String> actions = new LinkedList<>();
         LinkedList<String> disabled = new LinkedList<>();
         LinkedList<String> enabled = new LinkedList<>();
         LinkedList<ItemStack> bannedItems = new LinkedList<>();
-        PlayerSave playerSave = NEIServerConfig.forPlayer(player.getName());
+        PlayerSave playerSave = NEIServerConfig.getSaveForPlayer(player.getName());
 
         for (String name : NEIActions.nameActionMap.keySet()) {
             if (NEIServerConfig.canPlayerPerformAction(player.getName(), name)) {
@@ -244,8 +282,15 @@ public class NEIServerPacketHandler implements IServerPacketHandler {
         packet.sendToPlayer(player);
     }
 
-    public static void sendHasServerSideTo(EntityPlayerMP player) {
-        LogHelper.debug("Sending serverside check to: " + player.getName());
+    /**
+     * Sends the current protocol version and world to the client.
+     * Called every time the player changes dimensions.
+     * If successful on the client, it will request a LoginState.
+     *
+     * @param player The player to send the ServerSide check to.
+     */
+    public static void sendServerSideCheck(EntityPlayerMP player) {
+        LogHelper.debug("Sending ServerSide check to: " + player.getName());
         PacketCustom packet = new PacketCustom(channel, 1);
         packet.writeByte(NEIActions.protocol);
         packet.writeString(player.world.getWorldInfo().getWorldName());
@@ -253,7 +298,13 @@ public class NEIServerPacketHandler implements IServerPacketHandler {
         packet.sendToPlayer(player);
     }
 
-    public static void sendAddMagneticItemTo(EntityPlayerMP player, EntityItem item) {
+    /**
+     * Adds a tracked MagnetItem on the client.
+     *
+     * @param player Player to send to.
+     * @param item   EntityItem to send.
+     */
+    public static void sendTrackedMagnetItem(EntityPlayerMP player, EntityItem item) {
         PacketCustom packet = new PacketCustom(channel, 13);
         packet.writeInt(item.getEntityId());
 

@@ -1,5 +1,6 @@
 package codechicken.nei.guihook;
 
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.item.ItemStack;
 
@@ -7,6 +8,7 @@ import net.minecraft.item.ItemStack;
  * Provides more general gui calls as well as functions for more integration between objects
  */
 public interface IContainerObjectHandler {
+
     /**
      * Called once per tick in the gui.
      *
@@ -50,5 +52,5 @@ public interface IContainerObjectHandler {
      * @param gui An instance of the currentscreen
      * @return false if tooltips should not be shown. Eg. if you have a custom object being held
      */
-    boolean shouldShowTooltip(GuiContainer gui);
+    boolean shouldShowTooltip(GuiScreen gui);
 }

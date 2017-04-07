@@ -1,16 +1,14 @@
 package codechicken.nei.util;
 
-import codechicken.lib.util.CommonUtils;
 import codechicken.lib.inventory.InventoryRange;
 import codechicken.lib.inventory.InventoryUtils;
 import codechicken.lib.packet.PacketCustom;
 import codechicken.lib.util.ServerUtils;
-import codechicken.nei.ClientHandler;
-import codechicken.nei.NEIActions;
 import codechicken.nei.NEIServerConfig;
 import codechicken.nei.PlayerSave;
 import codechicken.nei.container.ContainerCreativeInv;
 import codechicken.nei.network.NEIServerPacketHandler;
+import codechicken.nei.widget.action.NEIActions;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.player.EntityPlayer;
@@ -30,14 +28,17 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.oredict.OreDictionary;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.zip.ZipException;
 
 public class NEIServerUtils {
+
     public static boolean isRaining(World world) {
         return world.getWorldInfo().isRaining();
     }
@@ -60,6 +61,7 @@ public class NEIServerUtils {
         player.heal(20);
         player.getFoodStats().addStats(20, 1);
         player.extinguish();
+        player.clearActivePotions();
     }
 
     public static long getTime(World world) {
@@ -90,10 +92,10 @@ public class NEIServerUtils {
         }
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings ("unchecked")
     public static void deleteAllItems(EntityPlayerMP player) {
         for (Slot slot : player.openContainer.inventorySlots) {
-            slot.putStack(null);
+            slot.putStack(ItemStack.EMPTY);
         }
 
         player.updateCraftingInventory(player.openContainer, player.openContainer.getInventory());
@@ -148,10 +150,7 @@ public class NEIServerUtils {
      * @return whether the two items are the same in terms of damage and itemID.
      */
     public static boolean areStacksSameType(ItemStack stack1, ItemStack stack2) {
-        return stack1 != null && stack2 != null &&
-                (stack1.getItem() == stack2.getItem() &&
-                        (!stack2.getHasSubtypes() || stack2.getItemDamage() == stack1.getItemDamage()) &&
-                        ItemStack.areItemStackTagsEqual(stack2, stack1));
+        return stack1 != null && stack2 != null && (stack1.getItem() == stack2.getItem() && (!stack2.getHasSubtypes() || stack2.getItemDamage() == stack1.getItemDamage()) && ItemStack.areItemStackTagsEqual(stack2, stack1));
     }
 
     /**
@@ -162,9 +161,7 @@ public class NEIServerUtils {
      * @return whether the two items are the same from the perspective of a crafting inventory.
      */
     public static boolean areStacksSameTypeCrafting(ItemStack stack1, ItemStack stack2) {
-        return stack1 != null && stack2 != null &&
-                stack1.getItem() == stack2.getItem() &&
-                (stack1.getItemDamage() == stack2.getItemDamage() || stack1.getItemDamage() == OreDictionary.WILDCARD_VALUE || stack2.getItemDamage() == OreDictionary.WILDCARD_VALUE || stack1.getItem().isDamageable());
+        return stack1 != null && stack2 != null && stack1.getItem() == stack2.getItem() && (stack1.getItemDamage() == stack2.getItemDamage() || stack1.getItemDamage() == OreDictionary.WILDCARD_VALUE || stack2.getItemDamage() == OreDictionary.WILDCARD_VALUE || stack1.getItem().isDamageable());
     }
 
     /**
@@ -178,8 +175,8 @@ public class NEIServerUtils {
         if (stack1 == stack2) {
             return 0;//catches both null
         }
-        if (stack1 == null || stack2 == null) {
-            return stack1 == null ? -1 : 1;//null stack goes first
+        if (stack1.isEmpty() || stack2.isEmpty()) {
+            return stack1.isEmpty() ? -1 : 1;//null stack goes first
         }
         if (stack1.getItem() != stack2.getItem()) {
             return Item.getIdFromItem(stack1.getItem()) - Item.getIdFromItem(stack2.getItem());
@@ -236,12 +233,12 @@ public class NEIServerUtils {
     }
 
     public static void toggleMagnetMode(EntityPlayerMP player) {
-        PlayerSave playerSave = NEIServerConfig.forPlayer(player.getName());
-        playerSave.enableAction("magnet", !playerSave.isActionEnabled("magnet"));
+        PlayerSave playerSave = NEIServerConfig.getSaveForPlayer(player.getName());
+        playerSave.changeActionState("magnet", !playerSave.isActionEnabled("magnet"));
     }
 
     public static int getCreativeMode(EntityPlayerMP player) {
-        if (NEIServerConfig.forPlayer(player.getName()).isActionEnabled("creative+")) {
+        if (NEIServerConfig.getSaveForPlayer(player.getName()).isActionEnabled("creative+")) {
             return 2;
         } else if (player.interactionManager.isCreative()) {
             return 1;
@@ -254,25 +251,24 @@ public class NEIServerUtils {
 
     public static GameType getGameType(int mode) {
         switch (mode) {
-        case 0:
-            return GameType.SURVIVAL;
-        case 1:
-        case 2:
-            return GameType.CREATIVE;
-        case 3:
-            return GameType.ADVENTURE;
+            case 0:
+                return GameType.SURVIVAL;
+            case 1:
+            case 2:
+                return GameType.CREATIVE;
+            case 3:
+                return GameType.ADVENTURE;
         }
         return null;
     }
 
     public static void setGamemode(EntityPlayerMP player, int mode) {
-        if (mode < 0 || mode >= NEIActions.gameModes.length ||
-                NEIActions.nameActionMap.containsKey(NEIActions.gameModes[mode]) && !NEIServerConfig.canPlayerPerformAction(player.getName(), NEIActions.gameModes[mode])) {
+        if (mode < 0 || mode >= NEIActions.gameModes.length || NEIActions.nameActionMap.containsKey(NEIActions.gameModes[mode]) && !NEIServerConfig.canPlayerPerformAction(player.getName(), NEIActions.gameModes[mode])) {
             return;
         }
 
         //creative+
-        NEIServerConfig.forPlayer(player.getName()).enableAction("creative+", mode == 2);
+        NEIServerConfig.getSaveForPlayer(player.getName()).changeActionState("creative+", mode == 2);
         if (mode == 2 && !(player.openContainer instanceof ContainerCreativeInv))//open the container immediately for the client
         {
             NEIServerPacketHandler.processCreativeInv(player, true);
@@ -291,7 +287,7 @@ public class NEIServerUtils {
 
         //top down [row][col]
         ItemStack[][] slots = new ItemStack[10][9];
-        PlayerSave playerSave = NEIServerConfig.forPlayer(player.getName());
+        PlayerSave playerSave = NEIServerConfig.getSaveForPlayer(player.getName());
 
         //get
         System.arraycopy(inventory.mainInventory, 0, slots[9], 0, 9);
@@ -370,15 +366,7 @@ public class NEIServerUtils {
         return false;
     }
 
-    public static RuntimeException throwCME(String msg) {
-        if (CommonUtils.isClient()) {
-            return ClientHandler.throwCME(msg);
-        }
-
-        throw new RuntimeException(msg);
-    }
-
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings ("unchecked")
     public static ItemStack[] extractRecipeItems(Object obj) {
         if (obj instanceof ItemStack) {
             return new ItemStack[] { (ItemStack) obj };
@@ -405,20 +393,6 @@ public class NEIServerUtils {
                 return end - start;
             }
         };
-    }
-
-    public static void logOnce(Throwable t, Set<String> stackTraces, String message) {
-        logOnce(t, stackTraces, message, "");
-    }
-
-    public static void logOnce(Throwable t, Set<String> stackTraces, String message, String identifier) {
-        StringWriter sw = new StringWriter();
-        t.printStackTrace(new PrintWriter(sw));
-        String stackTrace = identifier + sw.toString();
-        if (!stackTraces.contains(stackTrace)) {
-            LogHelper.errorError(message, t);
-            stackTraces.add(stackTrace);
-        }
     }
 
     public static NBTTagCompound readNBT(File file) throws IOException {

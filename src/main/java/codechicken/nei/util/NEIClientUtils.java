@@ -4,13 +4,11 @@ import codechicken.lib.inventory.InventoryRange;
 import codechicken.lib.inventory.InventoryUtils;
 import codechicken.lib.util.LangProxy;
 import codechicken.nei.LayoutManager;
-import codechicken.nei.NEIActions;
 import codechicken.nei.NEIClientConfig;
 import codechicken.nei.api.GuiInfo;
-import codechicken.nei.api.IInfiniteItemHandler;
 import codechicken.nei.api.INEIGuiHandler;
-import codechicken.nei.api.ItemInfo;
 import codechicken.nei.network.NEIClientPacketHandler;
+import codechicken.nei.widget.action.NEIActions;
 import com.google.common.collect.Iterables;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
@@ -32,6 +30,7 @@ import java.util.*;
 import static codechicken.nei.NEIClientConfig.*;
 
 public class NEIClientUtils extends NEIServerUtils {
+
     public static LangProxy lang = new LangProxy("nei");
 
     private static Minecraft mc() {
@@ -57,12 +56,12 @@ public class NEIClientUtils extends NEIServerUtils {
     }
 
     public static void deleteSlotStack(int slotNumber) {
-        setSlotContents(slotNumber, null, true);
+        setSlotContents(slotNumber, ItemStack.EMPTY, true);
     }
 
     public static void decreaseSlotStack(int slotNumber) {
         ItemStack stack = slotNumber == -999 ? getHeldItem() : mc().player.openContainer.getSlot(slotNumber).getStack();
-        if (stack == null) {
+        if (stack.isEmpty()) {
             return;
         }
 
@@ -88,9 +87,9 @@ public class NEIClientUtils extends NEIServerUtils {
             }
 
             ItemStack stack = slot.getStack();
-            if (stack != null && stack.getItem() == type.getItem() && stack.getItemDamage() == type.getItemDamage()) {
-                setSlotContents(i, null, true);
-                slot.putStack(null);
+            if (!stack.isEmpty() && stack.getItem() == type.getItem() && stack.getItemDamage() == type.getItemDamage()) {
+                setSlotContents(i, ItemStack.EMPTY, true);
+                slot.putStack(ItemStack.EMPTY);
             }
         }
     }
@@ -116,17 +115,6 @@ public class NEIClientUtils extends NEIServerUtils {
         }
 
         if (mode == -1 && button == 0 && shiftKey() && NEIClientConfig.hasSMPCounterPart()) {
-            for (IInfiniteItemHandler handler : ItemInfo.infiniteHandlers) {
-                if (!handler.canHandleItem(stack)) {
-                    continue;
-                }
-
-                ItemStack inf = handler.getInfiniteItem(stack);
-                if (inf != null) {
-                    giveStack(inf, inf.getCount(), true);
-                    return;
-                }
-            }
             cheatItem(stack, button, 0);
         } else if (button == 1) {
             giveStack(stack, 1);
@@ -245,9 +233,9 @@ public class NEIClientUtils extends NEIServerUtils {
         }
 
         if (hasSMPCounterPart()) {
-            NEIClientPacketHandler.sendGamemode(nmode);
+            NEIClientPacketHandler.sendGameMode(nmode);
         } else {
-            sendCommand(getStringSetting("command.creative"), getGameType(nmode), mc().player.getName());
+            sendCommand(getStringSetting("command.creative"), getGameType(nmode).getID(), mc().player.getName());
         }
     }
 

@@ -9,9 +9,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class OptionList extends OptionButton {
+
     public static final OptionList root = new RootOptionList();
 
     private static class RootOptionList extends OptionList {
+
         public RootOptionList() {
             super(null);
         }

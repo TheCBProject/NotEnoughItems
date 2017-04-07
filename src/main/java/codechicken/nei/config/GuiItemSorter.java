@@ -16,7 +16,9 @@ import static codechicken.lib.gui.GuiDraw.drawStringC;
 import static codechicken.lib.gui.GuiDraw.getMousePosition;
 
 public class GuiItemSorter extends GuiOptionPane {
+
     public class SortItem {
+
         public double ya;
         public double y;
         public SortEntry e;

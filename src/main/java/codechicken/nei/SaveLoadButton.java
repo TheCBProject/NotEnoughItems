@@ -11,6 +11,7 @@ import static codechicken.lib.gui.GuiDraw.getStringWidth;
 import static codechicken.nei.util.NEIClientUtils.translate;
 
 public abstract class SaveLoadButton extends Button {
+
     public SaveLoadButton(String s) {
         super(s);
     }

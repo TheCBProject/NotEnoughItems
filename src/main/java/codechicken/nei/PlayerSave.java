@@ -1,6 +1,7 @@
 package codechicken.nei;
 
 import codechicken.lib.inventory.InventoryUtils;
+import codechicken.lib.util.ArrayUtils;
 import codechicken.lib.util.ServerUtils;
 import codechicken.nei.network.NEIServerPacketHandler;
 import codechicken.nei.util.LogHelper;
@@ -15,6 +16,7 @@ import java.io.File;
 import java.util.HashSet;
 
 public class PlayerSave {
+
     public EntityPlayerMP player;
 
     private File saveFile;
@@ -58,6 +60,7 @@ public class PlayerSave {
 
     private void loadCreativeInv() {
         creativeInv = new ItemStack[54];
+        ArrayUtils.fillArray(creativeInv, ItemStack.EMPTY);
         NBTTagList itemList = nbt.getTagList("creativeitems", 10);
         if (itemList != null) {
             InventoryUtils.readItemStacksFromTag(creativeInv, itemList);
@@ -99,7 +102,7 @@ public class PlayerSave {
     public void updateOpChange() {
         boolean isOp = ServerUtils.mc().getPlayerList().canSendCommands(player.getGameProfile());
         if (isOp != wasOp) {
-            NEIServerPacketHandler.sendHasServerSideTo(player);
+            NEIServerPacketHandler.sendServerSideCheck(player);
             wasOp = isOp;
         }
     }
@@ -116,14 +119,14 @@ public class PlayerSave {
         return tag;
     }
 
-    public void enableAction(String name, boolean enabled) {
+    public void changeActionState(String name, boolean enabled) {
         getEnabledActions().setBoolean(name, enabled);
-        NEIServerPacketHandler.sendActionEnabled(player, name, enabled);
+        NEIServerPacketHandler.sendActionStateChange(player, name, enabled);
         setDirty();
     }
 
     public void onWorldReload() {
-        NEIServerPacketHandler.sendHasServerSideTo(player);
+        NEIServerPacketHandler.sendServerSideCheck(player);
         magneticItems.clear();
     }
 }

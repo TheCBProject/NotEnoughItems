@@ -3,6 +3,7 @@ package codechicken.nei;
 import codechicken.nei.jei.JEIIntegrationManager;
 
 public class VisibilityData {
+
     public boolean showUtilityButtons = true;
     public boolean showStateButtons = true;
     /**

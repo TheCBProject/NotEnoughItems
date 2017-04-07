@@ -1,6 +1,6 @@
 package codechicken.nei.api.stack;
 
-import codechicken.nei.ItemList;
+import codechicken.nei.util.ItemList;
 import codechicken.nei.util.NEIServerUtils;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
@@ -15,6 +15,7 @@ import java.util.List;
  * Mainly used in the recipe handlers.
  */
 public class PositionedStack {
+
     public int relx;
     public int rely;
     public ItemStack items[];

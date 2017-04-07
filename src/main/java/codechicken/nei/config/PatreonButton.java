@@ -5,6 +5,7 @@ import codechicken.lib.texture.TextureUtils;
 import net.minecraft.client.renderer.GlStateManager;
 
 public class PatreonButton extends GuiCCButton {
+
     public PatreonButton(int x, int y, int width, int height) {
         super(x, y, width, height, null);
     }
@@ -14,7 +15,7 @@ public class PatreonButton extends GuiCCButton {
         super.drawButtonTex(mousex, mousey);
 
         GlStateManager.color(1, 1, 1, 1);
-        TextureUtils.changeTexture("nei:textures/patreonNeon.png");
+        TextureUtils.changeTexture("nei:textures/patreon_neon.png");
         int texh = height - 4;
         int texw = texh * 4;
         drawModalRectWithCustomSizedTexture(x + width / 2 - texw / 2, y + height / 2 - texh / 2, 0, 0, texw, texh, texw, texh);

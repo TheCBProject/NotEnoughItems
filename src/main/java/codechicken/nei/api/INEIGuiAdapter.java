@@ -11,8 +11,9 @@ import java.util.List;
  * Lets you just override those things you want to
  */
 public class INEIGuiAdapter implements INEIGuiHandler {
+
     @Override
-    public VisibilityData modifyVisiblity(GuiContainer gui, VisibilityData currentVisibility) {
+    public VisibilityData modifyVisibility(GuiContainer gui, VisibilityData currentVisibility) {
         return currentVisibility;
     }
 
@@ -27,7 +28,7 @@ public class INEIGuiAdapter implements INEIGuiHandler {
     }
 
     @Override
-    public boolean handleDragNDrop(GuiContainer gui, int mousex, int mousey, ItemStack draggedStack, int button) {
+    public boolean handleDragNDrop(GuiContainer gui, int mouseX, int mouseY, ItemStack draggedStack, int button) {
         return false;
     }
 

@@ -3,8 +3,8 @@ package codechicken.nei;
 import codechicken.lib.model.ModelRegistryHelper;
 import codechicken.lib.render.item.IItemRenderer;
 import codechicken.lib.texture.TextureUtils;
-import codechicken.lib.util.TransformUtils;
 import codechicken.lib.util.ClientUtils;
+import codechicken.lib.util.TransformUtils;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
@@ -27,6 +27,7 @@ import java.util.List;
 //import net.minecraft.entity.boss.BossStatus;
 
 public class SpawnerRenderer implements IItemRenderer, IPerspectiveAwareModel {
+
     public static void load(ItemMobSpawner item) {
         ModelRegistryHelper.registerItemRenderer(item, new SpawnerRenderer());
     }

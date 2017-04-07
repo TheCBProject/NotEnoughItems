@@ -15,7 +15,9 @@ import java.util.List;
 import static codechicken.lib.gui.GuiDraw.*;
 
 public abstract class GuiOptionPane extends GuiScreenWidget {
+
     public class ScrollPane extends OptionScrollPane {
+
         @Override
         public int contentHeight() {
             return GuiOptionPane.this.contentHeight();

@@ -5,6 +5,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 
 public class OptionOpenGui extends OptionButton {
+
     public final Class<? extends GuiScreen> guiClass;
 
     public OptionOpenGui(String name, Class<? extends GuiScreen> guiClass) {

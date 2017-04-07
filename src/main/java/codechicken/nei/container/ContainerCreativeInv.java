@@ -17,6 +17,7 @@ public class ContainerCreativeInv extends Container {
     public static final String[] SLOT_TEXTURES = new String[] { "", "minecraft:items/empty_armor_slot_boots", "minecraft:items/empty_armor_slot_leggings", "minecraft:items/empty_armor_slot_chestplate", "minecraft:items/empty_armor_slot_helmet", "minecraft:items/empty_armor_slot_shield" };
 
     private class SlotArmor extends Slot {
+
         EntityEquipmentSlot equipmentSlot;
         int stackLimit;
 
@@ -39,11 +40,11 @@ public class ContainerCreativeInv extends Container {
 
         @Override
         public boolean isItemValid(ItemStack stack) {
-            return equipmentSlot.equals(EntityEquipmentSlot.OFFHAND) || stack != null && stack.getItem().isValidArmor(stack, equipmentSlot, player);
+            return equipmentSlot.equals(EntityEquipmentSlot.OFFHAND) || !stack.isEmpty() && stack.getItem().isValidArmor(stack, equipmentSlot, player);
         }
 
         @Override
-        @SideOnly(Side.CLIENT)
+        @SideOnly (Side.CLIENT)
         public String getSlotTexture() {
             return SLOT_TEXTURES[equipmentSlot.getSlotIndex()];
         }
@@ -78,7 +79,7 @@ public class ContainerCreativeInv extends Container {
 
     @Override
     public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int slotIndex) {
-        ItemStack transferredStack = null;
+        ItemStack transferredStack = ItemStack.EMPTY;
         Slot slot = inventorySlots.get(slotIndex);
 
         if (slot != null && slot.getHasStack()) {
@@ -89,21 +90,21 @@ public class ContainerCreativeInv extends Container {
                 ItemArmor armor = (ItemArmor) stack.getItem();
                 if (!getSlot(90 + armor.armorType.getIndex()).getHasStack()) {
                     getSlot(90 + armor.armorType.getIndex()).putStack(transferredStack);
-                    slot.putStack(null);
+                    slot.putStack(ItemStack.EMPTY);
                     return transferredStack;
                 }
             }
 
             if (slotIndex < 54) {
                 if (!this.mergeItemStack(stack, 54, 90, true)) {
-                    return null;
+                    return ItemStack.EMPTY;
                 }
             } else if (!this.mergeItemStack(stack, 0, 54, false)) {
-                return null;
+                return ItemStack.EMPTY;
             }
 
             if (stack.getCount() == 0) {
-                slot.putStack(null);
+                slot.putStack(ItemStack.EMPTY);
             } else {
                 slot.onSlotChanged();
             }

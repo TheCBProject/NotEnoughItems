@@ -2,23 +2,22 @@ package codechicken.nei.api;
 
 import codechicken.lib.item.filtering.IItemFilter;
 import codechicken.lib.item.filtering.IItemFilterProvider;
-import codechicken.nei.*;
-import codechicken.nei.SearchField.ISearchProvider;
-import codechicken.nei.SubsetWidget.SubsetTag;
-import codechicken.nei.api.layout.LayoutStyle;
-import codechicken.nei.config.KeyBindings;
+import codechicken.nei.ItemSorter;
+import codechicken.nei.LayoutManager;
+import codechicken.nei.NEIClientConfig;
 import codechicken.nei.config.Option;
-import codechicken.nei.recipe.*;
-import net.minecraft.block.Block;
+import codechicken.nei.layout.LayoutStyle;
+import codechicken.nei.util.ItemInfo;
+import codechicken.nei.util.ItemList;
+import codechicken.nei.util.ItemStackSet;
+import codechicken.nei.widget.SearchField;
+import codechicken.nei.widget.SearchField.ISearchProvider;
+import codechicken.nei.widget.SubsetWidget;
+import codechicken.nei.widget.SubsetWidget.SubsetTag;
 import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.client.settings.IKeyConflictContext;
-import net.minecraftforge.client.settings.KeyModifier;
-import net.minecraftforge.fml.client.registry.ClientRegistry;
-import org.lwjgl.input.Keyboard;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -29,79 +28,6 @@ import java.util.Comparator;
  * These methods should be called from INEIConfig implementors
  */
 public class API {
-    /**
-     * Register a new Crafting Recipe handler;
-     *
-     * @param handler The handler to register
-     */
-    public static void registerRecipeHandler(ICraftingHandler handler) {
-        GuiCraftingRecipe.registerRecipeHandler(handler);
-    }
-
-    /**
-     * Register a new Usage Recipe handler;
-     *
-     * @param handler The handler to register
-     */
-    public static void registerUsageHandler(IUsageHandler handler) {
-        GuiUsageRecipe.registerUsageHandler(handler);
-    }
-
-    /**
-     * Add a gui to the default overlay renderer with the default position
-     *
-     * @param classz The class of your gui
-     * @param ident  The identification string, currently
-     *               {crafting, crafting2x2, smelting, fuel, brewing}
-     */
-    public static void registerGuiOverlay(Class<? extends GuiContainer> classz, String ident) {
-        registerGuiOverlay(classz, ident, 5, 11);
-    }
-
-    /**
-     * Add a gui to the default overlay renderer with an offset
-     *
-     * @param classz The class of your gui
-     * @param ident  The identification string, currently
-     *               {crafting, crafting2x2, smelting, fuel, brewing}
-     * @param x      x-offset
-     * @param y      y-offset
-     */
-    public static void registerGuiOverlay(Class<? extends GuiContainer> classz, String ident, int x, int y) {
-        registerGuiOverlay(classz, ident, new OffsetPositioner(x, y));
-    }
-
-    /**
-     * Add a gui to the default overlay renderer
-     *
-     * @param classz     The class of your gui
-     * @param ident      The identification string, currently
-     *                   {crafting, crafting2x2, smelting, fuel, brewing}
-     * @param positioner A Stack Repositioner for moving the items to the right place
-     */
-    public static void registerGuiOverlay(Class<? extends GuiContainer> classz, String ident, IStackPositioner positioner) {
-        RecipeInfo.registerGuiOverlay(classz, ident, positioner);
-    }
-
-    /**
-     * @param classz  The class of your gui
-     * @param handler The handler to register
-     * @param ident   The recipe identification string
-     */
-    public static void registerGuiOverlayHandler(Class<? extends GuiContainer> classz, IOverlayHandler handler, String ident) {
-        RecipeInfo.registerOverlayHandler(classz, handler, ident);
-    }
-
-    /**
-     * Set the offset to be added to items to translate them into recipe coords on the actual gui, default is 5, 11. Primarily RecipeTransferRects
-     *
-     * @param classz The class of your gui
-     * @param x
-     * @param y
-     */
-    public static void setGuiOffset(Class<? extends GuiContainer> classz, int x, int y) {
-        RecipeInfo.setGuiOffset(classz, x, y);
-    }
 
     public static void registerNEIGuiHandler(INEIGuiHandler handler) {
         GuiInfo.guiHandlers.add(handler);
@@ -141,18 +67,6 @@ public class API {
         ItemInfo.itemOverrides.replaceValues(item, items);
     }
 
-    /**
-     * Add a custom KeyBinding to be configured in the Controls menu.
-     *
-     * @param ident      An identifier for your key, eg "shoot"
-     * @param defaultKey The default value, commonly obtained from {@link Keyboard}
-     * @deprecated use {@link ClientRegistry#registerKeyBinding(KeyBinding)}
-     */
-    @Deprecated
-    public static void addKeyBind(String ident, int defaultKey) {
-        KeyBindings.setDefaultKeyBinding(ident, defaultKey);
-    }
-
     public static void addOption(Option option) {
         NEIClientConfig.getOptionList().addOption(option);
     }
@@ -165,26 +79,6 @@ public class API {
      */
     public static void addLayoutStyle(int styleID, LayoutStyle style) {
         LayoutManager.layoutStyles.put(styleID, style);
-    }
-
-    /**
-     * Registers a new Infinite Item Handler.
-     *
-     * @param handler The handler to be registered.
-     */
-    public static void addInfiniteItemHandler(IInfiniteItemHandler handler) {
-        ItemInfo.infiniteHandlers.addFirst(handler);
-    }
-
-    /**
-     * Registers a new Infinite Item Handler.
-     *
-     * @param block   The block to handle, null for all.
-     * @param handler The handler to be registered.
-     */
-    @Deprecated
-    public static void registerHighlightIdentifier(Block block, IHighlightHandler handler) {
-        ItemInfo.highlightIdentifiers.put(block, handler);
     }
 
     /**
@@ -206,34 +100,12 @@ public class API {
     }
 
     /**
-     * Register a new text handler for the block highlight tooltip with a layout specification (HEADER, BODY or FOOTER).
-     *
-     * @param handler The handler to be registered.
-     * @param layout  A HUDAugmenterRegistry.Layout entry. HEADER is displayed before BODY which is displayed before FOOTER.
-     */
-    @Deprecated
-    public static void registerHighlightHandler(IHighlightHandler handler, ItemInfo.Layout... layout) {
-        ItemInfo.registerHighlightHandler(handler, layout);
-    }
-
-    /**
-     * Register a mode handler for overriding NEI recipe/utility/cheat mode settings.
-     *
-     * @param handler The handler to be registered.
-     */
-    public static void registerModeHandler(INEIModeHandler handler) {
-        NEIInfo.modeHandlers.add(handler);
-    }
-
-    /**
      * Register a filter provider for the item panel.
      *
      * @param filterProvider The filter provider to be registered.
      */
     public static void addItemFilter(IItemFilterProvider filterProvider) {
-        synchronized (ItemList.itemFilterers) {
-            ItemList.itemFilterers.add(filterProvider);
-        }
+        ItemList.registerIItemFilterProvider(filterProvider);
     }
 
     /**

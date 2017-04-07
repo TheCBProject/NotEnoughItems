@@ -4,14 +4,9 @@ import codechicken.lib.gui.GuiDraw;
 import codechicken.lib.util.ClientUtils;
 import codechicken.nei.LayoutManager;
 import codechicken.nei.NEIClientConfig;
-import codechicken.nei.SearchField;
-import codechicken.nei.config.KeyBindings;
 import codechicken.nei.jei.EnumItemBrowser;
 import codechicken.nei.jei.JEIIntegrationManager;
-import codechicken.nei.recipe.GuiCraftingRecipe;
-import codechicken.nei.recipe.GuiUsageRecipe;
-import codechicken.nei.util.NEIClientUtils;
-import mezz.jei.config.Config;
+import codechicken.nei.widget.SearchField;
 import mezz.jei.gui.ItemListOverlayInternal;
 import mezz.jei.input.GuiTextFieldFilter;
 import mezz.jei.input.IClickedIngredient;
@@ -20,9 +15,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiRepair;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
-import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.gui.inventory.GuiContainerCreative;
-import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.event.GuiScreenEvent.BackgroundDrawnEvent;
 import net.minecraftforge.client.event.GuiScreenEvent.KeyboardInputEvent;
 import net.minecraftforge.client.event.GuiScreenEvent.MouseInputEvent;
@@ -30,7 +23,6 @@ import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
 /**
@@ -38,12 +30,12 @@ import org.lwjgl.input.Mouse;
  * <p/>
  * Used to sniff input from events before JEI cancels them.
  */
-@SideOnly(Side.CLIENT)
+@SideOnly (Side.CLIENT)
 public class ContainerEventHandler {
 
     private long lastSearchBoxClickTime;
 
-    @SubscribeEvent(priority = EventPriority.LOWEST, receiveCanceled = true)//We need to be called before JEI.
+    @SubscribeEvent (priority = EventPriority.LOWEST, receiveCanceled = true)//We need to be called before JEI.
     public void onGuiMouseEventpre(MouseInputEvent.Pre event) {
         if (Mouse.getEventButton() == -1 || event.getGui() == null || !Mouse.getEventButtonState()) {
             return;
@@ -67,50 +59,14 @@ public class ContainerEventHandler {
                 }
             }
         }
-        int eventKey = Mouse.getEventButton();
-        if (JEIIntegrationManager.itemPannelOwner == EnumItemBrowser.JEI && Minecraft.getMinecraft().player != null) {
-            if (!Config.isCheatItemsEnabled() && Minecraft.getMinecraft().currentScreen instanceof GuiContainer) {
-                if (!isContainerTextFieldFocused()) {
-                    IClickedIngredient ingredient = getIngeredientUnderMouseForKey();
-                    if (ingredient != null && ingredient.getValue() instanceof ItemStack) {
-                        if (eventKey == 1 || (eventKey == 0 && NEIClientUtils.shiftKey())) {
-                            GuiUsageRecipe.openRecipeGui("item", ingredient.getValue());
-                        }
-                        if (eventKey == 0) {
-                            GuiCraftingRecipe.openRecipeGui("item", ingredient.getValue());
-                        }
-                    }
-                }
-            }
-        }
     }
 
-    @SubscribeEvent(priority = EventPriority.LOWEST, receiveCanceled = true)//we need to be called after JEI has registered the key press and updated the search box.
+    @SubscribeEvent (priority = EventPriority.LOWEST, receiveCanceled = true)//we need to be called after JEI has registered the key press and updated the search box.
     public void onKeyTypedPost(KeyboardInputEvent.Post event) {
         GuiTextFieldFilter fieldFilter = JEIIntegrationManager.getTextFieldFilter();
-        if (fieldFilter != null && JEIIntegrationManager.searchBoxOwner == EnumItemBrowser.JEI) {
+        if (fieldFilter != null && JEIIntegrationManager.searchBoxOwner == EnumItemBrowser.JEI && isNEIInWorld() && fieldFilter.isFocused()) {
             NEIClientConfig.setSearchExpression(fieldFilter.getText(), false);
             LayoutManager.searchField.setText(fieldFilter.getText(), false);
-        }
-
-        if (JEIIntegrationManager.itemPannelOwner == EnumItemBrowser.JEI && Minecraft.getMinecraft().player != null) {
-            if (Minecraft.getMinecraft().currentScreen instanceof GuiContainer) {
-                if (!event.isCanceled()) {
-                    if (!isContainerTextFieldFocused()) {
-                        IClickedIngredient ingredient = getIngeredientUnderMouseForKey();
-                        if (ingredient != null && ingredient.getValue() instanceof ItemStack) {
-                            int eventKey = Keyboard.getEventKey();
-                            if (KeyBindings.get("nei.options.keys.gui.usage").isActiveAndMatches(eventKey)) {
-                                GuiUsageRecipe.openRecipeGui("item", ingredient.getValue());
-                            }
-                            if (KeyBindings.get("nei.options.keys.gui.recipe").isActiveAndMatches(eventKey)) {
-                                GuiCraftingRecipe.openRecipeGui("item", ingredient.getValue());
-                            }
-                        }
-
-                    }
-                }
-            }
         }
     }
 
@@ -145,7 +101,7 @@ public class ContainerEventHandler {
         return textField != null && textField.getVisible() && textField.isEnabled && textField.isFocused();
     }
 
-    @SubscribeEvent(priority = EventPriority.LOWEST)//We need to be called after JEI as this is is a render overlay.
+    @SubscribeEvent (priority = EventPriority.LOWEST)//We need to be called after JEI as this is is a render overlay.
     public void onDrawBackgroundEventPost(BackgroundDrawnEvent event) {
         GuiTextFieldFilter fieldFilter = JEIIntegrationManager.getTextFieldFilter();
         if (!ClientUtils.inWorld() || !isNEIInWorld() || fieldFilter == null || !SearchField.searchInventories() || JEIIntegrationManager.searchBoxOwner != EnumItemBrowser.JEI) {

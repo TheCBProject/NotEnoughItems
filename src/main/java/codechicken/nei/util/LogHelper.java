@@ -4,12 +4,17 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.util.HashSet;
+
 /**
  * Created by covers1624 on 3/21/2016.
  */
 public class LogHelper {
 
     private static Logger logger = LogManager.getLogger("NotEnoughItems");
+    private static HashSet<String> stackTraces = new HashSet<>();
 
     /**
      * Log with a supplied level.
@@ -236,5 +241,15 @@ public class LogHelper {
             warn("*  at %s%s", trace[i].toString(), i == 7 ? "..." : "");
         }
         warn("****************************************");
+    }
+
+    public static void errorOnce(Throwable t, String identifier, String format, Object... data) {
+        StringWriter sw = new StringWriter();
+        t.printStackTrace(new PrintWriter(sw));
+        String stackTrace = identifier + sw.toString();
+        if (!stackTraces.contains(stackTrace)) {
+            errorError(format, t, data);
+            stackTraces.add(stackTrace);
+        }
     }
 }

@@ -2,18 +2,14 @@ package codechicken.nei.widget;
 
 import codechicken.lib.vec.Rectangle4i;
 import codechicken.nei.NEIClientConfig;
-import codechicken.nei.NEIController;
 import codechicken.nei.api.GuiInfo;
 import codechicken.nei.api.INEIGuiHandler;
 import codechicken.nei.config.KeyBindings;
-import codechicken.nei.guihook.GuiContainerManager;
 import codechicken.nei.jei.JEIIntegrationManager;
 import codechicken.nei.network.NEIClientPacketHandler;
-import codechicken.nei.recipe.GuiCraftingRecipe;
-import codechicken.nei.recipe.GuiRecipe;
-import codechicken.nei.recipe.GuiUsageRecipe;
 import codechicken.nei.util.NEIClientUtils;
 import codechicken.nei.util.NEIServerUtils;
+import codechicken.nei.util.helper.GuiHelper;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.inventory.Slot;
@@ -24,6 +20,7 @@ import java.util.ArrayList;
 import static codechicken.lib.gui.GuiDraw.drawRect;
 
 public class ItemPanel extends Widget {
+
     /**
      * Should not be externally modified, use updateItemList
      */
@@ -38,6 +35,7 @@ public class ItemPanel extends Widget {
     }
 
     public class ItemPanelSlot {
+
         public ItemStack item;
         public int slotIndex;
 
@@ -135,7 +133,7 @@ public class ItemPanel extends Widget {
             return;
         }
 
-        GuiContainerManager.enableMatrixStackLogging();
+        GuiHelper.enableMatrixStackLogging();
         int index = firstIndex;
         for (int i = 0; i < rows * columns && index < items.size(); i++) {
             if (validSlotMap[i]) {
@@ -144,28 +142,27 @@ public class ItemPanel extends Widget {
                     drawRect(rect.x, rect.y, rect.w, rect.h, 0xee555555);//highlight
                 }
 
-                GuiContainerManager.drawItem(rect.x + 1, rect.y + 1, items.get(index));
+                GuiHelper.drawItem(rect.x + 1, rect.y + 1, items.get(index));
 
                 index++;
             }
         }
-        GuiContainerManager.disableMatrixStackLogging();
+        GuiHelper.disableMatrixStackLogging();
     }
 
     @Override
     public void postDraw(int mousex, int mousey) {
         if (draggedStack != null) {
-            RenderItem drawItems = GuiContainerManager.getRenderItem();
+            RenderItem drawItems = GuiHelper.getRenderItem();
             drawItems.zLevel += 100;
-            GuiContainerManager.drawItem(mousex - 8, mousey - 8, draggedStack);
+            GuiHelper.drawItem(mousex - 8, mousey - 8, draggedStack);
             drawItems.zLevel -= 100;
         }
     }
 
     @Override
     public void mouseDragged(int mousex, int mousey, int button, long heldTime) {
-        if (mouseDownSlot >= 0 && draggedStack == null && NEIClientUtils.getHeldItem() == null &&
-                NEIClientConfig.hasSMPCounterPart() && !GuiInfo.hasCustomSlots(NEIClientUtils.getGuiContainer())) {
+        if (mouseDownSlot >= 0 && draggedStack == null && NEIClientUtils.getHeldItem() == null && NEIClientConfig.hasSMPCounterPart() && !GuiInfo.hasCustomSlots(NEIClientUtils.getGuiContainer())) {
             ItemPanelSlot mouseOverSlot = getSlotMouseOver(mousex, mousey);
             ItemStack stack = new ItemPanelSlot(mouseDownSlot).item;
             if (stack != null && (mouseOverSlot == null || mouseOverSlot.slotIndex != mouseDownSlot || heldTime > 500)) {
@@ -185,7 +182,7 @@ public class ItemPanel extends Widget {
             return true;
         }
 
-        if (NEIClientUtils.getHeldItem() != null) {
+        if (!NEIClientUtils.getHeldItem().isEmpty()) {
             for (INEIGuiHandler handler : GuiInfo.guiHandlers) {
                 if (handler.hideItemPanelSlot(NEIClientUtils.getGuiContainer(), mousex, mousey, 1, 1)) {
                     return false;
@@ -284,17 +281,11 @@ public class ItemPanel extends Widget {
         ItemPanelSlot hoverSlot = getSlotMouseOver(mousex, mousey);
         if (hoverSlot != null && hoverSlot.slotIndex == mouseDownSlot && draggedStack == null) {
             ItemStack item = hoverSlot.item;
-            if (NEIController.manager.window instanceof GuiRecipe || !NEIClientConfig.canCheatItem(item)) {
+            if (!NEIClientConfig.canCheatItem(item)) {
                 if (button == 0) {
-                    boolean opened = GuiCraftingRecipe.openRecipeGui("item", item);
-                    if (!opened) {
-                        JEIIntegrationManager.openRecipeGui(item);
-                    }
+                    JEIIntegrationManager.openRecipeGui(item);
                 } else if (button == 1) {
-                    boolean opened = GuiUsageRecipe.openRecipeGui("item", item);
-                    if (!opened) {
-                        JEIIntegrationManager.openUsageGui(item);
-                    }
+                    JEIIntegrationManager.openUsageGui(item);
                 }
 
                 draggedStack = null;
@@ -334,7 +325,7 @@ public class ItemPanel extends Widget {
     @Override
     public ItemStack getStackMouseOver(int mousex, int mousey) {
         ItemPanelSlot slot = getSlotMouseOver(mousex, mousey);
-        return slot == null ? null : slot.item;
+        return slot == null ? ItemStack.EMPTY : slot.item;
     }
 
     public ItemPanelSlot getSlotMouseOver(int mousex, int mousey) {

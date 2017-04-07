@@ -6,6 +6,7 @@ import net.minecraft.item.ItemStack;
 import java.util.List;
 
 public abstract class Widget {
+
     public Widget() {
     }
 
@@ -52,14 +53,13 @@ public abstract class Widget {
     }
 
     public ItemStack getStackMouseOver(int mx, int my) {
-        return null;
+        return ItemStack.EMPTY;
     }
 
     public void mouseDragged(int mx, int my, int button, long heldTime) {
     }
 
-    public List<String> handleTooltip(int mx, int my, List<String> tooltip) {
-        return tooltip;
+    public void handleTooltip(int mx, int my, List<String> tooltip) {
     }
 
     public void loseFocus() {

@@ -16,15 +16,12 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.TextFormatting;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 /**
  * Created by covers1624 on 7/20/2016.
  */
 public class VanillaCreativeTabSearchHooks {
-
-    private static HashMap<CreativeTabs, ArrayList<ItemStack>> tabCache = new HashMap<>();
 
     public static void updateSearchListThreaded(GuiContainerCreative guiContainerCreative) {
         filterTask.stop();
@@ -37,6 +34,7 @@ public class VanillaCreativeTabSearchHooks {
     public static final VanillaFilterTask filterTask = new VanillaFilterTask("NEI Vanilla creative tab filtering.");
 
     public static class VanillaFilterTask extends RestartableTask {
+
         private ContainerCreative containerCreative;
         private GuiTextField searchBox;
         private CreativeTabs creativeTab;
@@ -123,7 +121,7 @@ public class VanillaCreativeTabSearchHooks {
         ArrayList<ItemStack> tabStacks = new ArrayList<>();
         if (creativeTab == CreativeTabs.SEARCH) {
             for (Item item : Item.REGISTRY) {
-                if (item != null) {
+                if (item != null && item != Items.AIR) {
                     item.getSubItems(item, null, new NonNullList<>(tabStacks, null));
                 }
             }

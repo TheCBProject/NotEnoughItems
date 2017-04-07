@@ -5,6 +5,7 @@ import net.minecraft.inventory.ClickType;
 import net.minecraft.inventory.Slot;
 
 public class DefaultSlotClickHandler implements IContainerSlotClickHandler {
+
     @Override
     public void beforeSlotClick(GuiContainer gui, int slotIndex, int button, Slot slot, ClickType modifier) {
     }

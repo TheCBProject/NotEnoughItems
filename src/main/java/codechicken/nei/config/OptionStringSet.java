@@ -10,6 +10,7 @@ import java.util.*;
 import static codechicken.lib.gui.GuiDraw.drawString;
 
 public abstract class OptionStringSet extends Option {
+
     public LinkedList<String> options = new LinkedList<>();
     public Multimap<String, String> dependants = ArrayListMultimap.create();
     public Map<String, String> dependancies = new HashMap<>();

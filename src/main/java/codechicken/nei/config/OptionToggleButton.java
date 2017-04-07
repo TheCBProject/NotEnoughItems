@@ -1,6 +1,7 @@
 package codechicken.nei.config;
 
 public class OptionToggleButton extends OptionButton {
+
     public final boolean prefixed;
 
     public OptionToggleButton(String name, boolean prefixed) {

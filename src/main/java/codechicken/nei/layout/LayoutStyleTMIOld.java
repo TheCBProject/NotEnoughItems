@@ -1,17 +1,18 @@
 package codechicken.nei.layout;
 
-import codechicken.nei.Image;
+import codechicken.lib.vec.Rectangle4i;
 import codechicken.nei.LayoutManager;
-import codechicken.nei.guihook.GuiContainerManager;
 import codechicken.nei.widget.Button;
+import net.minecraft.client.gui.inventory.GuiContainer;
 
 import static codechicken.lib.gui.GuiDraw.*;
 import static codechicken.nei.LayoutManager.*;
 
 public class LayoutStyleTMIOld extends LayoutStyleDefault {
-    public static final Image stateOff = new Image(48, 0, 8, 12);
-    public static final Image stateOn = new Image(56, 0, 8, 12);
-    public static final Image stateDisabled = new Image(64, 0, 8, 12);
+
+    public static final Rectangle4i stateOff = new Rectangle4i(48, 0, 8, 12);
+    public static final Rectangle4i stateOn = new Rectangle4i(56, 0, 8, 12);
+    public static final Rectangle4i stateDisabled = new Rectangle4i(64, 0, 8, 12);
 
     int stateButtonCount;
     int clickButtonCount;
@@ -23,17 +24,17 @@ public class LayoutStyleTMIOld extends LayoutStyleDefault {
 
     @Override
     public void init() {
-        delete.icon = new Image(24, 12, 12, 12);
-        gamemode.icons[0] = new Image(12, 12, 12, 12);
-        gamemode.icons[1] = new Image(36, 12, 12, 12);
-        gamemode.icons[2] = new Image(48, 12, 12, 12);
-        rain.icon = new Image(0, 12, 12, 12);
-        magnet.icon = new Image(60, 24, 12, 12);
-        timeButtons[0].icon = new Image(12, 24, 12, 12);
-        timeButtons[1].icon = new Image(0, 24, 12, 12);
-        timeButtons[2].icon = new Image(24, 24, 12, 12);
-        timeButtons[3].icon = new Image(36, 24, 12, 12);
-        heal.icon = new Image(48, 24, 12, 12);
+        delete.icon = new Rectangle4i(24, 12, 12, 12);
+        gamemode.icons[0] = new Rectangle4i(12, 12, 12, 12);
+        gamemode.icons[1] = new Rectangle4i(36, 12, 12, 12);
+        gamemode.icons[2] = new Rectangle4i(48, 12, 12, 12);
+        rain.icon = new Rectangle4i(0, 12, 12, 12);
+        magnet.icon = new Rectangle4i(60, 24, 12, 12);
+        timeButtons[0].icon = new Rectangle4i(12, 24, 12, 12);
+        timeButtons[1].icon = new Rectangle4i(0, 24, 12, 12);
+        timeButtons[2].icon = new Rectangle4i(24, 24, 12, 12);
+        timeButtons[3].icon = new Rectangle4i(36, 24, 12, 12);
+        heal.icon = new Rectangle4i(48, 24, 12, 12);
         dropDown.x = 93;
     }
 
@@ -60,12 +61,12 @@ public class LayoutStyleTMIOld extends LayoutStyleDefault {
         button.h = 14;
         button.w = button.contentWidth() + 2;
         if ((button.state & 0x4) != 0) {
-            button.w += stateOff.width;
+            button.w += stateOff.w;
         }
     }
 
     @Override
-    public void drawBackground(GuiContainerManager gui) {
+    public void drawBackground(GuiContainer gui) {
         if (clickButtonCount == 0 && stateButtonCount == 0) {
             return;
         }
@@ -83,25 +84,25 @@ public class LayoutStyleTMIOld extends LayoutStyleDefault {
     public void drawButton(Button b, int mousex, int mousey) {
         int cwidth = b.contentWidth();
         if ((b.state & 0x4) != 0) {
-            cwidth += stateOff.width;
+            cwidth += stateOff.w;
         }
         int textx = b.x + (b.w - cwidth) / 2;
         int texty = b.y + (b.h - 8) / 2;
 
         drawRect(b.x, b.y, b.w, b.h, b.contains(mousex, mousey) ? 0xee401008 : 0xee000000);
 
-        Image icon = b.getRenderIcon();
+        Rectangle4i icon = b.getRenderIcon();
         if (icon == null) {
             drawString(b.getRenderLabel(), textx, texty, -1);
         } else {
-            int icony = b.y + (b.h - icon.height) / 2;
+            int icony = b.y + (b.h - icon.h) / 2;
             LayoutManager.drawIcon(textx, icony, icon);
             if ((b.state & 0x3) == 2) {
-                drawRect(textx, icony, icon.width, icon.height, 0x80000000);
+                drawRect(textx, icony, icon.w, icon.h, 0x80000000);
             }
 
             if ((b.state & 0x4) != 0) {
-                Image stateimage;
+                Rectangle4i stateimage;
                 if ((b.state & 0x3) == 1) {
                     stateimage = stateOn;
                 } else if ((b.state & 0x3) == 2) {
@@ -109,7 +110,7 @@ public class LayoutStyleTMIOld extends LayoutStyleDefault {
                 } else {
                     stateimage = stateOff;
                 }
-                LayoutManager.drawIcon(textx + icon.width, icony, stateimage);
+                LayoutManager.drawIcon(textx + icon.w, icony, stateimage);
             }
         }
     }

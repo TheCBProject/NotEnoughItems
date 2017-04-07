@@ -75,6 +75,7 @@ version = "${project.minecraft.version}-${project.version}"
 def commonManifest = {
     attributes 'FMLCorePlugin': 'codechicken.nei.asm.NEICorePlugin'
     attributes 'FMLAT': 'nei_at.cfg'
+    attributes 'FMLCorePluginContainsFMLMod': 'true'
     attributes 'CCTransformerExclusions': 'codechicken.nei.FingerprintChecker'
 }
 

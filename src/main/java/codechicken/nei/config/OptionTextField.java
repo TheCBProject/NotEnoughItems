@@ -1,8 +1,8 @@
 package codechicken.nei.config;
 
 import codechicken.lib.vec.Rectangle4i;
-import codechicken.nei.TextField;
 import codechicken.nei.config.GuiOptionList.OptionScrollSlot;
+import codechicken.nei.widget.TextField;
 
 import java.util.List;
 
@@ -10,6 +10,7 @@ import static codechicken.lib.gui.GuiDraw.drawString;
 import static codechicken.lib.gui.GuiDraw.getStringWidth;
 
 public class OptionTextField extends Option {
+
     private boolean focused = false;
     private TextField textField = new TextField("") {
         @Override

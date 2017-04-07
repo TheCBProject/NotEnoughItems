@@ -10,6 +10,7 @@ import net.minecraft.util.text.translation.I18n;
 import java.util.List;
 
 public abstract class Option {
+
     public static void playClickSound() {
         Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1.0F));
     }

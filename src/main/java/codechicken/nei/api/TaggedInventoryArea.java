@@ -7,7 +7,11 @@ import net.minecraft.item.ItemStack;
 
 import java.util.HashSet;
 
+/**
+ * An inventory area to be saved and loaded with save states.
+ */
 public class TaggedInventoryArea {
+
     public HashSet<Integer> slots = new HashSet<>();
     public String tagName;
     /**

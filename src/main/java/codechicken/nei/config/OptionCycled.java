@@ -1,6 +1,7 @@
 package codechicken.nei.config;
 
 public class OptionCycled extends OptionButton {
+
     public final int count;
     public final boolean prefixed;
 

@@ -1,20 +1,26 @@
 package codechicken.nei;
 
 import codechicken.lib.config.ConfigTagParent;
-import codechicken.nei.ItemList.ItemsLoadedCallback;
 import codechicken.nei.api.API;
-import codechicken.nei.api.ItemInfo;
 import codechicken.nei.config.GuiItemSorter;
 import codechicken.nei.config.OptionOpenGui;
+import codechicken.nei.util.ItemInfo;
+import codechicken.nei.util.ItemList;
+import codechicken.nei.util.ItemList.ItemsLoadedCallback;
 import codechicken.nei.util.LogHelper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.translation.I18n;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
 
 public class ItemSorter implements Comparator<ItemStack>, ItemsLoadedCallback {
+
     public static class SortEntry {
+
         public String name;
         public Comparator<ItemStack> comparator;
 
@@ -144,7 +150,7 @@ public class ItemSorter implements Comparator<ItemStack>, ItemsLoadedCallback {
                 list = fromSaveString(activeTag().getValue());
             }
         });
-        ItemList.loadCallbacks.add(instance);
+        ItemList.registerLoadCallback(instance);
     }
 
     public static String getSaveString(List<SortEntry> list) {

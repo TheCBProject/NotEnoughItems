@@ -1,6 +1,6 @@
 package codechicken.nei.layout;
 
-import codechicken.nei.Image;
+import codechicken.lib.vec.Rectangle4i;
 import codechicken.nei.LayoutManager;
 import codechicken.nei.widget.Button;
 import net.minecraft.client.renderer.GlStateManager;
@@ -9,6 +9,7 @@ import static codechicken.lib.gui.GuiDraw.drawStringC;
 import static codechicken.nei.LayoutManager.*;
 
 public class LayoutStyleMinecraft extends LayoutStyleDefault {
+
     int stateButtonCount;
     int clickButtonCount;
 
@@ -19,17 +20,17 @@ public class LayoutStyleMinecraft extends LayoutStyleDefault {
 
     @Override
     public void init() {
-        delete.icon = new Image(144, 12, 12, 12);
-        gamemode.icons[0] = new Image(132, 12, 12, 12);
-        gamemode.icons[1] = new Image(156, 12, 12, 12);
-        gamemode.icons[2] = new Image(168, 12, 12, 12);
-        rain.icon = new Image(120, 12, 12, 12);
-        magnet.icon = new Image(180, 24, 12, 12);
-        timeButtons[0].icon = new Image(132, 24, 12, 12);
-        timeButtons[1].icon = new Image(120, 24, 12, 12);
-        timeButtons[2].icon = new Image(144, 24, 12, 12);
-        timeButtons[3].icon = new Image(156, 24, 12, 12);
-        heal.icon = new Image(168, 24, 12, 12);
+        delete.icon = new Rectangle4i(144, 12, 12, 12);
+        gamemode.icons[0] = new Rectangle4i(132, 12, 12, 12);
+        gamemode.icons[1] = new Rectangle4i(156, 12, 12, 12);
+        gamemode.icons[2] = new Rectangle4i(168, 12, 12, 12);
+        rain.icon = new Rectangle4i(120, 12, 12, 12);
+        magnet.icon = new Rectangle4i(180, 24, 12, 12);
+        timeButtons[0].icon = new Rectangle4i(132, 24, 12, 12);
+        timeButtons[1].icon = new Rectangle4i(120, 24, 12, 12);
+        timeButtons[2].icon = new Rectangle4i(144, 24, 12, 12);
+        timeButtons[3].icon = new Rectangle4i(156, 24, 12, 12);
+        heal.icon = new Rectangle4i(168, 24, 12, 12);
         dropDown.x = 90;
     }
 
@@ -71,7 +72,7 @@ public class LayoutStyleMinecraft extends LayoutStyleDefault {
         }
         LayoutManager.drawButtonBackground(b.x, b.y, b.w, b.h, true, tex);
 
-        Image icon = b.getRenderIcon();
+        Rectangle4i icon = b.getRenderIcon();
         if (icon == null) {
             int colour = tex == 2 ? 0xffffa0 : tex == 0 ? 0x601010 : 0xe0e0e0;
 
@@ -79,8 +80,8 @@ public class LayoutStyleMinecraft extends LayoutStyleDefault {
         } else {
             GlStateManager.color(1, 1, 1, 1);
 
-            int iconx = b.x + (b.w - icon.width) / 2;
-            int icony = b.y + (b.h - icon.height) / 2;
+            int iconx = b.x + (b.w - icon.w) / 2;
+            int icony = b.y + (b.h - icon.h) / 2;
             LayoutManager.drawIcon(iconx, icony, icon);
         }
     }

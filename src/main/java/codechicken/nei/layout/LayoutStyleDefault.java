@@ -1,11 +1,10 @@
 package codechicken.nei.layout;
 
-import codechicken.nei.NEIActions;
 import codechicken.nei.NEIController;
 import codechicken.nei.VisibilityData;
-import codechicken.nei.api.layout.LayoutStyle;
 import codechicken.nei.util.NEIClientUtils;
 import codechicken.nei.widget.Button;
+import codechicken.nei.widget.action.NEIActions;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -14,6 +13,7 @@ import static codechicken.nei.LayoutManager.*;
 import static codechicken.nei.NEIClientConfig.*;
 
 public abstract class LayoutStyleDefault extends LayoutStyle {
+
     @Override
     public void layout(GuiContainer gui, VisibilityData visiblity) {
         int windowWidth = gui.width;
@@ -88,7 +88,7 @@ public abstract class LayoutStyleDefault extends LayoutStyle {
             }
         }
 
-        magnet.state = 0x4 | (getMagnetMode() ? 1 : 0);
+        magnet.state = 0x4 | (isMagnetModeEnabled() ? 1 : 0);
 
         if (canPerformAction("delete")) {
             layoutButton(delete);
@@ -96,9 +96,7 @@ public abstract class LayoutStyleDefault extends LayoutStyle {
         if (canPerformAction("rain")) {
             layoutButton(rain);
         }
-        if (NEIClientUtils.isValidGamemode("creative") ||
-                NEIClientUtils.isValidGamemode("creative+") ||
-                NEIClientUtils.isValidGamemode("adventure")) {
+        if (NEIClientUtils.isValidGamemode("creative") || NEIClientUtils.isValidGamemode("creative+") || NEIClientUtils.isValidGamemode("adventure")) {
             layoutButton(gamemode);
         }
         if (canPerformAction("magnet")) {

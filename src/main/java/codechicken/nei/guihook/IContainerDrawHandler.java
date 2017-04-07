@@ -4,12 +4,6 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.inventory.Slot;
 
 public interface IContainerDrawHandler {
-    /**
-     * Initialize your objects and the gui for drawing.
-     *
-     * @param gui An instance of the currentscreen
-     */
-    void onPreDraw(GuiContainer gui);
 
     /**
      * Draw your objects. Called after all normal gui rendering has been performed.
@@ -28,14 +22,6 @@ public interface IContainerDrawHandler {
      * @param mousey The y position of the mouse in pixels from top
      */
     void postRenderObjects(GuiContainer gui, int mousex, int mousey);
-
-    /**
-     * Render something over a slot before the item in the slot.
-     *
-     * @param gui  An instance of the currentscreen
-     * @param slot The slot being rendered.
-     */
-    void renderSlotUnderlay(GuiContainer gui, Slot slot);
 
     /**
      * Render something over a slot after the item in the slot.

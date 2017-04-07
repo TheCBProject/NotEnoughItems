@@ -10,7 +10,8 @@ import java.util.List;
  * If this is implemented on a gui, it will be automatically registered
  */
 public interface INEIGuiHandler {
-    VisibilityData modifyVisiblity(GuiContainer gui, VisibilityData currentVisibility);
+
+    VisibilityData modifyVisibility(GuiContainer gui, VisibilityData currentVisibility);
 
     /**
      * NEI will give the specified item to the InventoryRange returned if the player's inventory is full.
@@ -28,13 +29,13 @@ public interface INEIGuiHandler {
      * Changes made to the stackSize of the dragged stack will be kept
      *
      * @param gui          The current gui instance
-     * @param mousex       The x position of the mouse
-     * @param mousey       The y position of the mouse
+     * @param mouseX       The x position of the mouse
+     * @param mouseY       The y position of the mouse
      * @param draggedStack The stack being dragged from the item panel
      * @param button       The button presed
      * @return True if the drag n drop was handled. False to resume processing through other routes. The held stack will be deleted if draggedStack.stackSize == 0
      */
-    boolean handleDragNDrop(GuiContainer gui, int mousex, int mousey, ItemStack draggedStack, int button);
+    boolean handleDragNDrop(GuiContainer gui, int mouseX, int mouseY, ItemStack draggedStack, int button);
 
     /**
      * Used to prevent the item panel from drawing on top of other gui elements.

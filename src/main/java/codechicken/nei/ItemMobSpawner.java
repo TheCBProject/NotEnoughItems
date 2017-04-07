@@ -1,16 +1,11 @@
 package codechicken.nei;
 
-
 import codechicken.nei.network.NEIClientPacketHandler;
-import codechicken.nei.util.LogHelper;
-import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.monster.IMob;
-import net.minecraft.entity.passive.EntityPig;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
@@ -21,15 +16,14 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
+//TODO FIXME
 public class ItemMobSpawner extends ItemBlock {
+
     private static Map<Integer, EntityLiving> entityHashMap = new HashMap<>();
     private static Map<Integer, String> IDtoNameMap = new HashMap<>();
     public static int idPig;
@@ -106,7 +100,7 @@ public class ItemMobSpawner extends ItemBlock {
     }
 
     public static void loadSpawners(World world) {
-        if (loaded) {
+        /*if (loaded) {
             return;
         }
         loaded = true;
@@ -141,7 +135,7 @@ public class ItemMobSpawner extends ItemBlock {
             if (getEntity(e.getKey()).getClass() == EntityPig.class && !e.getValue().equals("Pig")) {
                 it.remove();
             }
-        }
+        }*/
     }
 
     @Override

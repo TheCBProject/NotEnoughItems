@@ -123,6 +123,7 @@ public class JEIIntegrationManager {
             return false;
         }
     }
+
     public static ItemListOverlayInternal getItemListOverlayInternal() {
         if (Internal.getRuntime() == null || Internal.getRuntime().getItemListOverlay().getInternal() == null) {
             return null;

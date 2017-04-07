@@ -1,13 +1,15 @@
 package codechicken.nei;
 
-import codechicken.lib.util.CommonUtils;
 import codechicken.lib.config.ConfigFile;
 import codechicken.lib.inventory.InventoryUtils;
 import codechicken.lib.packet.PacketCustom;
+import codechicken.lib.util.CommonUtils;
 import codechicken.lib.util.ServerUtils;
 import codechicken.nei.network.NEIServerPacketHandler;
+import codechicken.nei.util.ItemStackMap;
 import codechicken.nei.util.LogHelper;
 import codechicken.nei.util.NEIServerUtils;
+import codechicken.nei.widget.action.NEIActions;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
@@ -25,13 +27,14 @@ import java.io.PrintWriter;
 import java.util.*;
 
 public class NEIServerConfig {
+
     private static MinecraftServer server;
 
     public static File saveDir;
     public static ConfigFile serverConfig;
     public static Map<Integer, NBTTagCompound> dimTags = new HashMap<>();
     public static HashMap<String, PlayerSave> playerSaves = new HashMap<>();
-    public static ItemStackMap<Set<String>> bannedItems = new ItemStackMap<>();
+    public static ItemStackMap<Set<String>> bannedItems = new ItemStackMap<>(null);
 
     public static void load(World world) {
         if (ServerUtils.mc() != server) {
@@ -110,36 +113,67 @@ public class NEIServerConfig {
         }
     }
 
-    public static boolean canPlayerPerformAction(String playername, String name) {
-        return isPlayerInList(playername, getPlayerList("permissions." + NEIActions.base(name)), true);
+    /**
+     * Checks if a player has permission to change a specific actions state.
+     *
+     * @param playerName The player in question.
+     * @param name       The identifier for the action.
+     * @return If the player has permission.
+     */
+    public static boolean canPlayerPerformAction(String playerName, String name) {
+        return isPlayerInList(playerName, getPlayerList("permissions." + NEIActions.base(name)), true);
     }
 
-    public static boolean isPlayerInList(String playername, Set<String> list, boolean allowCards) {
-        if (playername.equals("CONSOLE")) {
-            return list.contains(playername);
+    /**
+     * Checks if a player is in the specified list.
+     *
+     * @param playerName The players name.
+     * @param list       The list of players.
+     * @param allowCards Allows some wild cars when checking, Specifically, OP, Server Owner, and the "ALL" user.
+     * @return If the player is in the list.
+     */
+    public static boolean isPlayerInList(String playerName, Set<String> list, boolean allowCards) {
+        if (playerName.equals("CONSOLE")) {
+            return list.contains(playerName);
         }
 
-        playername = playername.toLowerCase();
+        playerName = playerName.toLowerCase();
 
         if (allowCards) {
             if (list.contains("ALL")) {
                 return true;
             }
-            if ((ServerUtils.isPlayerOP(playername) || ServerUtils.isPlayerOwner(playername)) && list.contains("OP")) {
+            if ((ServerUtils.isPlayerOP(playerName) || ServerUtils.isPlayerOwner(playerName)) && list.contains("OP")) {
                 return true;
             }
         }
 
-        return list.contains(playername);
+        return list.contains(playerName);
     }
 
+    /**
+     * Checks if the action is disabled.
+     * For Example. Noon, weather.
+     *
+     * @param dim  The dimension to check.
+     * @param name The actions identifier.
+     * @return If the action is disabled.
+     */
     public static boolean isActionDisabled(int dim, String name) {
         return dimTags.get(dim).getBoolean("disabled" + name);
     }
 
-    public static void disableAction(int dim, String name, boolean disable) {
+    /**
+     * Disabled a specific action.
+     * Also notifies all clients in the dimension of the change.
+     *
+     * @param dim     The dimension the change has happened for.
+     * @param name    The name of the action.
+     * @param disable The state of the action.
+     */
+    public static void setDisableActionState(int dim, String name, boolean disable) {
         dimTags.get(dim).setBoolean("disabled" + name, disable);
-        NEIServerPacketHandler.sendActionDisabled(dim, name, disable);
+        NEIServerPacketHandler.sendActionDisabledState(dim, name, disable);
         saveWorld(dim);
     }
 
@@ -255,7 +289,7 @@ public class NEIServerConfig {
         }
     }
 
-    public static PlayerSave forPlayer(String username) {
+    public static PlayerSave getSaveForPlayer(String username) {
         return playerSaves.get(username);
     }
 
@@ -274,26 +308,26 @@ public class NEIServerConfig {
 
     public static boolean authenticatePacket(EntityPlayerMP sender, PacketCustom packet) {
         switch (packet.getType()) {
-        case 1:
-            return canPlayerPerformAction(sender.getName(), "item");
-        case 4:
-            return canPlayerPerformAction(sender.getName(), "delete");
-        case 6:
-            return canPlayerPerformAction(sender.getName(), "magnet");
-        case 7:
-            return canPlayerPerformAction(sender.getName(), "time");
-        case 8:
-            return canPlayerPerformAction(sender.getName(), "heal");
-        case 9:
-            return canPlayerPerformAction(sender.getName(), "rain");
-        case 14:
-        case 23:
-            return canPlayerPerformAction(sender.getName(), "creative+");
-        case 21:
-        case 22:
-            return canPlayerPerformAction(sender.getName(), "enchant");
-        case 24:
-            return canPlayerPerformAction(sender.getName(), "potion");
+            case 1:
+                return canPlayerPerformAction(sender.getName(), "item");
+            case 4:
+                return canPlayerPerformAction(sender.getName(), "delete");
+            case 6:
+                return canPlayerPerformAction(sender.getName(), "magnet");
+            case 7:
+                return canPlayerPerformAction(sender.getName(), "time");
+            case 8:
+                return canPlayerPerformAction(sender.getName(), "heal");
+            case 9:
+                return canPlayerPerformAction(sender.getName(), "rain");
+            case 14:
+            case 23:
+                return canPlayerPerformAction(sender.getName(), "creative+");
+            case 21:
+            case 22:
+                return canPlayerPerformAction(sender.getName(), "enchant");
+            case 24:
+                return canPlayerPerformAction(sender.getName(), "potion");
         }
         return true;
     }

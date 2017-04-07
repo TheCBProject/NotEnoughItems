@@ -20,7 +20,9 @@ import static codechicken.lib.gui.GuiDraw.*;
 import static net.minecraft.util.text.translation.I18n.translateToLocal;
 
 public class GuiOptionList extends GuiScreenWidget {
+
     public class OptionScrollSlot extends GuiScrollSlot {
+
         public ArrayList<Option> options = new ArrayList<>();
 
         public OptionScrollSlot() {

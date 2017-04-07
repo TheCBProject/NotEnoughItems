@@ -10,6 +10,7 @@ import java.awt.*;
 import java.net.URI;
 
 public class GuiNEIOptionList extends GuiOptionList implements GuiYesNoCallback {
+
     private GuiCCButton patreonButton;
 
     public GuiNEIOptionList(GuiScreen parent, OptionList optionList, boolean world) {

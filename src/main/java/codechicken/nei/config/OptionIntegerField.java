@@ -1,6 +1,7 @@
 package codechicken.nei.config;
 
 public class OptionIntegerField extends OptionTextField {
+
     public int min;
     public int max;
 

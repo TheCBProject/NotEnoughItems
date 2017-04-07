@@ -9,8 +9,9 @@ import org.apache.logging.log4j.Level;
 import java.io.File;
 import java.util.Map;
 
-@TransformerExclusions({ "codechicken.nei.asm" })
+@TransformerExclusions ({ "codechicken.nei.asm" })
 public class NEICorePlugin implements IFMLLoadingPlugin, IFMLCallHook {
+
     public static File location;
     public static boolean missingCCL = false;
 
@@ -29,7 +30,7 @@ public class NEICorePlugin implements IFMLLoadingPlugin, IFMLCallHook {
 
     @Override
     public String getModContainerClass() {
-        return "codechicken.nei.NEIModContainer";
+        return null;
     }
 
     @Override
@@ -54,6 +55,7 @@ public class NEICorePlugin implements IFMLLoadingPlugin, IFMLCallHook {
     public Void call() {
         return null;
     }
+
     private static void cclCheck() {
         try {
             Class.forName("codechicken.lib.asm.ASMHelper", false, NEICorePlugin.class.getClassLoader());

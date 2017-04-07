@@ -1,8 +1,10 @@
 package codechicken.nei;
 
 import codechicken.nei.util.NEIClientUtils;
+import codechicken.nei.widget.TextField;
 
 public class ItemQuantityField extends TextField {
+
     public ItemQuantityField(String ident) {
         super(ident);
         centered = true;

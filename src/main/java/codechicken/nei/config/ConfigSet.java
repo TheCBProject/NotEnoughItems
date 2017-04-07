@@ -7,6 +7,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import java.io.File;
 
 public class ConfigSet {
+
     private File nbtFile;
     public NBTTagCompound nbt;
     public ConfigTagParent config;
