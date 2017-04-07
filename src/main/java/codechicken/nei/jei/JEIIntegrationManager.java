@@ -7,16 +7,12 @@ import codechicken.nei.jei.proxy.DummyProxy;
 import codechicken.nei.jei.proxy.IJEIProxy;
 import codechicken.nei.jei.proxy.JEIProxy;
 import mezz.jei.Internal;
-import mezz.jei.ItemFilter;
-import mezz.jei.JeiRuntime;
-import mezz.jei.RecipeRegistry;
-import mezz.jei.api.recipe.IFocus;
-import mezz.jei.api.recipe.IFocus.Mode;
 import mezz.jei.config.Config;
 import mezz.jei.config.KeyBindings;
-import mezz.jei.gui.ItemListOverlay;
-import mezz.jei.gui.ItemListOverlayInternal;
+import mezz.jei.gui.overlay.ItemListOverlay;
+import mezz.jei.ingredients.IngredientFilter;
 import mezz.jei.input.GuiTextFieldFilter;
+import mezz.jei.runtime.JeiRuntime;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.Loader;
@@ -42,7 +38,7 @@ public class JEIIntegrationManager {
     public static void pushChanges(VisibilityData data) {
         JeiRuntime runtime = Internal.getRuntime();
         ItemListOverlay overlay = runtime.getItemListOverlay();
-        GuiTextFieldFilter fieldFilter = getTextFieldFilter(overlay.getInternal());
+        GuiTextFieldFilter fieldFilter = getTextFieldFilter(overlay);
 
         if (searchBoxOwner == EnumItemBrowser.JEI) {
             data.showSearchSection = false;
@@ -114,21 +110,14 @@ public class JEIIntegrationManager {
         }
     }
 
-    public static ItemListOverlayInternal getItemListOverlayInternal() {
-        if (Internal.getRuntime() == null || Internal.getRuntime().getItemListOverlay().getInternal() == null) {
-            return null;
-        }
-        return Internal.getRuntime().getItemListOverlay().getInternal();
-    }
-
     public static GuiTextFieldFilter getTextFieldFilter() {
-        if (Internal.getRuntime() == null || Internal.getRuntime().getItemListOverlay().getInternal() == null) {
+        if (Internal.getRuntime() == null) {
             return null;
         }
-        return getTextFieldFilter(Internal.getRuntime().getItemListOverlay().getInternal());
+        return getTextFieldFilter(Internal.getRuntime().getItemListOverlay());
     }
 
-    private static GuiTextFieldFilter getTextFieldFilter(ItemListOverlayInternal overlay) {
+    private static GuiTextFieldFilter getTextFieldFilter(ItemListOverlay overlay) {
         if (overlay == null) {
             return null;
         }
@@ -142,14 +131,14 @@ public class JEIIntegrationManager {
         }
     }
 
-    private static ItemFilter getItemFilter(GuiTextFieldFilter fieldFilter) {
+    private static IngredientFilter getItemFilter(GuiTextFieldFilter fieldFilter) {
         if (fieldFilter == null) {
             return null;
         }
         try {
-            Field field = fieldFilter.getClass().getDeclaredField("itemFilter");
+            Field field = fieldFilter.getClass().getDeclaredField("ingredientFilter");
             field.setAccessible(true);
-            return (ItemFilter) field.get(fieldFilter);
+            return (IngredientFilter) field.get(fieldFilter);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -163,7 +152,7 @@ public class JEIIntegrationManager {
 
     public static List<ItemStack> getFilteredItems() {
         ItemListOverlay overlay = Internal.getRuntime().getItemListOverlay();
-        ItemFilter filter = getItemFilter(getTextFieldFilter(overlay.getInternal()));
+        IngredientFilter filter = getItemFilter(getTextFieldFilter(overlay));
         if (filter != null) {
             return filter.getItemStacks();
         }

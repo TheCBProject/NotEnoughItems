@@ -1,9 +1,9 @@
 package codechicken.nei.jei.proxy;
 
 import mezz.jei.Internal;
-import mezz.jei.RecipeRegistry;
 import mezz.jei.api.recipe.IFocus;
 import mezz.jei.api.recipe.IFocus.Mode;
+import mezz.jei.recipes.RecipeRegistry;
 import net.minecraft.item.ItemStack;
 
 /**

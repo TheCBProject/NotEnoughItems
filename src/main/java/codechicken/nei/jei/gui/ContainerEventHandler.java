@@ -7,15 +7,7 @@ import codechicken.nei.NEIClientConfig;
 import codechicken.nei.jei.EnumItemBrowser;
 import codechicken.nei.jei.JEIIntegrationManager;
 import codechicken.nei.widget.SearchField;
-import mezz.jei.gui.ItemListOverlayInternal;
 import mezz.jei.input.GuiTextFieldFilter;
-import mezz.jei.input.IClickedIngredient;
-import mezz.jei.util.MouseHelper;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiRepair;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.gui.GuiTextField;
-import net.minecraft.client.gui.inventory.GuiContainerCreative;
 import net.minecraftforge.client.event.GuiScreenEvent.BackgroundDrawnEvent;
 import net.minecraftforge.client.event.GuiScreenEvent.KeyboardInputEvent;
 import net.minecraftforge.client.event.GuiScreenEvent.MouseInputEvent;
@@ -24,6 +16,8 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.input.Mouse;
+
+import java.awt.*;
 
 /**
  * Created by covers1624 on 7/24/2016.
@@ -40,11 +34,11 @@ public class ContainerEventHandler {
         if (Mouse.getEventButton() == -1 || event.getGui() == null || !Mouse.getEventButtonState()) {
             return;
         }
-        MouseHelper mouse = new MouseHelper();
+        Point mouse = GuiDraw.getMousePosition();
         int eventButton = Mouse.getEventButton();
         if (JEIIntegrationManager.searchBoxOwner == EnumItemBrowser.JEI) {
             GuiTextFieldFilter fieldFilter = JEIIntegrationManager.getTextFieldFilter();
-            if (fieldFilter != null && fieldFilter.isMouseOver(mouse.getX(), mouse.getY())) {
+            if (fieldFilter != null && fieldFilter.isMouseOver(mouse.x, mouse.y)) {
                 if (eventButton == 0) {
                     if (fieldFilter.isFocused() && (System.currentTimeMillis() - lastSearchBoxClickTime < 500)) {//double click
                         NEIClientConfig.world.nbt.setBoolean("searchinventories", !SearchField.searchInventories());
@@ -68,37 +62,6 @@ public class ContainerEventHandler {
             NEIClientConfig.setSearchExpression(fieldFilter.getText(), false);
             LayoutManager.searchField.setText(fieldFilter.getText(), false);
         }
-    }
-
-    private IClickedIngredient<?> getIngeredientUnderMouseForKey() {
-        ItemListOverlayInternal internal = JEIIntegrationManager.getItemListOverlayInternal();
-        if (internal == null) {
-            return null;
-        }
-        MouseHelper helper = new MouseHelper();
-        return internal.getIngredientUnderMouse(helper.getX(), helper.getY());
-    }
-
-    private boolean isContainerTextFieldFocused() {
-        GuiTextFieldFilter fieldFilter = JEIIntegrationManager.getTextFieldFilter();
-        GuiScreen gui = Minecraft.getMinecraft().currentScreen;
-        GuiTextField textField = null;
-
-        if (gui instanceof GuiContainerCreative) {
-            textField = ((GuiContainerCreative) gui).searchField;
-        } else if (gui instanceof GuiRepair) {
-            textField = ((GuiRepair) gui).nameField;
-        }
-
-        if (JEIIntegrationManager.searchBoxOwner == EnumItemBrowser.NEI) {
-            return isFocussed(textField) || LayoutManager.searchField.focused();
-        }
-
-        return isFocussed(textField) || isFocussed(fieldFilter);
-    }
-
-    private boolean isFocussed(GuiTextField textField) {
-        return textField != null && textField.getVisible() && textField.isEnabled && textField.isFocused();
     }
 
     @SubscribeEvent (priority = EventPriority.LOWEST)//We need to be called after JEI as this is is a render overlay.

@@ -358,7 +358,7 @@ public class NEIServerUtils {
 
     public static boolean doesEnchantmentConflict(List<int[]> enchantments, Enchantment enchantment) {
         for (int[] ai : enchantments) {
-            if (!enchantment.canApplyTogether(Enchantment.getEnchantmentByID(ai[0]))) {
+            if (!enchantment.func_191560_c(Enchantment.getEnchantmentByID(ai[0]))) {
                 return true;
             }
         }

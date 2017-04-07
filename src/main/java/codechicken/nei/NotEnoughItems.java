@@ -24,7 +24,7 @@ public class NotEnoughItems {
     public static final String MOD_NAME = "Not Enough Items";
     public static final String MOD_VERSION = "${mod_version}";
     public static final String MOD_VERSION_DEP = "required-after:nei@[" + MOD_VERSION + ",);";
-    public static final String DEPENDENCIES = CodeChickenLib.MOD_VERSION_DEP + ";required-after:jei@[2.4.1,)";
+    public static final String DEPENDENCIES = CodeChickenLib.MOD_VERSION_DEP + ";required-after:jei@[4.3.1.,)";
     static final String UPDATE_URL = "http://chickenbones.net/Files/notification/version.php?query=forge&version=" + MC_VERSION + "&file=NotEnoughItems";
 
     @SidedProxy (clientSide = "codechicken.nei.proxy.ProxyClient", serverSide = "codechicken.nei.proxy.Proxy")
