@@ -3,9 +3,7 @@ package codechicken.nei.proxy;
 import codechicken.lib.packet.PacketCustom;
 import codechicken.nei.ServerHandler;
 import codechicken.nei.handler.MagnetModeHandler;
-import codechicken.nei.handler.NEIClientEventHandler;
 import codechicken.nei.handler.NEIServerEventHandler;
-import codechicken.nei.init.NEIInitialization;
 import codechicken.nei.network.NEIClientPacketHandler;
 import codechicken.nei.network.NEIServerPacketHandler;
 import codechicken.nei.widget.action.NEIActions;
@@ -39,6 +37,6 @@ public class Proxy {
     }
 
     public void loadComplete(FMLLoadCompleteEvent event) {
-        NEIInitialization.bootNEI();
+
     }
 }

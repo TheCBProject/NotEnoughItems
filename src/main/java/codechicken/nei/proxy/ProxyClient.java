@@ -7,6 +7,7 @@ import codechicken.nei.client.render.WorldOverlayRenderer;
 import codechicken.nei.config.KeyBindings;
 import codechicken.nei.handler.KeyManager;
 import codechicken.nei.handler.NEIClientEventHandler;
+import codechicken.nei.init.NEIInitialization;
 import codechicken.nei.jei.gui.ContainerEventHandler;
 import codechicken.nei.network.NEIClientPacketHandler;
 import net.minecraft.client.Minecraft;
@@ -16,6 +17,7 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.CustomModLoadingErrorDisplayException;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 /**
@@ -45,6 +47,11 @@ public class ProxyClient extends Proxy {
 
         KeyBindings.register();
         NEIClientEventHandler.INSTANCE.init();
+    }
+
+    @Override
+    public void loadComplete(FMLLoadCompleteEvent event) {
+        NEIInitialization.bootNEI();
     }
 
     @Override
