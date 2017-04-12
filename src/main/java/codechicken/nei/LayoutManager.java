@@ -13,7 +13,7 @@ import codechicken.nei.guihook.IContainerTooltipHandler;
 import codechicken.nei.guihook.IInputHandler;
 import codechicken.nei.handler.KeyManager;
 import codechicken.nei.handler.KeyManager.IKeyStateTracker;
-import codechicken.nei.handler.NEIEventHandler;
+import codechicken.nei.handler.NEIClientEventHandler;
 import codechicken.nei.layout.LayoutStyle;
 import codechicken.nei.layout.LayoutStyleMinecraft;
 import codechicken.nei.layout.LayoutStyleTMIOld;
@@ -91,10 +91,10 @@ public class LayoutManager implements IInputHandler, IContainerTooltipHandler, I
 
         instance = new LayoutManager();
         KeyManager.trackers.add(instance);
-        NEIEventHandler.addInputHandler(instance);
-        NEIEventHandler.addTooltipHandler(instance);
-        NEIEventHandler.addDrawHandler(instance);
-        NEIEventHandler.addObjectHandler(instance);
+        NEIClientEventHandler.addInputHandler(instance);
+        NEIClientEventHandler.addTooltipHandler(instance);
+        NEIClientEventHandler.addDrawHandler(instance);
+        NEIClientEventHandler.addObjectHandler(instance);
         init();
     }
 

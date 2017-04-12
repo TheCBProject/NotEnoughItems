@@ -6,7 +6,7 @@ import codechicken.nei.ItemMobSpawner;
 import codechicken.nei.client.render.WorldOverlayRenderer;
 import codechicken.nei.config.KeyBindings;
 import codechicken.nei.handler.KeyManager;
-import codechicken.nei.handler.NEIEventHandler;
+import codechicken.nei.handler.NEIClientEventHandler;
 import codechicken.nei.jei.gui.ContainerEventHandler;
 import codechicken.nei.network.NEIClientPacketHandler;
 import net.minecraft.client.Minecraft;
@@ -27,6 +27,7 @@ public class ProxyClient extends Proxy {
     public void preInit(FMLPreInitializationEvent event) {
         super.preInit(event);
         ItemMobSpawner.register();
+        MinecraftForge.EVENT_BUS.register(NEIClientEventHandler.INSTANCE);
     }
 
     @Override
@@ -43,7 +44,7 @@ public class ProxyClient extends Proxy {
         KeyManager.trackers.add(WorldOverlayRenderer.INSTANCE);
 
         KeyBindings.register();
-        NEIEventHandler.INSTANCE.clientInit();
+        NEIClientEventHandler.INSTANCE.init();
     }
 
     @Override

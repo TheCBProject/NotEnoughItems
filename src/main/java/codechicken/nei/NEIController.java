@@ -5,7 +5,7 @@ import codechicken.nei.api.GuiInfo;
 import codechicken.nei.api.INEIGuiHandler;
 import codechicken.nei.guihook.IInputHandler;
 import codechicken.nei.handler.FastTransferManager;
-import codechicken.nei.handler.NEIEventHandler;
+import codechicken.nei.handler.NEIClientEventHandler;
 import codechicken.nei.network.NEIClientPacketHandler;
 import codechicken.nei.util.ItemInfo;
 import codechicken.nei.util.NEIClientUtils;
@@ -36,7 +36,7 @@ public class NEIController implements /*IContainerSlotClickHandler,*/ IInputHand
 
     public static void load() {
         //GuiContainerManager.addSlotClickHandler(instance);
-        NEIEventHandler.addInputHandler(instance);
+        NEIClientEventHandler.addInputHandler(instance);
     }
 
     public static void load(GuiContainer gui) {

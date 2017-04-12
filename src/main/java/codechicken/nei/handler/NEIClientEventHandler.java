@@ -42,24 +42,24 @@ import static codechicken.nei.NEIClientConfig.canPerformAction;
 /**
  * Created by covers1624 on 29/03/2017.
  */
-public class NEIEventHandler {
+@SideOnly (Side.CLIENT)
+public class NEIClientEventHandler {
 
-    public static NEIEventHandler INSTANCE = new NEIEventHandler();
+    public static NEIClientEventHandler INSTANCE = new NEIClientEventHandler();
 
-    @SideOnly (Side.CLIENT)
     public static final LinkedList<IInputHandler> inputHandlers = new LinkedList<>();
     public static final LinkedList<IContainerObjectHandler> objectHandlers = new LinkedList<>();
     public static final LinkedList<IContainerDrawHandler> drawHandlers = new LinkedList<>();
     public static final LinkedList<IContainerTooltipHandler> tooltipHandlers = new LinkedList<>();
-    private List<IContainerTooltipHandler> instanceTooltipHandlers;
-    private GuiScreen lastGui;
+    private static List<IContainerTooltipHandler> instanceTooltipHandlers;
+    private static GuiScreen lastGui;
+
 
     /**
      * Register a new Input handler;
      *
      * @param handler The handler to register
      */
-    @SideOnly (Side.CLIENT)
     public static void addInputHandler(IInputHandler handler) {
 
         inputHandlers.add(handler);
@@ -92,30 +92,14 @@ public class NEIEventHandler {
         objectHandlers.add(handler);
     }
 
-    private NEIEventHandler() {
+    private NEIClientEventHandler() {
     }
 
-    @SideOnly (Side.CLIENT)
-    public void clientInit() {
+    public void init() {
         GuiDraw.addContainerForegroundHook(INSTANCE::foregroundRenderEvent);
     }
 
-    @SubscribeEvent (priority = EventPriority.LOW)// We need to fire after other handlers.
-    public void tickEvent(TickEvent.PlayerTickEvent event) {
-
-        if (event.phase == Phase.START && event.player instanceof EntityPlayerMP) {
-            EntityPlayerMP player = (EntityPlayerMP) event.player;
-            PlayerSave save = NEIServerConfig.getSaveForPlayer(player.getName());
-            if (save == null) {
-                return;
-            }
-            save.updateOpChange();
-            save.save();
-        }
-    }
-
     @SubscribeEvent
-    @SideOnly (Side.CLIENT)
     public void onKeyTypedPre(KeyboardInputEvent.Pre event) {
 
         GuiScreen gui = event.getGui();
@@ -138,7 +122,6 @@ public class NEIEventHandler {
     }
 
     @SubscribeEvent
-    @SideOnly (Side.CLIENT)
     public void onKeyTypedPost(KeyboardInputEvent.Post event) {
 
         GuiScreen gui = event.getGui();
@@ -171,7 +154,6 @@ public class NEIEventHandler {
     }
 
     @SubscribeEvent
-    @SideOnly (Side.CLIENT)
     public void onMouseEventPre(MouseInputEvent.Pre event) {
 
         GuiScreen gui = event.getGui();
@@ -204,7 +186,6 @@ public class NEIEventHandler {
     }
 
     @SubscribeEvent
-    @SideOnly (Side.CLIENT)
     public void onMouseEventPost(MouseInputEvent.Post event) {
 
         GuiScreen gui = event.getGui();
@@ -226,14 +207,12 @@ public class NEIEventHandler {
     }
 
     @SubscribeEvent
-    @SideOnly (Side.CLIENT)
     public void potionShiftEvent(PotionShiftEvent event) {
 
         event.setCanceled(true);
     }
 
     @SubscribeEvent
-    @SideOnly (Side.CLIENT)
     public void containerInitEvent(GuiScreenEvent.InitGuiEvent.Pre event) {
         if (event.getGui() instanceof GuiContainer) {
             GuiContainer container = ((GuiContainer) event.getGui());
@@ -244,7 +223,6 @@ public class NEIEventHandler {
     }
 
     @SubscribeEvent
-    @SideOnly (Side.CLIENT)
     public void guiOpenEvent(GuiOpenEvent event) {
         if (lastGui != event.getGui()) {
             if (event.getGui() == null) {
@@ -261,7 +239,6 @@ public class NEIEventHandler {
     }
 
     @SubscribeEvent
-    @SideOnly (Side.CLIENT)
     public void clientTickEvent(TickEvent.ClientTickEvent event) {
 
         if (event.phase == Phase.START) {
@@ -275,7 +252,6 @@ public class NEIEventHandler {
     }
 
     @SubscribeEvent
-    @SideOnly (Side.CLIENT)
     public void drawScreenPost(DrawScreenEvent.Post event) {
         GuiScreen screen = event.getGui();
 
@@ -337,21 +313,11 @@ public class NEIEventHandler {
     }
 
     @SubscribeEvent
-    @SideOnly (Side.CLIENT)
-    public void backgroundDrawnEvent(BackgroundDrawnEvent event) {
-
-        if (event.getGui() instanceof GuiContainer) {
-        }
-    }
-
-    @SubscribeEvent
-    @SideOnly (Side.CLIENT)
     public void tooltipPreEvent(RenderTooltipEvent.Pre event) {
         event.setY(MathHelper.clip(event.getY(), 8, event.getScreenHeight() - 8));
     }
 
     @SubscribeEvent
-    @SideOnly (Side.CLIENT)
     public void itemTooltipEvent(ItemTooltipEvent event) {
 
         if (instanceTooltipHandlers != null && Minecraft.getMinecraft().currentScreen != null) {

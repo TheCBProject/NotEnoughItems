@@ -3,7 +3,8 @@ package codechicken.nei.proxy;
 import codechicken.lib.packet.PacketCustom;
 import codechicken.nei.ServerHandler;
 import codechicken.nei.handler.MagnetModeHandler;
-import codechicken.nei.handler.NEIEventHandler;
+import codechicken.nei.handler.NEIClientEventHandler;
+import codechicken.nei.handler.NEIServerEventHandler;
 import codechicken.nei.init.NEIInitialization;
 import codechicken.nei.network.NEIClientPacketHandler;
 import codechicken.nei.network.NEIServerPacketHandler;
@@ -20,7 +21,7 @@ public class Proxy {
 
     public void preInit(FMLPreInitializationEvent event) {
 
-        MinecraftForge.EVENT_BUS.register(NEIEventHandler.INSTANCE);
+        MinecraftForge.EVENT_BUS.register(new NEIServerEventHandler());
     }
 
     public void init(FMLInitializationEvent event) {

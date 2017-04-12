@@ -3,7 +3,7 @@ package codechicken.nei.util.helper;
 import codechicken.lib.util.ClientUtils;
 import codechicken.nei.guihook.IContainerObjectHandler;
 import codechicken.nei.guihook.IContainerTooltipHandler;
-import codechicken.nei.handler.NEIEventHandler;
+import codechicken.nei.handler.NEIClientEventHandler;
 import codechicken.nei.util.LogHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -36,7 +36,7 @@ public class GuiHelper {
     public static ItemStack getStackMouseOver(GuiContainer window, boolean useContainerSlots) {
         Point mousePos = getMousePosition();
 
-        for (IContainerObjectHandler objectHandler : NEIEventHandler.objectHandlers) {
+        for (IContainerObjectHandler objectHandler : NEIClientEventHandler.objectHandlers) {
             ItemStack item = objectHandler.getStackUnderMouse(window, mousePos.x, mousePos.y);
             if (!item.isEmpty()) {
                 return item;
@@ -66,7 +66,7 @@ public class GuiHelper {
      */
     public static boolean objectUnderMouse(GuiContainer container, int mousex, int mousey) {
 
-        for (IContainerObjectHandler objectHandler : NEIEventHandler.objectHandlers) {
+        for (IContainerObjectHandler objectHandler : NEIClientEventHandler.objectHandlers) {
             if (objectHandler.objectUnderMouse(container, mousex, mousey)) {
                 return true;
             }
@@ -79,7 +79,7 @@ public class GuiHelper {
         if (!ClientUtils.inWorld()) {
             return false;
         }
-        for (IContainerObjectHandler handler : NEIEventHandler.objectHandlers) {
+        for (IContainerObjectHandler handler : NEIClientEventHandler.objectHandlers) {
             if (!handler.shouldShowTooltip(window)) {
                 return false;
             }
@@ -194,7 +194,7 @@ public class GuiHelper {
         }
 
         if (includeHandlers) {
-            for (IContainerTooltipHandler handler : NEIEventHandler.tooltipHandlers) {
+            for (IContainerTooltipHandler handler : NEIClientEventHandler.tooltipHandlers) {
                 handler.handleItemDisplayName(gui, itemstack, namelist);
             }
         }

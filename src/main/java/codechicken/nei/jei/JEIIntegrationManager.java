@@ -16,6 +16,8 @@ import mezz.jei.runtime.JeiRuntime;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -25,6 +27,7 @@ import java.util.List;
  * Created by covers1624 on 7/14/2016.
  * Handles hiding and showing things from jei and nei. Basically an interface between the two.
  */
+@SideOnly (Side.CLIENT)
 public class JEIIntegrationManager {
 
     @FunctionProxy
