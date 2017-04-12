@@ -282,9 +282,12 @@ public class NEIEventHandler {
         Point mousePos = GuiDraw.getMousePosition();
         List<String> tooltip = new LinkedList<>();
         ItemStack stack = null;
-        for (IContainerTooltipHandler handler : instanceTooltipHandlers) {
-            handler.handleTooltip(screen, mousePos.x, mousePos.y, tooltip);
+        if (instanceTooltipHandlers != null) {
+            for (IContainerTooltipHandler handler : instanceTooltipHandlers) {
+                handler.handleTooltip(screen, mousePos.x, mousePos.y, tooltip);
+            }
         }
+
 
         if (screen instanceof GuiContainer) {
             if (tooltip.isEmpty() && GuiHelper.shouldShowTooltip(screen)) {
