@@ -8,6 +8,7 @@ import codechicken.nei.config.ItemPanelDumper;
 import codechicken.nei.config.dumps.FluidRegistryDumper;
 import codechicken.nei.config.dumps.ForgeRegistryDumper;
 import codechicken.nei.guihook.GuiContainerManager;
+import codechicken.nei.jei.JEIIntegrationManager;
 import codechicken.nei.recipe.BrewingRecipeHandler;
 import codechicken.nei.recipe.RecipeItemInputHandler;
 import codechicken.nei.recipe.potion.PotionRecipeHelper;
@@ -44,6 +45,7 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.ModContainer;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.common.registry.IForgeRegistry;
+import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.*;
 import java.util.Map.Entry;
@@ -78,11 +80,11 @@ public class ItemInfo {
     public static final HashMap<ItemStack, String> itemSearchNames = new HashMap<ItemStack, String>();
 
     public static boolean isHidden(ItemStack stack) {
-        return hiddenItems.contains(stack);
+        return hiddenItems.contains(stack) || JEIIntegrationManager.jeiBlacklist.isIngredientBlacklisted(stack);
     }
 
     public static boolean isHidden(Item item) {
-        return hiddenItems.containsAll(item);
+        return hiddenItems.containsAll(item) || JEIIntegrationManager.jeiBlacklist.isIngredientBlacklisted(new ItemStack(item, 1, OreDictionary.WILDCARD_VALUE));
     }
 
     public static String getNameOverride(ItemStack stack) {
@@ -147,6 +149,17 @@ public class ItemInfo {
                     @Override
                     public boolean matches(ItemStack item) {
                         return !hiddenItems.contains(item);
+                    }
+                };
+            }
+        });
+        API.addItemFilter(new IItemFilterProvider() {
+            @Override
+            public IItemFilter getFilter() {
+                return new IItemFilter() {
+                    @Override
+                    public boolean matches(ItemStack item) {
+                        return !JEIIntegrationManager.jeiBlacklist.isIngredientBlacklisted(item);
                     }
                 };
             }

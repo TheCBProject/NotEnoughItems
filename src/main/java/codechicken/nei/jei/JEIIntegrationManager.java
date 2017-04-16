@@ -7,6 +7,10 @@ import mezz.jei.Internal;
 import mezz.jei.ItemFilter;
 import mezz.jei.JeiRuntime;
 import mezz.jei.RecipeRegistry;
+import mezz.jei.api.BlankModPlugin;
+import mezz.jei.api.IModRegistry;
+import mezz.jei.api.JEIPlugin;
+import mezz.jei.api.ingredients.IIngredientBlacklist;
 import mezz.jei.api.recipe.IFocus;
 import mezz.jei.api.recipe.IFocus.Mode;
 import mezz.jei.config.Config;
@@ -25,9 +29,12 @@ import java.util.List;
  * Created by covers1624 on 7/14/2016.
  * Handles hiding and showing things from jei and nei. Basically an interface between the two.
  */
-public class JEIIntegrationManager {
+@JEIPlugin
+public class JEIIntegrationManager extends BlankModPlugin {
 
     public static final JEIProxy proxy = new JEIProxy();
+
+    public static IIngredientBlacklist jeiBlacklist;
 
     public static EnumItemBrowser searchBoxOwner = EnumItemBrowser.JEI;
     public static EnumItemBrowser recipePriority = EnumItemBrowser.NEI;
@@ -61,6 +68,11 @@ public class JEIIntegrationManager {
             }
         }
 
+    }
+
+    @Override
+    public void register(IModRegistry registry) {
+        jeiBlacklist = registry.getJeiHelpers().getIngredientBlacklist();
     }
 
     public static void initConfig(ConfigTagParent tag) {
