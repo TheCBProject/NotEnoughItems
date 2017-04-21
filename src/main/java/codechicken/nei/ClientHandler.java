@@ -208,9 +208,19 @@ public class ClientHandler {
             if (eventKey == 0 && c >= 32 || Keyboard.getEventKeyState()) {
                 if (guiContainerManager.firstKeyTyped(c, eventKey)) {
                     event.setCanceled(true);
-                } else if (guiContainerManager.lastKeyTyped(c, eventKey)) {
-                    event.setCanceled(true);
                 }
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public void onKeyTypedPost(GuiScreenEvent.KeyboardInputEvent.Post event) {
+        GuiContainerManager manager = GuiContainerManager.getManager();
+        if (manager != null) {
+            char c = Keyboard.getEventCharacter();
+            int eventKey = Keyboard.getEventKey();
+            if (eventKey == 0 && c >= 32 || Keyboard.getEventKeyState()) {
+                manager.lastKeyTyped(c, eventKey);
             }
         }
     }
