@@ -80,11 +80,11 @@ public class ItemInfo {
     public static final HashMap<ItemStack, String> itemSearchNames = new HashMap<ItemStack, String>();
 
     public static boolean isHidden(ItemStack stack) {
-        return hiddenItems.contains(stack) || JEIIntegrationManager.jeiBlacklist.isIngredientBlacklisted(stack);
+        return hiddenItems.contains(stack) || JEIIntegrationManager.isItemBlacklistedJEI(stack);
     }
 
     public static boolean isHidden(Item item) {
-        return hiddenItems.containsAll(item) || JEIIntegrationManager.jeiBlacklist.isIngredientBlacklisted(new ItemStack(item, 1, OreDictionary.WILDCARD_VALUE));
+        return hiddenItems.containsAll(item) || JEIIntegrationManager.isItemBlacklistedJEI(new ItemStack(item, 1, OreDictionary.WILDCARD_VALUE));
     }
 
     public static String getNameOverride(ItemStack stack) {
@@ -159,7 +159,7 @@ public class ItemInfo {
                 return new IItemFilter() {
                     @Override
                     public boolean matches(ItemStack item) {
-                        return !JEIIntegrationManager.jeiBlacklist.isIngredientBlacklisted(item);
+                        return !JEIIntegrationManager.isItemBlacklistedJEI(item);
                     }
                 };
             }

@@ -3,6 +3,7 @@ package codechicken.nei.jei;
 import codechicken.lib.config.ConfigTagParent;
 import codechicken.nei.VisibilityData;
 import codechicken.nei.jei.proxy.JEIProxy;
+import codechicken.nei.util.LogHelper;
 import mezz.jei.Internal;
 import mezz.jei.ItemFilter;
 import mezz.jei.JeiRuntime;
@@ -189,6 +190,13 @@ public class JEIIntegrationManager extends BlankModPlugin {
             return filter.getItemStacks();
         }
         return new ArrayList<ItemStack>();
+    }
+
+    public static boolean isItemBlacklistedJEI(ItemStack stack) {
+        if (jeiBlacklist != null) {
+            return jeiBlacklist.isIngredientBlacklisted(stack);
+        }
+        return false;
     }
 
     public static KeyBinding getShowUses() {
