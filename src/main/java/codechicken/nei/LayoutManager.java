@@ -20,6 +20,7 @@ import codechicken.nei.layout.LayoutStyleTMIOld;
 import codechicken.nei.network.NEIClientPacketHandler;
 import codechicken.nei.util.ItemInfo;
 import codechicken.nei.util.ItemList;
+import codechicken.nei.util.LogHelper;
 import codechicken.nei.util.helper.GuiHelper;
 import codechicken.nei.widget.*;
 import codechicken.nei.widget.action.NEIActions;
@@ -239,10 +240,14 @@ public class LayoutManager implements IInputHandler, IContainerTooltipHandler, I
         }
     }
 
-    @Override
+    @Override//This is called from NEI's Filter thread, do a synchronized Set copy so we don't throw errors.
     public void handleTooltip(GuiScreen gui, int mousex, int mousey, List<String> currenttip) {
         if (!isHidden() && isEnabled() && GuiHelper.shouldShowTooltip(gui)) {
-            for (Widget widget : controlWidgets) {
+            TreeSet<Widget> copy = new TreeSet<>(controlWidgets.comparator());
+            synchronized (controlWidgets) {
+                copy.addAll(controlWidgets);
+            }
+            for (Widget widget : copy) {
                 widget.handleTooltip(mousex, mousey, currenttip);
             }
         }

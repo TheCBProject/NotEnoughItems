@@ -3,20 +3,16 @@ package codechicken.nei.handler;
 import codechicken.lib.gui.GuiDraw;
 import codechicken.lib.math.MathHelper;
 import codechicken.lib.render.state.GlStateTracker;
-import codechicken.nei.NEIServerConfig;
-import codechicken.nei.PlayerSave;
+import codechicken.nei.asm.ASMHooks;
 import codechicken.nei.config.KeyBindings;
-import codechicken.nei.guihook.IContainerDrawHandler;
-import codechicken.nei.guihook.IContainerObjectHandler;
-import codechicken.nei.guihook.IContainerTooltipHandler;
-import codechicken.nei.guihook.IInputHandler;
+import codechicken.nei.guihook.*;
 import codechicken.nei.network.NEIClientPacketHandler;
+import codechicken.nei.util.LogHelper;
 import codechicken.nei.util.helper.GuiHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.event.GuiOpenEvent;
@@ -24,7 +20,6 @@ import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.client.event.GuiScreenEvent.*;
 import net.minecraftforge.client.event.RenderTooltipEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
-import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
@@ -96,7 +91,7 @@ public class NEIClientEventHandler {
     }
 
     public void init() {
-        GuiDraw.addContainerForegroundHook(INSTANCE::foregroundRenderEvent);
+        ASMHooks.addContainerForegroundHook(INSTANCE::foregroundRenderEvent);
     }
 
     @SubscribeEvent
