@@ -117,8 +117,8 @@ nei.options.inventory.gamemodes.adventure=冒險模式
 nei.options.command=指令
 nei.options.command.creative=遊戲模式
 nei.options.command.creative.tip={0}=1為創造模式，0為生存模式，{1}=玩家
-nei.options.command.give=物品
-nei.options.command.give.tip={0}=玩家，{1}=物品ID，{2}=數量，{3}=物品耐久度
+nei.options.command.item=物品
+nei.options.command.item.tip={0}=玩家，{1}=物品名稱，{2}=數量，{3}=物品耐久度，{4}=物品NBT，{5}=物品ID
 nei.options.command.time=時間
 nei.options.command.time.tip={0}=世界時間
 nei.options.command.rain=雨雪
@@ -155,6 +155,16 @@ nei.options.tools.dump.itempanel.mode.2=Json
 nei.options.tools.dump.itempanel.mode.3=PNG
 nei.options.tools.dump.itempanel.icon.dumped=物品面板圖示已匯出為 %s
 nei.options.tools.dump.itempanel.icon.cancelled=已取消匯出
+nei.options.tools.dump.fluid=流體
+nei.options.tools.dump.fluids=流體
+nei.options.tools.dump.sound_event=音效
+nei.options.tools.dump.sound_events=音效
+
+nei.options.jei=JEI 相容
+nei.options.jei.itemPanel.0=NEI ItemPanel
+nei.options.jei.itemPanel.1=JEI ItemPanel
+nei.options.jei.searchBox.0=NEI SearchBox
+nei.options.jei.searchBox.1=JEI SearchBox
 
 nei.layoutstyle.minecraft=Minecraft風格
 nei.layoutstyle.oldtmi=舊TMI風格
