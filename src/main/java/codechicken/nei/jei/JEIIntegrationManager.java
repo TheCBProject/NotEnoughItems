@@ -9,7 +9,7 @@ import codechicken.nei.jei.proxy.JEIProxy;
 import mezz.jei.Internal;
 import mezz.jei.config.Config;
 import mezz.jei.config.KeyBindings;
-import mezz.jei.gui.overlay.ItemListOverlay;
+import mezz.jei.gui.overlay.IngredientListOverlay;
 import mezz.jei.ingredients.IngredientFilter;
 import mezz.jei.input.GuiTextFieldFilter;
 import mezz.jei.runtime.JeiRuntime;
@@ -40,7 +40,7 @@ public class JEIIntegrationManager {
 
     public static void pushChanges(VisibilityData data) {
         JeiRuntime runtime = Internal.getRuntime();
-        ItemListOverlay overlay = runtime.getItemListOverlay();
+	    IngredientListOverlay overlay = runtime.getItemListOverlay();
         GuiTextFieldFilter fieldFilter = getTextFieldFilter(overlay);
 
         if (searchBoxOwner == EnumItemBrowser.JEI) {
@@ -120,7 +120,7 @@ public class JEIIntegrationManager {
         return getTextFieldFilter(Internal.getRuntime().getItemListOverlay());
     }
 
-    private static GuiTextFieldFilter getTextFieldFilter(ItemListOverlay overlay) {
+    private static GuiTextFieldFilter getTextFieldFilter(IngredientListOverlay overlay) {
         if (overlay == null) {
             return null;
         }
@@ -149,15 +149,15 @@ public class JEIIntegrationManager {
     }
 
     public static void setFilterText(String text) {
-        ItemListOverlay overlay = Internal.getRuntime().getItemListOverlay();
+	    IngredientListOverlay overlay = Internal.getRuntime().getItemListOverlay();
         overlay.setFilterText(text);
     }
 
-    public static List<ItemStack> getFilteredItems() {
-        ItemListOverlay overlay = Internal.getRuntime().getItemListOverlay();
+    public static List<Object> getFilteredItems() {
+	    IngredientListOverlay overlay = Internal.getRuntime().getItemListOverlay();
         IngredientFilter filter = getItemFilter(getTextFieldFilter(overlay));
         if (filter != null) {
-            return filter.getItemStacks();
+            return filter.getFilteredIngredients();
         }
         return new ArrayList<>();
     }

@@ -13,6 +13,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.init.Blocks;
+import net.minecraft.inventory.ClickType;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.TextFormatting;
@@ -73,6 +74,10 @@ public class GuiHelper {
         }
 
         return false;
+    }
+
+    public static void clickSlot(GuiContainer window, int slotIndex, int button, ClickType clickType) {
+        window.mc.playerController.windowClick(window.inventorySlots.windowId, slotIndex, button, clickType, window.mc.player);
     }
 
     public static boolean shouldShowTooltip(GuiScreen window) {

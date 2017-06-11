@@ -100,29 +100,29 @@ public class LayoutManager implements IInputHandler, IContainerTooltipHandler, I
     }
 
     @Override
-    public void onMouseClicked(GuiScreen gui, int mousex, int mousey, int button) {
+    public void onMouseClicked(GuiScreen gui, int mouseX, int mouseY, int button) {
         if (isHidden()) {
             return;
         }
 
         for (Widget widget : controlWidgets) {
-            widget.onGuiClick(mousex, mousey);
+            widget.onGuiClick(mouseX, mouseY);
         }
     }
 
     @Override
-    public boolean mouseClicked(GuiScreen gui, int mousex, int mousey, int button) {
+    public boolean mouseClicked(GuiScreen gui, int mouseX, int mouseY, int button) {
         if (isHidden()) {
             return false;
         }
 
         if (!isEnabled()) {
-            return options.contains(mousex, mousey) && options.handleClick(mousex, mousey, button);
+            return options.contains(mouseX, mouseY) && options.handleClick(mouseX, mouseY, button);
         }
 
         for (Widget widget : controlWidgets) {
-            widget.onGuiClick(mousex, mousey);
-            if (widget.contains(mousex, mousey) ? widget.handleClick(mousex, mousey, button) : widget.handleClickExt(mousex, mousey, button)) {
+            widget.onGuiClick(mouseX, mouseY);
+            if (widget.contains(mouseX, mouseY) ? widget.handleClick(mouseX, mouseY, button) : widget.handleClickExt(mouseX, mouseY, button)) {
                 return true;
             }
         }
@@ -181,19 +181,19 @@ public class LayoutManager implements IInputHandler, IContainerTooltipHandler, I
     }
 
     @Override
-    public void onMouseUp(GuiScreen gui, int mx, int my, int button) {
+    public void onMouseUp(GuiScreen gui, int mouseX, int mouseY, int button) {
         if (!isHidden() && isEnabled()) {
             for (Widget widget : controlWidgets) {
-                widget.mouseUp(mx, my, button);
+                widget.mouseUp(mouseX, mouseY, button);
             }
         }
     }
 
     @Override
-    public void onMouseDragged(GuiScreen gui, int mx, int my, int button, long heldTime) {
+    public void onMouseDragged(GuiScreen gui, int mouseX, int mouseY, int button, long heldTime) {
         if (!isHidden() && isEnabled()) {
             for (Widget widget : controlWidgets) {
-                widget.mouseDragged(mx, my, button, heldTime);
+                widget.mouseDragged(mouseX, mouseY, button, heldTime);
             }
         }
     }
@@ -723,13 +723,13 @@ public class LayoutManager implements IInputHandler, IContainerTooltipHandler, I
     }
 
     @Override
-    public boolean mouseScrolled(GuiScreen gui, int mousex, int mousey, int scrolled) {
+    public boolean mouseScrolled(GuiScreen gui, int mouseX, int mouseY, int scrolled) {
         if (isHidden() || !isEnabled()) {
             return false;
         }
 
         for (Widget widget : controlWidgets) {
-            if (widget.onMouseWheel(scrolled, mousex, mousey)) {
+            if (widget.onMouseWheel(scrolled, mouseX, mouseY)) {
                 return true;
             }
         }

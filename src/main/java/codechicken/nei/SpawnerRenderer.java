@@ -26,13 +26,13 @@ import java.util.List;
 
 //import net.minecraft.entity.boss.BossStatus;
 
-public class SpawnerRenderer implements IItemRenderer, IPerspectiveAwareModel {
+public class SpawnerRenderer implements IItemRenderer {
 
     public static void load(ItemMobSpawner item) {
         ModelRegistryHelper.registerItemRenderer(item, new SpawnerRenderer());
     }
 
-    public void renderItem(ItemStack stack) {
+    public void renderItem(ItemStack stack, TransformType transformType) {
         int meta = stack.getItemDamage();
 
         if (meta == 0) {
@@ -81,42 +81,12 @@ public class SpawnerRenderer implements IItemRenderer, IPerspectiveAwareModel {
     }
 
     @Override
-    public List<BakedQuad> getQuads(IBlockState state, EnumFacing side, long rand) {
-        return new ArrayList<>();
-    }
-
-    @Override
     public boolean isAmbientOcclusion() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isGui3d() {
         return true;
-    }
-
-    @Override
-    public boolean isBuiltInRenderer() {
-        return true;
-    }
-
-    @Override
-    public TextureAtlasSprite getParticleTexture() {
-        return TextureUtils.getBlockTexture("mob_spawner");
-    }
-
-    @Override
-    public ItemCameraTransforms getItemCameraTransforms() {
-        return ItemCameraTransforms.DEFAULT;
-    }
-
-    @Override
-    public ItemOverrideList getOverrides() {
-        return ItemOverrideList.NONE;
-    }
-
-    @Override
-    public Pair<? extends IBakedModel, Matrix4f> handlePerspective(TransformType cameraTransformType) {
-        return MapWrapper.handlePerspective(this, TransformUtils.DEFAULT_BLOCK.getTransforms(), cameraTransformType);
     }
 }

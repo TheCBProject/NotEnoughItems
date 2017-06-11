@@ -4,6 +4,9 @@ import codechicken.lib.CodeChickenLib;
 import codechicken.nei.init.NEIInitialization;
 import codechicken.nei.proxy.Proxy;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.Mod.Instance;
+import net.minecraftforge.fml.common.Mod.Metadata;
+import net.minecraftforge.fml.common.ModMetadata;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLLoadCompleteEvent;
@@ -24,11 +27,17 @@ public class NotEnoughItems {
     public static final String MOD_NAME = "Not Enough Items";
     public static final String MOD_VERSION = "${mod_version}";
     public static final String MOD_VERSION_DEP = "required-after:nei@[" + MOD_VERSION + ",);";
-    public static final String DEPENDENCIES = CodeChickenLib.MOD_VERSION_DEP + ";required-after:jei@[4.3.1.,)";
+    public static final String DEPENDENCIES = CodeChickenLib.MOD_VERSION_DEP + ";required-after:jei@[4.5.0.,)";
     static final String UPDATE_URL = "http://chickenbones.net/Files/notification/version.php?query=forge&version=" + MC_VERSION + "&file=NotEnoughItems";
 
     @SidedProxy (clientSide = "codechicken.nei.proxy.ProxyClient", serverSide = "codechicken.nei.proxy.Proxy")
     public static Proxy proxy;
+
+    @Instance
+	public static NotEnoughItems instance;
+
+    @Metadata
+    public static ModMetadata metadata;
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {

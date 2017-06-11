@@ -158,9 +158,9 @@ public class NEIClientEventHandler {
 
             if (Mouse.getEventButtonState()) {
                 gui.lastMouseEvent = Minecraft.getSystemTime();
-                for (IInputHandler handler : inputHandlers) {
-                    handler.onMouseClicked(gui, mousePos.x, mousePos.y, mouseButton);
-                }
+
+                inputHandlers.forEach(handler -> handler.onMouseClicked(gui, mousePos.x, mousePos.y, mouseButton));
+
                 for (IInputHandler handler : inputHandlers) {
                     if (handler.mouseClicked(gui, mousePos.x, mousePos.y, mouseButton)) {
                         event.setCanceled(true);
@@ -168,14 +168,10 @@ public class NEIClientEventHandler {
                     }
                 }
             } else if (mouseButton != -1) {
-                for (IInputHandler inputhander : inputHandlers) {
-                    inputhander.onMouseUp(gui, mousePos.x, mousePos.y, mouseButton);
-                }
+                inputHandlers.forEach(handler -> handler.onMouseUp(gui, mousePos.x, mousePos.y, mouseButton));
             } else if (mouseButton != -1 && gui.lastMouseEvent > 0) {
                 long heldTime = Minecraft.getSystemTime() - gui.lastMouseEvent;
-                for (IInputHandler inputHandler : inputHandlers) {
-                    inputHandler.onMouseDragged(gui, mousePos.x, mousePos.y, mouseButton, heldTime);
-                }
+                inputHandlers.forEach(handler -> handler.onMouseDragged(gui, mousePos.x, mousePos.y, mouseButton, heldTime));
             }
         }
     }
@@ -185,11 +181,15 @@ public class NEIClientEventHandler {
 
         GuiScreen gui = event.getGui();
         if (gui instanceof GuiContainer) {
-            int i = Mouse.getDWheel();
+            Point mousePos = GuiDraw.getMousePosition();
+            if (Mouse.getEventButtonState()) {
+                int mouseButton = Mouse.getEventButton();
+                inputHandlers.forEach(handler -> handler.onMouseClickedPost(gui, mousePos.x, mousePos.y, mouseButton));
+            }
 
+            int i = Mouse.getDWheel();
             if (i != 0) {
                 int scrolled = i > 0 ? 1 : -1;
-                Point mousePos = GuiDraw.getMousePosition();
                 for (IInputHandler handler : inputHandlers) {
                     if (handler.mouseScrolled(gui, mousePos.x, mousePos.y, scrolled)) {
                         event.setCanceled(true);
@@ -211,9 +211,7 @@ public class NEIClientEventHandler {
     public void containerInitEvent(GuiScreenEvent.InitGuiEvent.Pre event) {
         if (event.getGui() instanceof GuiContainer) {
             GuiContainer container = ((GuiContainer) event.getGui());
-            for (IContainerObjectHandler objectHandler : objectHandlers) {
-                objectHandler.load(container);
-            }
+            objectHandlers.forEach(handler -> handler.load(container));
         }
     }
 
@@ -239,9 +237,7 @@ public class NEIClientEventHandler {
         if (event.phase == Phase.START) {
             Minecraft minecraft = Minecraft.getMinecraft();
             if (minecraft.currentScreen != null && minecraft.currentScreen instanceof GuiContainer) {
-                for (IContainerObjectHandler objectHandler : objectHandlers) {
-                    objectHandler.guiTick(((GuiContainer) minecraft.currentScreen));
-                }
+                objectHandlers.forEach(handler -> handler.guiTick(((GuiContainer) minecraft.currentScreen)));
             }
         }
     }
@@ -252,7 +248,7 @@ public class NEIClientEventHandler {
 
         Point mousePos = GuiDraw.getMousePosition();
         List<String> tooltip = new LinkedList<>();
-        ItemStack stack = null;
+        ItemStack stack = ItemStack.EMPTY;
         if (instanceTooltipHandlers != null) {
             for (IContainerTooltipHandler handler : instanceTooltipHandlers) {
                 handler.handleTooltip(screen, mousePos.x, mousePos.y, tooltip);
@@ -283,13 +279,9 @@ public class NEIClientEventHandler {
         Point mousePos = GuiDraw.getMousePosition();
 
         GlStateManager.translate(-container.getGuiLeft(), -container.getGuiTop(), 200F);
-        for (IContainerDrawHandler drawHandler : drawHandlers) {
-            drawHandler.renderObjects(container, mousePos.x, mousePos.y);
-        }
+        drawHandlers.forEach(handler -> handler.renderObjects(container, mousePos.x, mousePos.y));
 
-        for (IContainerDrawHandler drawHandler : drawHandlers) {
-            drawHandler.postRenderObjects(container, mousePos.x, mousePos.y);
-        }
+        drawHandlers.forEach(handler -> handler.postRenderObjects(container, mousePos.x, mousePos.y));
 
         GlStateManager.translate(container.getGuiLeft(), container.getGuiTop(), -200F);
         GuiHelper.enable3DRender();
@@ -297,9 +289,7 @@ public class NEIClientEventHandler {
         GlStateManager.pushMatrix();
         for (Slot slot : container.inventorySlots.inventorySlots) {
             GlStateTracker.pushState();
-            for (IContainerDrawHandler drawHandler : drawHandlers) {
-                drawHandler.renderSlotOverlay(container, slot);
-            }
+            drawHandlers.forEach(handler -> handler.renderSlotOverlay(container, slot));
             GlStateTracker.popState();
         }
         GlStateManager.popMatrix();
@@ -309,6 +299,12 @@ public class NEIClientEventHandler {
 
     @SubscribeEvent
     public void tooltipPreEvent(RenderTooltipEvent.Pre event) {
+        for (IContainerObjectHandler handler : objectHandlers) {
+            if (!handler.shouldShowTooltip(Minecraft.getMinecraft().currentScreen)) {
+                event.setCanceled(true);
+                return;
+            }
+        }
         event.setY(MathHelper.clip(event.getY(), 8, event.getScreenHeight() - 8));
     }
 
@@ -317,13 +313,6 @@ public class NEIClientEventHandler {
 
         if (instanceTooltipHandlers != null && Minecraft.getMinecraft().currentScreen != null) {
             GuiScreen screen = Minecraft.getMinecraft().currentScreen;
-
-            for (IContainerObjectHandler handler : objectHandlers) {
-                if (!handler.shouldShowTooltip(screen)) {
-                    event.setCanceled(true);
-                    return;
-                }
-            }
 
             Point mousePos = GuiDraw.getMousePosition();
 

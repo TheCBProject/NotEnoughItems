@@ -11,6 +11,7 @@ import codechicken.nei.util.NEIClientUtils;
 import codechicken.nei.util.NEIServerUtils;
 import codechicken.nei.util.helper.GuiHelper;
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.gui.inventory.GuiContainerCreative;
 import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
@@ -254,7 +255,12 @@ public class ItemPanel extends Widget {
                 int total = Math.min(contents + add, Math.min(overSlot.getSlotStackLimit(), draggedStack.getMaxStackSize()));
 
                 if (total > contents) {
-                    NEIClientUtils.setSlotContents(overSlot.slotNumber, NEIServerUtils.copyStack(draggedStack, total), true);
+                    int slotNumber = overSlot.slotNumber;
+                    if (gui instanceof GuiContainerCreative) {
+                        //Because Mojang..
+                        slotNumber = slotNumber - gui.inventorySlots.inventorySlots.size() + 9 + 36;
+                    }
+                    NEIClientUtils.setSlotContents(slotNumber, NEIServerUtils.copyStack(draggedStack, total), true);
                     NEIClientPacketHandler.sendGiveItem(NEIServerUtils.copyStack(draggedStack, total), false, false);
                     draggedStack.shrink(total - contents);
                 }

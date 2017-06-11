@@ -1,6 +1,7 @@
 package codechicken.nei.handler;
 
 import codechicken.nei.util.NEIClientUtils;
+import codechicken.nei.util.helper.GuiHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.inventory.ClickType;
@@ -85,7 +86,7 @@ public class FastTransferManager {
     public static int findSlotWithItem(Container container, ItemStack teststack) {
         for (int slotNo = 0; slotNo < container.inventorySlots.size(); slotNo++) {
             ItemStack stack = container.getSlot(slotNo).getStack();
-            if (stack != null && areStacksSameType(stack, teststack)) {
+            if (!stack.isEmpty() && areStacksSameType(stack, teststack)) {
                 return slotNo;
             }
         }
@@ -94,7 +95,7 @@ public class FastTransferManager {
 
     public static void clearSlots(Container container) {
         for (int slotNo = 0; slotNo < container.inventorySlots.size(); slotNo++) {
-            container.inventorySlots.get(slotNo).putStack(null);
+            container.inventorySlots.get(slotNo).putStack(ItemStack.EMPTY);
         }
     }
 
@@ -108,7 +109,7 @@ public class FastTransferManager {
             return;
         }
 
-        if (NEIClientUtils.getHeldItem() != null && !areStacksSameType(heldStack, NEIClientUtils.getHeldItem())) {
+        if (!NEIClientUtils.getHeldItem().isEmpty() && !areStacksSameType(heldStack, NEIClientUtils.getHeldItem())) {
             return;
         }
 
@@ -139,7 +140,7 @@ public class FastTransferManager {
 
         Slot slot = container.getSlot(fromSlot);
         ItemStack stack = slot.getStack();
-        if (stack == null) {
+        if (stack.isEmpty()) {
             return -1;
         }
 
@@ -162,8 +163,8 @@ public class FastTransferManager {
                 ItemStack before = compareBefore.get(i);
                 ItemStack after = compareAfter.get(i);
 
-                if (!areStacksIdentical(before, after) && after != null) {
-                    if (before == null ? areStacksSameType(stack, after) ://transfered into this empty slot
+                if (!areStacksIdentical(before, after) && !after.isEmpty()) {
+                    if (before.isEmpty() ? areStacksSameType(stack, after) ://transfered into this empty slot
                             areStacksSameType(stack, after) && after.getCount() - before.getCount() > 0)//it added to this stack
                     {
                         return i;
@@ -211,12 +212,12 @@ public class FastTransferManager {
     }
 
     public void moveOutputSet(GuiContainer window, int fromSlot, int toSlot) {
-        if (NEIClientUtils.getHeldItem() != null) {
+        if (!NEIClientUtils.getHeldItem().isEmpty()) {
             return;
         }
 
         clickSlot(window, fromSlot);//pickup fromSlot
-        if (NEIClientUtils.getHeldItem() == null)//maybe this container does auto transfers. No need to pick up the final item
+        if (NEIClientUtils.getHeldItem().isEmpty())//maybe this container does auto transfers. No need to pick up the final item
         {
             return;
         }
@@ -232,7 +233,7 @@ public class FastTransferManager {
     public void retrieveItem(GuiContainer window, int toSlot) {
         Slot slot = window.inventorySlots.getSlot(toSlot);
         ItemStack slotStack = slot.getStack();
-        if (slotStack == null || slotStack.getCount() == slot.getSlotStackLimit() || slotStack.getCount() == slotStack.getMaxStackSize()) {
+        if (slotStack.isEmpty() || slotStack.getCount() == slot.getSlotStackLimit() || slotStack.getCount() == slotStack.getMaxStackSize()) {
             return;
         }
 
@@ -311,14 +312,14 @@ public class FastTransferManager {
     }
 
     public static void clickSlot(GuiContainer window, int slotIndex, int button, ClickType clickType) {
-        //GuiContainerManager.getManager(window).handleSlotClick(slotIndex, button, clickType);//TODO
+        GuiHelper.clickSlot(window, slotIndex, button, clickType);
     }
 
     private boolean fillZoneWithHeldItem(GuiContainer window, int zoneIndex) {
         for (int transferTo : slotZones.get(zoneIndex)) {
             ItemStack held = NEIClientUtils.getHeldItem();
 
-            if (held == null) {
+            if (held.isEmpty()) {
                 break;
             }
 
@@ -335,25 +336,25 @@ public class FastTransferManager {
         {
             ItemStack held = NEIClientUtils.getHeldItem();
 
-            if (held == null) {
+            if (held.isEmpty()) {
                 break;
             }
 
             ItemStack inToSlot = window.inventorySlots.getSlot(transferTo).getStack();
 
-            if (inToSlot != null) {
+            if (!inToSlot.isEmpty()) {
                 continue;
             }
 
             clickSlot(window, transferTo);
         }
 
-        return NEIClientUtils.getHeldItem() == null;
+        return NEIClientUtils.getHeldItem().isEmpty();
     }
 
     public void throwAll(GuiContainer window, int pickedUpFromSlot) {
         ItemStack held = NEIClientUtils.getHeldItem();
-        if (held == null) {
+        if (held.isEmpty()) {
             return;
         }
 

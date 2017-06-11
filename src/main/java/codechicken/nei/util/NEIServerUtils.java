@@ -290,10 +290,11 @@ public class NEIServerUtils {
         PlayerSave playerSave = NEIServerConfig.getSaveForPlayer(player.getName());
 
         //get
-        System.arraycopy(inventory.mainInventory, 0, slots[9], 0, 9);
+        ItemStack[] mainInventory = inventory.mainInventory.toArray(new ItemStack[inventory.mainInventory.size()]);
+        System.arraycopy(mainInventory, 0, slots[9], 0, 9);
 
         for (int row = 0; row < 3; row++) {
-            System.arraycopy(inventory.mainInventory, (row + 1) * 9, slots[row + 6], 0, 9);
+            System.arraycopy(mainInventory, (row + 1) * 9, slots[row + 6], 0, 9);
         }
 
         for (int row = 0; row < 6; row++) {
@@ -307,10 +308,10 @@ public class NEIServerUtils {
             newslots[(row + steps + 10) % 10] = slots[row];
         }
 
-        System.arraycopy(newslots[9], 0, inventory.mainInventory, 0, 9);
+        System.arraycopy(newslots[9], 0, inventory.mainInventory.toArray(), 0, 9);
 
         for (int row = 0; row < 3; row++) {
-            System.arraycopy(newslots[row + 6], 0, inventory.mainInventory, (row + 1) * 9, 9);
+            System.arraycopy(newslots[row + 6], 0, inventory.mainInventory.toArray(), (row + 1) * 9, 9);
         }
 
         for (int row = 0; row < 6; row++) {
@@ -364,21 +365,6 @@ public class NEIServerUtils {
         }
 
         return false;
-    }
-
-    @SuppressWarnings ("unchecked")
-    public static ItemStack[] extractRecipeItems(Object obj) {
-        if (obj instanceof ItemStack) {
-            return new ItemStack[] { (ItemStack) obj };
-        }
-        if (obj instanceof ItemStack[]) {
-            return (ItemStack[]) obj;
-        }
-        if (obj instanceof List) {
-            return ((List<ItemStack>) obj).toArray(new ItemStack[0]);
-        }
-
-        throw new ClassCastException("not an ItemStack, ItemStack[] or List<ItemStack?");
     }
 
     public static List<Integer> getRange(final int start, final int end) {

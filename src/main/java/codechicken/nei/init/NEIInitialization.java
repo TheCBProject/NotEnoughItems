@@ -2,10 +2,8 @@ package codechicken.nei.init;
 
 import codechicken.lib.asm.ClassHierarchyManager;
 import codechicken.lib.asm.discovery.ClassDiscoverer;
-import codechicken.nei.ItemSorter;
-import codechicken.nei.LayoutManager;
-import codechicken.nei.NEIClientConfig;
-import codechicken.nei.NEIController;
+import codechicken.lib.internal.ModDescriptionEnhancer;
+import codechicken.nei.*;
 import codechicken.nei.api.API;
 import codechicken.nei.api.GuiInfo;
 import codechicken.nei.api.IConfigureNEI;
@@ -36,6 +34,7 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.BiomeDictionary.Type;
@@ -89,9 +88,30 @@ public class NEIInitialization {
             }
         }
 
+        replaceMetadata();
+
         ItemSorter.loadConfig();
         LogHelper.info("Finished NEI Initialization after %s ms", TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - start));
 
+    }
+
+    private static void replaceMetadata() {
+
+        StringBuilder builder = new StringBuilder();
+
+        if (plugins.isEmpty()) {
+            builder.append(TextFormatting.RED).append("No installed plugins.");
+        } else {
+            builder.append(TextFormatting.GREEN).append("Installed plugins: ");
+            for (IConfigureNEI plugin : plugins) {
+                builder.append("\n");
+                builder.append("      ").append(TextFormatting.GREEN);
+                builder.append(plugin.getName()).append(", Version: ").append(plugin.getVersion());
+
+            }
+        }
+        String desc = ModDescriptionEnhancer.enhanceDesc(NotEnoughItems.metadata.description);
+        NotEnoughItems.metadata.description = desc.replace("<plugins>", builder.toString());
     }
 
     public static void scrapeData(ASMDataTable dataTable) {

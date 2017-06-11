@@ -6,9 +6,22 @@ package codechicken.nei.api;
  */
 public interface IConfigureNEI {
 
+    /**
+     * Called during LoadComplete to register things with NEI.
+     */
     void loadConfig();
 
+    /**
+     * The name used in the Installed plugins list under NEI's Description.
+     *
+     * @return A name to display.
+     */
     String getName();
 
+    /**
+     * The version used in the Installed plugins list under NEI's Description.
+     *
+     * @return A version to display.
+     */
     String getVersion();
 }
