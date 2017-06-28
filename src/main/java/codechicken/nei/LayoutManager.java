@@ -739,7 +739,7 @@ public class LayoutManager implements IInputHandler, IContainerTooltipHandler, I
 
     @Override
     public boolean shouldShowTooltip(GuiScreen gui) {
-        return itemPanel.draggedStack.isEmpty();
+        return itemPanel.draggedStack.isEmpty() && gui instanceof GuiContainer;
     }
 
     public static Widget getInputFocused() {
