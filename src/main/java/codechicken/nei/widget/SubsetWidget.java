@@ -203,10 +203,7 @@ public class SubsetWidget extends Button implements IItemFilterProvider, ItemsLo
                 recacheChildren();
             } else {
                 String childname = name.substring(0, idx);
-                SubsetTag child = children.get(childname.toLowerCase());
-                if (child == null) {
-                    children.put(childname.toLowerCase(), child = new SubsetTag(fullname == null ? childname : fullname + '.' + childname));
-                }
+                SubsetTag child = children.computeIfAbsent(childname.toLowerCase(), k -> new SubsetTag(fullname == null ? childname : fullname + '.' + childname));
                 recacheChildren();
                 child.addTag(tag);
             }

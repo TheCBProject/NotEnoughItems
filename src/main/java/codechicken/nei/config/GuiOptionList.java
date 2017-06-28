@@ -8,6 +8,7 @@ import codechicken.nei.LayoutManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.item.ItemStack;
 
 import java.awt.*;
 import java.io.IOException;
@@ -258,7 +259,7 @@ public class GuiOptionList extends GuiScreenWidget {
         }
 
         tooltip = slot.handleTooltip(mouse.x, mouse.y, tooltip);
-        drawMultiLineTip(null, mouse.x + 12, mouse.y - 12, tooltip);
+        drawMultiLineTip(ItemStack.EMPTY, mouse.x + 12, mouse.y - 12, tooltip);
     }
 
     @Override

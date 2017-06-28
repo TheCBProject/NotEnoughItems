@@ -8,6 +8,7 @@ import codechicken.nei.api.API;
 import codechicken.nei.api.GuiInfo;
 import codechicken.nei.api.IConfigureNEI;
 import codechicken.nei.api.NEIPlugin;
+import codechicken.nei.jei.JEIIntegrationManager;
 import codechicken.nei.util.ItemInfo;
 import codechicken.nei.util.ItemList;
 import codechicken.nei.util.ItemStackSet;
@@ -74,6 +75,7 @@ public class NEIInitialization {
         loadModSubsets();
         loadRegistryDumps();
         API.addItemFilter(() -> item -> !ItemInfo.hiddenItems.contains(item));
+        API.addItemFilter(() -> item -> !JEIIntegrationManager.isBlacklisted(item));
         ItemList.registerLoadCallback(ItemInfo.itemSearchNames::clear);
         GuiInfo.load();
         LayoutManager.load();
@@ -345,10 +347,7 @@ public class NEIInitialization {
             }
             String modId = ident.getResourceDomain();
             ItemInfo.itemOwners.put(item, modId);
-            ItemStackSet itemset = modSubsets.get(modId);
-            if (itemset == null) {
-                modSubsets.put(modId, itemset = new ItemStackSet());
-            }
+            ItemStackSet itemset = modSubsets.computeIfAbsent(modId, k -> new ItemStackSet());
             itemset.with(item);
         }
         ProgressManager.pop(bar);

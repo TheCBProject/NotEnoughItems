@@ -11,14 +11,4 @@ public class DummyProxy implements IJEIProxy {
     public boolean isJEIEnabled() {
         return false;
     }
-
-    @Override
-    public void openRecipeGui(ItemStack stack) {
-
-    }
-
-    @Override
-    public void openUsageGui(ItemStack stack) {
-
-    }
 }

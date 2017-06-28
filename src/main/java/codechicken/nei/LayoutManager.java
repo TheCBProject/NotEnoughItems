@@ -35,9 +35,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import org.lwjgl.opengl.GL11;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.TreeSet;
+import java.util.*;
 
 import static codechicken.lib.gui.GuiDraw.drawRect;
 import static codechicken.lib.gui.GuiDraw.drawTexturedModalRect;
@@ -240,14 +238,10 @@ public class LayoutManager implements IInputHandler, IContainerTooltipHandler, I
         }
     }
 
-    @Override//This is called from NEI's Filter thread, do a synchronized Set copy so we don't throw errors.
+    @Override
     public void handleTooltip(GuiScreen gui, int mousex, int mousey, List<String> currenttip) {
         if (!isHidden() && isEnabled() && GuiHelper.shouldShowTooltip(gui)) {
-            TreeSet<Widget> copy = new TreeSet<>(controlWidgets.comparator());
-            synchronized (controlWidgets) {
-                copy.addAll(controlWidgets);
-            }
-            for (Widget widget : copy) {
+            for (Widget widget : controlWidgets) {
                 widget.handleTooltip(mousex, mousey, currenttip);
             }
         }
@@ -631,63 +625,68 @@ public class LayoutManager implements IInputHandler, IContainerTooltipHandler, I
     }
 
     public static void updateWidgetVisiblities(GuiContainer gui, VisibilityData visiblity) {
-        drawWidgets = new TreeSet<>(new WidgetZOrder(false));
-        controlWidgets = new TreeSet<>(new WidgetZOrder(true));
+        Set<Widget> newWidgets = new HashSet<>();
 
         if (!visiblity.showNEI) {
             //showItemPanel = false;
             return;
         }
 
-        addWidget(options);
+        newWidgets.add(options);
         showItemPanel = visiblity.showItemPanel;
         if (visiblity.showItemPanel) {
-            addWidget(itemPanel);
-            addWidget(prev);
-            addWidget(next);
-            addWidget(pageLabel);
+            newWidgets.add(itemPanel);
+            newWidgets.add(prev);
+            newWidgets.add(next);
+            newWidgets.add(pageLabel);
             if (canPerformAction("item")) {
-                addWidget(more);
-                addWidget(less);
-                addWidget(quantity);
+                newWidgets.add(more);
+                newWidgets.add(less);
+                newWidgets.add(quantity);
             }
         }
 
         if (visiblity.showSearchSection) {
-            addWidget(dropDown);
-            addWidget(searchField);
+            newWidgets.add(dropDown);
+            newWidgets.add(searchField);
         }
 
         if (canPerformAction("item") && hasSMPCounterPart() && visiblity.showStateButtons) {
             for (int i = 0; i < 7; i++) {
-                addWidget(stateButtons[i]);
+                newWidgets.add(stateButtons[i]);
                 if (isStateSaved(i)) {
-                    addWidget(deleteButtons[i]);
+                    newWidgets.add(deleteButtons[i]);
                 }
             }
         }
         if (visiblity.showUtilityButtons) {
             if (canPerformAction("time")) {
-                for (int i = 0; i < 4; i++) {
-                    addWidget(timeButtons[i]);
-                }
+                newWidgets.addAll(Arrays.asList(timeButtons).subList(0, 4));
             }
             if (canPerformAction("rain")) {
-                addWidget(rain);
+                newWidgets.add(rain);
             }
             if (canPerformAction("heal")) {
-                addWidget(heal);
+                newWidgets.add(heal);
             }
             if (canPerformAction("magnet")) {
-                addWidget(magnet);
+                newWidgets.add(magnet);
             }
             if (isValidGamemode("creative") || isValidGamemode("creative+") || isValidGamemode("adventure")) {
-                addWidget(gamemode);
+                newWidgets.add(gamemode);
             }
             if (canPerformAction("delete")) {
-                addWidget(delete);
+                newWidgets.add(delete);
             }
         }
+
+        TreeSet<Widget> newDrawWidgets = new TreeSet<>(new WidgetZOrder(false));
+        TreeSet<Widget> newControlWidgets = new TreeSet<>(new WidgetZOrder(true));
+        newDrawWidgets.addAll(newWidgets);
+        newControlWidgets.addAll(newWidgets);
+
+        drawWidgets = newDrawWidgets;
+        controlWidgets = newControlWidgets;
     }
 
     public static LayoutStyle getLayoutStyle(int id) {
@@ -702,6 +701,7 @@ public class LayoutManager implements IInputHandler, IContainerTooltipHandler, I
         return getLayoutStyle(NEIClientConfig.getLayoutStyle());
     }
 
+    @Deprecated//TODO, This is Un-Synchronized. We throw errors if we add widgets this way.
     private static void addWidget(Widget widget) {
         drawWidgets.add(widget);
         controlWidgets.add(widget);
@@ -739,7 +739,7 @@ public class LayoutManager implements IInputHandler, IContainerTooltipHandler, I
 
     @Override
     public boolean shouldShowTooltip(GuiScreen gui) {
-        return itemPanel.draggedStack == null;
+        return itemPanel.draggedStack.isEmpty();
     }
 
     public static Widget getInputFocused() {
@@ -763,9 +763,9 @@ public class LayoutManager implements IInputHandler, IContainerTooltipHandler, I
         if (world.nbt.getBoolean("searchinventories") && (item == null ? !getSearchExpression().equals("") : !ItemList.getItemListFilter().matches(item))) {
             GlStateManager.disableLighting();
             //GlStateManager.depthFunc(GL11.GL_EQUAL);
-            //GlStateManager.translate(0, 0, 200);
+            GlStateManager.translate(0, 0, 400);
             drawRect(slot.xPos, slot.yPos, 16, 16, 0x80000000);
-            //GlStateManager.translate(0, 0, -200);
+            GlStateManager.translate(0, 0, -400);
             //GlStateManager.depthFunc(GL11.GL_LESS);
             GlStateManager.enableLighting();
         }

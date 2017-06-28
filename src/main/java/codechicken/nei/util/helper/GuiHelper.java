@@ -90,7 +90,7 @@ public class GuiHelper {
             }
         }
 
-        return window.mc.player.inventory.getItemStack().isEmpty();
+        return Minecraft.getMinecraft().player.inventory.getItemStack().isEmpty();
     }
 
     public static void enable3DRender() {
@@ -128,7 +128,7 @@ public class GuiHelper {
     }
 
     public static FontRenderer getFontRenderer(ItemStack stack) {
-        if (stack != null && stack.getItem() != null) {
+        if (!stack.isEmpty() && stack.getItem() != null) {
             FontRenderer f = stack.getItem().getFontRenderer(stack);
             if (f != null) {
                 return f;
@@ -182,7 +182,7 @@ public class GuiHelper {
     public static List<String> itemDisplayNameMultiline(ItemStack itemstack, GuiContainer gui, boolean includeHandlers) {
         List<String> namelist = null;
         try {
-            namelist = itemstack.getTooltip(Minecraft.getMinecraft().player, includeHandlers && Minecraft.getMinecraft().gameSettings.advancedItemTooltips);
+            namelist = itemstack.getTooltip(Minecraft.getMinecraft().player, Minecraft.getMinecraft().gameSettings.advancedItemTooltips);
         } catch (Throwable ignored) {
         }
 

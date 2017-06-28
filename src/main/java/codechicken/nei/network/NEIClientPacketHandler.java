@@ -208,7 +208,7 @@ public class NEIClientPacketHandler implements IClientPacketHandler {
         sendDeleteAllItems();
         for (int slot = 0; slot < state.length; slot++) {
             ItemStack item = state[slot];
-            if (item == null) {
+            if (item.isEmpty()) {
                 continue;
             }
             sendSetSlot(slot, item, false);

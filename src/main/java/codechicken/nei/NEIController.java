@@ -204,7 +204,7 @@ public class NEIController implements IInputHandler {
         //    return true;
         //}
 
-        if (slotID == -999 && NEIClientUtils.shiftKey() && button == 0) {
+        if (slotID == -999 && NEIClientUtils.shiftKey() && button == 0 && !NEIClientUtils.getHeldItem().isEmpty()) {
             fastTransferManager.throwAll(gui, pickedUpFromSlot);
             return true;
         }

@@ -165,7 +165,7 @@ public class NEIServerPacketHandler implements IServerPacketHandler {
         ItemStack item = packet.readItemStack();
 
         ItemStack old = NEIServerUtils.getSlotContents(player, slot, container);
-        boolean deleting = item == null || old != null && NEIServerUtils.areStacksSameType(item, old) && item.getCount() < old.getCount();
+        boolean deleting = item.isEmpty() || !old.isEmpty() && NEIServerUtils.areStacksSameType(item, old) && item.getCount() < old.getCount();
         if (NEIServerConfig.canPlayerPerformAction(player.getName(), deleting ? "delete" : "item")) {
             NEIServerUtils.setSlotContents(player, slot, item, container);
         }

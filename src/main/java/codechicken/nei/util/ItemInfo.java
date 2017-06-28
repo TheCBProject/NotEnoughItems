@@ -46,11 +46,7 @@ public class ItemInfo {
     }
 
     public static String getSearchName(ItemStack stack) {
-        String s = itemSearchNames.get(stack);
-        if (s == null) {
-            s = TextFormatting.getTextWithoutFormattingCodes(GuiHelper.concatenatedDisplayName(stack, true).toLowerCase());
-            itemSearchNames.put(stack, s);
-        }
+        String s = itemSearchNames.computeIfAbsent(stack, s1 -> TextFormatting.getTextWithoutFormattingCodes(GuiHelper.concatenatedDisplayName(s1, true).toLowerCase()));
         return s;
     }
 }

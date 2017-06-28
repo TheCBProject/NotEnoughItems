@@ -217,7 +217,7 @@ public class ContainerEnchantmentModifier extends ContainerEnchantment {
         slotEnchantment.clear();
 
         ItemStack toolstack = getSlot(0).getStack();
-        if (toolstack == null) {
+        if (toolstack.isEmpty()) {
             percentscrolled = 0;
             return;
         }

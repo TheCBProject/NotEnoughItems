@@ -224,9 +224,10 @@ public class ItemList {
                         item.getSubItems(item, null, new NonNullList<>(permutations, null));
                     }
 
-                    if (permutations.isEmpty()) {
-                        damageSearch(item, permutations);
-                    }
+                    //TODO, the implementation of damageSearch is wrong, not sure if this is actually needed ever.
+                    //if (permutations.isEmpty()) {
+                    //    damageSearch(item, permutations);
+                    //}
 
                     permutations.addAll(ItemInfo.itemVariants.get(item));
 
@@ -263,9 +264,12 @@ public class ItemList {
                 if (interrupted()) {
                     return;
                 }
-
-                if (filter.matches(item)) {
-                    filtered.add(item);
+                try {
+                    if (filter.matches(item)) {
+                        filtered.add(item);
+                    }
+                } catch (Throwable e) {
+                    LogHelper.errorOnce(e, item.toString(), "Error whilst filtering: %s", item.toString());
                 }
             }
 

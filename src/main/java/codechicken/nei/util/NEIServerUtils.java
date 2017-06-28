@@ -216,8 +216,8 @@ public class NEIServerUtils {
     }
 
     public static ItemStack copyStack(ItemStack itemstack, int i) {
-        if (itemstack == null) {
-            return null;
+        if (itemstack.isEmpty()) {
+            return ItemStack.EMPTY;
         }
 
         itemstack.grow(i);
@@ -225,8 +225,8 @@ public class NEIServerUtils {
     }
 
     public static ItemStack copyStack(ItemStack itemstack) {
-        if (itemstack == null) {
-            return null;
+        if (itemstack.isEmpty()) {
+            return ItemStack.EMPTY;
         }
 
         return copyStack(itemstack, itemstack.getCount());
@@ -323,7 +323,7 @@ public class NEIServerUtils {
 
     public static List<int[]> getEnchantments(ItemStack itemstack) {
         ArrayList<int[]> arraylist = new ArrayList<>();
-        if (itemstack != null) {
+        if (!itemstack.isEmpty()) {
             NBTTagList nbttaglist = itemstack.getEnchantmentTagList();
             if (nbttaglist != null) {
                 for (int i = 0; i < nbttaglist.tagCount(); i++) {

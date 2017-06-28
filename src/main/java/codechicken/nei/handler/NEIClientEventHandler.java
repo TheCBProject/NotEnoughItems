@@ -20,6 +20,7 @@ import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.client.event.GuiScreenEvent.*;
 import net.minecraftforge.client.event.RenderTooltipEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
@@ -94,7 +95,7 @@ public class NEIClientEventHandler {
         ASMHooks.addContainerForegroundHook(INSTANCE::foregroundRenderEvent);
     }
 
-    @SubscribeEvent
+    @SubscribeEvent (priority = EventPriority.HIGHEST)
     public void onKeyTypedPre(KeyboardInputEvent.Pre event) {
 
         GuiScreen gui = event.getGui();
@@ -103,9 +104,8 @@ public class NEIClientEventHandler {
             int eventKey = Keyboard.getEventKey();
 
             if (eventKey == 0 && c >= 32 || Keyboard.getEventKeyState()) {
-                for (IInputHandler handler : inputHandlers) {
-                    handler.onKeyTyped(gui, c, eventKey);//TODO, do we want canceled events to appear here?
-                }
+                //TODO, do we want canceled events to appear here?
+                inputHandlers.forEach(handler -> handler.onKeyTyped(gui, c, eventKey));
                 for (IInputHandler handler : inputHandlers) {
                     if (handler.keyTyped(gui, c, eventKey)) {
                         event.setCanceled(true);
@@ -148,7 +148,7 @@ public class NEIClientEventHandler {
 
     }
 
-    @SubscribeEvent
+    @SubscribeEvent (priority = EventPriority.HIGHEST)//TODO, DragN'Drop isn't working properly.
     public void onMouseEventPre(MouseInputEvent.Pre event) {
 
         GuiScreen gui = event.getGui();
@@ -250,9 +250,7 @@ public class NEIClientEventHandler {
         List<String> tooltip = new LinkedList<>();
         ItemStack stack = ItemStack.EMPTY;
         if (instanceTooltipHandlers != null) {
-            for (IContainerTooltipHandler handler : instanceTooltipHandlers) {
-                handler.handleTooltip(screen, mousePos.x, mousePos.y, tooltip);
-            }
+            instanceTooltipHandlers.forEach(handler -> handler.handleTooltip(screen, mousePos.x, mousePos.y, tooltip));
         }
 
 
@@ -262,12 +260,9 @@ public class NEIClientEventHandler {
                 stack = GuiHelper.getStackMouseOver(container, false);
 
                 if (!stack.isEmpty()) {
-                    tooltip = GuiHelper.itemDisplayNameMultiline(stack, container, false);
+                    tooltip.clear();
+                    tooltip.addAll(GuiHelper.itemDisplayNameMultiline(stack, container, false));
                 }
-
-                //for (IContainerTooltipHandler handler : instanceTooltipHandlers) {
-                //    handler.handleItemDisplayName(screen, stack, tooltip);
-                //}
             }
         }
 
@@ -278,12 +273,12 @@ public class NEIClientEventHandler {
         GlStateTracker.pushState();
         Point mousePos = GuiDraw.getMousePosition();
 
-        GlStateManager.translate(-container.getGuiLeft(), -container.getGuiTop(), 200F);
+        GlStateManager.translate(-container.getGuiLeft(), -container.getGuiTop(), 100F);
         drawHandlers.forEach(handler -> handler.renderObjects(container, mousePos.x, mousePos.y));
 
         drawHandlers.forEach(handler -> handler.postRenderObjects(container, mousePos.x, mousePos.y));
 
-        GlStateManager.translate(container.getGuiLeft(), container.getGuiTop(), -200F);
+        GlStateManager.translate(container.getGuiLeft(), container.getGuiTop(), -100F);
         GuiHelper.enable3DRender();
 
         GlStateManager.pushMatrix();
@@ -316,14 +311,11 @@ public class NEIClientEventHandler {
 
             Point mousePos = GuiDraw.getMousePosition();
 
-            for (IContainerTooltipHandler handler : instanceTooltipHandlers) {
-                handler.handleTooltip(screen, mousePos.x, mousePos.y, event.getToolTip());
-            }
+            instanceTooltipHandlers.forEach(handler -> handler.handleTooltip(screen, mousePos.x, mousePos.y, event.getToolTip()));
+
             if (screen instanceof GuiContainer) {
                 GuiContainer container = ((GuiContainer) screen);
-                for (IContainerTooltipHandler handler : instanceTooltipHandlers) {
-                    handler.handleItemDisplayName(screen, GuiHelper.getStackMouseOver(container, true), event.getToolTip());
-                }
+                instanceTooltipHandlers.forEach(handler -> handler.handleItemDisplayName(screen, GuiHelper.getStackMouseOver(container, true), event.getToolTip()));
             }
         }
     }

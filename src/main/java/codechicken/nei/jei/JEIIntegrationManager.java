@@ -83,6 +83,10 @@ public class JEIIntegrationManager {
         proxy.openUsageGui(stack);
     }
 
+    public static boolean isBlacklisted(ItemStack stack) {
+        return proxy.isBlacklistedJEI(stack);
+    }
+
     public static boolean setSearchBoxOwner(int ordinal) {
         try {
             searchBoxOwner = EnumItemBrowser.values()[ordinal];

@@ -102,7 +102,7 @@ public class GuiPotionCreator extends GuiContainerWidget {
 
         private PotionEffect getEffect(Potion potion) {
             ItemStack potionStack = container.potionInv.getStackInSlot(0);
-            if (potionStack != null && potionStack.hasTagCompound() && potionStack.getTagCompound().hasKey("CustomPotionEffects")) {
+            if (!potionStack.isEmpty() && potionStack.hasTagCompound() && potionStack.getTagCompound().hasKey("CustomPotionEffects")) {
                 NBTTagList potionTagList = potionStack.getTagCompound().getTagList("CustomPotionEffects", 10);
                 for (int i = 0; i < potionTagList.tagCount(); i++) {
                     PotionEffect effect = PotionEffect.readCustomPotionEffectFromNBT(potionTagList.getCompoundTagAt(i));
@@ -327,7 +327,7 @@ public class GuiPotionCreator extends GuiContainerWidget {
     @Override
     public void updateScreen() {
         super.updateScreen();
-        slotPotionEffects.setEnabled(container.potionInv.getStackInSlot(0) != null);
+        slotPotionEffects.setEnabled(!container.potionInv.getStackInSlot(0).isEmpty());
     }
 
     @Override

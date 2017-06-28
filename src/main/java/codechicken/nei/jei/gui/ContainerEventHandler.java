@@ -67,7 +67,7 @@ public class ContainerEventHandler {
     @SubscribeEvent (priority = EventPriority.LOWEST)//We need to be called after JEI as this is is a render overlay.
     public void onDrawBackgroundEventPost(BackgroundDrawnEvent event) {
         GuiTextFieldFilter fieldFilter = JEIIntegrationManager.getTextFieldFilter();
-        if (!ClientUtils.inWorld() || !isNEIInWorld() || fieldFilter == null || !SearchField.searchInventories() || JEIIntegrationManager.searchBoxOwner != EnumItemBrowser.JEI) {
+        if (!ClientUtils.inWorld() || !isNEIInWorld() || fieldFilter == null || !SearchField.searchInventories() || JEIIntegrationManager.searchBoxOwner != EnumItemBrowser.JEI || JEIIntegrationManager.itemPanelOwner == EnumItemBrowser.NEI) {
             return;
         }
 

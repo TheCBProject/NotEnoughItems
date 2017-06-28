@@ -262,10 +262,7 @@ public class ItemStackMap<T> {
             return;
         }
 
-        DetailMap map = itemMap.get(key.getItem());
-        if (map == null) {
-            itemMap.put(key.getItem(), map = new DetailMap());
-        }
+        DetailMap map = itemMap.computeIfAbsent(key.getItem(), k -> new DetailMap());
         map.put(key, value);
     }
 

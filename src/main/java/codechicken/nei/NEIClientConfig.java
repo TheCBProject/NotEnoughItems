@@ -38,7 +38,6 @@ public class NEIClientConfig {
 
     private static boolean isEnabled;
 
-    //public static Logger logger = LogManager.getLogger("NotEnoughItems");
     public static File configDir = new File(CommonUtils.getMinecraftDir(), "config/NEI/");
     public static ConfigSet global = new ConfigSet(new File("saves/NEI/client.dat"), new ConfigFile(new File(configDir, "client.cfg")));
     public static ConfigSet world;
@@ -438,7 +437,7 @@ public class NEIClientConfig {
 
             for (int i : area.slots) {
                 ItemStack stack = area.getStackInSlot(i);
-                if (stack == null) {
+                if (stack.isEmpty()) {
                     continue;
                 }
                 NBTTagCompound stacksave = new NBTTagCompound();

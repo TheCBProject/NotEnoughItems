@@ -21,6 +21,7 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentString;
 import org.lwjgl.input.Keyboard;
 
 import java.text.MessageFormat;
@@ -259,20 +260,25 @@ public class NEIClientUtils extends NEIServerUtils {
     }
 
     public static void sendCommand(String command, Object... args) {
-        if (command.length() == 0) {
-            return;
-        }
-
-        NumberFormat numberformat = NumberFormat.getIntegerInstance();
-        numberformat.setGroupingUsed(false);
-        MessageFormat messageformat = new MessageFormat(command);
-        for (int i = 0; i < args.length; i++) {
-            if (args[i] instanceof Integer || args[i] instanceof Long) {
-                messageformat.setFormatByArgumentIndex(i, numberformat);
+        try {
+            if (command.length() == 0) {
+                return;
             }
-        }
 
-        mc().player.sendChatMessage(messageformat.format(args));
+            NumberFormat numberformat = NumberFormat.getIntegerInstance();
+            numberformat.setGroupingUsed(false);
+            MessageFormat messageformat = new MessageFormat(command);
+            for (int i = 0; i < args.length; i++) {
+                if (args[i] instanceof Integer || args[i] instanceof Long) {
+                    messageformat.setFormatByArgumentIndex(i, numberformat);
+                }
+            }
+
+            mc().player.sendChatMessage(messageformat.format(args));
+        } catch (Exception e) {
+            e.printStackTrace();
+            mc().player.sendMessage(new TextComponentString("[NEI] Error parsing arguments for server command. See logs."));
+        }
     }
 
     public static boolean isRaining() {
