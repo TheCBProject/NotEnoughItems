@@ -5,9 +5,11 @@ import codechicken.lib.math.MathHelper;
 import codechicken.lib.render.state.GlStateTracker;
 import codechicken.nei.asm.ASMHooks;
 import codechicken.nei.config.KeyBindings;
-import codechicken.nei.guihook.*;
+import codechicken.nei.guihook.IContainerDrawHandler;
+import codechicken.nei.guihook.IContainerObjectHandler;
+import codechicken.nei.guihook.IContainerTooltipHandler;
+import codechicken.nei.guihook.IInputHandler;
 import codechicken.nei.network.NEIClientPacketHandler;
-import codechicken.nei.util.LogHelper;
 import codechicken.nei.util.helper.GuiHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
@@ -17,7 +19,10 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.client.event.GuiScreenEvent;
-import net.minecraftforge.client.event.GuiScreenEvent.*;
+import net.minecraftforge.client.event.GuiScreenEvent.DrawScreenEvent;
+import net.minecraftforge.client.event.GuiScreenEvent.KeyboardInputEvent;
+import net.minecraftforge.client.event.GuiScreenEvent.MouseInputEvent;
+import net.minecraftforge.client.event.GuiScreenEvent.PotionShiftEvent;
 import net.minecraftforge.client.event.RenderTooltipEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
@@ -49,7 +54,6 @@ public class NEIClientEventHandler {
     public static final LinkedList<IContainerTooltipHandler> tooltipHandlers = new LinkedList<>();
     private static List<IContainerTooltipHandler> instanceTooltipHandlers;
     private static GuiScreen lastGui;
-
 
     /**
      * Register a new Input handler;
@@ -217,17 +221,19 @@ public class NEIClientEventHandler {
 
     @SubscribeEvent
     public void guiOpenEvent(GuiOpenEvent event) {
-        if (lastGui != event.getGui()) {
-            if (event.getGui() == null) {
-                instanceTooltipHandlers = null;
-            } else {
-                instanceTooltipHandlers = new LinkedList<>();
-                if (event.getGui() instanceof IContainerTooltipHandler) {
-                    instanceTooltipHandlers.add(((IContainerTooltipHandler) event.getGui()));
+        if (event.getGui() instanceof GuiContainer) {
+            if (lastGui != event.getGui()) {
+                if (event.getGui() == null) {
+                    instanceTooltipHandlers = null;
+                } else {
+                    instanceTooltipHandlers = new LinkedList<>();
+                    if (event.getGui() instanceof IContainerTooltipHandler) {
+                        instanceTooltipHandlers.add(((IContainerTooltipHandler) event.getGui()));
+                    }
+                    instanceTooltipHandlers.addAll(tooltipHandlers);
                 }
-                instanceTooltipHandlers.addAll(tooltipHandlers);
+                lastGui = event.getGui();
             }
-            lastGui = event.getGui();
         }
     }
 
@@ -252,7 +258,6 @@ public class NEIClientEventHandler {
         if (instanceTooltipHandlers != null) {
             instanceTooltipHandlers.forEach(handler -> handler.handleTooltip(screen, mousePos.x, mousePos.y, tooltip));
         }
-
 
         if (screen instanceof GuiContainer) {
             if (tooltip.isEmpty() && GuiHelper.shouldShowTooltip(screen)) {
@@ -294,12 +299,12 @@ public class NEIClientEventHandler {
 
     @SubscribeEvent
     public void tooltipPreEvent(RenderTooltipEvent.Pre event) {
-        for (IContainerObjectHandler handler : objectHandlers) {
-            if (!handler.shouldShowTooltip(Minecraft.getMinecraft().currentScreen)) {
-                event.setCanceled(true);
-                return;
-            }
-        }
+        //for (IContainerObjectHandler handler : objectHandlers) {
+        //    if (!handler.shouldShowTooltip(Minecraft.getMinecraft().currentScreen)) {
+        //        event.setCanceled(true);
+        //        return;
+        //    }
+        //}
         event.setY(MathHelper.clip(event.getY(), 8, event.getScreenHeight() - 8));
     }
 
