@@ -9,7 +9,7 @@ import org.apache.logging.log4j.Level;
 import java.io.File;
 import java.util.Map;
 
-@TransformerExclusions ({ "codechicken.nei.asm" })
+@TransformerExclusions ({ "codechicken.nei.asm", "codechicken.asm" })
 public class NEICorePlugin implements IFMLLoadingPlugin, IFMLCallHook {
 
     public static File location;
@@ -22,10 +22,10 @@ public class NEICorePlugin implements IFMLLoadingPlugin, IFMLCallHook {
     @Override
     public String[] getASMTransformerClass() {
         if (missingCCL) {
-            FMLLog.log("NotEnoughItems", Level.FATAL, "Missing CCL! not registering class transformer.");
+            FMLLog.log("NotEnoughItems", Level.FATAL, "Missing CCL ASM! not registering class transformer.");
             return new String[0];
         }
-        return new String[] { "codechicken.nei.asm.NEITransformer" };
+        return new String[] { "codechicken.nei.asm.NEITransformer", "codechicken.asm.ClassHierarchyManager" };
     }
 
     @Override
@@ -58,7 +58,7 @@ public class NEICorePlugin implements IFMLLoadingPlugin, IFMLCallHook {
 
     private static void cclCheck() {
         try {
-            Class.forName("codechicken.lib.asm.ASMHelper", false, NEICorePlugin.class.getClassLoader());
+            Class.forName("codechicken.asm.ASMHelper", false, NEICorePlugin.class.getClassLoader());
             missingCCL = false;
         } catch (ClassNotFoundException cNFE) {
             cNFE.printStackTrace();

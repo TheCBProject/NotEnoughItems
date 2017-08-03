@@ -4,8 +4,8 @@ import codechicken.lib.gui.GuiScrollPane;
 import codechicken.lib.render.CCRenderState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import org.lwjgl.opengl.GL11;
 
@@ -62,12 +62,12 @@ public abstract class OptionScrollPane extends GuiScrollPane {
         GlStateManager.color(1, 1, 1, 1);
         Minecraft.getMinecraft().renderEngine.bindTexture(Gui.OPTIONS_BACKGROUND);
         CCRenderState ccrs = CCRenderState.instance();
-        VertexBuffer worldRenderer = ccrs.startDrawing(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+        BufferBuilder buffer = ccrs.startDrawing(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
 
-        worldRenderer.pos(x, y, zLevel).tex(0, 0).endVertex();
-        worldRenderer.pos(x, y + h, zLevel).tex(0, h / 16D).endVertex();
-        worldRenderer.pos(x + w, y + h, zLevel).tex(w / 16D, h / 16D).endVertex();
-        worldRenderer.pos(x + w, y, zLevel).tex(w / 16D, 0).endVertex();
+        buffer.pos(x, y, zLevel).tex(0, 0).endVertex();
+        buffer.pos(x, y + h, zLevel).tex(0, h / 16D).endVertex();
+        buffer.pos(x + w, y + h, zLevel).tex(w / 16D, h / 16D).endVertex();
+        buffer.pos(x + w, y, zLevel).tex(w / 16D, 0).endVertex();
         ccrs.draw();
     }
 
@@ -78,12 +78,13 @@ public abstract class OptionScrollPane extends GuiScrollPane {
         GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GlStateManager.shadeModel(GL11.GL_SMOOTH);
         CCRenderState ccrs = CCRenderState.instance();
-        VertexBuffer worldRenderer = ccrs.startDrawing(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
-        worldRenderer.pos(x2, y1, zLevel).color(0, 0, 0, 255).endVertex();
-        worldRenderer.pos(x1, y1, zLevel).color(0, 0, 0, 255).endVertex();
 
-        worldRenderer.pos(x1, y2, zLevel).color(0, 0, 0, 0).endVertex();
-        worldRenderer.pos(x2, y2, zLevel).color(0, 0, 0, 0).endVertex();
+        BufferBuilder buffer = ccrs.startDrawing(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
+        buffer.pos(x2, y1, zLevel).color(0, 0, 0, 255).endVertex();
+        buffer.pos(x1, y1, zLevel).color(0, 0, 0, 255).endVertex();
+
+        buffer.pos(x1, y2, zLevel).color(0, 0, 0, 0).endVertex();
+        buffer.pos(x2, y2, zLevel).color(0, 0, 0, 0).endVertex();
 
         ccrs.draw();
         GlStateManager.disableBlend();

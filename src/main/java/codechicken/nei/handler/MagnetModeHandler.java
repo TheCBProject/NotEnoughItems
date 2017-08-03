@@ -74,7 +74,7 @@ public class MagnetModeHandler {
             if (item.isDead) {
                 iterator.remove();
             }
-            if (!NEIClientUtils.canItemFitInInventory(player, item.getEntityItem())) {
+            if (!NEIClientUtils.canItemFitInInventory(player, item.getItem())) {
                 continue;
             }
             double dx = player.posX - item.posX;
@@ -139,7 +139,7 @@ public class MagnetModeHandler {
                 if (item.cannotPickup()) {
                     continue;
                 }
-                if (!NEIServerUtils.canItemFitInInventory(player, item.getEntityItem())) {
+                if (!NEIServerUtils.canItemFitInInventory(player, item.getItem())) {
                     continue;
                 }
                 if (save.magneticItems.add(item)) {

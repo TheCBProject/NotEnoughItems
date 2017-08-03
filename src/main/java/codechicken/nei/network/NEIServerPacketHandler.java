@@ -66,7 +66,7 @@ public class NEIServerPacketHandler implements IServerPacketHandler {
                 sendLoginState(sender);
                 break;
             case 11:
-                sender.updateCraftingInventory(sender.openContainer, sender.openContainer.getInventory());
+                sender.sendAllContents(sender.openContainer, sender.openContainer.getInventory());
                 break;
             case 12:
                 handleActionDisableStateChange(sender, packet);

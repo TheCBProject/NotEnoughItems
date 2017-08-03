@@ -4,10 +4,7 @@ import codechicken.nei.api.API;
 import codechicken.nei.api.INEIGuiHandler;
 import codechicken.nei.util.LogHelper;
 import mezz.jei.Internal;
-import mezz.jei.api.BlankModPlugin;
-import mezz.jei.api.IJeiHelpers;
-import mezz.jei.api.IModRegistry;
-import mezz.jei.api.JEIPlugin;
+import mezz.jei.api.*;
 import mezz.jei.api.gui.IAdvancedGuiHandler;
 import mezz.jei.api.recipe.IFocus;
 import mezz.jei.api.recipe.IFocus.Mode;
@@ -79,7 +76,7 @@ public class JEIProxy implements IJEIProxy {
 
     @Override
     public boolean isBlacklistedJEI(ItemStack stack) {
-        return helpers.getIngredientBlacklist().isIngredientBlacklisted(stack);
+        return stack.isEmpty() || helpers.getIngredientBlacklist().isIngredientBlacklisted(stack);
     }
 
     @Override
@@ -104,7 +101,7 @@ public class JEIProxy implements IJEIProxy {
     }
 
     @JEIPlugin
-    public static class Plugin extends BlankModPlugin {
+    public static class Plugin implements IModPlugin {
 
         @Override
         public void register(IModRegistry registry) {

@@ -1,6 +1,7 @@
 package codechicken.nei.util.helper.potion;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.potion.PotionType;
 import net.minecraft.potion.PotionUtils;
 
@@ -11,11 +12,11 @@ import net.minecraft.potion.PotionUtils;
 public class PotionTypeRecipe implements IPotionRecipe {
 
     private ItemStack input;
-    private ItemStack ingredient;
+    private Ingredient ingredient;
     private ItemStack output;
 
-    public PotionTypeRecipe(ItemStack input, ItemStack ingredient, PotionType outputType) {
-        this.ingredient = ingredient.copy();
+    public PotionTypeRecipe(ItemStack input, Ingredient ingredient, PotionType outputType) {
+        this.ingredient = ingredient;
         this.input = input.copy();
         this.output = PotionUtils.addPotionToItemStack(input, outputType);
     }
@@ -31,7 +32,7 @@ public class PotionTypeRecipe implements IPotionRecipe {
     }
 
     @Override
-    public ItemStack getRecipeIngredient() {
+    public Ingredient getRecipeIngredient() {
         return ingredient;
     }
 }

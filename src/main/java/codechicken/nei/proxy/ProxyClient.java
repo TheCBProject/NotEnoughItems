@@ -70,7 +70,7 @@ public class ProxyClient extends Proxy {
                 drawDefaultBackground();
                 String[] s_msg = message.split("\n");
                 for (int i = 0; i < s_msg.length; ++i) {
-                    drawCenteredString(fontRendererObj, s_msg[i], width / 2, height / 3 + 12 * i, 0xFFFFFFFF);
+                    drawCenteredString(fontRenderer, s_msg[i], width / 2, height / 3 + 12 * i, 0xFFFFFFFF);
                 }
             }
         };

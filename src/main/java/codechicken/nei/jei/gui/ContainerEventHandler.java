@@ -71,8 +71,8 @@ public class ContainerEventHandler {
             return;
         }
 
-        int x = fieldFilter.xPosition;
-        int y = fieldFilter.yPosition;
+        int x = fieldFilter.x;
+        int y = fieldFilter.y;
         int h = fieldFilter.height;
         int w = fieldFilter.width;
 

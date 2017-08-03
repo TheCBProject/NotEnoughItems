@@ -2,6 +2,7 @@ package codechicken.nei.util.helper.potion;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.nbt.NBTTagCompound;
 
 /**
@@ -11,10 +12,10 @@ import net.minecraft.nbt.NBTTagCompound;
 public class PotionUpgradeRecipe implements IPotionRecipe {
 
     private ItemStack input;
-    private ItemStack ingredient;
+    private Ingredient ingredient;
     private ItemStack output;
 
-    public PotionUpgradeRecipe(ItemStack input, ItemStack ingredient, Item output) {
+    public PotionUpgradeRecipe(ItemStack input, Ingredient ingredient, Item output) {
         this.input = input;
         this.ingredient = ingredient;
         int stackSize = input.getCount();
@@ -35,7 +36,7 @@ public class PotionUpgradeRecipe implements IPotionRecipe {
     }
 
     @Override
-    public ItemStack getRecipeIngredient() {
+    public Ingredient getRecipeIngredient() {
         return ingredient;
     }
 }

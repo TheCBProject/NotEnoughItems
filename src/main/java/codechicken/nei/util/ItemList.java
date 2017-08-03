@@ -11,6 +11,7 @@ import codechicken.nei.widget.ItemPanel;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
 import net.minecraft.client.renderer.block.model.IBakedModel;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -221,7 +222,7 @@ public class ItemList {
                     permutations.addAll(ItemInfo.itemOverrides.get(item));
 
                     if (permutations.isEmpty()) {
-                        item.getSubItems(item, null, new NonNullList<>(permutations, null));
+                        item.getSubItems(CreativeTabs.SEARCH, new NonNullList<>(permutations, null));
                     }
 
                     //TODO, the implementation of damageSearch is wrong, not sure if this is actually needed ever.

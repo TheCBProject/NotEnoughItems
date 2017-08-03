@@ -7,7 +7,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT'
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
     }
 }
 
@@ -44,6 +44,7 @@ repositories {
 
 dependencies {
     compile "codechicken:CodeChickenLib:${config.mc_version}-${config.ccl_version}:deobf"
+    compile "codechicken:ChickenASM:${config.cc_asm_version}"
     compile "mezz.jei:jei_${config.mc_version}:${config.jei_version}"
 }
 

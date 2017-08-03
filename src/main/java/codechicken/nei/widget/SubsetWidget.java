@@ -324,7 +324,7 @@ public class SubsetWidget extends Button implements IItemFilterProvider, ItemsLo
         }
 
         protected int nameWidth() {
-            return Minecraft.getMinecraft().fontRendererObj.getStringWidth(displayName());
+            return Minecraft.getMinecraft().fontRenderer.getStringWidth(displayName());
         }
 
         public boolean isVisible() {

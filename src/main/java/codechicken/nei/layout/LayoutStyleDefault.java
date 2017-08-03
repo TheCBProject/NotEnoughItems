@@ -18,8 +18,8 @@ public abstract class LayoutStyleDefault extends LayoutStyle {
     public void layout(GuiContainer gui, VisibilityData visiblity) {
         int windowWidth = gui.width;
         int windowHeight = gui.height;
-        int containerWidth = gui.xSize;
-        int containerLeft = gui.guiLeft;
+        int containerWidth = gui.getXSize();
+        int containerLeft = gui.getGuiLeft();
 
         reset();
 

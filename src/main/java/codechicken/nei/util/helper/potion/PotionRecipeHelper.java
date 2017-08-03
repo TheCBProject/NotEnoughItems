@@ -4,6 +4,7 @@ import codechicken.nei.util.LogHelper;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionHelper;
 import net.minecraft.potion.PotionType;
@@ -24,8 +25,8 @@ public class PotionRecipeHelper {
     private static ArrayList<IPotionRecipe> splashRecipes = new ArrayList<>();
     private static ArrayList<IPotionRecipe> lingeringRecipes = new ArrayList<>();
 
-    public static void addNormalRecipe(Item potionItem, PotionType input, Item ingredient, PotionType output) {
-        IPotionRecipe recipe = new PotionTypeRecipe(PotionUtils.addPotionToItemStack(new ItemStack(potionItem), input), new ItemStack(ingredient), output);
+    public static void addNormalRecipe(Item potionItem, PotionType input, Ingredient ingredient, PotionType output) {
+        IPotionRecipe recipe = new PotionTypeRecipe(PotionUtils.addPotionToItemStack(new ItemStack(potionItem), input), ingredient, output);
         normalRecipes.add(recipe);
         allRecipes.add(recipe);
     }
@@ -34,8 +35,8 @@ public class PotionRecipeHelper {
         normalRecipes.add(recipe);
     }
 
-    public static void addSplashRecipe(Item potionItem, PotionType input, Item ingredient, PotionType output) {
-        IPotionRecipe recipe = new PotionTypeRecipe(PotionUtils.addPotionToItemStack(new ItemStack(potionItem), input), new ItemStack(ingredient), output);
+    public static void addSplashRecipe(Item potionItem, PotionType input, Ingredient ingredient, PotionType output) {
+        IPotionRecipe recipe = new PotionTypeRecipe(PotionUtils.addPotionToItemStack(new ItemStack(potionItem), input), ingredient, output);
         splashRecipes.add(recipe);
         allRecipes.add(recipe);
     }
@@ -44,8 +45,8 @@ public class PotionRecipeHelper {
         splashRecipes.add(recipe);
     }
 
-    public static void addLingeringRecipe(Item potionItem, PotionType input, Item ingredient, PotionType output) {
-        IPotionRecipe recipe = new PotionTypeRecipe(PotionUtils.addPotionToItemStack(new ItemStack(potionItem), input), new ItemStack(ingredient), output);
+    public static void addLingeringRecipe(Item potionItem, PotionType input, Ingredient ingredient, PotionType output) {
+        IPotionRecipe recipe = new PotionTypeRecipe(PotionUtils.addPotionToItemStack(new ItemStack(potionItem), input), ingredient, output);
         lingeringRecipes.add(recipe);
         allRecipes.add(recipe);
     }
@@ -59,20 +60,20 @@ public class PotionRecipeHelper {
         try {
             for (PotionHelper.MixPredicate<PotionType> entry : PotionHelper.POTION_TYPE_CONVERSIONS) {
                 PotionType input = entry.input;
-                PotionHelper.ItemPredicateInstance ingredient = (PotionHelper.ItemPredicateInstance) entry.reagent;
+                Ingredient ingredient =  entry.reagent;
                 PotionType output = entry.output;
-                addNormalRecipe(Items.POTIONITEM, input, ingredient.item, output);
-                addSplashRecipe(Items.SPLASH_POTION, input, ingredient.item, output);
-                addLingeringRecipe(Items.LINGERING_POTION, input, ingredient.item, output);
+                addNormalRecipe(Items.POTIONITEM, input, ingredient, output);
+                addSplashRecipe(Items.SPLASH_POTION, input, ingredient, output);
+                addLingeringRecipe(Items.LINGERING_POTION, input, ingredient, output);
             }
 
             for (IPotionRecipe recipe : normalRecipes) {
-                IPotionRecipe upgradeRecipe = new PotionUpgradeRecipe(recipe.getRecipeOutput(), new ItemStack(Items.GUNPOWDER), Items.SPLASH_POTION);
+                IPotionRecipe upgradeRecipe = new PotionUpgradeRecipe(recipe.getRecipeOutput(), Ingredient.fromItems(Items.GUNPOWDER), Items.SPLASH_POTION);
                 allRecipes.add(upgradeRecipe);
             }
 
             for (IPotionRecipe recipe : splashRecipes) {
-                IPotionRecipe upgradeRecipe = new PotionUpgradeRecipe(recipe.getRecipeOutput(), new ItemStack(Items.DRAGON_BREATH), Items.LINGERING_POTION);
+                IPotionRecipe upgradeRecipe = new PotionUpgradeRecipe(recipe.getRecipeOutput(), Ingredient.fromItems(Items.DRAGON_BREATH), Items.LINGERING_POTION);
                 allRecipes.add(upgradeRecipe);
             }
 

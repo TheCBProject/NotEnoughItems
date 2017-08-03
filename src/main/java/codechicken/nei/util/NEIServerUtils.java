@@ -98,7 +98,7 @@ public class NEIServerUtils {
             slot.putStack(ItemStack.EMPTY);
         }
 
-        player.updateCraftingInventory(player.openContainer, player.openContainer.getInventory());
+        player.sendAllContents(player.openContainer, player.openContainer.getInventory());
     }
 
     public static void setHourForward(World world, int hour, boolean notify) {
@@ -359,7 +359,7 @@ public class NEIServerUtils {
 
     public static boolean doesEnchantmentConflict(List<int[]> enchantments, Enchantment enchantment) {
         for (int[] ai : enchantments) {
-            if (!enchantment.func_191560_c(Enchantment.getEnchantmentByID(ai[0]))) {
+            if (!enchantment.isCompatibleWith(Enchantment.getEnchantmentByID(ai[0]))) {
                 return true;
             }
         }

@@ -272,7 +272,7 @@ public class ItemPanel extends Widget {
             } else {
                 draggedStack = ItemStack.EMPTY;
             }
-        } else if (mousex < gui.guiLeft || mousey < gui.guiTop || mousex >= gui.guiLeft + gui.xSize || mousey >= gui.guiTop + gui.ySize) {
+        } else if (mousex < gui.getGuiLeft() || mousey < gui.getGuiTop() || mousex >= gui.getGuiLeft() + gui.getXSize() || mousey >= gui.getGuiTop() + gui.getYSize()) {
             draggedStack = ItemStack.EMPTY;
         }
 

@@ -1,7 +1,6 @@
 package codechicken.nei.init;
 
-import codechicken.lib.asm.ClassHierarchyManager;
-import codechicken.lib.asm.discovery.ClassDiscoverer;
+import codechicken.asm.ClassHierarchyManager;
 import codechicken.lib.internal.ModDescriptionEnhancer;
 import codechicken.nei.*;
 import codechicken.nei.api.API;
@@ -45,7 +44,7 @@ import net.minecraftforge.fml.common.ProgressManager;
 import net.minecraftforge.fml.common.ProgressManager.ProgressBar;
 import net.minecraftforge.fml.common.discovery.ASMDataTable;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
-import net.minecraftforge.fml.common.registry.IForgeRegistry;
+import net.minecraftforge.registries.IForgeRegistry;
 
 import java.util.*;
 import java.util.Map.Entry;
@@ -118,7 +117,6 @@ public class NEIInitialization {
 
     public static void scrapeData(ASMDataTable dataTable) {
         ImmutableList.Builder<IConfigureNEI> plugins = ImmutableList.builder();
-        List<String> loadedClasses = new ArrayList<>();
         for (ASMDataTable.ASMData data : dataTable.getAll(NEIPlugin.class.getName())) {
             try {
 
@@ -126,30 +124,12 @@ public class NEIInitialization {
                     Class<?> pluginClass = Class.forName(data.getClassName());
                     IConfigureNEI pluginInstance = (IConfigureNEI) pluginClass.newInstance();
                     plugins.add(pluginInstance);
-                    loadedClasses.add(data.getClassName());
                 } else {
                     LogHelper.error("Found class with annotation @NEIPlugin but class does not implement IConfigureNEI.. Class: " + data.getClassName());
                 }
 
             } catch (Exception e) {
                 LogHelper.fatalError("Fatal exception occurred whilst loading a plugin! Class: %s", e, data.getClassName());
-            }
-        }
-
-        ClassDiscoverer classDiscoverer = new ClassDiscoverer(test -> test.startsWith("NEI") && test.endsWith("Config.class"), IConfigureNEI.class);
-
-        for (Class<?> clazz : classDiscoverer.findClasses()) {
-            if (!loadedClasses.contains(clazz.getName())) {
-                LogHelper.error("Found class implementing IConfigureNEI but does not have @NEIPlugin annotation!");
-                LogHelper.error("This is a deprecated system! You MUST use the @NEIPlugin Annotation!");
-                LogHelper.error("Offending class: %s", clazz.getName());
-                try {
-                    IConfigureNEI config = (IConfigureNEI) clazz.newInstance();
-                    plugins.add(config);
-                    loadedClasses.add(clazz.getName());
-                } catch (Exception e) {
-                    LogHelper.fatalError("Fatal exception occurred whilst loading a plugin! Class: %s", e, clazz.getName());
-                }
             }
         }
         NEIInitialization.plugins = plugins.build();
@@ -206,7 +186,7 @@ public class NEIInitialization {
                         creativeTabRanges.set(itemTab.getTabIndex(), set = new ItemStackSet());
                     }
                     stackList.clear();
-                    item.getSubItems(item, itemTab, nonNullStackList);
+                    item.getSubItems(itemTab, nonNullStackList);
                     for (ItemStack stack : stackList) {
                         set.add(stack);
                     }
@@ -254,7 +234,7 @@ public class NEIInitialization {
 
             try {
                 NonNullList<ItemStack> subItems = new NonNullList<>(new LinkedList<ItemStack>(), null);
-                item.getSubItems(item, null, subItems);
+                item.getSubItems(CreativeTabs.SEARCH, subItems);
                 for (ItemStack stack : subItems) {
                     if (PotionHelper.isReagent(stack)) {
                         potioningredients.add(stack);

@@ -17,32 +17,32 @@ public class GuiNEIButton extends GuiButton {
     }
 
     @Override
-    public void drawButton(Minecraft minecraft, int mouseX, int mouseY) {
+    public void drawButton(Minecraft minecraft, int mouseX, int mouseY, float partialTicks) {
 
         if (!visible) {
             return;
         }
 
-        FontRenderer fontrenderer = minecraft.fontRendererObj;
+        FontRenderer fontrenderer = minecraft.fontRenderer;
         TextureUtils.changeTexture(GUI_TEX);
         GlStateManager.color(1, 1, 1, 1);
 
-        boolean flag = mouseX >= xPosition && mouseY >= yPosition && mouseX < xPosition + width && mouseY < yPosition + height;
+        boolean flag = mouseX >= x && mouseY >= y && mouseX < x + width && mouseY < y + height;
         int k = getHoverState(flag);
 
-        drawTexturedModalRect(xPosition, yPosition, 0, 46 + k * 20, width / 2, height / 2);//top left
-        drawTexturedModalRect(xPosition + width / 2, yPosition, 200 - width / 2, 46 + k * 20, width / 2, height / 2);//top right
-        drawTexturedModalRect(xPosition, yPosition + height / 2, 0, 46 + k * 20 + 20 - height / 2, width / 2, height / 2);//bottom left
-        drawTexturedModalRect(xPosition + width / 2, yPosition + height / 2, 200 - width / 2, 46 + k * 20 + 20 - height / 2, width / 2, height / 2);//bottom right
+        drawTexturedModalRect(x, y, 0, 46 + k * 20, width / 2, height / 2);//top left
+        drawTexturedModalRect(x + width / 2, y, 200 - width / 2, 46 + k * 20, width / 2, height / 2);//top right
+        drawTexturedModalRect(x, y + height / 2, 0, 46 + k * 20 + 20 - height / 2, width / 2, height / 2);//bottom left
+        drawTexturedModalRect(x + width / 2, y + height / 2, 200 - width / 2, 46 + k * 20 + 20 - height / 2, width / 2, height / 2);//bottom right
 
         mouseDragged(minecraft, mouseX, mouseY);
 
         if (!enabled) {
-            drawCenteredString(fontrenderer, displayString, xPosition + width / 2, yPosition + (height - 8) / 2, 0xffa0a0a0);
+            drawCenteredString(fontrenderer, displayString, x + width / 2, y + (height - 8) / 2, 0xffa0a0a0);
         } else if (flag) {
-            drawCenteredString(fontrenderer, displayString, xPosition + width / 2, yPosition + (height - 8) / 2, 0xffffa0);
+            drawCenteredString(fontrenderer, displayString, x + width / 2, y + (height - 8) / 2, 0xffffa0);
         } else {
-            drawCenteredString(fontrenderer, displayString, xPosition + width / 2, yPosition + (height - 8) / 2, 0xe0e0e0);
+            drawCenteredString(fontrenderer, displayString, x + width / 2, y + (height - 8) / 2, 0xe0e0e0);
         }
     }
 }

@@ -12,8 +12,12 @@ import codechicken.nei.guihook.IInputHandler;
 import codechicken.nei.network.NEIClientPacketHandler;
 import codechicken.nei.util.helper.GuiHelper;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.GuiButtonImage;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.gui.inventory.GuiCrafting;
+import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
@@ -31,12 +35,15 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.apache.commons.lang3.tuple.Triple;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
 import java.awt.*;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import static codechicken.nei.NEIClientConfig.canPerformAction;
 
@@ -54,6 +61,8 @@ public class NEIClientEventHandler {
     public static final LinkedList<IContainerTooltipHandler> tooltipHandlers = new LinkedList<>();
     private static List<IContainerTooltipHandler> instanceTooltipHandlers;
     private static GuiScreen lastGui;
+
+    private final Set<Triple<Class<?>, Class<? extends GuiButton>, Integer>> bookStripList = new HashSet<>();
 
     /**
      * Register a new Input handler;
@@ -207,7 +216,6 @@ public class NEIClientEventHandler {
 
     @SubscribeEvent
     public void potionShiftEvent(PotionShiftEvent event) {
-
         event.setCanceled(true);
     }
 
@@ -217,6 +225,18 @@ public class NEIClientEventHandler {
             GuiContainer container = ((GuiContainer) event.getGui());
             objectHandlers.forEach(handler -> handler.load(container));
         }
+    }
+
+    @SubscribeEvent
+    public void guiInitEvent(GuiScreenEvent.InitGuiEvent.Post event) {
+//        for (Triple<Class<?>, Class<? extends GuiButton>, Integer> triple : bookStripList) {
+//            if (event.getGui().getClass() == triple.getLeft()){
+//                event.getButtonList().removeIf(suspect -> triple.getMiddle().equals(suspect.getClass()) && triple.getRight() == suspect.id);
+//            }
+//        }
+//        if (event.getGui() instanceof GuiInventory || event.getGui() instanceof GuiCrafting) {
+//            event.getButtonList().removeIf(suspect -> suspect instanceof GuiButtonImage && suspect.id == 10);
+//        }
     }
 
     @SubscribeEvent

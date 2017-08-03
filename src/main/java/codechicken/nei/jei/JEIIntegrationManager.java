@@ -1,6 +1,6 @@
 package codechicken.nei.jei;
 
-import codechicken.lib.asm.proxy.FunctionProxy;
+import codechicken.lib.annotation.FunctionProxy;
 import codechicken.lib.config.ConfigTagParent;
 import codechicken.nei.VisibilityData;
 import codechicken.nei.jei.proxy.DummyProxy;

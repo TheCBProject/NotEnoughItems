@@ -105,8 +105,8 @@ public class ContainerEnchantmentModifier extends ContainerEnchantment {
     }
 
     public boolean clickScrollBar(int mousex, int mousey, int button) {
-        mousex -= parentscreen.guiLeft;
-        mousey -= parentscreen.guiTop;
+        mousex -= parentscreen.getGuiLeft();
+        mousey -= parentscreen.getGuiTop();
 
         int barempty = height - getScrollBarHeight();
         int sbary = rely + (int) (barempty * percentscrolled + 0.5);
@@ -138,8 +138,8 @@ public class ContainerEnchantmentModifier extends ContainerEnchantment {
     }
 
     public boolean clickButton(int mousex, int mousey, int button) {
-        mousex -= parentscreen.guiLeft;
-        mousey -= parentscreen.guiTop;
+        mousex -= parentscreen.getGuiLeft();
+        mousey -= parentscreen.getGuiTop();
         if (mousex >= relx && mousex < relx + cwidth && mousey >= rely && mousey <= rely + height)//in the box
         {
             int slot = getClickedSlot(mousey);
@@ -260,13 +260,13 @@ public class ContainerEnchantmentModifier extends ContainerEnchantment {
                 EnchantmentHash e = slotEnchantment.get(containerslot);
                 shade = e.state;
                 text = e.enchantment.getTranslatedName(e.level == -1 ? level : e.level);
-                if (gui.mc.fontRendererObj.getStringWidth(text) > 95 && text.contains("Projectile")) {
+                if (gui.mc.fontRenderer.getStringWidth(text) > 95 && text.contains("Projectile")) {
                     text = text.replace("Projectile", "Proj");
                 }
-                if (gui.mc.fontRendererObj.getStringWidth(text) > 95 && text.contains("Protection")) {
+                if (gui.mc.fontRenderer.getStringWidth(text) > 95 && text.contains("Protection")) {
                     text = text.replace("Protection", "Protect");
                 }
-                if (gui.mc.fontRendererObj.getStringWidth(text) > 95 && text.contains("Bane of")) {
+                if (gui.mc.fontRenderer.getStringWidth(text) > 95 && text.contains("Bane of")) {
                     text = text.replace("Bane of ", "");
                 }
             }
@@ -274,10 +274,10 @@ public class ContainerEnchantmentModifier extends ContainerEnchantment {
             TextureUtils.changeTexture("textures/gui/container/enchanting_table.png");
             GlStateManager.color(1, 1, 1);
             if (hasScrollBar()) {
-                gui.drawTexturedModalRect(relx, rely + slot * slotheight, 0, gui.ySize + slotheight * shade, cwidth - 30, slotheight);
-                gui.drawTexturedModalRect(relx + cwidth - 30, rely + slot * slotheight, cwidth - 23, gui.ySize + slotheight * shade, 30, slotheight);
+                gui.drawTexturedModalRect(relx, rely + slot * slotheight, 0, gui.getYSize() + slotheight * shade, cwidth - 30, slotheight);
+                gui.drawTexturedModalRect(relx + cwidth - 30, rely + slot * slotheight, cwidth - 23, gui.getYSize() + slotheight * shade, 30, slotheight);
             } else {
-                gui.drawTexturedModalRect(relx, rely + slot * slotheight, 0, gui.ySize + slotheight * shade, cwidth + 7, slotheight);
+                gui.drawTexturedModalRect(relx, rely + slot * slotheight, 0, gui.getYSize() + slotheight * shade, cwidth + 7, slotheight);
             }
 
             gui.getFontRenderer().drawString(text, relx + 4, rely + slot * slotheight + 5, textColourFromState(shade));
@@ -319,7 +319,7 @@ public class ContainerEnchantmentModifier extends ContainerEnchantment {
     }
 
     public void processScrollMouse(int mousey) {
-        mousey -= parentscreen.guiTop;
+        mousey -= parentscreen.getGuiTop();
 
         if (scrollclicky >= 0) {
             int scrolldiff = mousey - scrollclicky;

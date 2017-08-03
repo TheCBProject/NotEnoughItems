@@ -2,28 +2,19 @@ package codechicken.nei;
 
 import codechicken.lib.model.ModelRegistryHelper;
 import codechicken.lib.render.item.IItemRenderer;
-import codechicken.lib.texture.TextureUtils;
 import codechicken.lib.util.ClientUtils;
 import codechicken.lib.util.TransformUtils;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.block.model.*;
+import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
-import net.minecraftforge.client.model.IPerspectiveAwareModel;
 import net.minecraftforge.common.model.IModelState;
-import org.apache.commons.lang3.tuple.Pair;
-
-import javax.vecmath.Matrix4f;
-import java.util.ArrayList;
-import java.util.List;
 
 //import net.minecraft.entity.boss.BossStatus;
 

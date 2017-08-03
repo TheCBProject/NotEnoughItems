@@ -271,10 +271,10 @@ public class LayoutManager implements IInputHandler, IContainerTooltipHandler, I
             //showItemPanel = false;
             visiblity.showNEI = false;
         }
-        if (gui.height - gui.ySize <= 40) {
+        if (gui.height - gui.getYSize() <= 40) {
             visiblity.showSearchSection = false;
         }
-        if (gui.guiLeft - 4 < 76) {
+        if (gui.getGuiLeft() - 4 < 76) {
             visiblity.showWidgets = false;
         }
 

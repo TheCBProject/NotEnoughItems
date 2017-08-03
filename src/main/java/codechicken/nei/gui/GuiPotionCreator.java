@@ -311,8 +311,8 @@ public class GuiPotionCreator extends GuiContainerWidget {
         drawTexturedModalRect(0, 0, 0, 0, xSize, ySize);
 
         FontUtils.drawCenteredString("Favourite Potions", xSize / 2, 4, 0x404040);
-        fontRendererObj.drawString("Duration", 12, 40, 0x404040);
-        fontRendererObj.drawString("Level", 19, 73, 0x404040);
+        fontRenderer.drawString("Duration", 12, 40, 0x404040);
+        fontRenderer.drawString("Level", 19, 73, 0x404040);
         FontUtils.drawCenteredString(translateAmplifier(amplifier), 33, 86, 0xFF606060);
     }
 

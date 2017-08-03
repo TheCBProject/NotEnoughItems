@@ -145,7 +145,7 @@ public class NEIController implements IInputHandler {
         Slot slot = GuiHelper.getSlotMouseOver(gui);
         int slotID = -1;
 
-        boolean outsideGui = (mouseX < gui.guiLeft || mouseY < gui.guiTop || mouseX >= gui.guiLeft + gui.xSize || mouseY >= gui.guiTop + gui.ySize) && slot == null;
+        boolean outsideGui = (mouseX < gui.getGuiLeft() || mouseY < gui.getGuiTop() || mouseX >= gui.getGuiLeft() + gui.getXSize() || mouseY >= gui.getGuiTop() + gui.getYSize()) && slot == null;
 
         if (slot != null) {
             slotID = slot.slotNumber;

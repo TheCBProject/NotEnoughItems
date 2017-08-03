@@ -1,6 +1,6 @@
 package codechicken.nei.thirdparty.colossalchests;
 
-import codechicken.lib.util.ReflectionManager;
+import codechicken.lib.reflect.ReflectionManager;
 import codechicken.nei.api.API;
 import codechicken.nei.api.IConfigureNEI;
 import codechicken.nei.api.NEIPlugin;

@@ -2,6 +2,7 @@ package codechicken.nei;
 
 import codechicken.nei.network.NEIClientPacketHandler;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -17,6 +18,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -63,7 +65,7 @@ public class ItemMobSpawner extends ItemBlock {
     }
 
     @Override
-    public void addInformation(ItemStack itemstack, EntityPlayer par2EntityPlayer, List<String> list, boolean par4) {
+    public void addInformation(ItemStack itemstack, @Nullable World worldIn, List<String> list, ITooltipFlag flag) {
         setDefaultTag(itemstack);
         int meta = itemstack.getItemDamage();
         if (meta == 0) {
@@ -139,12 +141,12 @@ public class ItemMobSpawner extends ItemBlock {
     }
 
     @Override
-    public void getSubItems(Item item, CreativeTabs tab, NonNullList<ItemStack> list) {
+    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> list) {
         if (!NEIClientConfig.hasSMPCounterPart()) {
-            list.add(new ItemStack(item));
+            list.add(new ItemStack(this));
         } else {
             for (int i : IDtoNameMap.keySet()) {
-                list.add(new ItemStack(item, 1, i));
+                list.add(new ItemStack(this, 1, i));
             }
         }
     }
