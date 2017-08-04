@@ -9,7 +9,7 @@ import org.apache.logging.log4j.Level;
 import java.io.File;
 import java.util.Map;
 
-@TransformerExclusions ({ "codechicken.nei.asm", "codechicken.asm" })
+@TransformerExclusions ({ "codechicken.nei.asm"})
 public class NEICorePlugin implements IFMLLoadingPlugin, IFMLCallHook {
 
     public static File location;
@@ -25,7 +25,7 @@ public class NEICorePlugin implements IFMLLoadingPlugin, IFMLCallHook {
             FMLLog.log("NotEnoughItems", Level.FATAL, "Missing CCL ASM! not registering class transformer.");
             return new String[0];
         }
-        return new String[] { "codechicken.nei.asm.NEITransformer", "codechicken.asm.ClassHierarchyManager" };
+        return new String[] { "codechicken.nei.asm.NEITransformer" };
     }
 
     @Override
