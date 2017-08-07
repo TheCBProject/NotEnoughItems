@@ -1,6 +1,5 @@
 package codechicken.nei.init;
 
-import codechicken.asm.ClassHierarchyManager;
 import codechicken.lib.internal.ModDescriptionEnhancer;
 import codechicken.nei.*;
 import codechicken.nei.api.API;
@@ -119,9 +118,8 @@ public class NEIInitialization {
         ImmutableList.Builder<IConfigureNEI> plugins = ImmutableList.builder();
         for (ASMDataTable.ASMData data : dataTable.getAll(NEIPlugin.class.getName())) {
             try {
-
-                if (ClassHierarchyManager.classExtends(data.getClassName(), IConfigureNEI.class.getName())) {
-                    Class<?> pluginClass = Class.forName(data.getClassName());
+                Class<?> pluginClass = Class.forName(data.getClassName());
+                if (pluginClass.isAssignableFrom(IConfigureNEI.class)) {
                     IConfigureNEI pluginInstance = (IConfigureNEI) pluginClass.newInstance();
                     plugins.add(pluginInstance);
                 } else {

@@ -3,7 +3,6 @@ package codechicken.nei.handler;
 import codechicken.lib.gui.GuiDraw;
 import codechicken.lib.math.MathHelper;
 import codechicken.lib.render.state.GlStateTracker;
-import codechicken.nei.asm.ASMHooks;
 import codechicken.nei.config.KeyBindings;
 import codechicken.nei.guihook.IContainerDrawHandler;
 import codechicken.nei.guihook.IContainerObjectHandler;
@@ -13,14 +12,12 @@ import codechicken.nei.network.NEIClientPacketHandler;
 import codechicken.nei.util.helper.GuiHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiButtonImage;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.client.gui.inventory.GuiCrafting;
-import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.client.event.GuiContainerEvent;
 import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.client.event.GuiScreenEvent.DrawScreenEvent;
@@ -105,7 +102,6 @@ public class NEIClientEventHandler {
     }
 
     public void init() {
-        ASMHooks.addContainerForegroundHook(INSTANCE::foregroundRenderEvent);
     }
 
     @SubscribeEvent (priority = EventPriority.HIGHEST)
@@ -294,7 +290,9 @@ public class NEIClientEventHandler {
         GuiDraw.drawMultiLineTip(stack, mousePos.x + 10, mousePos.y - 12, tooltip);
     }
 
-    public void foregroundRenderEvent(GuiContainer container) {
+    @SubscribeEvent
+    public void foregroundRenderEvent(GuiContainerEvent.DrawForeground event) {
+        GuiContainer container = event.getGuiContainer();
         GlStateTracker.pushState();
         Point mousePos = GuiDraw.getMousePosition();
 

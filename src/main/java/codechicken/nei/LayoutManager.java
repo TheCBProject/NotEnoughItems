@@ -763,9 +763,9 @@ public class LayoutManager implements IInputHandler, IContainerTooltipHandler, I
         if (world.nbt.getBoolean("searchinventories") && (item == null ? !getSearchExpression().equals("") : !ItemList.getItemListFilter().matches(item))) {
             GlStateManager.disableLighting();
             //GlStateManager.depthFunc(GL11.GL_EQUAL);
-            GlStateManager.translate(0, 0, 400);
+            GlStateManager.translate(0, 0, 350);
             drawRect(slot.xPos, slot.yPos, 16, 16, 0x80000000);
-            GlStateManager.translate(0, 0, -400);
+            GlStateManager.translate(0, 0, -350);
             //GlStateManager.depthFunc(GL11.GL_LESS);
             GlStateManager.enableLighting();
         }

@@ -44,7 +44,6 @@ repositories {
 
 dependencies {
     compile "codechicken:CodeChickenLib:${config.mc_version}-${config.ccl_version}:deobf"
-    compile "codechicken:ChickenASM:${config.mc_version}-${config.cc_asm_version}"
     compile "mezz.jei:jei_${config.mc_version}:${config.jei_version}"
 }
 
@@ -76,10 +75,7 @@ processResources {
 
 version = "${project.minecraft.version}-${project.version}"
 def commonManifest = {
-    attributes 'FMLCorePlugin': 'codechicken.nei.asm.NEICorePlugin'
     attributes 'FMLAT': 'nei_at.cfg'
-    attributes 'FMLCorePluginContainsFMLMod': 'true'
-    attributes 'CCTransformerExclusions': 'codechicken.nei.FingerprintChecker'
 }
 
 jar {
