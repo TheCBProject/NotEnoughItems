@@ -9,7 +9,7 @@
       "type" : "requiredLibrary"
     },
     {
-      "slug" : "just-enough-items-jei",
+      "slug" : "jei",
       "type" : "requiredLibrary"
     }
   ]
