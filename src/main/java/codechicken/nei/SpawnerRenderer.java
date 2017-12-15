@@ -55,7 +55,7 @@ public class SpawnerRenderer implements IItemRenderer {
             GlStateManager.translate(0, -0.4, 0);
             GlStateManager.scale(scale, scale, scale);
             entity.setLocationAndAngles(0, 0, 0, 0, 0);
-            mc.getRenderManager().doRenderEntity(entity, 0, 0, 0, 0, 0, false);
+            mc.getRenderManager().renderEntity(entity, 0, 0, 0, 0, 0, false);
             GlStateManager.disableLighting();
             GlStateManager.popMatrix();
 

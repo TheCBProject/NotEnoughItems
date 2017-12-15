@@ -306,6 +306,13 @@ public class GuiPotionCreator extends GuiContainerWidget {
     }
 
     @Override
+    public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+        drawDefaultBackground();
+        super.drawScreen(mouseX, mouseY, partialTicks);
+        renderHoveredToolTip(mouseX, mouseY);
+    }
+
+    @Override
     public void drawBackground() {
         TextureUtils.changeTexture("nei:textures/gui/potion.png");
         drawTexturedModalRect(0, 0, 0, 0, xSize, ySize);

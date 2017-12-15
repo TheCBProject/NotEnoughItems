@@ -1,6 +1,5 @@
 package codechicken.nei.init;
 
-import codechicken.lib.internal.ModDescriptionEnhancer;
 import codechicken.nei.*;
 import codechicken.nei.api.API;
 import codechicken.nei.api.GuiInfo;
@@ -97,7 +96,7 @@ public class NEIInitialization {
 
     private static void replaceMetadata() {
 
-        StringBuilder builder = new StringBuilder();
+        StringBuilder builder = new StringBuilder("\n\n");
 
         if (plugins.isEmpty()) {
             builder.append(TextFormatting.RED).append("No installed plugins.");
@@ -110,8 +109,9 @@ public class NEIInitialization {
 
             }
         }
-        String desc = ModDescriptionEnhancer.enhanceDesc(NotEnoughItems.metadata.description);
-        NotEnoughItems.metadata.description = desc.replace("<plugins>", builder.toString());
+        builder.append("\n\n");
+        //String desc = ModDescriptionEnhancer.enhanceDesc(NotEnoughItems.metadata.description);
+        NotEnoughItems.metadata.description = NotEnoughItems.metadata.description.replace("<plugins>", builder.toString());
     }
 
     public static void scrapeData(ASMDataTable dataTable) {
@@ -119,7 +119,7 @@ public class NEIInitialization {
         for (ASMDataTable.ASMData data : dataTable.getAll(NEIPlugin.class.getName())) {
             try {
                 Class<?> pluginClass = Class.forName(data.getClassName());
-                if (pluginClass.isAssignableFrom(IConfigureNEI.class)) {
+                if (IConfigureNEI.class.isAssignableFrom(pluginClass)) {
                     IConfigureNEI pluginInstance = (IConfigureNEI) pluginClass.newInstance();
                     plugins.add(pluginInstance);
                 } else {
@@ -414,7 +414,7 @@ public class NEIInitialization {
                     }
                     s_types.append(t.getName());
                 }
-                return new String[] { registryName.toString(), Integer.toString(id), obj.getBiomeName(), Float.toString(obj.getFloatTemperature(BlockPos.ORIGIN)), Float.toString(obj.getRainfall()), Float.toString(obj.getSpawningChance()), Float.toString(obj.getBaseHeight()), Float.toString(obj.getHeightVariation()), s_types.toString(), obj.getClass().getCanonicalName() };
+                return new String[] { registryName.toString(), Integer.toString(id), obj.getBiomeName(), Float.toString(obj.getTemperature(BlockPos.ORIGIN)), Float.toString(obj.getRainfall()), Float.toString(obj.getSpawningChance()), Float.toString(obj.getBaseHeight()), Float.toString(obj.getHeightVariation()), s_types.toString(), obj.getClass().getCanonicalName() };
             }
 
             @Override
@@ -442,7 +442,7 @@ public class NEIInitialization {
         API.addOption(new ForgeRegistryDumper<Enchantment>("tools.dump.enchantment") {
             @Override
             public IForgeRegistry<Enchantment> registry() {
-                return null;
+                return ForgeRegistries.ENCHANTMENTS;
             }
 
             @Override

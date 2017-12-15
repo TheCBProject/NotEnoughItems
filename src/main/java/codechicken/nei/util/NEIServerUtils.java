@@ -242,7 +242,7 @@ public class NEIServerUtils {
             return 2;
         } else if (player.interactionManager.isCreative()) {
             return 1;
-        } else if (player.interactionManager.getGameType().isAdventure()) {
+        } else if (player.interactionManager.getGameType().hasLimitedInteractions()) {
             return 3;
         } else {
             return 0;

@@ -54,6 +54,7 @@ println config.mc_version + "-" + config.forge_version
 minecraft {
     version = config.mc_version + "-" + config.forge_version
     mappings = config.mappings
+	replace '${mod_version}', project.config.mod_version
     runDir = "run"
     makeObfSourceJar = false
 }

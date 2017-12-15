@@ -249,20 +249,21 @@ public class LayoutManager implements IInputHandler, IContainerTooltipHandler, I
 
     @Override
     public void handleItemDisplayName(GuiScreen gui, ItemStack stack, List<String> currenttip) {
-        String overridename = ItemInfo.getNameOverride(stack);
-        if (overridename != null) {
-            currenttip.set(0, overridename);
-        }
-
-        String mainname = currenttip.get(0);
-        if (showIDs()) {
-            mainname += " " + Item.getIdFromItem(stack.getItem());
-            if (stack.getItemDamage() != 0) {
-                mainname += ":" + stack.getItemDamage();
-            }
-
-            currenttip.set(0, mainname);
-        }
+        //TODO, Implement this in a cleaner way.
+//        String overridename = ItemInfo.getNameOverride(stack);
+//        if (overridename != null) {
+//            currenttip.set(0, overridename);
+//        }
+//
+//        String mainname = currenttip.get(0);
+//        if (showIDs()) {
+//            mainname += " " + Item.getIdFromItem(stack.getItem());
+//            if (stack.getItemDamage() != 0) {
+//                mainname += ":" + stack.getItemDamage();
+//            }
+//
+//            currenttip.set(0, mainname);
+//        }
     }
 
     public static void layout(GuiContainer gui) {

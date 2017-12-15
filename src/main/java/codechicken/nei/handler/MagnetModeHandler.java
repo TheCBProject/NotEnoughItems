@@ -134,7 +134,7 @@ public class MagnetModeHandler {
                 return;
             }
 
-            List<EntityItem> items = player.world.getEntitiesWithinAABB(EntityItem.class, player.getEntityBoundingBox().expand(DISTANCE_XZ, DISTANCE_Y, DISTANCE_XZ));
+            List<EntityItem> items = player.world.getEntitiesWithinAABB(EntityItem.class, player.getEntityBoundingBox().grow(DISTANCE_XZ, DISTANCE_Y, DISTANCE_XZ));
             for (EntityItem item : items) {
                 if (item.cannotPickup()) {
                     continue;

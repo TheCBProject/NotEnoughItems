@@ -46,6 +46,14 @@ public class GuiEnchantmentModifier extends GuiContainer {
         GlStateManager.translate(-guiLeft, -guiTop, 0);
     }
 
+
+    @Override
+    public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+        drawDefaultBackground();
+        super.drawScreen(mouseX, mouseY, partialTicks);
+        renderHoveredToolTip(mouseX, mouseY);
+    }
+
     public void initGui() {
         super.initGui();
 

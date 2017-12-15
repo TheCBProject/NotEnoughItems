@@ -153,15 +153,19 @@ public class JEIIntegrationManager {
     }
 
     public static void setFilterText(String text) {
-	    IngredientListOverlay overlay = Internal.getRuntime().getItemListOverlay();
-        overlay.setFilterText(text);
+        if (Internal.getRuntime() != null && Internal.getRuntime().getItemListOverlay() != null) {
+            IngredientListOverlay overlay = Internal.getRuntime().getItemListOverlay();
+            overlay.setFilterText(text);
+        }
     }
 
     public static List<Object> getFilteredItems() {
-	    IngredientListOverlay overlay = Internal.getRuntime().getItemListOverlay();
-        IngredientFilter filter = getItemFilter(getTextFieldFilter(overlay));
-        if (filter != null) {
-            return filter.getFilteredIngredients();
+        if (Internal.getRuntime() != null && Internal.getRuntime().getItemListOverlay() != null) {
+            IngredientListOverlay overlay = Internal.getRuntime().getItemListOverlay();
+            IngredientFilter filter = getItemFilter(getTextFieldFilter(overlay));
+            if (filter != null) {
+                return filter.getFilteredIngredients();
+            }
         }
         return new ArrayList<>();
     }

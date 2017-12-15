@@ -36,8 +36,13 @@ public abstract class TextField extends Widget {
         String drawtext = text;
 
         int textWidth;
-        while ((textWidth = getStringWidth(drawtext)) > w - 14) {
-            drawtext = drawtext.substring(1);
+        try {
+            while ((textWidth = getStringWidth(drawtext)) > w - 14) {
+                drawtext = drawtext.substring(1);
+            }
+        } catch (Exception e) {
+            //Welp window is too small.
+            return;
         }
 
         if (focused() && (cursorCounter / 6) % 2 == 0) {
