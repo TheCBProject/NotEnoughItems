@@ -132,6 +132,9 @@ public class NEIClientConfig {
 
         tag.getTag("inventory.profileRecipes").getBooleanValue(false);
         API.addOption(new OptionToggleButton("inventory.profileRecipes", true));
+		
+		tag.getTag("inventory.reversedMouseScroll").getBooleanValue(true);
+		API.addOption(new OptionToggleButton("inventory.reversedMouseScroll", true));
 
         tag.getTag("command.creative").setDefaultValue("/gamemode {0} {1}");
         API.addOption(new OptionTextField("command.creative"));
@@ -356,7 +359,16 @@ public class NEIClientConfig {
             world.saveNBT();
         }
     }
-
+	
+	/**
+	 * Gets user setting for how should be handled item insertion/extraction with the mousewheel
+	 *
+	 * @return If reversedMouseScroll is true;
+	 */
+	public static boolean isScrollInsertReversed() {
+		return getBooleanSetting("inventory.reversedMouseScroll");
+	}
+	
     /**
      * Gets whether MagnetMode is enabled or not.
      *

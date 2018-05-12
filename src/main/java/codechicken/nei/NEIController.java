@@ -113,6 +113,10 @@ public class NEIController implements IInputHandler {
             Point mousePos = getMousePosition();
             Slot mouseover = container.getSlotAtPosition(mousePos.x, mousePos.y);
             if (mouseover != null && mouseover.getHasStack() && !ItemInfo.fastTransferContainerExemptions.contains(container.getClass())) {
+				if (!NEIClientConfig.isScrollInsertReversed()) {
+					scrolled = -scrolled;
+				}
+				
                 if (scrolled > 0) {
                     fastTransferManager.transferItem(container, mouseover.slotNumber);
                 } else {
