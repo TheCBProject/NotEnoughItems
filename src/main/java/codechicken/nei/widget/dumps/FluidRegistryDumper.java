@@ -56,6 +56,7 @@ public class FluidRegistryDumper extends DataDumper {
                     String.valueOf(fluid.getLuminosity()),
                     String.valueOf(fluid.getDensity()),
                     String.valueOf(fluid.getTemperature()),
+		            String.valueOf(fluid.getViscosity()),
                     String.valueOf(fluid.isGaseous()),
                     fluid.getRarity().toString(),
                     fluid.canBePlacedInWorld() ? fluid.getBlock().getRegistryName().toString() : "No Block",
