@@ -166,7 +166,8 @@ public class LayoutManager implements IInputHandler, IContainerTooltipHandler, I
     public boolean lastKeyTyped(GuiScreen gui, char keyChar, int keyID) {
         if (KeyBindings.get("nei.options.keys.gui.hide").isActiveAndMatches(keyID)) {
             toggleBooleanSetting("inventory.hidden");
-            return true;
+            //False, because we need to not consume the event.
+            return false;
         }
         if (isEnabled() && !isHidden()) {
             for (Widget widget : controlWidgets) {
