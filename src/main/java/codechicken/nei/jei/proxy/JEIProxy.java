@@ -100,7 +100,7 @@ public class JEIProxy implements IJEIProxy {
         } catch (Throwable e) {
             LogHelper.errorOnce(e, "ExtraAreas", "Error thrown whilst accessing JEI internals!");
         }
-        return null;
+        return new HashSet<>();
     }
 
     @JEIPlugin

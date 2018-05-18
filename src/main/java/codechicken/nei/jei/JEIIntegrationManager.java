@@ -40,32 +40,33 @@ public class JEIIntegrationManager {
 
     public static void pushChanges(VisibilityData data) {
         JeiRuntime runtime = Internal.getRuntime();
-	    IngredientListOverlay overlay = runtime.getItemListOverlay();
-        GuiTextFieldFilter fieldFilter = getTextFieldFilter(overlay);
+        if (runtime != null) {
+            IngredientListOverlay overlay = runtime.getItemListOverlay();
+            GuiTextFieldFilter fieldFilter = getTextFieldFilter(overlay);
 
-        if (searchBoxOwner == EnumItemBrowser.JEI) {
-            data.showSearchSection = false;
-            if (fieldFilter != null) {
-                fieldFilter.setVisible(true);
+            if (searchBoxOwner == EnumItemBrowser.JEI) {
+                data.showSearchSection = false;
+                if (fieldFilter != null) {
+                    fieldFilter.setVisible(true);
+                }
+            } else {
+                data.showSearchSection = true;
+                if (fieldFilter != null) {
+                    fieldFilter.setVisible(false);
+                }
             }
-        } else {
-            data.showSearchSection = true;
-            if (fieldFilter != null) {
-                fieldFilter.setVisible(false);
+            if (itemPanelOwner == EnumItemBrowser.JEI) {
+                data.showItemPanel = false;
+                if (!Config.isOverlayEnabled()) {
+                    Config.toggleOverlayEnabled();
+                }
+            } else {
+                data.showItemPanel = data.showSearchSection = true;
+                if (Config.isOverlayEnabled()) {
+                    Config.toggleOverlayEnabled();
+                }
             }
         }
-        if (itemPanelOwner == EnumItemBrowser.JEI) {
-            data.showItemPanel = false;
-            if (!Config.isOverlayEnabled()) {
-                Config.toggleOverlayEnabled();
-            }
-        } else {
-            data.showItemPanel = data.showSearchSection = true;
-            if (Config.isOverlayEnabled()) {
-                Config.toggleOverlayEnabled();
-            }
-        }
-
     }
 
     public static void initConfig(ConfigTagParent tag) {
