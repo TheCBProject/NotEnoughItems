@@ -15,9 +15,6 @@ public class GuiInfo {
     public static HashSet<Class<? extends GuiContainer>> customSlotGuis = new HashSet<>();
 
     public static void load() {
-        API.registerNEIGuiHandler(new NEICreativeGuiHandler());
-        API.registerNEIGuiHandler(new NEIChestGuiHandler());
-        API.registerNEIGuiHandler(new NEIDummySlotHandler());
         customSlotGuis.add(GuiContainerCreative.class);
     }
 

@@ -85,8 +85,7 @@ public abstract class TextField extends Widget {
         } else if (keyID == Keyboard.KEY_RETURN || keyID == Keyboard.KEY_ESCAPE) {
             setFocus(false);
             onExit();
-        } else if (keyChar == 22)//paste
-        {
+        } else if (keyChar == 22) {//paste
             String pastestring = GuiScreen.getClipboardString();
             if (pastestring == null) {
                 pastestring = "";

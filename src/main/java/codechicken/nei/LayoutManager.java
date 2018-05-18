@@ -18,9 +18,7 @@ import codechicken.nei.layout.LayoutStyle;
 import codechicken.nei.layout.LayoutStyleMinecraft;
 import codechicken.nei.layout.LayoutStyleTMIOld;
 import codechicken.nei.network.NEIClientPacketHandler;
-import codechicken.nei.util.ItemInfo;
 import codechicken.nei.util.ItemList;
-import codechicken.nei.util.LogHelper;
 import codechicken.nei.util.helper.GuiHelper;
 import codechicken.nei.widget.*;
 import codechicken.nei.widget.action.NEIActions;
@@ -30,7 +28,6 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.gui.inventory.GuiContainerCreative;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.inventory.Slot;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import org.lwjgl.opengl.GL11;
@@ -284,7 +281,7 @@ public class LayoutManager implements IInputHandler, IContainerTooltipHandler, I
             handler.modifyVisibility(gui, visiblity);
         }
 
-        visiblity.translateDependancies();
+        visiblity.translateDependencies();
 
         getLayoutStyle().layout(gui, visiblity);
 

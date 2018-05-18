@@ -5,6 +5,7 @@ import codechicken.nei.api.API;
 import codechicken.nei.api.GuiInfo;
 import codechicken.nei.api.IConfigureNEI;
 import codechicken.nei.api.NEIPlugin;
+import codechicken.nei.handler.NEIChestGuiHandler;
 import codechicken.nei.jei.JEIIntegrationManager;
 import codechicken.nei.util.ItemInfo;
 import codechicken.nei.util.ItemList;
@@ -74,6 +75,8 @@ public class NEIInitialization {
         API.addItemFilter(() -> item -> !ItemInfo.hiddenItems.contains(item));
         API.addItemFilter(() -> item -> !JEIIntegrationManager.isBlacklisted(item));
         ItemList.registerLoadCallback(ItemInfo.itemSearchNames::clear);
+        API.registerNEIGuiHandler(new NEIChestGuiHandler());
+        API.registerNEIGuiHandler(new NEIDummySlotHandler());
         GuiInfo.load();
         LayoutManager.load();
         NEIController.load();

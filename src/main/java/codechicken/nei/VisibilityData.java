@@ -29,7 +29,7 @@ public class VisibilityData {
     public boolean showNEI = true;
     public boolean enableDeleteMode = true;
 
-    public void translateDependancies() {
+    public void translateDependencies() {
         if (!showNEI) {
             showWidgets = false;
         }
