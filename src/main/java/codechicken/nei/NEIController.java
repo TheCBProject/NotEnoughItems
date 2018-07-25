@@ -105,14 +105,17 @@ public class NEIController implements IInputHandler {
     @Override
     public boolean mouseScrolled(GuiScreen gui, int mouseX, int mouseY, int scrolled) {
         if (gui instanceof GuiContainer) {
-            GuiContainer container = ((GuiContainer) gui);
-            if (!NEIClientConfig.isEnabled() || GuiInfo.hasCustomSlots(container)) {
+            GuiContainer container = (GuiContainer) gui;
+            if (!NEIClientConfig.isEnabled() || GuiInfo.hasCustomSlots(container) || !NEIClientConfig.isMouseScrollTransferEnabled()) {
                 return false;
             }
 
             Point mousePos = getMousePosition();
             Slot mouseover = container.getSlotAtPosition(mousePos.x, mousePos.y);
             if (mouseover != null && mouseover.getHasStack() && !ItemInfo.fastTransferContainerExemptions.contains(container.getClass())) {
+                if(NEIClientConfig.shouldInvertMouseScrollTransfer()) {
+                    scrolled = -scrolled;
+                }
                 if (scrolled > 0) {
                     fastTransferManager.transferItem(container, mouseover.slotNumber);
                 } else {
