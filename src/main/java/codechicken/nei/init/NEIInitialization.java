@@ -64,23 +64,38 @@ public class NEIInitialization {
     public static void bootNEI() {
         long start = System.nanoTime();
         LogHelper.info("Loading NEI.");
+        LogHelper.trace("Loading save states..");
         NEIClientConfig.loadStates();
+        LogHelper.trace("Loading potion helper..");
         PotionRecipeHelper.init();
+        LogHelper.trace("Loading default hide's..");
         hideVanillaItems();
+        LogHelper.trace("Loading subsets..");
+        LogHelper.trace(" Base subsets..");
         addBaseSubsets();
+        LogHelper.trace(" Default subsets..");
         loadDefaultSubsets();
+        LogHelper.trace(" Potion subsets..");
         loadPotionSubsets();
+        LogHelper.trace(" Mod subsets..");
         loadModSubsets();
+        LogHelper.trace("Loading dumps..");
         loadRegistryDumps();
+        LogHelper.trace("Adding filters..");
         API.addItemFilter(() -> item -> !ItemInfo.hiddenItems.contains(item));
         API.addItemFilter(() -> item -> !JEIIntegrationManager.isBlacklisted(item));
+        LogHelper.trace("Registering search callback..");
         ItemList.registerLoadCallback(ItemInfo.itemSearchNames::clear);
+        LogHelper.trace("Registering gui handlers..");
         API.registerNEIGuiHandler(new NEIChestGuiHandler());
         API.registerNEIGuiHandler(new NEIDummySlotHandler());
         GuiInfo.load();
+        LogHelper.trace("Loading LayoutManager..");
         LayoutManager.load();
+        LogHelper.trace("Loading NEIController..");
         NEIController.load();
 
+        LogHelper.trace("Loading plugins..");
         for (IConfigureNEI plugin : plugins) {
             try {
                 plugin.loadConfig();
@@ -92,6 +107,7 @@ public class NEIInitialization {
 
         replaceMetadata();
 
+        LogHelper.trace("Loading ItemSorter..");
         ItemSorter.loadConfig();
         LogHelper.info("Finished NEI Initialization after %s ms", TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - start));
 
@@ -320,16 +336,20 @@ public class NEIInitialization {
         HashMap<String, ItemStackSet> modSubsets = new HashMap<>();
 
         for (Item item : ForgeRegistries.ITEMS) {
-            ResourceLocation ident = item.getRegistryName();
-            bar.step(ident.toString());
-            if (ident == null) {
-                LogHelper.error("Failed to find identifier for: " + item);
-                continue;
+            try {
+                ResourceLocation ident = item.getRegistryName();
+                bar.step(ident.toString());
+                if (ident == null) {
+                    LogHelper.error("Failed to find identifier for: " + item);
+                    continue;
+                }
+                String modId = ident.getResourceDomain();
+                ItemInfo.itemOwners.put(item, modId);
+                ItemStackSet itemset = modSubsets.computeIfAbsent(modId, k -> new ItemStackSet());
+                itemset.with(item);
+            } catch (Throwable t) {
+                LogHelper.errorError("Failed to process mod subset item %s %s", t, String.valueOf(item), String.valueOf(item.getRegistryName()));
             }
-            String modId = ident.getResourceDomain();
-            ItemInfo.itemOwners.put(item, modId);
-            ItemStackSet itemset = modSubsets.computeIfAbsent(modId, k -> new ItemStackSet());
-            itemset.with(item);
         }
         ProgressManager.pop(bar);
 

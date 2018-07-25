@@ -56,7 +56,6 @@ public class PotionRecipeHelper {
     }
 
     public static void init() {//TODO Don't make assumptions as to what the ingredient is to achieve next tear, as Minetweaker may change it.
-        LogHelper.trace("Loading portion recipes..");
         try {
             for (PotionHelper.MixPredicate<PotionType> entry : PotionHelper.POTION_TYPE_CONVERSIONS) {
                 PotionType input = entry.input;
