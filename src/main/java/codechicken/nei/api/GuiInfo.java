@@ -1,8 +1,5 @@
 package codechicken.nei.api;
 
-import codechicken.nei.NEICreativeGuiHandler;
-import codechicken.nei.NEIDummySlotHandler;
-import codechicken.nei.handler.NEIChestGuiHandler;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.gui.inventory.GuiContainerCreative;
 

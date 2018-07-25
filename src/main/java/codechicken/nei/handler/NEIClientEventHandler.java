@@ -59,8 +59,6 @@ public class NEIClientEventHandler {
     private static List<IContainerTooltipHandler> instanceTooltipHandlers;
     private static GuiScreen lastGui;
 
-    private final Set<Triple<Class<?>, Class<? extends GuiButton>, Integer>> bookStripList = new HashSet<>();
-
     /**
      * Register a new Input handler;
      *
@@ -218,21 +216,9 @@ public class NEIClientEventHandler {
     @SubscribeEvent
     public void containerInitEvent(GuiScreenEvent.InitGuiEvent.Pre event) {
         if (event.getGui() instanceof GuiContainer) {
-            GuiContainer container = ((GuiContainer) event.getGui());
+            GuiContainer container = (GuiContainer) event.getGui();
             objectHandlers.forEach(handler -> handler.load(container));
         }
-    }
-
-    @SubscribeEvent
-    public void guiInitEvent(GuiScreenEvent.InitGuiEvent.Post event) {
-//        for (Triple<Class<?>, Class<? extends GuiButton>, Integer> triple : bookStripList) {
-//            if (event.getGui().getClass() == triple.getLeft()){
-//                event.getButtonList().removeIf(suspect -> triple.getMiddle().equals(suspect.getClass()) && triple.getRight() == suspect.id);
-//            }
-//        }
-//        if (event.getGui() instanceof GuiInventory || event.getGui() instanceof GuiCrafting) {
-//            event.getButtonList().removeIf(suspect -> suspect instanceof GuiButtonImage && suspect.id == 10);
-//        }
     }
 
     @SubscribeEvent
@@ -244,7 +230,7 @@ public class NEIClientEventHandler {
                 } else {
                     instanceTooltipHandlers = new LinkedList<>();
                     if (event.getGui() instanceof IContainerTooltipHandler) {
-                        instanceTooltipHandlers.add(((IContainerTooltipHandler) event.getGui()));
+                        instanceTooltipHandlers.add((IContainerTooltipHandler) event.getGui());
                     }
                     instanceTooltipHandlers.addAll(tooltipHandlers);
                 }
@@ -258,8 +244,8 @@ public class NEIClientEventHandler {
 
         if (event.phase == Phase.START) {
             Minecraft minecraft = Minecraft.getMinecraft();
-            if (minecraft.currentScreen != null && minecraft.currentScreen instanceof GuiContainer) {
-                objectHandlers.forEach(handler -> handler.guiTick(((GuiContainer) minecraft.currentScreen)));
+            if (minecraft.currentScreen instanceof GuiContainer) {
+                objectHandlers.forEach(handler -> handler.guiTick((GuiContainer) minecraft.currentScreen));
             }
         }
     }
@@ -277,7 +263,7 @@ public class NEIClientEventHandler {
 
         if (screen instanceof GuiContainer) {
             if (tooltip.isEmpty() && GuiHelper.shouldShowTooltip(screen)) {
-                GuiContainer container = ((GuiContainer) screen);
+                GuiContainer container = (GuiContainer) screen;
                 stack = GuiHelper.getStackMouseOver(container, false);
 
                 if (!stack.isEmpty()) {
@@ -317,29 +303,14 @@ public class NEIClientEventHandler {
 
     @SubscribeEvent
     public void tooltipPreEvent(RenderTooltipEvent.Pre event) {
-        //for (IContainerObjectHandler handler : objectHandlers) {
-        //    if (!handler.shouldShowTooltip(Minecraft.getMinecraft().currentScreen)) {
-        //        event.setCanceled(true);
-        //        return;
-        //    }
-        //}
         event.setY(MathHelper.clip(event.getY(), 8, event.getScreenHeight() - 8));
     }
 
     @SubscribeEvent
     public void itemTooltipEvent(ItemTooltipEvent event) {
-
         if (instanceTooltipHandlers != null && Minecraft.getMinecraft().currentScreen != null) {
             GuiScreen screen = Minecraft.getMinecraft().currentScreen;
-
-            Point mousePos = GuiDraw.getMousePosition();
-
-            instanceTooltipHandlers.forEach(handler -> handler.handleTooltip(screen, mousePos.x, mousePos.y, event.getToolTip()));
-
-            if (screen instanceof GuiContainer) {
-                GuiContainer container = ((GuiContainer) screen);
-                instanceTooltipHandlers.forEach(handler -> handler.handleItemDisplayName(screen, GuiHelper.getStackMouseOver(container, true), event.getToolTip()));
-            }
+            instanceTooltipHandlers.forEach(handler -> handler.handleItemDisplayName(screen, event.getItemStack(), event.getToolTip()));
         }
     }
 
