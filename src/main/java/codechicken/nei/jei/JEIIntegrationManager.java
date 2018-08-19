@@ -41,7 +41,7 @@ public class JEIIntegrationManager {
     public static void pushChanges(VisibilityData data) {
         JeiRuntime runtime = Internal.getRuntime();
         if (runtime != null) {
-            IngredientListOverlay overlay = runtime.getItemListOverlay();
+            IngredientListOverlay overlay = runtime.getIngredientListOverlay();
             GuiTextFieldFilter fieldFilter = getTextFieldFilter(overlay);
 
             if (searchBoxOwner == EnumItemBrowser.JEI) {
@@ -122,7 +122,7 @@ public class JEIIntegrationManager {
         if (Internal.getRuntime() == null) {
             return null;
         }
-        return getTextFieldFilter(Internal.getRuntime().getItemListOverlay());
+        return getTextFieldFilter(Internal.getRuntime().getIngredientListOverlay());
     }
 
     private static GuiTextFieldFilter getTextFieldFilter(IngredientListOverlay overlay) {
@@ -155,14 +155,14 @@ public class JEIIntegrationManager {
 
     public static void setFilterText(String text) {
         if (Internal.getRuntime() != null && Internal.getRuntime().getItemListOverlay() != null) {
-            IngredientListOverlay overlay = Internal.getRuntime().getItemListOverlay();
-            overlay.setFilterText(text);
+            IngredientListOverlay overlay = Internal.getRuntime().getIngredientListOverlay();
+            overlay.onSetFilterText(text);
         }
     }
 
     public static List<Object> getFilteredItems() {
         if (Internal.getRuntime() != null && Internal.getRuntime().getItemListOverlay() != null) {
-            IngredientListOverlay overlay = Internal.getRuntime().getItemListOverlay();
+            IngredientListOverlay overlay = Internal.getRuntime().getIngredientListOverlay();
             IngredientFilter filter = getItemFilter(getTextFieldFilter(overlay));
             if (filter != null) {
                 return filter.getFilteredIngredients();
