@@ -1,5 +1,7 @@
 package codechicken.nei.util.helper.potion;
 
+import codechicken.lib.reflect.ObfMapping;
+import codechicken.lib.reflect.ReflectionManager;
 import codechicken.nei.util.LogHelper;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -9,6 +11,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionHelper;
 import net.minecraft.potion.PotionType;
 import net.minecraft.potion.PotionUtils;
+import net.minecraftforge.registries.IRegistryDelegate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +22,9 @@ import java.util.List;
  * Don't bother using this.
  */
 public class PotionRecipeHelper {
+
+    private static final ObfMapping f_input = new ObfMapping("net/minecraft/potion/PotionHelper$MixPredicate", "field_185198_a");
+    private static final ObfMapping f_output = new ObfMapping("net/minecraft/potion/PotionHelper$MixPredicate", "field_185200_c");
 
     private static ArrayList<IPotionRecipe> allRecipes = new ArrayList<>();
     private static ArrayList<IPotionRecipe> normalRecipes = new ArrayList<>();
@@ -58,9 +64,9 @@ public class PotionRecipeHelper {
     public static void init() {//TODO Don't make assumptions as to what the ingredient is to achieve next tear, as Minetweaker may change it.
         try {
             for (PotionHelper.MixPredicate<PotionType> entry : PotionHelper.POTION_TYPE_CONVERSIONS) {
-                PotionType input = entry.input;
+                PotionType input = (PotionType) ReflectionManager.getField(f_input, entry, IRegistryDelegate.class).get();
                 Ingredient ingredient =  entry.reagent;
-                PotionType output = entry.output;
+                PotionType output = (PotionType) ReflectionManager.getField(f_output, entry, IRegistryDelegate.class).get();
                 addNormalRecipe(Items.POTIONITEM, input, ingredient, output);
                 addSplashRecipe(Items.SPLASH_POTION, input, ingredient, output);
                 addLingeringRecipe(Items.LINGERING_POTION, input, ingredient, output);
