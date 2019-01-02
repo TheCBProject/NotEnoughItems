@@ -113,6 +113,12 @@ nei.options.inventory.gamemodes.tip=Välj spellägen att växla mellan
 nei.options.inventory.gamemodes.creative=Kreativt
 nei.options.inventory.gamemodes.creative+=Kreativt+
 nei.options.inventory.gamemodes.adventure=Äventyr
+nei.options.inventory.disableMouseScrollTransfer=Inaktivera överförning med mushjul
+nei.options.inventory.disableMouseScrollTransfer.true=Sant
+nei.options.inventory.disableMouseScrollTransfer.false=Falskt
+nei.options.inventory.invertMouseScrollTransfer=Invertera mushjulets överförningsriktning
+nei.options.inventory.invertMouseScrollTransfer.true=Sant
+nei.options.inventory.invertMouseScrollTransfer.false=Falskt
 
 nei.options.command=Kommandon
 nei.options.command.creative=Spelläge
