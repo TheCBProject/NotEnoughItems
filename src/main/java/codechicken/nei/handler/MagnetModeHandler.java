@@ -74,6 +74,9 @@ public class MagnetModeHandler {
             if (item.isDead) {
                 iterator.remove();
             }
+            if (item.getEntityData().getBoolean("PreventRemoteMovement")) {
+                continue;
+            }
             if (!NEIClientUtils.canItemFitInInventory(player, item.getItem())) {
                 continue;
             }
@@ -140,6 +143,9 @@ public class MagnetModeHandler {
                     continue;
                 }
                 if (!NEIServerUtils.canItemFitInInventory(player, item.getItem())) {
+                    continue;
+                }
+                if (item.getEntityData().getBoolean("PreventRemoteMovement")) {
                     continue;
                 }
                 if (save.magneticItems.add(item)) {
