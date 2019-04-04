@@ -36,12 +36,12 @@ nei.inventory.gamemode.1=Ändra spelläget till kreativt
 nei.inventory.gamemode.2=Ändra spelläget till kreativt+
 nei.inventory.gamemode.3=Ändra spelläget till äventyr
 
-nei.chat.gamemode.0=Du spelar nu med överlevnad
-nei.chat.gamemode.1=Du spelar nu med kreativt
-nei.chat.gamemode.2=Du spelar nu med kreativt+
-nei.chat.gamemode.3=Du spelar nu med äventyr
-nei.chat.rain.on=Regn aktiverades
-nei.chat.rain.off=Regn inaktiverades
+nei.chat.gamemode.0=Du spelar nu med överlevnadsläge
+nei.chat.gamemode.1=Du spelar nu med kreativt läge
+nei.chat.gamemode.2=Du spelar nu med kreativt läge+
+nei.chat.gamemode.3=Du spelar nu med äventyrsläge
+nei.chat.rain.on=Regn har aktiverats
+nei.chat.rain.off=Regn har inaktiverats
 nei.chat.time=Dag %d, kl. %d:00
 nei.chat.give.noitem=Det finns inget sådant föremål.
 
