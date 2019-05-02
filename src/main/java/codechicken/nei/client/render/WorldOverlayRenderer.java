@@ -20,6 +20,7 @@ import net.minecraft.world.WorldEntitySpawner;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import static org.lwjgl.opengl.GL11.*;
@@ -74,6 +75,8 @@ public class WorldOverlayRenderer implements IKeyStateTracker {
             return;
         }
 
+        boolean cms = Loader.instance().isModLoaded("customspawner");
+
         GlStateManager.disableTexture2D();
         GlStateManager.disableLighting();
         glLineWidth(1.5F);
@@ -91,7 +94,7 @@ public class WorldOverlayRenderer implements IKeyStateTracker {
                 BlockPos pos = new BlockPos(x, y1, z);
                 Chunk chunk = world.getChunkFromBlockCoords(pos);
                 Biome biome = world.getBiome(pos);
-                if (biome.getSpawnableList(EnumCreatureType.MONSTER).isEmpty() || biome.getSpawningChance() <= 0) {
+                if ((!cms && biome.getSpawnableList(EnumCreatureType.MONSTER).isEmpty()) || biome.getSpawningChance() <= 0) {
                     continue;
                 }
 
